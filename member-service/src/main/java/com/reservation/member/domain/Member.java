@@ -6,6 +6,7 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.util.Assert;
 
 /**
  * Member.java
@@ -48,7 +49,12 @@ public class Member extends BaseEntity {
         this.address = address;
     }
 
-    public static Member of(String userId, String username, String password, String phoneNum, String address) {
+    public static Member of(final String userId, final String username,
+                            final String password, final String phoneNum, final String address) {
+        Assert.hasText(userId, "회원 아이디는 반드시 필요합니다.");
+        Assert.hasText(username, "회원 이름은 반드시 필요합니다.");
+        Assert.hasText(password, "비밀번호는 반드시 필요합니다.");
+        Assert.hasText(address, "주소는 반드시 필요합니다.");
         return new Member(userId, username, password, phoneNum, address);
     }
 
