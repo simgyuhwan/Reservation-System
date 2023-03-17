@@ -6,11 +6,9 @@ import com.reservation.member.domain.Member;
 import com.reservation.member.dto.SignUpRequest;
 import com.reservation.member.exception.DuplicateMemberException;
 import com.reservation.member.factory.SignUpFactory;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.BDDMockito;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -39,24 +37,25 @@ public class SignUpServiceTest {
 
     @Mock
     private MemberRepository memberRepository;
-    private SignUpRequestMapper mapper = SignUpRequestMapper.INSTANCE;
+
+    @Mock
+    private SignUpRequestMapper mapper;
 
     @Test
     @DisplayName("회원 가입 성공 테스트")
     void signUp() {
         //given
         SignUpRequest request = SignUpFactory.회원가입_DTO_생성(USER_ID, USERNAME, PASSWORD, PHONE_NUM, ADDRESS);
-        Member member = mapper.toEntity(request);
+        Member member = Member.from(request);
 
-        given(memberRepository.save(any(Member.class)))
-                .willReturn(member);
+        given(mapper.toEntity(request)).willReturn(member);
+        given(memberRepository.save(any(Member.class))).willReturn(member);
 
         //when
         memberService.signUp(request);
 
         //then
-        then(memberRepository).should()
-                .save(any(Member.class));
+        then(memberRepository).should().save(any(Member.class));
     }
 
     @Test
@@ -64,8 +63,9 @@ public class SignUpServiceTest {
     void duplicateMemberRegistrationExceptionOccurs() {
         //given
         SignUpRequest request = SignUpFactory.회원가입_DTO_생성(USER_ID, USERNAME, PASSWORD, PHONE_NUM, ADDRESS);
-        given(memberRepository.existsByUserId(USER_ID))
-                .willReturn(true);
+
+        given(mapper.toEntity(request)).willReturn(Member.from(request));
+        given(memberRepository.existsByUserId(USER_ID)).willReturn(true);
 
         //when
         assertThatThrownBy(() -> memberService.signUp(request))

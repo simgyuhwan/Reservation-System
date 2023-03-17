@@ -8,7 +8,6 @@ import org.mapstruct.factory.Mappers;
 
 /**
  * SignUpRequestMapper.java
- * Class 설명을 작성하세요.
  *
  * @author sgh
  * @since 2023.03.17
