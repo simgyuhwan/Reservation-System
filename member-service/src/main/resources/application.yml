@@ -8,7 +8,6 @@ springdoc:
     path: /api-docs
   swagger-ui:
     path: /swagger
-    version: 1.0
 
 ---
 spring:
