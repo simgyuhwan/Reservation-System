@@ -1,4 +1,4 @@
-package com.reservation.member.model;
+package com.reservation.member.global.model;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.EntityListeners;

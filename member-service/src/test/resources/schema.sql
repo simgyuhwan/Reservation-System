@@ -1,16 +1,11 @@
 DROP TABLE IF EXISTS member;
-create table member
-(
-    id          bigint auto_increment
-        primary key,
-    create_date datetime(6)  null,
-    update_date datetime(6)  null,
-    address     varchar(255) not null,
-    password    varchar(255) not null,
-    phone_num   varchar(255) not null,
-    user_id     varchar(255) not null,
-    username    varchar(255) not null,
-    constraint UK_a9bw6sk85ykh4bacjpu0ju5f6
-        unique (user_id)
+CREATE TABLE member (
+    id          BIGINT AUTO_INCREMENT PRIMARY KEY,
+    create_date TIMESTAMP(6),
+    update_date TIMESTAMP(6),
+    address     VARCHAR(255) NOT NULL,
+    password    VARCHAR(255) NOT NULL,
+    phone_num   VARCHAR(255) NOT NULL,
+    user_id     VARCHAR(255) NOT NULL UNIQUE,
+    username    VARCHAR(255) NOT NULL
 );
-

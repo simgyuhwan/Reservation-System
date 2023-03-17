@@ -1,7 +1,7 @@
 package com.reservation.member.domain;
 
 import com.reservation.member.dto.SignUpRequest;
-import com.reservation.member.model.BaseEntity;
+import com.reservation.member.global.model.BaseEntity;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;

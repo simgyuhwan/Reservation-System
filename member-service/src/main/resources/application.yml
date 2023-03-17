@@ -3,6 +3,13 @@ spring:
     active:
       - dev
 
+springdoc:
+  api-docs:
+    path: /api-docs
+  swagger-ui:
+    path: /swagger
+    version: 1.0
+
 ---
 spring:
   config:
@@ -38,5 +45,4 @@ spring:
   config:
     activate:
       on-profile: proc
-
 
