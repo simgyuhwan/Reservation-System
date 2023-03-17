@@ -20,14 +20,13 @@ import org.springframework.transaction.annotation.Transactional;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class MemberServiceImpl implements MemberService{
+public class MemberCreator{
 
     private final MemberRepository memberRepository;
     private final SignUpRequestMapper mapper;
 
-    @Override
     @Transactional
-    public void signUp(final SignUpRequest signUpRequest) {
+    public void create(final SignUpRequest signUpRequest) {
         Member member = mapper.toEntity(signUpRequest);
         validateMember(member);
         memberRepository.save(member);

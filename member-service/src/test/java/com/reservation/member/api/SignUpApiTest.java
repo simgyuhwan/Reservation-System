@@ -1,7 +1,7 @@
 package com.reservation.member.api;
 
 import com.google.gson.Gson;
-import com.reservation.member.application.MemberService;
+import com.reservation.member.application.MemberCreator;
 import com.reservation.member.dto.SignUpRequest;
 import com.reservation.member.exception.MemberControllerAdvice;
 import com.reservation.member.factory.SignUpFactory;
@@ -50,7 +50,7 @@ public class SignUpApiTest {
     private MemberController memberController;
 
     @Mock
-    private MemberService memberService;
+    private MemberCreator memberCreator;
 
     @BeforeEach
     void beforeEach() {
@@ -73,8 +73,8 @@ public class SignUpApiTest {
 
         //then
         result.andExpect(status().isCreated());
-        then(memberService).should()
-                .signUp(any(SignUpRequest.class));
+        then(memberCreator).should()
+                .create(any(SignUpRequest.class));
     }
 
     @ParameterizedTest

@@ -1,6 +1,6 @@
 package com.reservation.member.api;
 
-import com.reservation.member.application.MemberService;
+import com.reservation.member.application.MemberCreator;
 import com.reservation.member.dto.SignUpRequest;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
@@ -26,12 +26,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/members")
 public class MemberController {
 
-    private final MemberService memberService;
+    private final MemberCreator memberCreator;
 
     @PostMapping
     @Operation(summary = "[회원] 회원 가입", description = "회원 가입 API")
     public ResponseEntity<Void> signUp(@Validated @RequestBody SignUpRequest signUpRequest) {
-        memberService.signUp(signUpRequest);
+        memberCreator.create(signUpRequest);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 }
