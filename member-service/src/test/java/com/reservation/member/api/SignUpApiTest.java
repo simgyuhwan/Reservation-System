@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.reservation.member.application.MemberService;
 import com.reservation.member.dto.SignUpRequest;
 import com.reservation.member.exception.MemberControllerAdvice;
+import com.reservation.member.factory.SignUpFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -63,7 +64,7 @@ public class SignUpApiTest {
     @DisplayName("회원가입 성공 테스트")
     void memberRegistrationSuccessTest() throws Exception {
         //given
-        SignUpRequest request = 회원가입_DTO_생성();
+        SignUpRequest request = SignUpFactory.회원가입_DTO_생성(USER_ID, USERNAME, PASSWORD, PHONE_NUM, ADDRESS);
 
         //when
         ResultActions result = mockMvc.perform(post("/api/members")
@@ -82,7 +83,7 @@ public class SignUpApiTest {
     void memberRegistrationValidationTest(String userId, String username, String password,
                                           String phoneNum, String address) throws Exception {
         //given
-        SignUpRequest request = SignUpRequest.of(userId, username, password, phoneNum, address);
+        SignUpRequest request = SignUpFactory.회원가입_DTO_생성(userId, username, password, phoneNum, address);
 
         //when
         ResultActions result = mockMvc.perform(post("/api/members")
@@ -97,7 +98,7 @@ public class SignUpApiTest {
     @DisplayName("회원가입 실패 메시지 확인 테스트 : 아이디 미포함 실패")
     void invalidUserIdEntryTest() throws Exception {
         //given
-        SignUpRequest request = SignUpRequest.of(null, USERNAME, PASSWORD, PHONE_NUM, ADDRESS);
+        SignUpRequest request = SignUpFactory.회원가입_DTO_생성(null, USERNAME, PASSWORD, PHONE_NUM, ADDRESS);
 
         //when
         ResultActions result = mockMvc.perform(post("/api/members")
@@ -115,7 +116,7 @@ public class SignUpApiTest {
     @DisplayName("회원가입 실패 메시지 확인 테스트 : 아이디값 사이즈 최소 이하 실패")
     void idValueSizeMinimumOrLessFailureTest() throws Exception {
         //given
-        SignUpRequest request = SignUpRequest.of("1", USERNAME, PASSWORD, PHONE_NUM, ADDRESS);
+        SignUpRequest request = SignUpFactory.회원가입_DTO_생성("1", USERNAME, PASSWORD, PHONE_NUM, ADDRESS);
 
         //when
         ResultActions result = mockMvc.perform(post("/api/members")
@@ -133,7 +134,7 @@ public class SignUpApiTest {
     @DisplayName("회원가입 실패 메시지 확인 테스트 : 아이디값 사이즈 최대 이상 실패")
     void idValueSizeMaximumOrThanFailureTest() throws Exception {
         //given
-        SignUpRequest request = SignUpRequest.of("123456789101112222", USERNAME, PASSWORD, PHONE_NUM, ADDRESS);
+        SignUpRequest request = SignUpFactory.회원가입_DTO_생성("123456789101112222", USERNAME, PASSWORD, PHONE_NUM, ADDRESS);
 
         //when
         ResultActions result = mockMvc.perform(post("/api/members")
@@ -151,7 +152,7 @@ public class SignUpApiTest {
     @DisplayName("회원가입 실패 메시지 확인 테스트: 이름 미포함 실패")
     void enteringAnInvalidNameValueTest() throws Exception {
         //given
-        SignUpRequest request = SignUpRequest.of(USER_ID, "", PASSWORD, PHONE_NUM, ADDRESS);
+        SignUpRequest request = SignUpFactory.회원가입_DTO_생성(USER_ID, "", PASSWORD, PHONE_NUM, ADDRESS);
 
         //when
         ResultActions result = mockMvc.perform(post("/api/members")
@@ -169,7 +170,7 @@ public class SignUpApiTest {
     @DisplayName("회원가입 실패 메시지 확인 테스트 : 핸드폰 번호 미포함 실패")
     void enterANullPhoneNumberTest() throws Exception {
         //given
-        SignUpRequest request = SignUpRequest.of(USER_ID, USERNAME, PASSWORD, null, ADDRESS);
+        SignUpRequest request = SignUpFactory.회원가입_DTO_생성(USER_ID, USERNAME, PASSWORD, null, ADDRESS);
 
         //when
         ResultActions result = mockMvc.perform(post("/api/members")
@@ -187,7 +188,7 @@ public class SignUpApiTest {
     @DisplayName("회원가입 실패 메시지 확인 테스트 : 잘못된 핸드폰 번호 등록 실패")
     void enterTheWrongPhoneNumberTest() throws Exception {
         //given
-        SignUpRequest request = SignUpRequest.of(USER_ID, USERNAME, PASSWORD, "-0-30-", ADDRESS);
+        SignUpRequest request = SignUpFactory.회원가입_DTO_생성(USER_ID, USERNAME, PASSWORD, "-0-30-", ADDRESS);
 
         //when
         ResultActions result = mockMvc.perform(post("/api/members")
@@ -206,7 +207,7 @@ public class SignUpApiTest {
     @DisplayName("회원가입 실패 메시지 확인 테스트 : 비밀번호 미포함 실패")
     void failedToNotIncludeAddressTest() throws Exception {
         //given
-        SignUpRequest request = SignUpRequest.of(USER_ID, USERNAME, "", PHONE_NUM, ADDRESS);
+        SignUpRequest request = SignUpFactory.회원가입_DTO_생성(USER_ID, USERNAME, "", PHONE_NUM, ADDRESS);
 
         //when
         ResultActions result = mockMvc.perform(post("/api/members")
@@ -224,7 +225,7 @@ public class SignUpApiTest {
     @DisplayName("회원가입 실패 메시지 확인 테스트 : 주소 값 미포함 실패")
     void failedToNotIncludePhoneNumTest() throws Exception {
         //given
-        SignUpRequest request = SignUpRequest.of(USER_ID, USERNAME, PASSWORD, PHONE_NUM, "");
+        SignUpRequest request = SignUpFactory.회원가입_DTO_생성(USER_ID, USERNAME, PASSWORD, PHONE_NUM, "");
 
         //when
         ResultActions result = mockMvc.perform(post("/api/members")
@@ -236,10 +237,6 @@ public class SignUpApiTest {
                 .andExpect(jsonPath("$.message").value("입력 값이 올바르지 않습니다."))
                 .andExpect(jsonPath("$.errors[0].field").value("address"))
                 .andExpect(jsonPath("$.errors[0].reason").value("주소는 반드시 입력해야 합니다."));
-    }
-
-    private SignUpRequest 회원가입_DTO_생성() {
-        return SignUpRequest.of(USER_ID, USERNAME, PASSWORD, PHONE_NUM, ADDRESS);
     }
 
     static Stream<Arguments> signUpValidityArgumentsList() {

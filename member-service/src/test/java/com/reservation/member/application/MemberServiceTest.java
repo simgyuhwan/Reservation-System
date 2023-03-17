@@ -1,7 +1,7 @@
 package com.reservation.member.application;
 
 import com.reservation.member.dao.MemberRepository;
-import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -25,8 +25,12 @@ public class MemberServiceTest {
     private MemberRepository memberRepository;
 
     @Test
-    @Disabled
+    @DisplayName("회원 가입 성공 테스트")
     void signUp() {
+        //given
 
+        //when
+
+        //then
     }
 }

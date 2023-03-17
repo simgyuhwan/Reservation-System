@@ -1,5 +1,6 @@
 package com.reservation.member.application;
 
+import com.reservation.member.dao.MemberRepository;
 import com.reservation.member.dto.SignUpRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -16,6 +17,8 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class MemberServiceImpl implements MemberService{
+
+    private final MemberRepository memberRepository;
 
     @Override
     public void signUp(SignUpRequest signUpRequest) {
