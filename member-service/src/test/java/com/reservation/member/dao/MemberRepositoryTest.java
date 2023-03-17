@@ -44,7 +44,7 @@ public class MemberRepositoryTest {
     @DisplayName("회원 등록 테스트")
     void memberRegistration() {
         // given
-        Member member = createDefaultMember();
+        Member member = 회원생성();
 
         // when
         final Member saveMember = memberRepository.save(member);
@@ -61,7 +61,7 @@ public class MemberRepositoryTest {
     @DisplayName("회원 수정 테스트")
     void editMember() {
         //given
-        Member member = createDefaultMember();
+        Member member = 회원생성();
         memberRepository.save(member);
 
         //when
@@ -78,7 +78,7 @@ public class MemberRepositoryTest {
     @DisplayName("회원 삭제 테스트")
     void deleteMember() {
         //given
-        Member member = createDefaultMember();
+        Member member = 회원생성();
         memberRepository.save(member);
 
         //when
@@ -93,10 +93,10 @@ public class MemberRepositoryTest {
     @DisplayName("회원 중복 등록시 예외 발생 테스트")
     void memberDuplicateException() {
         //given
-        memberRepository.save(createDefaultMember());
+        memberRepository.save(회원생성());
 
         //when,then
-        assertThatThrownBy(() -> memberRepository.save(createDefaultMember()))
+        assertThatThrownBy(() -> memberRepository.save(회원생성()))
                 .isInstanceOf(DataIntegrityViolationException.class);
     }
 
@@ -104,7 +104,7 @@ public class MemberRepositoryTest {
     @DisplayName("회원 이름를 이용한 조회 시, 저장된 회원 정보 일치 테스트")
     void nameLookup() {
         //given
-        memberRepository.save(createDefaultMember());
+        memberRepository.save(회원생성());
 
         //when
         Member findMember = memberRepository.findByUsername(USERNAME)
@@ -128,7 +128,7 @@ public class MemberRepositoryTest {
     @DisplayName("폰 번호를 이용한 조회 시, 저장된 회원 정보 일치 테스트")
     void inquiryThroughPhoneNumber() {
         //given
-        Member member = createDefaultMember();
+        Member member = 회원생성();
         memberRepository.save(member);
 
         //when
@@ -152,7 +152,7 @@ public class MemberRepositoryTest {
     @DisplayName("모든 회원 수 조회 시, 저장된 회원 수와 일치 테스트")
     void checkAllMemberCountsMatch() {
         //given
-        registerMultipleMembers();
+        회원리스트생성_및_저장();
 
         //when
         List<Member> fetchedMembers = memberRepository.findAll();
@@ -165,7 +165,7 @@ public class MemberRepositoryTest {
     @DisplayName("모든 맴버 삭제 시, 맴버 수 0 확인 테스트")
     void checkZeroViewsWhenDeletingAllMembers() {
         //given
-        registerMultipleMembers();
+        회원리스트생성_및_저장();
 
         //when
         memberRepository.deleteAll();
@@ -174,8 +174,22 @@ public class MemberRepositoryTest {
         //then
         assertThat(fetchedMembers.isEmpty()).isTrue();
     }
+    
+    @Test
+    @DisplayName("등록된 회원 확인 테스트")
+    void registeredMemberVerificationTest() {
+        //given
+        Member member = 회원생성();
+        memberRepository.save(member);
 
-    private Member createDefaultMember() {
+        //when
+        boolean result = memberRepository.existsByUserId(member.getUserId());
+
+        //then
+        assertThat(result).isTrue();
+    }
+
+    private Member 회원생성() {
         return Member.of(USER_ID, USERNAME, PASSWORD, PHONE_NUM, ADDRESS);
     }
 
@@ -183,7 +197,7 @@ public class MemberRepositoryTest {
         return Member.of(userId, username, password, phoneNum, address);
     }
 
-    private void registerMultipleMembers() {
+    private void 회원리스트생성_및_저장() {
         Member member1 = createMember(USER_ID + "1", USERNAME, PASSWORD, PHONE_NUM, ADDRESS);
         Member member2 = createMember(USER_ID + "2", USERNAME, PASSWORD, PHONE_NUM, ADDRESS);
         Member member3 = createMember(USER_ID + "3", USERNAME, PASSWORD, PHONE_NUM, ADDRESS);
