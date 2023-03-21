@@ -1,7 +1,6 @@
 package com.reservation.member.api;
 
 import com.google.gson.Gson;
-import com.reservation.member.application.MemberCreator;
 import com.reservation.member.application.MemberService;
 import com.reservation.member.dto.SignUpRequest;
 import com.reservation.member.exception.MemberControllerAdvice;

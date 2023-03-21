@@ -33,7 +33,7 @@ public class SignUpServiceTest {
     private final static String ADDRESS = "경기도 한국군 한국리";
 
     @InjectMocks
-    private MemberCreator memberCreator;
+    private MemberServiceImpl memberService;
 
     @Mock
     private MemberRepository memberRepository;
@@ -52,7 +52,7 @@ public class SignUpServiceTest {
         given(memberRepository.save(any(Member.class))).willReturn(member);
 
         //when
-        memberCreator.create(request);
+        memberService.signUp(request);
 
         //then
         then(memberRepository).should().save(any(Member.class));
@@ -68,7 +68,7 @@ public class SignUpServiceTest {
         given(memberRepository.existsByUserId(USER_ID)).willReturn(true);
 
         //when
-        assertThatThrownBy(() -> memberCreator.create(request))
+        assertThatThrownBy(() -> memberService.signUp(request))
                 .isInstanceOf(DuplicateMemberException.class);
     }
 
