@@ -42,20 +42,22 @@ public class SignUpApiTest {
     private final static String PASSWORD = "password";
     private final static String PHONE_NUM = "010-8988-9999";
     private final static String ADDRESS = "경기도 한국군 한국리";
-
+    private final static String SIGNUP_URL = "/api/signup";
+    
     private MockMvc mockMvc;
     private Gson gson;
 
     @InjectMocks
-    private MemberController memberController;
-
+    // private MemberController memberController;
+    private SignUpController signUpController;
+    
     @Mock
     private MemberCreator memberCreator;
 
     @BeforeEach
     void beforeEach() {
         gson = new Gson();
-        mockMvc = MockMvcBuilders.standaloneSetup(memberController)
+        mockMvc = MockMvcBuilders.standaloneSetup(signUpController)
                 .setControllerAdvice(MemberControllerAdvice.class)
                 .build();
     }
@@ -67,7 +69,7 @@ public class SignUpApiTest {
         SignUpRequest request = SignUpFactory.회원가입_DTO_생성(USER_ID, USERNAME, PASSWORD, PHONE_NUM, ADDRESS);
 
         //when
-        ResultActions result = mockMvc.perform(post("/api/members")
+        ResultActions result = mockMvc.perform(post(SIGNUP_URL)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(gson.toJson(request)));
 
@@ -86,7 +88,7 @@ public class SignUpApiTest {
         SignUpRequest request = SignUpFactory.회원가입_DTO_생성(userId, username, password, phoneNum, address);
 
         //when
-        ResultActions result = mockMvc.perform(post("/api/members")
+        ResultActions result = mockMvc.perform(post(SIGNUP_URL)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(gson.toJson(request)));
 
@@ -101,7 +103,7 @@ public class SignUpApiTest {
         SignUpRequest request = SignUpFactory.회원가입_DTO_생성(null, USERNAME, PASSWORD, PHONE_NUM, ADDRESS);
 
         //when
-        ResultActions result = mockMvc.perform(post("/api/members")
+        ResultActions result = mockMvc.perform(post(SIGNUP_URL)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(gson.toJson(request)));
 
@@ -119,7 +121,7 @@ public class SignUpApiTest {
         SignUpRequest request = SignUpFactory.회원가입_DTO_생성("1", USERNAME, PASSWORD, PHONE_NUM, ADDRESS);
 
         //when
-        ResultActions result = mockMvc.perform(post("/api/members")
+        ResultActions result = mockMvc.perform(post(SIGNUP_URL)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(gson.toJson(request)));
 
@@ -137,7 +139,7 @@ public class SignUpApiTest {
         SignUpRequest request = SignUpFactory.회원가입_DTO_생성("123456789101112222", USERNAME, PASSWORD, PHONE_NUM, ADDRESS);
 
         //when
-        ResultActions result = mockMvc.perform(post("/api/members")
+        ResultActions result = mockMvc.perform(post(SIGNUP_URL)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(gson.toJson(request)));
 
@@ -155,7 +157,7 @@ public class SignUpApiTest {
         SignUpRequest request = SignUpFactory.회원가입_DTO_생성(USER_ID, "", PASSWORD, PHONE_NUM, ADDRESS);
 
         //when
-        ResultActions result = mockMvc.perform(post("/api/members")
+        ResultActions result = mockMvc.perform(post(SIGNUP_URL)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(gson.toJson(request)));
 
@@ -173,7 +175,7 @@ public class SignUpApiTest {
         SignUpRequest request = SignUpFactory.회원가입_DTO_생성(USER_ID, USERNAME, PASSWORD, null, ADDRESS);
 
         //when
-        ResultActions result = mockMvc.perform(post("/api/members")
+        ResultActions result = mockMvc.perform(post(SIGNUP_URL)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(gson.toJson(request)));
 
@@ -191,7 +193,7 @@ public class SignUpApiTest {
         SignUpRequest request = SignUpFactory.회원가입_DTO_생성(USER_ID, USERNAME, PASSWORD, "-0-30-", ADDRESS);
 
         //when
-        ResultActions result = mockMvc.perform(post("/api/members")
+        ResultActions result = mockMvc.perform(post(SIGNUP_URL)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(gson.toJson(request)));
 
@@ -210,7 +212,7 @@ public class SignUpApiTest {
         SignUpRequest request = SignUpFactory.회원가입_DTO_생성(USER_ID, USERNAME, "", PHONE_NUM, ADDRESS);
 
         //when
-        ResultActions result = mockMvc.perform(post("/api/members")
+        ResultActions result = mockMvc.perform(post(SIGNUP_URL)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(gson.toJson(request)));
 
@@ -228,7 +230,7 @@ public class SignUpApiTest {
         SignUpRequest request = SignUpFactory.회원가입_DTO_생성(USER_ID, USERNAME, PASSWORD, PHONE_NUM, "");
 
         //when
-        ResultActions result = mockMvc.perform(post("/api/members")
+        ResultActions result = mockMvc.perform(post(SIGNUP_URL)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(gson.toJson(request)));
 
