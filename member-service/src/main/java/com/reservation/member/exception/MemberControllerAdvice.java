@@ -1,6 +1,7 @@
 package com.reservation.member.exception;
 
 import com.reservation.member.api.MemberController;
+import com.reservation.member.api.SignUpController;
 import com.reservation.member.dto.ErrorCode;
 import com.reservation.member.dto.ErrorResponse;
 import lombok.extern.slf4j.Slf4j;
@@ -21,21 +22,20 @@ import java.util.List;
  * @since 2023.03.17
  */
 @Slf4j
-@RestControllerAdvice(basePackageClasses = MemberController.class)
+@RestControllerAdvice(basePackageClasses = {MemberController.class, SignUpController.class})
 public class MemberControllerAdvice {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ErrorResponse> signUpBindingException(MethodArgumentNotValidException e) {
         log.error("SignUp failed due to invalid input value: {}", e.getMessage());
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(bindError(ErrorCode.SIGNUP_INPUT_VALUE_INVALID,
-                e.getFieldErrors()));
+        ErrorResponse errorResponse = ErrorResponseFactory.bindError(ErrorCode.SIGNUP_INPUT_VALUE_INVALID, e.getFieldErrors());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
     }
 
-    private ErrorResponse bindError(ErrorCode errorCode, List<FieldError> errors) {
-        return ErrorResponse
-                .status(errorCode.getStatus())
-                .message(errorCode.getMessage())
-                .errors(errors)
-                .create();
-    }
+   @ExceptionHandler(DuplicateMemberException.class)
+   public ResponseEntity<ErrorResponse> duplicationMemberException(DuplicateMemberException e) {
+        log.error("SignUp failed due to duplication Member error : {}", e.getMessage());
+       ErrorResponse errorResponse = ErrorResponseFactory.from(ErrorCode.DUPLICATE_MEMBER_ID_VALUE);
+       return ResponseEntity.status(HttpStatus.CONFLICT).body(errorResponse);
+   }
 }

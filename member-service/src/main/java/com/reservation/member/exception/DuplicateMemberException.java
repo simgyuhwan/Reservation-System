@@ -3,8 +3,8 @@ package com.reservation.member.exception;
 import lombok.Getter;
 
 /**
- * DupplicationMemberException.java
- * Class 설명을 작성하세요.
+ * DuplicationMemberException.java
+ * 중복된 회원 예외
  *
  * @author sgh
  * @since 2023.03.17
