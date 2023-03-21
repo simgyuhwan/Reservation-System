@@ -29,7 +29,7 @@ import lombok.extern.slf4j.Slf4j;
 public class SignUpController {
 	private final MemberCreator memberCreator;
 
-	@PostMapping
+	@PostMapping("/signup")
 	@Operation(summary = "[회원] 회원 가입", description = "회원 가입 API")
 	public ResponseEntity<Void> signUp(@Validated @RequestBody SignUpRequest signUpRequest) {
 		memberCreator.create(signUpRequest);

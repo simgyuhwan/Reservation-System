@@ -48,7 +48,6 @@ public class SignUpApiTest {
     private Gson gson;
 
     @InjectMocks
-    // private MemberController memberController;
     private SignUpController signUpController;
     
     @Mock
