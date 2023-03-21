@@ -1,5 +1,6 @@
 package com.reservation.member.api;
 
+import com.reservation.member.application.MemberService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -27,12 +28,12 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping("/api")
 @RequiredArgsConstructor
 public class SignUpController {
-	private final MemberCreator memberCreator;
+	private final MemberService memberService;
 
 	@PostMapping("/signup")
 	@Operation(summary = "[회원] 회원 가입", description = "회원 가입 API")
 	public ResponseEntity<Void> signUp(@Validated @RequestBody SignUpRequest signUpRequest) {
-		memberCreator.create(signUpRequest);
+		memberService.signUp(signUpRequest);
 		return ResponseEntity.status(HttpStatus.CREATED).build();
 	}
 }
