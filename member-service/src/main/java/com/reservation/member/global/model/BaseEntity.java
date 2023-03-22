@@ -28,4 +28,7 @@ public class BaseEntity {
     @LastModifiedDate
     @Column(name = "update_date")
     private LocalDateTime updateDt;
+
+    @Column(name = "delete_yn")
+    private boolean deleteYn;
 }
