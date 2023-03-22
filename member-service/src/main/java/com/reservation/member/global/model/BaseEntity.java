@@ -29,6 +29,6 @@ public class BaseEntity {
     @Column(name = "update_date")
     private LocalDateTime updateDt;
 
-    @Column(name = "delete_yn")
-    private boolean deleteYn;
+    @Column(name = "is_delete")
+    private boolean isDelete = false;
 }
