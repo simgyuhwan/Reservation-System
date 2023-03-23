@@ -85,4 +85,17 @@ public class MemberApiTest {
 				.contentType(MediaType.APPLICATION_JSON))
 			.andExpect(status().isNotFound());
 	}
+
+	@Test
+	@DisplayName("맴버 수정 API : 일치하는 userId 없음 실패 테스트")
+	void putApiNoMatchingUserIdTestFailed() throws Exception {
+		//given
+
+		//when
+
+		//then
+		mockMvc.perform(put(MEMBER_API_URL + "/" + "noExistUserId")
+				.contentType(MediaType.APPLICATION_JSON))
+			.andExpect(status().isNotFound());
+	}
 }
