@@ -1,11 +1,10 @@
 package com.reservation.member.api;
 
-import com.google.gson.Gson;
-import com.reservation.member.application.MemberService;
-import com.reservation.member.dto.SignUpRequest;
-import com.reservation.member.exception.DuplicateMemberException;
-import com.reservation.member.exception.MemberControllerAdvice;
-import com.reservation.member.factory.SignUpFactory;
+import static org.mockito.BDDMockito.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+
+import java.util.stream.Stream;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -14,7 +13,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
-import org.mockito.BDDMockito;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -23,13 +21,11 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import java.util.stream.Stream;
-
-import static org.mockito.BDDMockito.any;
-import static org.mockito.BDDMockito.then;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import com.google.gson.Gson;
+import com.reservation.member.application.MemberCommandService;
+import com.reservation.member.dto.request.SignUpDto;
+import com.reservation.member.error.MemberControllerAdvice;
+import com.reservation.member.global.factory.SignUpFactory;
 
 /**
  * MemberController.java
@@ -48,17 +44,16 @@ public class SignUpApiTest {
 	private final static String SIGNUP_URL = "/api/signup";
 
 	private MockMvc mockMvc;
-	private Gson gson;
+	private Gson gson = new Gson();
 
 	@InjectMocks
 	private SignUpController signUpController;
 
 	@Mock
-	private MemberService memberService;
+	private MemberCommandService memberCommandService;
 
 	@BeforeEach
 	void beforeEach() {
-		gson = new Gson();
 		mockMvc = MockMvcBuilders.standaloneSetup(signUpController)
 			.setControllerAdvice(MemberControllerAdvice.class)
 			.build();
@@ -68,7 +63,7 @@ public class SignUpApiTest {
 	@DisplayName("회원가입 성공 테스트")
 	void memberRegistrationSuccessTest() throws Exception {
 		//given
-		SignUpRequest request = SignUpFactory.회원가입_DTO_생성(USER_ID, USERNAME, PASSWORD, PHONE_NUM, ADDRESS);
+		SignUpDto request = SignUpFactory.회원가입_DTO_생성(USER_ID, USERNAME, PASSWORD, PHONE_NUM, ADDRESS);
 
 		//when
 		ResultActions result = mockMvc.perform(post(SIGNUP_URL)
@@ -77,8 +72,8 @@ public class SignUpApiTest {
 
 		//then
 		result.andExpect(status().isCreated());
-		then(memberService).should()
-			.signUp(any(SignUpRequest.class));
+		then(memberCommandService).should()
+			.signUp(any(SignUpDto.class));
 	}
 
 	@ParameterizedTest
@@ -87,7 +82,7 @@ public class SignUpApiTest {
 	void memberRegistrationValidationTest(String userId, String username, String password,
 		String phoneNum, String address) throws Exception {
 		//given
-		SignUpRequest request = SignUpFactory.회원가입_DTO_생성(userId, username, password, phoneNum, address);
+		SignUpDto request = SignUpFactory.회원가입_DTO_생성(userId, username, password, phoneNum, address);
 
 		//when
 		ResultActions result = mockMvc.perform(post(SIGNUP_URL)
@@ -102,7 +97,7 @@ public class SignUpApiTest {
 	@DisplayName("회원가입 실패 메시지 확인 테스트 : 아이디 미포함 실패")
 	void invalidUserIdEntryTest() throws Exception {
 		//given
-		SignUpRequest request = SignUpFactory.회원가입_DTO_생성(null, USERNAME, PASSWORD, PHONE_NUM, ADDRESS);
+		SignUpDto request = SignUpFactory.회원가입_DTO_생성(null, USERNAME, PASSWORD, PHONE_NUM, ADDRESS);
 
 		//when
 		ResultActions result = mockMvc.perform(post(SIGNUP_URL)
@@ -120,7 +115,7 @@ public class SignUpApiTest {
 	@DisplayName("회원가입 실패 메시지 확인 테스트 : 아이디값 사이즈 최소 이하 실패")
 	void idValueSizeMinimumOrLessFailureTest() throws Exception {
 		//given
-		SignUpRequest request = SignUpFactory.회원가입_DTO_생성("1", USERNAME, PASSWORD, PHONE_NUM, ADDRESS);
+		SignUpDto request = SignUpFactory.회원가입_DTO_생성("1", USERNAME, PASSWORD, PHONE_NUM, ADDRESS);
 
 		//when
 		ResultActions result = mockMvc.perform(post(SIGNUP_URL)
@@ -138,7 +133,7 @@ public class SignUpApiTest {
 	@DisplayName("회원가입 실패 메시지 확인 테스트 : 아이디값 사이즈 최대 이상 실패")
 	void idValueSizeMaximumOrThanFailureTest() throws Exception {
 		//given
-		SignUpRequest request = SignUpFactory.회원가입_DTO_생성("123456789101112222", USERNAME, PASSWORD, PHONE_NUM, ADDRESS);
+		SignUpDto request = SignUpFactory.회원가입_DTO_생성("123456789101112222", USERNAME, PASSWORD, PHONE_NUM, ADDRESS);
 
 		//when
 		ResultActions result = mockMvc.perform(post(SIGNUP_URL)
@@ -156,7 +151,7 @@ public class SignUpApiTest {
 	@DisplayName("회원가입 실패 메시지 확인 테스트: 이름 미포함 실패")
 	void enteringAnInvalidNameValueTest() throws Exception {
 		//given
-		SignUpRequest request = SignUpFactory.회원가입_DTO_생성(USER_ID, "", PASSWORD, PHONE_NUM, ADDRESS);
+		SignUpDto request = SignUpFactory.회원가입_DTO_생성(USER_ID, "", PASSWORD, PHONE_NUM, ADDRESS);
 
 		//when
 		ResultActions result = mockMvc.perform(post(SIGNUP_URL)
@@ -174,7 +169,7 @@ public class SignUpApiTest {
 	@DisplayName("회원가입 실패 메시지 확인 테스트 : 핸드폰 번호 미포함 실패")
 	void enterANullPhoneNumberTest() throws Exception {
 		//given
-		SignUpRequest request = SignUpFactory.회원가입_DTO_생성(USER_ID, USERNAME, PASSWORD, null, ADDRESS);
+		SignUpDto request = SignUpFactory.회원가입_DTO_생성(USER_ID, USERNAME, PASSWORD, null, ADDRESS);
 
 		//when
 		ResultActions result = mockMvc.perform(post(SIGNUP_URL)
@@ -192,7 +187,7 @@ public class SignUpApiTest {
 	@DisplayName("회원가입 실패 메시지 확인 테스트 : 잘못된 핸드폰 번호 등록 실패")
 	void enterTheWrongPhoneNumberTest() throws Exception {
 		//given
-		SignUpRequest request = SignUpFactory.회원가입_DTO_생성(USER_ID, USERNAME, PASSWORD, "-0-30-", ADDRESS);
+		SignUpDto request = SignUpFactory.회원가입_DTO_생성(USER_ID, USERNAME, PASSWORD, "-0-30-", ADDRESS);
 
 		//when
 		ResultActions result = mockMvc.perform(post(SIGNUP_URL)
@@ -210,7 +205,7 @@ public class SignUpApiTest {
 	@DisplayName("회원가입 실패 메시지 확인 테스트 : 비밀번호 미포함 실패")
 	void failedToNotIncludeAddressTest() throws Exception {
 		//given
-		SignUpRequest request = SignUpFactory.회원가입_DTO_생성(USER_ID, USERNAME, "", PHONE_NUM, ADDRESS);
+		SignUpDto request = SignUpFactory.회원가입_DTO_생성(USER_ID, USERNAME, "", PHONE_NUM, ADDRESS);
 
 		//when
 		ResultActions result = mockMvc.perform(post(SIGNUP_URL)
@@ -228,7 +223,7 @@ public class SignUpApiTest {
 	@DisplayName("회원가입 실패 메시지 확인 테스트 : 주소 값 미포함 실패")
 	void failedToNotIncludePhoneNumTest() throws Exception {
 		//given
-		SignUpRequest request = SignUpFactory.회원가입_DTO_생성(USER_ID, USERNAME, PASSWORD, PHONE_NUM, "");
+		SignUpDto request = SignUpFactory.회원가입_DTO_생성(USER_ID, USERNAME, PASSWORD, PHONE_NUM, "");
 
 		//when
 		ResultActions result = mockMvc.perform(post(SIGNUP_URL)

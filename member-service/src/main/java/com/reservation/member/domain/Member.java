@@ -1,15 +1,20 @@
 package com.reservation.member.domain;
 
-import com.reservation.member.dto.SignUpRequest;
+import org.springframework.util.Assert;
+
+import com.reservation.member.dto.request.SignUpDto;
 import com.reservation.member.global.model.BaseEntity;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-import org.springframework.util.Assert;
 
 /**
  * Member.java
@@ -59,7 +64,7 @@ public class Member extends BaseEntity {
 		return new Member(userId, username, password, phoneNum, address);
 	}
 
-	public static Member from(final SignUpRequest request) {
+	public static Member from(final SignUpDto request) {
 		validateArguments(request.getUserId(), request.getUsername(), request.getPassword(), request.getPhoneNum(),
 			request.getAddress());
 		return new Member(request.getUserId(), request.getUsername(), request.getPassword(), request.getPhoneNum(),

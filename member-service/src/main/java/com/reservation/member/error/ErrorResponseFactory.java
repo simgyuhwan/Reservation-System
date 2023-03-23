@@ -1,11 +1,11 @@
-package com.reservation.member.exception;
+package com.reservation.member.error;
 
-import com.reservation.member.dto.ErrorCode;
-import com.reservation.member.dto.ErrorResponse;
+import java.util.List;
 
 import org.springframework.validation.FieldError;
 
-import java.util.List;
+import com.reservation.member.dto.ErrorCode;
+import com.reservation.member.dto.response.ErrorResponse;
 
 public class ErrorResponseFactory {
 	public static ErrorResponse bindError(ErrorCode errorCode, List<FieldError> errors) {

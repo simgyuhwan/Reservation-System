@@ -1,16 +1,13 @@
-package com.reservation.member.dto;
+package com.reservation.member.dto.response;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-import org.springframework.validation.FieldError;
-
-import java.util.Collections;
-import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * ErrorResponse.java

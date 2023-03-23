@@ -1,4 +1,4 @@
-package com.reservation.member.dto;
+package com.reservation.member.dto.request;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
@@ -15,7 +15,7 @@ import lombok.NoArgsConstructor;
  */
 @Getter
 @NoArgsConstructor
-public class SignUpRequest {
+public class SignUpDto {
 	@NotBlank(message = "아이디는 반드시 입력해야 합니다.")
 	@Size(min = 3, max = 15, message = "아이디 값은 3자리에서 15자리 이하입니다.")
 	private String userId;
@@ -33,7 +33,7 @@ public class SignUpRequest {
 	@NotBlank(message = "주소는 반드시 입력해야 합니다.")
 	private String address;
 
-	private SignUpRequest(String userId, String username, String password, String phoneNum, String address) {
+	private SignUpDto(String userId, String username, String password, String phoneNum, String address) {
 		this.userId = userId;
 		this.username = username;
 		this.password = password;
@@ -41,8 +41,8 @@ public class SignUpRequest {
 		this.address = address;
 	}
 
-	public static SignUpRequest of(final String userId, final String username, final String password,
+	public static SignUpDto of(final String userId, final String username, final String password,
 		final String phoneNum, final String address) {
-		return new SignUpRequest(userId, username, password, phoneNum, address);
+		return new SignUpDto(userId, username, password, phoneNum, address);
 	}
 }

@@ -1,10 +1,10 @@
 package com.reservation.member.dao;
 
-import com.reservation.member.domain.Member;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.util.Optional;
+import com.reservation.member.domain.Member;
 
 /**
  * MemberRepository.java
@@ -18,5 +18,8 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
 
 	Optional<Member> findByPhoneNum(String phoneNum);
 
+	Optional<Member> findByUserId(String userId);
+
 	boolean existsByUserId(String userId);
+
 }

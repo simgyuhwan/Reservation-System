@@ -1,20 +1,17 @@
-package com.reservation.member.exception;
-
-import com.reservation.member.api.MemberController;
-import com.reservation.member.api.SignUpController;
-import com.reservation.member.dto.ErrorCode;
-import com.reservation.member.dto.ErrorResponse;
-
-import lombok.extern.slf4j.Slf4j;
+package com.reservation.member.error;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import java.util.List;
+import com.reservation.member.api.MemberController;
+import com.reservation.member.api.SignUpController;
+import com.reservation.member.dto.ErrorCode;
+import com.reservation.member.dto.response.ErrorResponse;
+
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * MemberControllerAdvice.java
@@ -41,4 +38,12 @@ public class MemberControllerAdvice {
 		ErrorResponse errorResponse = ErrorResponseFactory.from(ErrorCode.DUPLICATE_MEMBER_ID_VALUE);
 		return ResponseEntity.status(HttpStatus.CONFLICT).body(errorResponse);
 	}
+
+	@ExceptionHandler(MemberNotFoundException.class)
+	public ResponseEntity<ErrorResponse> memberNotFoundException(MemberNotFoundException e) {
+		log.error("there are no matching members : {}", e.getUserId());
+		ErrorResponse errorResponse = ErrorResponseFactory.from(ErrorCode.NO_MEMBERS_MATCHED);
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
+	}
+
 }
