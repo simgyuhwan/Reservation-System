@@ -11,14 +11,14 @@ import lombok.Getter;
  */
 @Getter
 public enum ErrorCode {
-    SIGNUP_INPUT_VALUE_INVALID("입력 값이 올바르지 않습니다.", 400),
-    DUPLICATE_MEMBER_ID_VALUE("중복된 회원 ID 입니다.", 409);
+	SIGNUP_INPUT_VALUE_INVALID("입력 값이 올바르지 않습니다.", 400),
+	DUPLICATE_MEMBER_ID_VALUE("중복된 회원 ID 입니다.", 409);
 
-    private final String message;
-    private final int status;
+	private final String message;
+	private final int status;
 
-    ErrorCode(String message, int status) {
-        this.message = message;
-        this.status = status;
-    }
+	ErrorCode(String message, int status) {
+		this.message = message;
+		this.status = status;
+	}
 }

@@ -2,6 +2,7 @@ package com.reservation.member.application.mapper;
 
 import com.reservation.member.domain.Member;
 import com.reservation.member.dto.SignUpRequest;
+
 import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;
 import org.mapstruct.factory.Mappers;
@@ -14,5 +15,5 @@ import org.mapstruct.factory.Mappers;
  */
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface SignUpRequestMapper extends GenericMapper<SignUpRequest, Member> {
-    SignUpRequestMapper INSTANCE = Mappers.getMapper(SignUpRequestMapper.class);
+	SignUpRequestMapper INSTANCE = Mappers.getMapper(SignUpRequestMapper.class);
 }

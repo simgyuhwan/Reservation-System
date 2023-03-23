@@ -11,11 +11,11 @@ import lombok.Getter;
  */
 @Getter
 public class DuplicateMemberException extends RuntimeException {
-    public DuplicateMemberException() {
-        super();
-    }
+	public DuplicateMemberException() {
+		super();
+	}
 
-    public DuplicateMemberException(String message) {
-        super(message);
-    }
+	public DuplicateMemberException(String message) {
+		super(message);
+	}
 }

@@ -13,15 +13,15 @@ import java.util.List;
  * @author sgh
  * @since 2023.03.17
  */
-public interface GenericMapper <D, E>{
-    D toDto(E entity);
+public interface GenericMapper<D, E> {
+	D toDto(E entity);
 
-    E toEntity(D dto);
+	E toEntity(D dto);
 
-    List<D> toDto(List<E> e);
+	List<D> toDto(List<E> e);
 
-    List<E> toEntity(List<D> d);
+	List<E> toEntity(List<D> d);
 
-    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-    void updateFromDto(D dto, @MappingTarget E entity);
+	@BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+	void updateFromDto(D dto, @MappingTarget E entity);
 }

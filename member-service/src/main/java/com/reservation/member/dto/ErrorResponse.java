@@ -1,9 +1,11 @@
 package com.reservation.member.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
 import org.springframework.validation.FieldError;
 
 import java.util.Collections;
@@ -20,57 +22,58 @@ import java.util.stream.Collectors;
 @Getter
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class ErrorResponse {
-    private int status;
-    private String message;
-    private List<FieldError> errors;
+	private int status;
+	private String message;
+	private List<FieldError> errors;
 
-    public ErrorResponse(Builder builder) {
-        this.status = builder.status;
-        this.message = builder.message;
-        this.errors = builder.getErrors();
-    }
-    public static Builder status(int status) {
-        return new Builder(status);
-    }
+	public ErrorResponse(Builder builder) {
+		this.status = builder.status;
+		this.message = builder.message;
+		this.errors = builder.getErrors();
+	}
 
-    @Getter
-    public static class Builder {
-        private int status;
-        private String message;
-        private List<FieldError> errors;
+	public static Builder status(int status) {
+		return new Builder(status);
+	}
 
-        public Builder(int status) {
-            this.status = status;
-        }
+	@Getter
+	public static class Builder {
+		private int status;
+		private String message;
+		private List<FieldError> errors;
 
-        public Builder message(String message) {
-            this.message = message;
-            return this;
-        }
+		public Builder(int status) {
+			this.status = status;
+		}
 
-        public Builder errors(List<org.springframework.validation.FieldError> errors) {
-            this.errors = errors.stream()
-                    .map(FieldError::new)
-                    .collect(Collectors.toList());
-            return this;
-        }
+		public Builder message(String message) {
+			this.message = message;
+			return this;
+		}
 
-        public ErrorResponse create() {
-            return new ErrorResponse(this);
-        }
-    }
+		public Builder errors(List<org.springframework.validation.FieldError> errors) {
+			this.errors = errors.stream()
+				.map(FieldError::new)
+				.collect(Collectors.toList());
+			return this;
+		}
 
-    @Getter
-    @NoArgsConstructor(access = AccessLevel.PROTECTED)
-    public static class FieldError {
-        private String field;
-        private Object value;
-        private String reason;
+		public ErrorResponse create() {
+			return new ErrorResponse(this);
+		}
+	}
 
-        public FieldError(org.springframework.validation.FieldError error) {
-            this.field = error.getField();
-            this.value = error.getRejectedValue();
-            this.reason = error.getDefaultMessage();
-        }
-    }
+	@Getter
+	@NoArgsConstructor(access = AccessLevel.PROTECTED)
+	public static class FieldError {
+		private String field;
+		private Object value;
+		private String reason;
+
+		public FieldError(org.springframework.validation.FieldError error) {
+			this.field = error.getField();
+			this.value = error.getRejectedValue();
+			this.reason = error.getDefaultMessage();
+		}
+	}
 }
