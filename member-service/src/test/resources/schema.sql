@@ -1,5 +1,6 @@
 DROP TABLE IF EXISTS member;
-CREATE TABLE member (
+CREATE TABLE member
+(
     id          BIGINT AUTO_INCREMENT PRIMARY KEY,
     create_date TIMESTAMP(6),
     update_date TIMESTAMP(6),
@@ -7,5 +8,6 @@ CREATE TABLE member (
     password    VARCHAR(255) NOT NULL,
     phone_num   VARCHAR(255) NOT NULL,
     user_id     VARCHAR(255) NOT NULL UNIQUE,
-    username    VARCHAR(255) NOT NULL
+    username    VARCHAR(255) NOT NULL,
+    is_delete   bit          null
 );
