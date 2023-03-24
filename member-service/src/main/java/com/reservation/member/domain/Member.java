@@ -3,6 +3,7 @@ package com.reservation.member.domain;
 import org.springframework.util.Assert;
 
 import com.reservation.member.dto.request.SignUpDto;
+import com.reservation.member.dto.request.UpdateMemberDto;
 import com.reservation.member.global.model.BaseEntity;
 
 import jakarta.persistence.Column;
@@ -83,4 +84,11 @@ public class Member extends BaseEntity {
 	public void changeName(String username) {
 		this.username = username;
 	}
+
+	public void updateInfo(UpdateMemberDto updateMemberDto) {
+		this.username = updateMemberDto.getUsername();
+		this.address = updateMemberDto.getAddress();
+		this.phoneNum = updateMemberDto.getPhoneNum();
+	}
+
 }

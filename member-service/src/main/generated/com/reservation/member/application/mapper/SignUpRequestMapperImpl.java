@@ -9,26 +9,32 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2023-03-23T14:19:50+0900",
+    date = "2023-03-24T17:33:40+0900",
     comments = "version: 1.5.2.Final, compiler: javac, environment: Java 17.0.5 (Oracle Corporation)"
 )
 @Component
 public class SignUpRequestMapperImpl implements SignUpRequestMapper {
 
     @Override
-    public SignUpDto toDto(Member arg0) {
-        if ( arg0 == null ) {
+    public SignUpDto toDto(Member entity) {
+        if ( entity == null ) {
             return null;
         }
 
-        SignUpDto signUpDto = new SignUpDto();
+        SignUpDto.SignUpDtoBuilder signUpDto = SignUpDto.builder();
 
-        return signUpDto;
+        signUpDto.userId( entity.getUserId() );
+        signUpDto.username( entity.getUsername() );
+        signUpDto.password( entity.getPassword() );
+        signUpDto.phoneNum( entity.getPhoneNum() );
+        signUpDto.address( entity.getAddress() );
+
+        return signUpDto.build();
     }
 
     @Override
-    public Member toEntity(SignUpDto arg0) {
-        if ( arg0 == null ) {
+    public Member toEntity(SignUpDto dto) {
+        if ( dto == null ) {
             return null;
         }
 
@@ -38,11 +44,11 @@ public class SignUpRequestMapperImpl implements SignUpRequestMapper {
         String phoneNum = null;
         String address = null;
 
-        userId = arg0.getUserId();
-        username = arg0.getUsername();
-        password = arg0.getPassword();
-        phoneNum = arg0.getPhoneNum();
-        address = arg0.getAddress();
+        userId = dto.getUserId();
+        username = dto.getUsername();
+        password = dto.getPassword();
+        phoneNum = dto.getPhoneNum();
+        address = dto.getAddress();
 
         Long id = null;
 
@@ -52,13 +58,13 @@ public class SignUpRequestMapperImpl implements SignUpRequestMapper {
     }
 
     @Override
-    public List<SignUpDto> toDto(List<Member> arg0) {
-        if ( arg0 == null ) {
+    public List<SignUpDto> toDto(List<Member> e) {
+        if ( e == null ) {
             return null;
         }
 
-        List<SignUpDto> list = new ArrayList<SignUpDto>( arg0.size() );
-        for ( Member member : arg0 ) {
+        List<SignUpDto> list = new ArrayList<SignUpDto>( e.size() );
+        for ( Member member : e ) {
             list.add( toDto( member ) );
         }
 
@@ -66,13 +72,13 @@ public class SignUpRequestMapperImpl implements SignUpRequestMapper {
     }
 
     @Override
-    public List<Member> toEntity(List<SignUpDto> arg0) {
-        if ( arg0 == null ) {
+    public List<Member> toEntity(List<SignUpDto> d) {
+        if ( d == null ) {
             return null;
         }
 
-        List<Member> list = new ArrayList<Member>( arg0.size() );
-        for ( SignUpDto signUpDto : arg0 ) {
+        List<Member> list = new ArrayList<Member>( d.size() );
+        for ( SignUpDto signUpDto : d ) {
             list.add( toEntity( signUpDto ) );
         }
 
@@ -80,8 +86,8 @@ public class SignUpRequestMapperImpl implements SignUpRequestMapper {
     }
 
     @Override
-    public void updateFromDto(SignUpDto arg0, Member arg1) {
-        if ( arg0 == null ) {
+    public void updateFromDto(SignUpDto dto, Member entity) {
+        if ( dto == null ) {
             return;
         }
     }

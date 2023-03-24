@@ -1,4 +1,4 @@
-package com.reservation.member.dto;
+package com.reservation.member.error;
 
 import lombok.Getter;
 

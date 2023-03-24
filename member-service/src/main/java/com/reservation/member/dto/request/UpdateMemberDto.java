@@ -2,6 +2,9 @@ package com.reservation.member.dto.request;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,8 +17,10 @@ import lombok.NoArgsConstructor;
  * @since 2023.03.24
  */
 @Getter
+@Builder
 @EqualsAndHashCode
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
 public class UpdateMemberDto {
 	@NotBlank(message = "아이디 값은 반드시 필요합니다")
 	private String userId;
@@ -26,16 +31,9 @@ public class UpdateMemberDto {
 
 	@NotBlank(message = "이름은 반드시 입력해야 합니다.")
 	private String username;
-	
+
 	@NotBlank(message = "주소는 반드시 입력해야 합니다.")
 	private String address;
-
-	private UpdateMemberDto(String userId, String phoneNum, String username, String address) {
-		this.userId = userId;
-		this.username = username;
-		this.address = address;
-		this.phoneNum = phoneNum;
-	}
 
 	public static UpdateMemberDto of(String userId, String phoneNum, String username, String address) {
 		return new UpdateMemberDto(userId, phoneNum, username, address);

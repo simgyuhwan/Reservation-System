@@ -9,7 +9,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-import com.reservation.member.dto.ErrorCode;
 import com.reservation.member.dto.response.ErrorResponse;
 
 @ExtendWith(MockitoExtension.class)

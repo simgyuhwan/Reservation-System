@@ -4,6 +4,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
+import com.reservation.member.application.mapper.MemberInfoDtoMapper;
 import com.reservation.member.dao.MemberRepository;
 import com.reservation.member.domain.Member;
 import com.reservation.member.dto.response.MemberInfoDto;
@@ -25,13 +26,14 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class MemberQueryServiceImpl implements MemberQueryService {
 	private final MemberRepository memberRepository;
+	private final MemberInfoDtoMapper memberInfoDtoMapper;
 
 	@Override
 	public MemberInfoDto findMemberByUserId(String userId) {
 		Assert.hasText(userId, "user id must exist");
 		Member member = memberRepository.findByUserId(userId)
 			.orElseThrow(() -> new MemberNotFoundException("Member with userId not found", userId));
-		return MemberInfoDto.from(member);
+		return memberInfoDtoMapper.toDto(member);
 	}
 
 }

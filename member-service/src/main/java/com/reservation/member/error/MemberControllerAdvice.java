@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import com.reservation.member.api.MemberController;
 import com.reservation.member.api.SignUpController;
-import com.reservation.member.dto.ErrorCode;
 import com.reservation.member.dto.response.ErrorResponse;
 
 import lombok.extern.slf4j.Slf4j;

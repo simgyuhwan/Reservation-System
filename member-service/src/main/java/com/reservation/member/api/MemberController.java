@@ -40,6 +40,7 @@ public class MemberController {
 	}
 
 	@PutMapping("/{userId}")
+	@Operation(summary = "[회원] 회원 수정", description = "회원 수정 API")
 	public ResponseEntity<MemberInfoDto> updateMemberInfo(@PathVariable String userId,
 		@RequestBody @Validated UpdateMemberDto updateMemberDto) {
 		return ResponseEntity.ok(memberCommandService.updateMemberInfo(userId, updateMemberDto));

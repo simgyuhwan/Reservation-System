@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.springframework.validation.FieldError;
 
-import com.reservation.member.dto.ErrorCode;
 import com.reservation.member.dto.response.ErrorResponse;
 
 public class ErrorResponseFactory {
