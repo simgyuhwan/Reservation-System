@@ -1,7 +1,7 @@
 plugins {
-	id 'java'
-	id 'org.springframework.boot' version '3.0.4'
-	id 'io.spring.dependency-management' version '1.1.0'
+    id 'java'
+    id 'org.springframework.boot' version '3.0.4'
+    id 'io.spring.dependency-management' version '1.1.0'
 }
 
 group = 'com.reservation'
@@ -9,44 +9,47 @@ version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '17'
 
 configurations {
-	compileOnly {
-		extendsFrom annotationProcessor
-	}
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
 }
 
 repositories {
-	mavenCentral()
+    mavenCentral()
 }
 
 dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-	implementation 'org.springframework.boot:spring-boot-starter-web'
-	compileOnly 'org.projectlombok:lombok'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
 
-	// h2
-	testImplementation group: 'com.h2database', name: 'h2', version: '1.4.200'
+    // h2
+    testImplementation group: 'com.h2database', name: 'h2', version: '1.4.200'
 
-	// validation
-	implementation 'org.springframework.boot:spring-boot-starter-validation'
+    // validation
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
 
-	// gson
-	implementation group: 'com.google.code.gson', name: 'gson', version: '2.9.1'
+    // gson
+    implementation group: 'com.google.code.gson', name: 'gson', version: '2.9.1'
 
-	runtimeOnly 'com.mysql:mysql-connector-j'
-	annotationProcessor 'org.projectlombok:lombok'
+    runtimeOnly 'com.mysql:mysql-connector-j'
+    
+    // lombok
+    compileOnly 'org.projectlombok:lombok'
+    implementation 'org.projectlombok:lombok:1.18.24'
+    annotationProcessor 'org.projectlombok:lombok'
 
-	// mapstruct
-	implementation 'org.mapstruct:mapstruct:1.5.2.Final'
-	annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.2.Final'
-	annotationProcessor 'org.projectlombok:lombok-mapstruct-binding:0.2.0'
+    // mapstruct
+    implementation 'org.mapstruct:mapstruct:1.5.2.Final'
+    annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.2.Final'
+    annotationProcessor 'org.projectlombok:lombok-mapstruct-binding:0.2.0'
 
-	// open-api
-	implementation group: 'org.springdoc', name: 'springdoc-openapi-starter-webmvc-ui', version: '2.0.0'
+    // open-api
+    implementation group: 'org.springdoc', name: 'springdoc-openapi-starter-webmvc-ui', version: '2.0.0'
 
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	testImplementation 'org.springframework.security:spring-security-test'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.springframework.security:spring-security-test'
 }
 
 tasks.named('test') {
-	useJUnitPlatform()
+    useJUnitPlatform()
 }
