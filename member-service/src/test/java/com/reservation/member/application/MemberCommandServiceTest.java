@@ -3,6 +3,7 @@ package com.reservation.member.application;
 import static org.assertj.core.api.Assertions.*;
 import static org.mockito.BDDMockito.*;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -15,7 +16,7 @@ import com.reservation.member.dao.MemberRepository;
 import com.reservation.member.domain.Member;
 import com.reservation.member.dto.request.SignUpDto;
 import com.reservation.member.error.DuplicateMemberException;
-import com.reservation.member.global.factory.SignUpFactory;
+import com.reservation.member.global.factory.MemberTestDataFactory;
 
 /**
  * MemberService.java
@@ -27,12 +28,6 @@ import com.reservation.member.global.factory.SignUpFactory;
 @ExtendWith(MockitoExtension.class)
 public class MemberCommandServiceTest {
 
-	private final static String USER_ID = "firstUser";
-	private final static String USERNAME = "이순신";
-	private final static String PASSWORD = "password";
-	private final static String PHONE_NUM = "010-8988-9999";
-	private final static String ADDRESS = "경기도 한국군 한국리";
-
 	@InjectMocks
 	private MemberCommandServiceImpl memberService;
 
@@ -43,10 +38,10 @@ public class MemberCommandServiceTest {
 	private SignUpRequestMapper mapper;
 
 	@Test
-	@DisplayName("회원 가입 성공 테스트")
+	@DisplayName("회원 추가 테스트 : 회원 가입 성공 테스트")
 	void signUp() {
 		//given
-		SignUpDto request = SignUpFactory.회원가입_DTO_생성(USER_ID, USERNAME, PASSWORD, PHONE_NUM, ADDRESS);
+		SignUpDto request = MemberTestDataFactory.createSignUpDto();
 		Member member = Member.from(request);
 
 		given(mapper.toEntity(request)).willReturn(member);
@@ -60,17 +55,49 @@ public class MemberCommandServiceTest {
 	}
 
 	@Test
-	@DisplayName("중복된 회원 예외 발생 테스트")
+	@DisplayName("회원 추가 테스트 : 중복된 회원 예외 발생 테스트")
 	void duplicateMemberRegistrationExceptionOccurs() {
 		//given
-		SignUpDto request = SignUpFactory.회원가입_DTO_생성(USER_ID, USERNAME, PASSWORD, PHONE_NUM, ADDRESS);
+		SignUpDto request = MemberTestDataFactory.createSignUpDto();
 
 		given(mapper.toEntity(request)).willReturn(Member.from(request));
-		given(memberRepository.existsByUserId(USER_ID)).willReturn(true);
+		given(memberRepository.existsByUserId(MemberTestDataFactory.USER_ID)).willReturn(true);
 
 		//when
 		assertThatThrownBy(() -> memberService.signUp(request))
 			.isInstanceOf(DuplicateMemberException.class);
 	}
 
+	@Test
+	@Disabled("Not implemented yet")
+	@DisplayName("회원 수정 테스트 : 존재하지 않는 회원 예외 발생 테스트")
+	void nonexistentMemberException() {
+		//given
+
+		//when
+
+		//then
+	}
+
+	@Test
+	@Disabled("Not implemented yet")
+	@DisplayName("회원 수정 테스트 : DTO 유효성 실패 예외 발생 테스트")
+	void validationFailureTest() {
+		//given
+
+		//when
+
+		//then
+	}
+
+	@Test
+	@Disabled
+	@DisplayName("회원 수정 테스트 : 회원 수정 성공 테스트")
+	void memberModificationSuccessTest() {
+		//given
+
+		//when
+
+		//then
+	}
 }

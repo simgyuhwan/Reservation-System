@@ -1,6 +1,7 @@
 package com.reservation.member.global.factory;
 
 import com.reservation.member.domain.Member;
+import com.reservation.member.dto.request.SignUpDto;
 import com.reservation.member.dto.request.UpdateMemberDto;
 import com.reservation.member.dto.response.MemberInfoDto;
 
@@ -33,5 +34,9 @@ public class MemberTestDataFactory {
 	public static UpdateMemberDto createUpdateMemberDto(String userId, String phoneNum, String username,
 		String address) {
 		return UpdateMemberDto.of(userId, phoneNum, username, address);
+	}
+
+	public static SignUpDto createSignUpDto() {
+		return SignUpDto.of(USER_ID, USERNAME, PASSWORD, PHONE_NUM, ADDRESS);
 	}
 }
