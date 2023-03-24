@@ -39,4 +39,9 @@ public class MemberTestDataFactory {
 	public static SignUpDto createSignUpDto() {
 		return SignUpDto.of(USER_ID, USERNAME, PASSWORD, PHONE_NUM, ADDRESS);
 	}
+
+	public static SignUpDto createSignUpDto(String userId, String username, String password, String phoneNum,
+		String address) {
+		return SignUpDto.of(userId, username, password, phoneNum, address);
+	}
 }
