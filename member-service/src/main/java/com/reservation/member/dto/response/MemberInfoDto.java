@@ -32,4 +32,5 @@ public class MemberInfoDto {
 	public static MemberInfoDto from(Member member) {
 		return MemberInfoDto.of(member.getUserId(), member.getPhoneNum(), member.getUsername(), member.getAddress());
 	}
+
 }

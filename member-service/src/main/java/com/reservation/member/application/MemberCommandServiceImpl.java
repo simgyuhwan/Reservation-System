@@ -7,7 +7,10 @@ import com.reservation.member.application.mapper.SignUpRequestMapper;
 import com.reservation.member.dao.MemberRepository;
 import com.reservation.member.domain.Member;
 import com.reservation.member.dto.request.SignUpDto;
+import com.reservation.member.dto.request.UpdateMemberDto;
+import com.reservation.member.dto.response.MemberInfoDto;
 import com.reservation.member.error.DuplicateMemberException;
+import com.reservation.member.error.MemberNotFoundException;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,6 +28,11 @@ public class MemberCommandServiceImpl implements MemberCommandService {
 		Member member = mapper.toEntity(signUpDto);
 		validateMember(member);
 		memberRepository.save(member);
+	}
+
+	@Override
+	public MemberInfoDto updateMemberInfo(String userIDDoesNotExist, UpdateMemberDto updateMemberDto) {
+		throw new MemberNotFoundException("test");
 	}
 
 	private void validateMember(Member member) {

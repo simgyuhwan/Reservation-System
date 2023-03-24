@@ -33,4 +33,5 @@ public class MemberQueryServiceImpl implements MemberQueryService {
 			.orElseThrow(() -> new MemberNotFoundException("Member with userId not found", userId));
 		return MemberInfoDto.from(member);
 	}
+
 }

@@ -3,6 +3,7 @@ package com.reservation.member.dto.request;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -14,6 +15,7 @@ import lombok.NoArgsConstructor;
  * @since 2023.03.17
  */
 @Getter
+@EqualsAndHashCode
 @NoArgsConstructor
 public class SignUpDto {
 	@NotBlank(message = "아이디는 반드시 입력해야 합니다.")
