@@ -3,6 +3,9 @@ package com.reservation.member.dto.request;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,8 +18,10 @@ import lombok.NoArgsConstructor;
  * @since 2023.03.17
  */
 @Getter
+@Builder
 @EqualsAndHashCode
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
 public class SignUpDto {
 	@NotBlank(message = "아이디는 반드시 입력해야 합니다.")
 	@Size(min = 3, max = 15, message = "아이디 값은 3자리에서 15자리 이하입니다.")
@@ -34,14 +39,6 @@ public class SignUpDto {
 
 	@NotBlank(message = "주소는 반드시 입력해야 합니다.")
 	private String address;
-
-	private SignUpDto(String userId, String username, String password, String phoneNum, String address) {
-		this.userId = userId;
-		this.username = username;
-		this.password = password;
-		this.phoneNum = phoneNum;
-		this.address = address;
-	}
 
 	public static SignUpDto of(final String userId, final String username, final String password,
 		final String phoneNum, final String address) {
