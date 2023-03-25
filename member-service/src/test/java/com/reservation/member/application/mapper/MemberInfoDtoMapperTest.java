@@ -17,7 +17,6 @@ import com.reservation.member.global.factory.MemberTestDataFactory;
  * @since 2023.03.24
  */
 class MemberInfoDtoMapperTest {
-
 	private MemberInfoDtoMapper mapper = Mappers.getMapper(MemberInfoDtoMapper.class);
 
 	@Test

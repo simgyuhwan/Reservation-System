@@ -18,7 +18,6 @@ import com.reservation.member.global.factory.MemberTestDataFactory;
  * @since 2023.03.24
  */
 class SignUpRequestMapperTest {
-
 	private SignUpRequestMapper mapper = Mappers.getMapper(SignUpRequestMapper.class);
 
 	@Test
