@@ -41,7 +41,6 @@ import com.reservation.member.global.factory.MemberTestDataFactory;
  */
 @ExtendWith(MockitoExtension.class)
 public class MemberApiTest {
-
 	private final static String MEMBER_API_URL = "/api/members";
 
 	private MockMvc mockMvc;
