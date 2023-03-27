@@ -11,6 +11,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.reservation.member.application.mapper.MemberInfoDtoMapper;
@@ -39,11 +40,11 @@ public class MemberCommandServiceTest {
 	@Mock
 	private MemberRepository memberRepository;
 
-	@Mock
-	private SignUpRequestMapper signUpRequestMapper;
+	@Spy
+	private SignUpRequestMapper signUpRequestMapper = SignUpRequestMapper.INSTANCE;
 
-	@Mock
-	private MemberInfoDtoMapper memberInfoDtoMapper;
+	@Spy
+	private MemberInfoDtoMapper memberInfoDtoMapper = MemberInfoDtoMapper.INSTANCE;
 
 	@Test
 	@DisplayName("회원 추가 테스트 : 회원 가입 성공 테스트")
@@ -52,7 +53,6 @@ public class MemberCommandServiceTest {
 		SignUpDto request = MemberTestDataFactory.createSignUpDto();
 		Member member = Member.from(request);
 
-		given(signUpRequestMapper.toEntity(request)).willReturn(member);
 		given(memberRepository.save(any(Member.class))).willReturn(member);
 
 		//when
@@ -68,7 +68,6 @@ public class MemberCommandServiceTest {
 		//given, when
 		SignUpDto request = MemberTestDataFactory.createSignUpDto();
 
-		given(signUpRequestMapper.toEntity(request)).willReturn(Member.from(request));
 		given(memberRepository.existsByUserId(MemberTestDataFactory.USER_ID)).willReturn(true);
 
 		//then
@@ -95,7 +94,6 @@ public class MemberCommandServiceTest {
 		MemberInfoDto memberInfoDto = createMemberInfoDto();
 
 		given(memberRepository.findByUserId(MemberTestDataFactory.USER_ID)).willReturn(Optional.of(createMember()));
-		given(memberInfoDtoMapper.toDto((Member)any())).willReturn(memberInfoDto);
 
 		//when
 		MemberInfoDto result = memberService.updateMemberInfo(MemberTestDataFactory.USER_ID, createUpdateMemberDto());

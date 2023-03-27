@@ -11,6 +11,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.reservation.member.application.mapper.MemberInfoDtoMapper;
@@ -34,17 +35,15 @@ public class MemberQueryServiceTest {
 	@Mock
 	private MemberRepository memberRepository;
 
-	@Mock
-	MemberInfoDtoMapper memberInfoDtoMapper;
+	@Spy
+	MemberInfoDtoMapper memberInfoDtoMapper = MemberInfoDtoMapper.INSTANCE;
 
 	@Test
 	@DisplayName("회원 조회 테스트: 성공 테스트")
 	void memberInquirySuccessTest() {
 		//given
 		Member member = createMember();
-		MemberInfoDto memberInfoDto = createMemberInfoDto();
 		given(memberRepository.findByUserId(member.getUserId())).willReturn(Optional.of(member));
-		given(memberInfoDtoMapper.toDto(member)).willReturn(memberInfoDto);
 
 		//when
 		MemberInfoDto findMemberDto = memberQueryService.findMemberByUserId(member.getUserId());
