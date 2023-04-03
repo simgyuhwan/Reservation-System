@@ -37,6 +37,7 @@ public class PerformanceApiTest {
 	private static final String INVALID_REGISTER_VALUE_ERROR_MESSAGE = "공연 등록 값이 올바르지 않습니다.";
 	private static final String INVALID_CONTACT_NUMBER_ERROR_MESSAGE = "핸드폰 번호의 양식과 맞지 않습니다. ex) 010-xxxx-xxxx";
 	private static final String PERFORMANCE_INFO_LENGTH_EXCEEDED_ERROR_MESSAGE = "공연 정보는 최대 255자입니다.";
+	private static final String INCORRECT_SHOW_DATE_FORMAT_ERROR_MESSAGE = "공연 날짜 형식이 잘못되었습니다. ex) '2024-01-01'";
 	private static final Integer PERFORMANCE_MAXIMUM_COUNT = 255;
 	private static final String PERFORMANCE_API_URL = "/api/performances";
 	private static final String MIN_AUDIENCE_ERROR_MESSAGE = "관객 수는 반드시 10명 이상이어야 합니다.";
@@ -135,6 +136,40 @@ public class PerformanceApiTest {
 				.content(gson.toJson(registerDto)))
 			.andExpect(status().isBadRequest())
 			.andExpect(jsonPath("$.message").value(INVALID_REGISTER_VALUE_ERROR_MESSAGE));
+	}
+
+	@Test
+	@DisplayName("공연 등록 API : 잘못된 공연 시작 날짜 형식, 오류 메시지 반환")
+	void incorrectPerformanceStartDateFormat() throws Exception {
+		//given
+		PerformanceRegisterDto registerDto = createPerformanceRegisterDto(REGISTER, "-------",
+			PERFORMANCE_END_DATE,
+			PERFORMANCE_TIMES, PERFORMANCE_TYPE, AUDIENCE_COUNT,
+			PRICE, CONTACT_PHONE_NUMBER, CONTACT_PERSON_NAME, PERFORMANCE_INFO, PERFORMANCE_PLACE);
+
+		//when, then
+		mockMvc.perform(post(PERFORMANCE_API_URL)
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(gson.toJson(registerDto)))
+			.andExpect(jsonPath("$.errors[0].field").value("performanceStartDt"))
+			.andExpect(jsonPath("$.errors[0].reason").value(INCORRECT_SHOW_DATE_FORMAT_ERROR_MESSAGE));
+	}
+
+	@Test
+	@DisplayName("공연 등록 API : 잘못된 공연 종료 날짜 형식, 오류 메시지 반환")
+	void incorrectPerformanceEndDateFormat() throws Exception {
+		//given
+		PerformanceRegisterDto registerDto = createPerformanceRegisterDto(REGISTER, PERFORMANCE_START_DATE,
+			"-----------",
+			PERFORMANCE_TIMES, PERFORMANCE_TYPE, AUDIENCE_COUNT,
+			PRICE, CONTACT_PHONE_NUMBER, CONTACT_PERSON_NAME, PERFORMANCE_INFO, PERFORMANCE_PLACE);
+
+		//when, then
+		mockMvc.perform(post(PERFORMANCE_API_URL)
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(gson.toJson(registerDto)))
+			.andExpect(jsonPath("$.errors[0].field").value("performanceEndDt"))
+			.andExpect(jsonPath("$.errors[0].reason").value(INCORRECT_SHOW_DATE_FORMAT_ERROR_MESSAGE));
 	}
 
 	private PerformanceRegisterDto createPerformanceRegisterDtoWithInvalidDate() {

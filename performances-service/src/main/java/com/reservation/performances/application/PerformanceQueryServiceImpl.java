@@ -15,6 +15,11 @@ import lombok.extern.slf4j.Slf4j;
 public class PerformanceQueryServiceImpl implements PerformanceQueryService {
 	@Override
 	public void registerPerformance(PerformanceRegisterDto registerDto) {
-		throw new InvalidPerformanceDateException(ErrorCode.PERFORMANCE_END_DATE_BEFORE_START_DATE.getMessage());
+		validateRegisterDto(registerDto);
+
+	}
+
+	private void validateRegisterDto(PerformanceRegisterDto registerDto) {
+		registerDto.dateValidation();
 	}
 }

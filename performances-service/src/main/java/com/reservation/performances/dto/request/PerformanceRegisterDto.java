@@ -3,6 +3,9 @@ package com.reservation.performances.dto.request;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.reservation.performances.error.ErrorCode;
+import com.reservation.performances.error.InvalidPerformanceDateException;
+
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
@@ -22,9 +25,11 @@ public class PerformanceRegisterDto {
 	private String register;
 
 	@NotBlank(message = "공연 시작 날짜는 반드시 입력해야 합니다.")
+	@Pattern(regexp = "^\\d{4}-\\d{2}-\\d{2}$", message = "공연 날짜 형식이 잘못되었습니다. ex) '2024-01-01'")
 	private String performanceStartDt;
 
 	@NotBlank(message = "공연 종료 날짜는 반드시 입력해야 합니다.")
+	@Pattern(regexp = "^\\d{4}-\\d{2}-\\d{2}$", message = "공연 날짜 형식이 잘못되었습니다. ex) '2024-01-01'")
 	private String performanceEndDt;
 
 	@NotBlank(message = "공연 종류는 반드시 입력해야 합니다. ex) 액션, 로맨스, 기타 등")
@@ -72,4 +77,7 @@ public class PerformanceRegisterDto {
 		this.performanceTimes = performanceTimes;
 	}
 
+	public void dateValidation() {
+		throw new InvalidPerformanceDateException(ErrorCode.PERFORMANCE_END_DATE_BEFORE_START_DATE.getMessage());
+	}
 }
