@@ -60,6 +60,15 @@ public class PerformanceApiTest {
 	}
 
 	@Test
+	@DisplayName("공연 등록 API : 공연 등록 성공")
+	void performanceRegisterSuccessTest() throws Exception{
+		mockMvc.perform(post(PERFORMANCE_API_URL)
+			.contentType(MediaType.APPLICATION_JSON)
+			.content(gson.toJson(PerformanceTestDataFactory.createPerformanceRegisterDto())))
+			.andExpect(status().isOk());
+	}
+
+	@Test
 	@DisplayName("공연 등록 API : 종료일이 시작일보다 먼저면 오류 메시지 반환")
 	void incorrectRegistrationScheduleErrorReturned() throws Exception {
 		//when
