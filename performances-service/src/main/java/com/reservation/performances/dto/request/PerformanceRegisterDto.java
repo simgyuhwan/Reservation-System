@@ -13,6 +13,7 @@ import com.reservation.performances.domain.Performance;
 import com.reservation.performances.domain.PerformanceDay;
 import com.reservation.performances.error.ErrorCode;
 import com.reservation.performances.error.InvalidPerformanceDateException;
+import com.reservation.performances.global.util.DateTimeUtils;
 
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
@@ -102,11 +103,11 @@ public class PerformanceRegisterDto {
 	}
 
 	private LocalDate stringToLocalDate(String date) {
-		return LocalDate.parse(date, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+		return DateTimeUtils.stringToLocalDate(date);
 	}
 
 	private LocalTime stringToLocalTime(String time) {
-		return LocalTime.parse(time, DateTimeFormatter.ofPattern("HH:mm"));
+		return DateTimeUtils.stringToLocalTime(time);
 	}
 
 	private void dateValidate(LocalDate start, LocalDate end) {
