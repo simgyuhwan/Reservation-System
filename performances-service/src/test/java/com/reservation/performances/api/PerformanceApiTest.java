@@ -27,23 +27,23 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import com.google.gson.Gson;
 import com.reservation.performances.application.PerformanceQueryService;
 import com.reservation.performances.dto.request.PerformanceRegisterDto;
+import com.reservation.performances.error.ErrorCode;
 import com.reservation.performances.error.InvalidPerformanceDateException;
 import com.reservation.performances.error.PerformanceControllerAdvice;
 import com.reservation.performances.global.factory.PerformanceTestDataFactory;
 
 @ExtendWith(MockitoExtension.class)
 public class PerformanceApiTest {
-
-	private MockMvc mockMvc;
-	private Gson gson;
-
-	private static final String INVALID_DATE_MESSAGE = "잘못된 공연 날짜 정보입니다.";
 	private static final String INVALID_REGISTER_VALUE_ERROR_MESSAGE = "공연 등록 값이 올바르지 않습니다.";
 	private static final String INVALID_CONTACT_NUMBER_ERROR_MESSAGE = "핸드폰 번호의 양식과 맞지 않습니다. ex) 010-xxxx-xxxx";
 	private static final String PERFORMANCE_INFO_LENGTH_EXCEEDED_ERROR_MESSAGE = "공연 정보는 최대 255자입니다.";
 	private static final Integer PERFORMANCE_MAXIMUM_COUNT = 255;
 	private static final String PERFORMANCE_API_URL = "/api/performances";
 	private static final String MIN_AUDIENCE_ERROR_MESSAGE = "관객 수는 반드시 10명 이상이어야 합니다.";
+
+	private MockMvc mockMvc;
+	private Gson gson;
+
 	@InjectMocks
 	private PerformanceController performanceController;
 
@@ -72,7 +72,7 @@ public class PerformanceApiTest {
 
 		// then
 		result.andExpect(status().isBadRequest())
-			.andExpect(jsonPath("$.message").value(INVALID_DATE_MESSAGE));
+			.andExpect(jsonPath("$.message").value(ErrorCode.INVALID_PERFORMANCE_DATE_VALUE.getMessage()));
 	}
 
 	@Test
