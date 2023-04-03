@@ -1,8 +1,16 @@
 package com.reservation.performances.dto.request;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
+import com.reservation.performances.domain.Performance;
+import com.reservation.performances.domain.PerformanceDay;
 import com.reservation.performances.error.ErrorCode;
 import com.reservation.performances.error.InvalidPerformanceDateException;
 
@@ -26,11 +34,11 @@ public class PerformanceRegisterDto {
 
 	@NotBlank(message = "공연 시작 날짜는 반드시 입력해야 합니다.")
 	@Pattern(regexp = "^\\d{4}-\\d{2}-\\d{2}$", message = "공연 날짜 형식이 잘못되었습니다. ex) '2024-01-01'")
-	private String performanceStartDt;
+	private String performanceStartDate;
 
 	@NotBlank(message = "공연 종료 날짜는 반드시 입력해야 합니다.")
 	@Pattern(regexp = "^\\d{4}-\\d{2}-\\d{2}$", message = "공연 날짜 형식이 잘못되었습니다. ex) '2024-01-01'")
-	private String performanceEndDt;
+	private String performanceEndDate;
 
 	@NotBlank(message = "공연 종류는 반드시 입력해야 합니다. ex) 액션, 로맨스, 기타 등")
 	private String performanceType;
@@ -61,12 +69,12 @@ public class PerformanceRegisterDto {
 	private Set<String> performanceTimes = new HashSet<>();
 
 	@Builder
-	public PerformanceRegisterDto(String register, String performanceStartDt, String performanceEndDt,
+	public PerformanceRegisterDto(String register, String performanceStartDate, String performanceEndDate,
 		String performanceType, Integer audienceCount, Integer price, String contactPhoneNum, String contactPersonName,
 		String performanceInfo, String performancePlace, Set<String> performanceTimes) {
 		this.register = register;
-		this.performanceStartDt = performanceStartDt;
-		this.performanceEndDt = performanceEndDt;
+		this.performanceStartDate = performanceStartDate;
+		this.performanceEndDate = performanceEndDate;
 		this.performanceType = performanceType;
 		this.audienceCount = audienceCount;
 		this.price = price;
@@ -77,7 +85,37 @@ public class PerformanceRegisterDto {
 		this.performanceTimes = performanceTimes;
 	}
 
-	public void dateValidation() {
-		throw new InvalidPerformanceDateException(ErrorCode.PERFORMANCE_END_DATE_BEFORE_START_DATE.getMessage());
+	public List<PerformanceDay> toPerformanceDays(Performance performance) {
+		LocalDate start = stringToLocalDate(this.performanceStartDate);
+		LocalDate end = stringToLocalDate(this.performanceEndDate);
+		dateValidate(start, end);
+
+		return performanceTimes.stream()
+				.map(time -> PerformanceDay.builder()
+					.start(start)
+					.end(end)
+					.time(stringToLocalTime(time))
+					.performance(performance)
+					.build()
+				)
+				.collect(Collectors.toList());
+	}
+
+	private LocalDate stringToLocalDate(String date) {
+		return LocalDate.parse(date, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+	}
+
+	private LocalTime stringToLocalTime(String time) {
+		return LocalTime.parse(time, DateTimeFormatter.ofPattern("HH:mm"));
+	}
+
+	private void dateValidate(LocalDate start, LocalDate end) {
+		if(end.isBefore(start)) {
+			throw new InvalidPerformanceDateException(ErrorCode.PERFORMANCE_END_DATE_BEFORE_START_DATE.getMessage());
+		}
+
+		if(start.isBefore(LocalDate.now())) {
+			throw new InvalidPerformanceDateException(ErrorCode.PERFORMANCE_START_DATE_IN_THE_PAST.getMessage());
+		}
 	}
 }

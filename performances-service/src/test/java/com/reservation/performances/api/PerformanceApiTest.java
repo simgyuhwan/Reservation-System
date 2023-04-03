@@ -65,7 +65,7 @@ public class PerformanceApiTest {
 		//when
 		willThrow(InvalidPerformanceDateException.class)
 			.given(performanceQueryService)
-			.registerPerformance(any());
+			.createPerformance(any());
 
 		ResultActions result = mockMvc.perform(post(PERFORMANCE_API_URL)
 			.contentType(MediaType.APPLICATION_JSON)
@@ -151,7 +151,7 @@ public class PerformanceApiTest {
 		mockMvc.perform(post(PERFORMANCE_API_URL)
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(gson.toJson(registerDto)))
-			.andExpect(jsonPath("$.errors[0].field").value("performanceStartDt"))
+			.andExpect(jsonPath("$.errors[0].field").value("performanceStartDate"))
 			.andExpect(jsonPath("$.errors[0].reason").value(INCORRECT_SHOW_DATE_FORMAT_ERROR_MESSAGE));
 	}
 
@@ -168,7 +168,7 @@ public class PerformanceApiTest {
 		mockMvc.perform(post(PERFORMANCE_API_URL)
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(gson.toJson(registerDto)))
-			.andExpect(jsonPath("$.errors[0].field").value("performanceEndDt"))
+			.andExpect(jsonPath("$.errors[0].field").value("performanceEndDate"))
 			.andExpect(jsonPath("$.errors[0].reason").value(INCORRECT_SHOW_DATE_FORMAT_ERROR_MESSAGE));
 	}
 

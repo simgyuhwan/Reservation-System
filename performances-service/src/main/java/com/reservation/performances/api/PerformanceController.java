@@ -20,7 +20,7 @@ public class PerformanceController {
 
 	@PostMapping
 	public ResponseEntity performanceRegister(@RequestBody @Validated PerformanceRegisterDto registerDto) {
-		performanceQueryService.registerPerformance(registerDto);
+		performanceQueryService.createPerformance(registerDto);
 		return ResponseEntity.ok().build();
 	}
 
