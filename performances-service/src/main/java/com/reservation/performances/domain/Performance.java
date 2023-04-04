@@ -1,6 +1,6 @@
 package com.reservation.performances.domain;
 
-import com.reservation.performances.global.converter.PerformanceTypeConverter;
+import com.reservation.performances.converter.PerformanceTypeConverter;
 import com.reservation.performances.global.model.BaseEntity;
 
 import jakarta.persistence.Column;

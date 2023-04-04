@@ -1,9 +1,9 @@
-package com.reservation.performances.global.validator;
+package com.reservation.performances.converter.validator;
 
 import java.util.Set;
 import java.util.regex.Pattern;
 
-import com.reservation.performances.global.annotation.ValidPerformanceTime;
+import com.reservation.performances.annotation.ValidPerformanceTime;
 
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;

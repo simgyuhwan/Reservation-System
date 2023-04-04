@@ -1,11 +1,11 @@
-package com.reservation.performances.global.annotation;
+package com.reservation.performances.annotation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import com.reservation.performances.global.validator.PerformanceTimeValidator;
+import com.reservation.performances.converter.validator.PerformanceTimeValidator;
 
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;

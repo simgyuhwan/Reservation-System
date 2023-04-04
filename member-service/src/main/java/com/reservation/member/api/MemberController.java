@@ -23,7 +23,7 @@ import lombok.extern.slf4j.Slf4j;
  * 회원 컨트롤러
  *
  * @author sgh
- * @since 2023.03.17
+ * @since 2023.03.17c
  */
 @Slf4j
 @RestController

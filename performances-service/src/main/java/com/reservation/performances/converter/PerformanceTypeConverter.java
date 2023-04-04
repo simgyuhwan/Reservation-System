@@ -1,4 +1,4 @@
-package com.reservation.performances.global.converter;
+package com.reservation.performances.converter;
 
 import java.util.Objects;
 

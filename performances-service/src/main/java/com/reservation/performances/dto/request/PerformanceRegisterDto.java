@@ -2,8 +2,6 @@ package com.reservation.performances.dto.request;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -13,7 +11,7 @@ import com.reservation.performances.domain.Performance;
 import com.reservation.performances.domain.PerformanceDay;
 import com.reservation.performances.error.ErrorCode;
 import com.reservation.performances.error.InvalidPerformanceDateException;
-import com.reservation.performances.global.annotation.ValidPerformanceTime;
+import com.reservation.performances.annotation.ValidPerformanceTime;
 import com.reservation.performances.global.util.DateTimeUtils;
 
 import jakarta.validation.constraints.Min;
@@ -35,11 +33,11 @@ public class PerformanceRegisterDto {
 	private String register;
 
 	@NotBlank(message = "공연 시작 날짜는 반드시 입력해야 합니다.")
-	@Pattern(regexp = "^\\d{4}-\\d{2}-\\d{2}$", message = "공연 날짜 형식이 잘못되었습니다. ex) '2024-01-01'")
+	@Pattern(regexp = "^(19|20)\\d{2}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])$", message = "공연 날짜 형식이 잘못되었습니다. ex) '2024-01-01'")
 	private String performanceStartDate;
 
 	@NotBlank(message = "공연 종료 날짜는 반드시 입력해야 합니다.")
-	@Pattern(regexp = "^\\d{4}-\\d{2}-\\d{2}$", message = "공연 날짜 형식이 잘못되었습니다. ex) '2024-01-01'")
+	@Pattern(regexp = "^(19|20)\\d{2}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])$", message = "공연 날짜 형식이 잘못되었습니다. ex) '2024-01-01'")
 	private String performanceEndDate;
 
 	@NotBlank(message = "공연 종류는 반드시 입력해야 합니다. ex) 액션, 로맨스, 기타 등")

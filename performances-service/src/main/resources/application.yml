@@ -37,7 +37,7 @@ spring:
           SQL: DEBUG
 
 server:
-  port: 8888
+  port: 9999
 
 ---
 spring:
