@@ -31,7 +31,7 @@ public class PerformanceQueryServiceImpl implements PerformanceQueryService {
 	@Override
 	public void createPerformance(PerformanceRegisterDto registerDto) {
 		Performance performance = performanceRepository.save(performanceRegisterMapper.toEntity(registerDto));
-		List<PerformanceDay> performanceDays = performanceDayMapper.toPerformanceDays(registerDto, performance);
+		List<PerformanceDay> performanceDays = registerDto.toPerformanceDays(performance);
 		performanceDayRepository.saveAll(performanceDays);
 	}
 
