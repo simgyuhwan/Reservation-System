@@ -202,38 +202,38 @@ public class PerformanceApiTest {
 	static Stream<Arguments> registerValidityArgumentsList() {
 		return Stream.of(
 			Arguments.of(
-				createPerformanceRegisterDto(null, "2022-05-01", "2022-05-10", Set.of("10:00", "14:00"), "액션", 100,
-					20000, "010-1234-5678", "홍길동", "공연소개", "공연장소")),
+				createPerformanceRegisterDto(null, PERFORMANCE_START_DATE, PERFORMANCE_END_DATE, PERFORMANCE_TIMES, PERFORMANCE_TYPE, AUDIENCE_COUNT,
+					PRICE, CONTACT_PHONE_NUMBER, CONTACT_PERSON_NAME, PERFORMANCE_INFO, PERFORMANCE_PLACE)),
 			Arguments.of(
-				createPerformanceRegisterDto("작성자", null, "2022-05-10", Set.of("10:00", "14:00"), "액션", 100, 20000,
-					"010-1234-5678", "홍길동", "공연소개", "공연장소")),
+				createPerformanceRegisterDto(REGISTER, null, PERFORMANCE_END_DATE, PERFORMANCE_TIMES, PERFORMANCE_TYPE, AUDIENCE_COUNT, PRICE,
+					CONTACT_PHONE_NUMBER, CONTACT_PERSON_NAME, PERFORMANCE_INFO, PERFORMANCE_PLACE)),
 			Arguments.of(
-				createPerformanceRegisterDto("작성자", "2022-05-01", null, Set.of("10:00", "14:00"), "액션", 100, 20000,
-					"010-1234-5678", "홍길동", "공연소개", "공연장소")),
+				createPerformanceRegisterDto(REGISTER, PERFORMANCE_START_DATE, null, PERFORMANCE_TIMES, PERFORMANCE_TYPE, AUDIENCE_COUNT, PRICE,
+					CONTACT_PHONE_NUMBER, CONTACT_PERSON_NAME, PERFORMANCE_INFO, PERFORMANCE_PLACE)),
 			Arguments.of(
-				createPerformanceRegisterDto("작성자", "2022-05-01", "2022-05-10", Set.of("10:00", "14:00"), null, 100,
-					20000, "010-1234-5678", "홍길동", "공연소개", "공연장소")),
+				createPerformanceRegisterDto(REGISTER, PERFORMANCE_START_DATE, PERFORMANCE_END_DATE, PERFORMANCE_TIMES, null, AUDIENCE_COUNT,
+					PRICE, CONTACT_PHONE_NUMBER, CONTACT_PERSON_NAME, PERFORMANCE_INFO, PERFORMANCE_PLACE)),
 			Arguments.of(
-				createPerformanceRegisterDto("작성자", "2022-05-01", "2022-05-10", Set.of("10:00", "14:00"), "액션", null,
-					20000, "010-1234-5678", "홍길동", "공연소개", "공연장소")),
+				createPerformanceRegisterDto(REGISTER, PERFORMANCE_START_DATE, PERFORMANCE_END_DATE, PERFORMANCE_TIMES, PERFORMANCE_TYPE, null,
+					PRICE, CONTACT_PHONE_NUMBER, CONTACT_PERSON_NAME, PERFORMANCE_INFO, PERFORMANCE_PLACE)),
 			Arguments.of(
-				createPerformanceRegisterDto("작성자", "2022-05-01", "2022-05-10", Set.of("10:00", "14:00"), "액션", 100,
-					null, "010-1234-5678", "홍길동", "공연소개", "공연장소")),
+				createPerformanceRegisterDto(REGISTER, PERFORMANCE_START_DATE, PERFORMANCE_END_DATE, PERFORMANCE_TIMES, PERFORMANCE_TYPE, AUDIENCE_COUNT,
+					null, CONTACT_PHONE_NUMBER, CONTACT_PERSON_NAME, PERFORMANCE_INFO, PERFORMANCE_PLACE)),
 			Arguments.of(
-				createPerformanceRegisterDto("작성자", "2022-05-01", "2022-05-10", Set.of("10:00", "14:00"), "액션", 100,
-					20000, null, "홍길동", "공연소개", "공연장소")),
+				createPerformanceRegisterDto(REGISTER, PERFORMANCE_START_DATE, PERFORMANCE_END_DATE, PERFORMANCE_TIMES, PERFORMANCE_TYPE, AUDIENCE_COUNT,
+					PRICE, null, CONTACT_PERSON_NAME, PERFORMANCE_INFO, PERFORMANCE_PLACE)),
 			Arguments.of(
-				createPerformanceRegisterDto("작성자", "2022-05-01", "2022-05-10", Set.of("10:00", "14:00"), "액션", 100,
-					20000, "010-1234-5678", null, "공연소개", "공연장소")),
+				createPerformanceRegisterDto(REGISTER, PERFORMANCE_START_DATE, PERFORMANCE_END_DATE, PERFORMANCE_TIMES, PERFORMANCE_TYPE, AUDIENCE_COUNT,
+					PRICE, CONTACT_PHONE_NUMBER, null, PERFORMANCE_INFO, PERFORMANCE_PLACE)),
 			Arguments.of(
-				createPerformanceRegisterDto("작성자", "2022-05-01", "2022-05-10", Set.of("10:00", "14:00"), "액션", 100,
-					20000, "010-1234-5678", "홍길동", null, "공연장소")),
+				createPerformanceRegisterDto(REGISTER, PERFORMANCE_START_DATE, PERFORMANCE_END_DATE, PERFORMANCE_TIMES, PERFORMANCE_TYPE, AUDIENCE_COUNT,
+					PRICE, CONTACT_PHONE_NUMBER, CONTACT_PERSON_NAME, null, PERFORMANCE_PLACE)),
 			Arguments.of(
-				createPerformanceRegisterDto("작성자", "2022-05-01", "2022-05-10", Set.of("10:00", "14:00"), "액션", 100,
-					20000, "010-1234-5678", "홍길동", "공연소개", null)),
+				createPerformanceRegisterDto(REGISTER, PERFORMANCE_START_DATE, PERFORMANCE_END_DATE, PERFORMANCE_TIMES, PERFORMANCE_TYPE, AUDIENCE_COUNT,
+					PRICE, CONTACT_PHONE_NUMBER, CONTACT_PERSON_NAME, PERFORMANCE_INFO, null)),
 			Arguments.of(
-				createPerformanceRegisterDto("작성자", "2022-05-01", "2022-05-10", null, "액션", 100,
-					20000, "010-1234-5678", "홍길동", "공연소개", "공연장소"))
+				createPerformanceRegisterDto(REGISTER, PERFORMANCE_START_DATE, PERFORMANCE_END_DATE, null, PERFORMANCE_TYPE, AUDIENCE_COUNT,
+					PRICE, CONTACT_PHONE_NUMBER, CONTACT_PERSON_NAME, PERFORMANCE_INFO, PERFORMANCE_PLACE))
 		);
 	}
 }
