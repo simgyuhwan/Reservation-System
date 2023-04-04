@@ -195,7 +195,7 @@ public class PerformanceApiTest {
 		mockMvc.perform(post(PERFORMANCE_API_URL)
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(gson.toJson(registerDto)))
-			.andExpect(jsonPath("$.errors[0].field").value("performanceTimes[]"))
+			.andExpect(jsonPath("$.errors[0].field").value("performanceTimes"))
 			.andExpect(jsonPath("$.errors[0].reason").value(INCORRECT_PERFORMANCE_TIME_ERROR_MESSAGE));
 	}
 
