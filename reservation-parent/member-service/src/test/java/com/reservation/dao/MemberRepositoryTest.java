@@ -1,4 +1,4 @@
-package com.reservation.member.dao;
+package com.reservation.dao;
 
 import static org.assertj.core.api.Assertions.*;
 
@@ -12,7 +12,8 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.reservation.member.domain.Member;
+import com.reservation.memberservice.dao.MemberRepository;
+import com.reservation.memberservice.domain.Member;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;

@@ -1,0 +1,83 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '3.0.5'
+    id 'io.spring.dependency-management' version '1.1.0'
+}
+
+allprojects {
+    group = 'com.example'
+    version = '0.0.1-SNAPSHOT'
+    sourceCompatibility = '17'
+
+    repositories {
+        mavenCentral()
+    }
+
+}
+
+bootJar.enabled = false
+
+subprojects {
+    apply plugin: 'java'
+    apply plugin: 'io.spring.dependency-management'
+    apply plugin: 'org.springframework.boot'
+
+    dependencies {
+        implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+        implementation 'org.springframework.boot:spring-boot-starter-web'
+        annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+        testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+        // lombok
+        compileOnly 'org.projectlombok:lombok'
+        implementation 'org.projectlombok:lombok:1.18.24'
+        annotationProcessor 'org.projectlombok:lombok'
+
+        // mapstruct
+        implementation 'org.mapstruct:mapstruct:1.5.2.Final'
+        annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.2.Final'
+        annotationProcessor 'org.projectlombok:lombok-mapstruct-binding:0.2.0'
+
+        // h2
+        testImplementation group: 'com.h2database', name: 'h2', version: '1.4.200'
+
+        // validation
+        implementation 'org.springframework.boot:spring-boot-starter-validation'
+
+        // open-api
+        implementation group: 'org.springdoc', name: 'springdoc-openapi-starter-webmvc-ui', version: '2.0.0'
+    }
+
+    configurations {
+        compileOnly {
+            extendsFrom annotationProcessor
+        }
+    }
+
+    tasks.named('test') {
+        useJUnitPlatform()
+    }
+}
+
+project(":common") {
+    dependencies {
+        implementation(project(":config"))
+    }
+    bootJar { enabled = false }
+    jar { enabled = true }
+}
+
+project(":config") {
+    dependencies {
+
+    }
+
+    jar { enabled = true }
+}
+
+project(":member-service") {
+    dependencies {
+        implementation(project(':common'))
+        runtimeOnly 'com.mysql:mysql-connector-j'
+    }
+}

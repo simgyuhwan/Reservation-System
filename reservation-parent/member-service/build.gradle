@@ -1,0 +1,12 @@
+plugins {
+}
+
+repositories {
+}
+
+dependencies {
+}
+//
+//bootJar {
+//    mainClassName = 'com.reservation.memberservice.MemberServiceApplication'
+//}
