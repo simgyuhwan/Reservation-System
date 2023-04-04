@@ -67,7 +67,7 @@ public class PerformanceRegisterDto {
 	private String performancePlace;
 
 	@NotEmpty(message = "공연 시간은 최소 1가지 이상 입력해야 합니다.")
-	private Set<String> performanceTimes = new HashSet<>();
+	private Set<@Pattern(regexp = "^(?:[01][0-9]|2[0-4]):[0-5][0-9]$", message = "공연 시간 형식이 잘못되었습니다. ex) '15:45'") String> performanceTimes = new HashSet<>();
 
 	@Builder
 	public PerformanceRegisterDto(String register, String performanceStartDate, String performanceEndDate,
