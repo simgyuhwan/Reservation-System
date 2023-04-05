@@ -20,7 +20,7 @@ class PerformanceDtoMapperTest {
 	private PerformanceDtoMapper mapper = PerformanceDtoMapper.INSTANCE;
 
 	@Test
-	@DisplayName("PerformanceDtoMapper 테스트 : toEntity")
+	@DisplayName("Mapper 테스트 : toEntity")
 	void toEntityTest() {
 		//given
 		PerformanceDto registerDto = PerformanceTestDataFactory.createPerformanceDto();
@@ -34,6 +34,18 @@ class PerformanceDtoMapperTest {
 		assertThat(result.getPerformancePlace()).isEqualTo(registerDto.getPerformancePlace());
 	}
 
+	@Test
+	@DisplayName("Mapper 테스트 : toEntity 시, PerformanceDays AfterMapping 변환 테스트")
+	void afterMappingTest() {
+		//given
+		PerformanceDto registerDto = PerformanceTestDataFactory.createPerformanceDto();
+
+		//when
+		Performance result = mapper.toEntity(registerDto);
+
+		//then
+		assertThat(result.getPerformanceDays()).isNotEmpty();
+	}
 	@Test
 	@DisplayName("PerformanceDtoMapper 테스트 : update")
 	void updateTest() {

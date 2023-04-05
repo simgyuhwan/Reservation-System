@@ -34,23 +34,23 @@ public class PerformanceQueryServiceImpl implements PerformanceQueryService {
 	@Override
 	public void createPerformance(PerformanceDto registrationDto) {
 		validatePerformanceDate(registrationDto);
-		Performance performance = performanceRepository.save(performanceDtoMapper.toEntity(registrationDto));
-		List<PerformanceDay> performanceDays = registrationDto.toPerformanceDays(performance);
-		performanceDayRepository.saveAll(performanceDays);
+		performanceRepository.save(performanceDtoMapper.toEntity(registrationDto));
 	}
 
 	@Override
 	public PerformanceDto updatePerformance(Long performanceId, PerformanceDto updateDto) {
 		validatePerformanceDate(updateDto);
 		Performance performance = getPerformanceById(performanceId);
-		PerformanceDay performanceDay = getPerformanceDayByPerformance(performance);
+		List<PerformanceDay> performanceDays = getPerformanceDays(performance);
 		return updateDto;
 	}
 
-	private PerformanceDay getPerformanceDayByPerformance(Performance performance) {
-		return performanceDayRepository.findByPerformance(performance)
-			.orElseThrow(() -> new PerformanceNotFoundException(
-				ErrorCode.PERFORMANCE_NOT_FOUND_MESSAGE.getMessage() + performance.getId()));
+	private List<PerformanceDay> getPerformanceDays(Performance performance) {
+		List<PerformanceDay> performanceDays = performanceDayRepository.findByPerformance(performance);
+		if(performanceDays.isEmpty()) {
+			throw new PerformanceNotFoundException(ErrorCode.PERFORMANCE_NOT_FOUND_MESSAGE.getMessage() + performance.getId());
+		}
+		return performanceDays;
 	}
 
 	private Performance getPerformanceById(Long performanceId) {

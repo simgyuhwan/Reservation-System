@@ -84,7 +84,6 @@ class PerformanceQueryServiceTest {
 
 		//then
 		then(performanceRepository).should().save(any(Performance.class));
-		then(performanceDayRepository).should().saveAll(any());
 	}
 
 	@Test

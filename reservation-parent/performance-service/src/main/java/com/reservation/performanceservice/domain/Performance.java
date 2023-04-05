@@ -1,13 +1,18 @@
 package com.reservation.performanceservice.domain;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.reservation.common.model.BaseEntity;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -50,6 +55,9 @@ public class Performance extends BaseEntity {
 
 	private String performancePlace;
 
+	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "performance")
+	private List<PerformanceDay> performanceDays = new ArrayList<>();
+
 	private Performance(String userId, String performanceName,PerformanceType performanceType, Integer audienceCount, Integer price,
 		String contactPhoneNum, String contactPersonName, String performanceInfo, String performancePlace) {
 		this.userId = userId;
@@ -67,5 +75,9 @@ public class Performance extends BaseEntity {
 		String contactPhoneNum, String contactPersonName, String performanceInfo, String performancePlace) {
 		return new Performance(userId, performanceName,performanceType, audienceCount, price, contactPhoneNum, contactPersonName,
 			performanceInfo, performancePlace);
+	}
+
+	public void setPerformanceDays(List<PerformanceDay> performanceDays) {
+		this.performanceDays = performanceDays;
 	}
 }

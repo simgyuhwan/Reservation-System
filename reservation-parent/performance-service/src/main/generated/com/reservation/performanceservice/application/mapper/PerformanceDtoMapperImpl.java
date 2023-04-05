@@ -1,6 +1,7 @@
 package com.reservation.performanceservice.application.mapper;
 
 import com.reservation.performanceservice.domain.Performance;
+import com.reservation.performanceservice.domain.PerformanceDay;
 import com.reservation.performanceservice.domain.PerformanceType;
 import com.reservation.performanceservice.dto.request.PerformanceDto;
 import java.util.ArrayList;
@@ -10,7 +11,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2023-04-05T17:25:42+0900",
+    date = "2023-04-05T18:01:07+0900",
     comments = "version: 1.5.2.Final, compiler: javac, environment: Java 17.0.5 (Oracle Corporation)"
 )
 @Component
@@ -72,6 +73,8 @@ public class PerformanceDtoMapperImpl implements PerformanceDtoMapper {
         if ( arg0 == null ) {
             return;
         }
+
+        mapPerformanceDays( arg0, arg1 );
     }
 
     @Override
@@ -100,8 +103,11 @@ public class PerformanceDtoMapperImpl implements PerformanceDtoMapper {
 
         PerformanceType performanceType = PerformanceType.findByType(dto.getPerformanceType());
         Long id = null;
+        List<PerformanceDay> performanceDays = null;
 
-        Performance performance = new Performance( id, userId, performanceName, performanceType, audienceCount, price, contactPhoneNum, contactPersonName, performanceInfo, performancePlace );
+        Performance performance = new Performance( id, userId, performanceName, performanceType, audienceCount, price, contactPhoneNum, contactPersonName, performanceInfo, performancePlace, performanceDays );
+
+        mapPerformanceDays( dto, performance );
 
         return performance;
     }
