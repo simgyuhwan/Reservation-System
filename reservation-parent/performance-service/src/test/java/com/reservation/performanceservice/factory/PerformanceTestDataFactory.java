@@ -6,7 +6,7 @@ import java.util.Set;
 import com.reservation.performanceservice.domain.Performance;
 import com.reservation.performanceservice.domain.PerformanceDay;
 import com.reservation.performanceservice.domain.PerformanceType;
-import com.reservation.performanceservice.dto.request.PerformanceRegistrationDto;
+import com.reservation.performanceservice.dto.request.PerformanceDto;
 
 public class PerformanceTestDataFactory {
 	public final static String USER_ID = "test1";
@@ -21,8 +21,8 @@ public class PerformanceTestDataFactory {
 	public final static String PERFORMANCE_INFO = "공연 소개";
 	public final static String PERFORMANCE_PLACE = "홍대 제 1극장";
 
-	public static PerformanceRegistrationDto createPerformanceRegisterDto() {
-		return PerformanceRegistrationDto.builder()
+	public static PerformanceDto createPerformanceRegisterDto() {
+		return PerformanceDto.builder()
 			.userId(USER_ID)
 			.performanceStartDate(PERFORMANCE_START_DATE)
 			.performanceEndDate(PERFORMANCE_END_DATE)
@@ -37,12 +37,12 @@ public class PerformanceTestDataFactory {
 			.build();
 	}
 
-	public static PerformanceRegistrationDto createPerformanceRegisterDto(String userId, String performanceStartDt,
+	public static PerformanceDto createPerformanceRegisterDto(String userId, String performanceStartDt,
 		String performanceEndDt,
 		Set<String> performanceTimes, String performanceType, Integer audienceCount, Integer price,
 		String contactPhoneNum,
 		String contactPersonName, String performanceInfo, String performancePlace) {
-		return PerformanceRegistrationDto.builder()
+		return PerformanceDto.builder()
 			.userId(userId)
 			.performanceStartDate(performanceStartDt)
 			.performanceEndDate(performanceEndDt)
@@ -57,8 +57,8 @@ public class PerformanceTestDataFactory {
 			.build();
 	}
 
-	public static PerformanceRegistrationDto createPerformanceRegisterDto(String startDt, String endDt) {
-		return PerformanceRegistrationDto.builder()
+	public static PerformanceDto createPerformanceRegisterDto(String startDt, String endDt) {
+		return PerformanceDto.builder()
 			.userId(USER_ID)
 			.performanceStartDate(startDt)
 			.performanceEndDate(endDt)
@@ -79,7 +79,7 @@ public class PerformanceTestDataFactory {
 	}
 
 	public static List<PerformanceDay> createPerformanceDays() {
-		PerformanceRegistrationDto dto = createPerformanceRegisterDto();
+		PerformanceDto dto = createPerformanceRegisterDto();
 		return dto.toPerformanceDays(createPerformance());
 	}
 }

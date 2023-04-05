@@ -11,7 +11,7 @@ import com.reservation.performanceservice.dao.PerformanceDayRepository;
 import com.reservation.performanceservice.dao.PerformanceRepository;
 import com.reservation.performanceservice.domain.Performance;
 import com.reservation.performanceservice.domain.PerformanceDay;
-import com.reservation.performanceservice.dto.request.PerformanceRegistrationDto;
+import com.reservation.performanceservice.dto.request.PerformanceDto;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -27,7 +27,7 @@ public class PerformanceQueryServiceImpl implements PerformanceQueryService {
 	private final PerformanceRegisterMapper performanceRegisterMapper;
 
 	@Override
-	public void createPerformance(PerformanceRegistrationDto registerDto) {
+	public void createPerformance(PerformanceDto registerDto) {
 		Performance performance = performanceRepository.save(performanceRegisterMapper.toEntity(registerDto));
 		List<PerformanceDay> performanceDays = performanceDayMapper.toPerformanceDays(registerDto, performance);
 		performanceDayRepository.saveAll(performanceDays);

@@ -8,7 +8,7 @@ import org.mapstruct.factory.Mappers;
 
 import com.reservation.performanceservice.domain.Performance;
 import com.reservation.performanceservice.domain.PerformanceDay;
-import com.reservation.performanceservice.dto.request.PerformanceRegistrationDto;
+import com.reservation.performanceservice.dto.request.PerformanceDto;
 
 /**
  * PerformanceDayMapper.java
@@ -21,7 +21,7 @@ import com.reservation.performanceservice.dto.request.PerformanceRegistrationDto
 public interface PerformanceDayMapper{
     PerformanceDayMapper INSTANCE = Mappers.getMapper(PerformanceDayMapper.class);
 
-    default List<PerformanceDay> toPerformanceDays(PerformanceRegistrationDto dto, Performance performance){
+    default List<PerformanceDay> toPerformanceDays(PerformanceDto dto, Performance performance){
         return dto.toPerformanceDays(performance);
     }
 }

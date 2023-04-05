@@ -28,7 +28,7 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class PerformanceRegistrationDto {
+public class PerformanceDto {
 	@Schema(description = "회원 ID", example = "test")
 	@NotBlank(message = "등록자 정보는 반드시 필요합니다.")
 	@Size(min = 2, max = 15, message = "등록자의 길이는 최소 2자리에서 15자리 이하입니다.")
@@ -82,7 +82,7 @@ public class PerformanceRegistrationDto {
 	private Set<String> performanceTimes = new HashSet<>();
 
 	@Builder
-	public PerformanceRegistrationDto(String userId, String performanceStartDate, String performanceEndDate,
+	public PerformanceDto(String userId, String performanceStartDate, String performanceEndDate,
 		String performanceType, Integer audienceCount, Integer price, String contactPhoneNum, String contactPersonName,
 		String performanceInfo, String performancePlace, Set<String> performanceTimes) {
 		this.userId = userId;

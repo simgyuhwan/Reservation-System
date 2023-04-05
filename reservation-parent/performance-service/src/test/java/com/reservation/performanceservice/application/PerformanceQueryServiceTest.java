@@ -18,7 +18,7 @@ import com.reservation.performanceservice.application.mapper.PerformanceRegister
 import com.reservation.performanceservice.dao.PerformanceDayRepository;
 import com.reservation.performanceservice.dao.PerformanceRepository;
 import com.reservation.performanceservice.domain.Performance;
-import com.reservation.performanceservice.dto.request.PerformanceRegistrationDto;
+import com.reservation.performanceservice.dto.request.PerformanceDto;
 import com.reservation.performanceservice.error.InvalidPerformanceDateException;
 import com.reservation.performanceservice.factory.PerformanceTestDataFactory;
 
@@ -51,7 +51,7 @@ class PerformanceQueryServiceTest {
 	void wrongPerformanceScheduleException() {
 		//given
 		when(performanceRepository.save(any())).thenReturn(createPerformance());
-		PerformanceRegistrationDto registerDto = createPerformanceRegisterDto("2023-05-01", "2023-04-01");
+		PerformanceDto registerDto = createPerformanceRegisterDto("2023-05-01", "2023-04-01");
 
 		//when, then
 		assertThatThrownBy(() -> performanceQueryService.createPerformance(registerDto))
@@ -64,7 +64,7 @@ class PerformanceQueryServiceTest {
 	void wrongPerformanceStartDateException() {
 		//given
 		when(performanceRepository.save(any())).thenReturn(createPerformance());
-		PerformanceRegistrationDto registerDto = createPerformanceRegisterDto("1990-01-01", "2023-04-01");
+		PerformanceDto registerDto = createPerformanceRegisterDto("1990-01-01", "2023-04-01");
 
 		//when, then
 		assertThatThrownBy(() -> performanceQueryService.createPerformance(registerDto))
@@ -86,7 +86,7 @@ class PerformanceQueryServiceTest {
 		then(performanceDayRepository).should().saveAll(any());
 	}
 
-	private PerformanceRegistrationDto createPerformanceRegisterDto() {
+	private PerformanceDto createPerformanceRegisterDto() {
 		return PerformanceTestDataFactory.createPerformanceRegisterDto();
 	}
 
@@ -94,7 +94,7 @@ class PerformanceQueryServiceTest {
 		return PerformanceTestDataFactory.createPerformance();
 	}
 
-	private PerformanceRegistrationDto createPerformanceRegisterDto(String start, String end) {
+	private PerformanceDto createPerformanceRegisterDto(String start, String end) {
 		return PerformanceTestDataFactory.createPerformanceRegisterDto(start, end);
 	}
 }

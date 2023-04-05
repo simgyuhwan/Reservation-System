@@ -2,7 +2,7 @@ package com.reservation.performanceservice.application.mapper;
 
 import com.reservation.performanceservice.domain.Performance;
 import com.reservation.performanceservice.domain.PerformanceType;
-import com.reservation.performanceservice.dto.request.PerformanceRegistrationDto;
+import com.reservation.performanceservice.dto.request.PerformanceDto;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,12 +18,12 @@ import org.springframework.stereotype.Component;
 public class PerformanceRegisterMapperImpl implements PerformanceRegisterMapper {
 
     @Override
-    public PerformanceRegistrationDto toDto(Performance arg0) {
+    public PerformanceDto toDto(Performance arg0) {
         if ( arg0 == null ) {
             return null;
         }
 
-        PerformanceRegistrationDto.PerformanceRegisterDtoBuilder performanceRegisterDto = PerformanceRegistrationDto.builder();
+        PerformanceDto.PerformanceRegisterDtoBuilder performanceRegisterDto = PerformanceDto.builder();
 
         performanceRegisterDto.userId( arg0.getUserId() );
         if ( arg0.getPerformanceType() != null ) {
@@ -40,12 +40,12 @@ public class PerformanceRegisterMapperImpl implements PerformanceRegisterMapper 
     }
 
     @Override
-    public List<PerformanceRegistrationDto> toDto(List<Performance> arg0) {
+    public List<PerformanceDto> toDto(List<Performance> arg0) {
         if ( arg0 == null ) {
             return null;
         }
 
-        List<PerformanceRegistrationDto> list = new ArrayList<PerformanceRegistrationDto>( arg0.size() );
+        List<PerformanceDto> list = new ArrayList<PerformanceDto>( arg0.size() );
         for ( Performance performance : arg0 ) {
             list.add( toDto( performance ) );
         }
@@ -54,28 +54,28 @@ public class PerformanceRegisterMapperImpl implements PerformanceRegisterMapper 
     }
 
     @Override
-    public List<Performance> toEntity(List<PerformanceRegistrationDto> arg0) {
+    public List<Performance> toEntity(List<PerformanceDto> arg0) {
         if ( arg0 == null ) {
             return null;
         }
 
         List<Performance> list = new ArrayList<Performance>( arg0.size() );
-        for ( PerformanceRegistrationDto performanceRegistrationDto : arg0 ) {
-            list.add( toEntity(performanceRegistrationDto) );
+        for ( PerformanceDto performanceDto : arg0 ) {
+            list.add( toEntity(performanceDto) );
         }
 
         return list;
     }
 
     @Override
-    public void updateFromDto(PerformanceRegistrationDto arg0, Performance arg1) {
+    public void updateFromDto(PerformanceDto arg0, Performance arg1) {
         if ( arg0 == null ) {
             return;
         }
     }
 
     @Override
-    public Performance toEntity(PerformanceRegistrationDto dto) {
+    public Performance toEntity(PerformanceDto dto) {
         if ( dto == null ) {
             return null;
         }
