@@ -2,6 +2,7 @@ package com.reservation.performanceservice.domain;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 
 import com.reservation.common.model.BaseEntity;
 
@@ -53,4 +54,20 @@ public class PerformanceDay extends BaseEntity {
 		this.start = start;
 		this.end = end;
 	}
+
+	public String getTimeString() {
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
+		return time.format(formatter);
+	}
+
+	public String getStartDateString() {
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+		return start.format(formatter);
+	}
+
+	public String getEndDateString() {
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+		return start.format(formatter);
+	}
+
 }

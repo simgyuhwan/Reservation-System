@@ -1,5 +1,8 @@
 package com.reservation.performanceservice.factory;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -79,7 +82,22 @@ public class PerformanceTestDataFactory {
 
 	public static Performance createPerformance() {
 		return Performance.of(USER_ID, PERFORMANCE_NAME, PerformanceType.CONCERT, AUDIENCE_COUNT, PRICE, CONTACT_PHONE_NUMBER,
-			CONTACT_PERSON_NAME, PERFORMANCE_INFO, PERFORMANCE_PLACE);
+			CONTACT_PERSON_NAME, PERFORMANCE_INFO, PERFORMANCE_PLACE, createDefaultPerformanceDays());
+	}
+
+	public static List<PerformanceDay> createDefaultPerformanceDays() {
+		ArrayList<PerformanceDay> performanceDays = new ArrayList<>();
+		performanceDays.add(createPerformanceDay());
+		return performanceDays;
+	}
+
+	public static PerformanceDay createPerformanceDay() {
+		return PerformanceDay.builder()
+			.performance(null)
+			.start(LocalDate.now())
+			.end(LocalDate.now().plusYears(1))
+			.time(LocalTime.now())
+			.build();
 	}
 
 	public static List<PerformanceDay> createPerformanceDays() {

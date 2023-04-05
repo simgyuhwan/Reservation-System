@@ -26,9 +26,7 @@ import lombok.extern.slf4j.Slf4j;
 @Transactional
 @RequiredArgsConstructor
 public class PerformanceQueryServiceImpl implements PerformanceQueryService {
-	private final PerformanceDayRepository performanceDayRepository;
 	private final PerformanceRepository performanceRepository;
-	private final PerformanceDayMapper performanceDayMapper;
 	private final PerformanceDtoMapper performanceDtoMapper;
 
 	@Override
@@ -41,16 +39,8 @@ public class PerformanceQueryServiceImpl implements PerformanceQueryService {
 	public PerformanceDto updatePerformance(Long performanceId, PerformanceDto updateDto) {
 		validatePerformanceDate(updateDto);
 		Performance performance = getPerformanceById(performanceId);
-		List<PerformanceDay> performanceDays = getPerformanceDays(performance);
-		return updateDto;
-	}
-
-	private List<PerformanceDay> getPerformanceDays(Performance performance) {
-		List<PerformanceDay> performanceDays = performanceDayRepository.findByPerformance(performance);
-		if(performanceDays.isEmpty()) {
-			throw new PerformanceNotFoundException(ErrorCode.PERFORMANCE_NOT_FOUND_MESSAGE.getMessage() + performance.getId());
-		}
-		return performanceDays;
+		performance.updateFromDto(updateDto);
+		return performanceDtoMapper.toDto(performance);
 	}
 
 	private Performance getPerformanceById(Long performanceId) {

@@ -1,9 +1,15 @@
 package com.reservation.performanceservice.domain;
 
+import static java.util.stream.Collectors.*;
+
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import com.reservation.common.model.BaseEntity;
+import com.reservation.performanceservice.dto.request.PerformanceDto;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -59,7 +65,7 @@ public class Performance extends BaseEntity {
 	private List<PerformanceDay> performanceDays = new ArrayList<>();
 
 	private Performance(String userId, String performanceName,PerformanceType performanceType, Integer audienceCount, Integer price,
-		String contactPhoneNum, String contactPersonName, String performanceInfo, String performancePlace) {
+		String contactPhoneNum, String contactPersonName, String performanceInfo, String performancePlace, List<PerformanceDay> performanceDays) {
 		this.userId = userId;
 		this.performanceName = performanceName;
 		this.performanceType = performanceType;
@@ -69,15 +75,43 @@ public class Performance extends BaseEntity {
 		this.contactPersonName = contactPersonName;
 		this.performanceInfo = performanceInfo;
 		this.performancePlace = performancePlace;
+		this.performanceDays = performanceDays;
 	}
 
 	public static Performance of(String userId, String performanceName, PerformanceType performanceType, Integer audienceCount, Integer price,
-		String contactPhoneNum, String contactPersonName, String performanceInfo, String performancePlace) {
+		String contactPhoneNum, String contactPersonName, String performanceInfo, String performancePlace, List<PerformanceDay> performanceDays) {
 		return new Performance(userId, performanceName,performanceType, audienceCount, price, contactPhoneNum, contactPersonName,
-			performanceInfo, performancePlace);
+			performanceInfo, performancePlace, performanceDays);
 	}
 
 	public void setPerformanceDays(List<PerformanceDay> performanceDays) {
 		this.performanceDays = performanceDays;
 	}
+
+	public void updateFromDto(PerformanceDto performanceDto) {
+		this.performanceName = performanceDto.getPerformanceName();
+		this.performanceType = PerformanceType.findByType(performanceDto.getPerformanceType());
+		this.audienceCount = performanceDto.getAudienceCount();
+		this.price = performanceDto.getPrice();
+		this.contactPhoneNum = performanceDto.getContactPhoneNum();
+		this.contactPersonName = performanceDto.getContactPersonName();
+		this.performanceInfo = performanceDto.getPerformanceInfo();
+		this.performancePlace = performanceDto.getPerformancePlace();
+
+		List<PerformanceDay> updatePerformanceDays = performanceDto.toPerformanceDays(this);
+		updatePerformanceDays(updatePerformanceDays);
+	}
+
+	public void updatePerformanceDays(List<PerformanceDay> updatePerformanceDays) {
+		this.performanceDays.removeIf(performanceDay -> !updatePerformanceDays.contains(performanceDay));
+		updatePerformanceDays.stream()
+			.filter(performanceDay -> !this.performanceDays.contains(performanceDay))
+			.forEach(this.performanceDays::add);
+	}
+
+	// public Set<String> getPerformanceTimes() {
+	// 	return performanceDays.stream()
+	// 		.map(PerformanceDay::getTimeString)
+	// 		.collect(toSet());
+	// }
 }

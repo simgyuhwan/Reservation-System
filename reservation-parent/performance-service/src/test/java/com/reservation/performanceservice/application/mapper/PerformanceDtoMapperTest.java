@@ -2,6 +2,8 @@ package com.reservation.performanceservice.application.mapper;
 
 import static org.assertj.core.api.Assertions.*;
 
+import java.util.Set;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -46,16 +48,17 @@ class PerformanceDtoMapperTest {
 		//then
 		assertThat(result.getPerformanceDays()).isNotEmpty();
 	}
+
 	@Test
-	@DisplayName("PerformanceDtoMapper 테스트 : update")
-	void updateTest() {
+	@DisplayName("Mapper 테스트 : toDto")
+	void updateMappingTest() {
 		//given
 		Performance performance = PerformanceTestDataFactory.createPerformance();
 
 		//when
+		PerformanceDto result = mapper.toDto(performance);
 
 		//then
+		assertThat(result.getPerformanceTimes().size()).isEqualTo(performance.getPerformanceDays().size());
 	}
-
-
 }

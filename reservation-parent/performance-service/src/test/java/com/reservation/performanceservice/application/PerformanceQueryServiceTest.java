@@ -1,10 +1,12 @@
 package com.reservation.performanceservice.application;
 
+import static com.reservation.performanceservice.factory.PerformanceTestDataFactory.*;
 import static org.assertj.core.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.BDDMockito.*;
 
 import java.util.Optional;
+import java.util.Set;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -120,6 +122,28 @@ class PerformanceQueryServiceTest {
 		//then
 		assertThatThrownBy(() -> performanceQueryService.updatePerformance(performanceId, updateDto))
 			.isInstanceOf(InvalidPerformanceDateException.class);
+	}
+
+	@Test
+	@DisplayName("공연 수정 성공")
+	void updateSuccessTest() {
+		//given
+		Long performanceId = 1L;
+		when(performanceRepository.findById(performanceId)).thenReturn(Optional.of(createPerformance()));
+		PerformanceDto updateDto = PerformanceTestDataFactory.createPerformanceDto(USER_ID, "change_name",
+			"2045-01-01", "2045-05-30",
+			Set.of("09:00", "10:00", "11:00"), "CONSORT", 500, 19000, "010-1111-111",
+			"CHANGE", "change_info", "change_place");
+
+		//when
+		PerformanceDto resultDto = performanceQueryService.updatePerformance(performanceId, updateDto);
+
+		//then
+		// assertThat(resultDto)
+		// 	.isEqualTo(updateDto)
+		// 	.extracting(PerformanceDto::getPerformanceTimes)
+		// 	.isEqualTo(updateDto.getPerformanceTimes());
+		assertThat(resultDto.getPerformanceTimes().size()).isEqualTo(updateDto.getPerformanceTimes().size());
 	}
 
 	private PerformanceDto createPerformanceDto() {

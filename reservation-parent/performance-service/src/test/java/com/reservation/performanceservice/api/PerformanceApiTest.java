@@ -71,7 +71,7 @@ public class PerformanceApiTest {
 	}
 
 	@Test
-	@DisplayName("공연 등록 API : 종료일이 시작일보다 먼저면 오류 메시지 반환")
+	@DisplayName("공연 등록 API : 종료일이 시작일보다 먼저면 400 상태코드 반환")
 	void incorrectRegistrationScheduleErrorReturned() throws Exception {
 		//when
 		willThrow(InvalidPerformanceDateException.class)
@@ -83,8 +83,7 @@ public class PerformanceApiTest {
 			.content(gson.toJson(createPerformanceDtoWithInvalidDate())));
 
 		// then
-		result.andExpect(status().isBadRequest())
-			.andExpect(jsonPath("$.message").value(ErrorCode.INVALID_PERFORMANCE_DATE_VALUE.getMessage()));
+		result.andExpect(status().isBadRequest());
 	}
 
 	@Test

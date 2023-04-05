@@ -18,7 +18,7 @@ public class PerformanceControllerAdvice {
 
 	@ExceptionHandler(MethodArgumentNotValidException.class)
 	public ResponseEntity<ErrorResponse> methodArgumentNotValidException(MethodArgumentNotValidException e) {
-		log.error("Performance registration failed due to invalid input value: {}", e.getMessage());
+		log.error(e.getMessage());
 		ErrorResponse errorResponse = ErrorResponseFactory.bindError(ErrorCode.PERFORMANCE_REGISTER_INPUT_VALUE_INVALID,
 			e.getFieldErrors());
 		return ResponseEntity.badRequest().body(errorResponse);
@@ -26,8 +26,8 @@ public class PerformanceControllerAdvice {
 
 	@ExceptionHandler(InvalidPerformanceDateException.class)
 	public ResponseEntity<ErrorResponse> invalidPerformanceDateException(InvalidPerformanceDateException e) {
-		log.error("Performance registration invalid date exception : {}", e.getMessage());
-		ErrorResponse errorResponse = ErrorResponseFactory.from(ErrorCode.INVALID_PERFORMANCE_DATE_VALUE);
+		log.error(e.getMessage());
+		ErrorResponse errorResponse = ErrorResponseFactory.from(400, e.getMessage());
 		return ResponseEntity.badRequest().body(errorResponse);
 	}
 

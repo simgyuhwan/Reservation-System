@@ -30,6 +30,7 @@ public class PerformanceController {
 	}
 
 	@PutMapping("/{performanceId}")
+	@Operation(summary = "[공연] 공연 수정", description = "공연 수정 API")
 	public ResponseEntity performanceUpdate(@RequestBody @Validated PerformanceDto updateDto, @PathVariable Long performanceId) {
 		return ResponseEntity.ok(performanceQueryService.updatePerformance(performanceId, updateDto));
 	}

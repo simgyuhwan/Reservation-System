@@ -80,7 +80,7 @@ public class PerformanceDto {
 	@NotBlank(message = "공연 장소는 반드시 입력해야 합니다.")
 	private String performancePlace;
 
-	@Schema(description = "공연 시간", example = "15:00")
+	@Schema(description = "공연 시간", example = "[15:00]")
 	@NotEmpty(message = "공연 시간은 최소 1가지 이상 입력해야 합니다.")
 	@ValidPerformanceTimes
 	private Set<String> performanceTimes = new HashSet<>();

@@ -11,34 +11,11 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2023-04-05T18:01:07+0900",
-    comments = "version: 1.5.2.Final, compiler: javac, environment: Java 17.0.5 (Oracle Corporation)"
+    date = "2023-04-05T21:49:40+0900",
+    comments = "version: 1.5.2.Final, compiler: javac, environment: Java 17.0.6 (Amazon.com Inc.)"
 )
 @Component
 public class PerformanceDtoMapperImpl implements PerformanceDtoMapper {
-
-    @Override
-    public PerformanceDto toDto(Performance arg0) {
-        if ( arg0 == null ) {
-            return null;
-        }
-
-        PerformanceDto.PerformanceDtoBuilder performanceDto = PerformanceDto.builder();
-
-        performanceDto.userId( arg0.getUserId() );
-        performanceDto.performanceName( arg0.getPerformanceName() );
-        if ( arg0.getPerformanceType() != null ) {
-            performanceDto.performanceType( arg0.getPerformanceType().name() );
-        }
-        performanceDto.audienceCount( arg0.getAudienceCount() );
-        performanceDto.price( arg0.getPrice() );
-        performanceDto.contactPhoneNum( arg0.getContactPhoneNum() );
-        performanceDto.contactPersonName( arg0.getContactPersonName() );
-        performanceDto.performanceInfo( arg0.getPerformanceInfo() );
-        performanceDto.performancePlace( arg0.getPerformancePlace() );
-
-        return performanceDto.build();
-    }
 
     @Override
     public List<PerformanceDto> toDto(List<Performance> arg0) {
@@ -110,5 +87,30 @@ public class PerformanceDtoMapperImpl implements PerformanceDtoMapper {
         mapPerformanceDays( dto, performance );
 
         return performance;
+    }
+
+    @Override
+    public PerformanceDto toDto(Performance entity) {
+        if ( entity == null ) {
+            return null;
+        }
+
+        PerformanceDto.PerformanceDtoBuilder performanceDto = PerformanceDto.builder();
+
+        performanceDto.performanceTimes( mapTimesSetString( entity.getPerformanceDays() ) );
+        performanceDto.performanceStartDate( mapStartDateString( entity.getPerformanceDays() ) );
+        performanceDto.performanceEndDate( mapEndDateString( entity.getPerformanceDays() ) );
+        performanceDto.userId( entity.getUserId() );
+        performanceDto.performanceName( entity.getPerformanceName() );
+        performanceDto.audienceCount( entity.getAudienceCount() );
+        performanceDto.price( entity.getPrice() );
+        performanceDto.contactPhoneNum( entity.getContactPhoneNum() );
+        performanceDto.contactPersonName( entity.getContactPersonName() );
+        performanceDto.performanceInfo( entity.getPerformanceInfo() );
+        performanceDto.performancePlace( entity.getPerformancePlace() );
+
+        performanceDto.performanceType( entity.getPerformanceType().getType() );
+
+        return performanceDto.build();
     }
 }

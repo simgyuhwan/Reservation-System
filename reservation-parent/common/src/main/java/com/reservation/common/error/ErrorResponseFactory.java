@@ -19,4 +19,10 @@ public class ErrorResponseFactory {
 			.message(errorCode.getMessage())
 			.create();
 	}
+
+	public static ErrorResponse from(int statusCode, String message) {
+		return ErrorResponse.status(statusCode)
+			.message(message)
+			.create();
+	}
 }
