@@ -7,7 +7,7 @@ import org.mapstruct.factory.Mappers;
 
 import com.reservation.common.mapper.GenericMapper;
 import com.reservation.performanceservice.domain.Performance;
-import com.reservation.performanceservice.dto.request.PerformanceRegisterDto;
+import com.reservation.performanceservice.dto.request.PerformanceRegistrationDto;
 
 /**
  * PerformanceMapper.java
@@ -16,10 +16,10 @@ import com.reservation.performanceservice.dto.request.PerformanceRegisterDto;
  * @since 2023.04.03
  */
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
-public interface PerformanceRegisterMapper extends GenericMapper<PerformanceRegisterDto, Performance> {
+public interface PerformanceRegisterMapper extends GenericMapper<PerformanceRegistrationDto, Performance> {
 	PerformanceRegisterMapper INSTANCE = Mappers.getMapper(PerformanceRegisterMapper.class);
 
 	@Mapping(target = "performanceType", expression = "java(PerformanceType.findByType(dto.getPerformanceType()))")
 	@Override
-	Performance toEntity(PerformanceRegisterDto dto);
+	Performance toEntity(PerformanceRegistrationDto dto);
 }

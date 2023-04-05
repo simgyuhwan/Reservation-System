@@ -20,7 +20,7 @@ import jakarta.validation.Payload;
 @Target({ElementType.FIELD, ElementType.PARAMETER})
 @Retention(RetentionPolicy.RUNTIME)
 @Constraint(validatedBy = PerformanceTimeValidator.class)
-public @interface ValidPerformanceTime {
+public @interface ValidPerformanceTimes {
     String message() default "공연 시간 형식이 잘못되었습니다. ex) '15:45'";
 
     Class<?>[] groups() default {};

@@ -1,7 +1,7 @@
 package com.reservation.performanceservice.application;
 
-import com.reservation.performanceservice.dto.request.PerformanceRegisterDto;
+import com.reservation.performanceservice.dto.request.PerformanceRegistrationDto;
 
 public interface PerformanceQueryService {
-	void createPerformance(PerformanceRegisterDto registerDto);
+	void createPerformance(PerformanceRegistrationDto registerDto);
 }

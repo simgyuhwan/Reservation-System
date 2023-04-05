@@ -6,7 +6,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import com.reservation.performanceservice.domain.Performance;
-import com.reservation.performanceservice.dto.request.PerformanceRegisterDto;
+import com.reservation.performanceservice.dto.request.PerformanceRegistrationDto;
 import com.reservation.performanceservice.factory.PerformanceTestDataFactory;
 
 /**
@@ -23,7 +23,7 @@ class PerformanceRegisterMapperTest {
 	@DisplayName("PerformanceRegisterMapper 테스트 : toEntity")
 	void toEntityTest() {
 		//given
-		PerformanceRegisterDto registerDto = PerformanceTestDataFactory.createPerformanceRegisterDto();
+		PerformanceRegistrationDto registerDto = PerformanceTestDataFactory.createPerformanceRegisterDto();
 
 		//when
 		Performance result = mapper.toEntity(registerDto);

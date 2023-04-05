@@ -3,7 +3,7 @@ package com.reservation.performanceservice.domain;
 import java.util.Set;
 import java.util.regex.Pattern;
 
-import com.reservation.performanceservice.annotation.ValidPerformanceTime;
+import com.reservation.performanceservice.annotation.ValidPerformanceTimes;
 
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
@@ -15,11 +15,11 @@ import jakarta.validation.ConstraintValidatorContext;
  * @author sgh
  * @since 2023.04.04
  */
-public class PerformanceTimeValidator implements ConstraintValidator<ValidPerformanceTime, Set<String>> {
+public class PerformanceTimeValidator implements ConstraintValidator<ValidPerformanceTimes, Set<String>> {
 	private static final Pattern PATTERN = Pattern.compile("^(?:[01][0-9]|2[0-4]):[0-5][0-9]$");
 
 	@Override
-	public void initialize(ValidPerformanceTime constraintAnnotation) {
+	public void initialize(ValidPerformanceTimes constraintAnnotation) {
 		ConstraintValidator.super.initialize(constraintAnnotation);
 	}
 
