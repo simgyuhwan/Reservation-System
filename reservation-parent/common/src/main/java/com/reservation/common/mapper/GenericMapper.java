@@ -1,4 +1,4 @@
-package com.reservation.memberservice.application.mapper;
+package com.reservation.common.mapper;
 
 import java.util.List;
 

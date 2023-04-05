@@ -2,3 +2,4 @@ rootProject.name = 'reservation-parent'
 include("common")
 include("config")
 include("member-service")
+include('performance-service')
