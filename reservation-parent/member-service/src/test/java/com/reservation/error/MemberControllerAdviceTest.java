@@ -9,9 +9,9 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-import com.reservation.memberservice.dto.response.ErrorResponse;
+import com.reservation.common.dto.ErrorResponse;
+import com.reservation.common.error.ErrorCode;
 import com.reservation.memberservice.error.DuplicateMemberException;
-import com.reservation.memberservice.error.ErrorCode;
 import com.reservation.memberservice.error.MemberControllerAdvice;
 
 @ExtendWith(MockitoExtension.class)

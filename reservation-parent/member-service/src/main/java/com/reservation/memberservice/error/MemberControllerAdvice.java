@@ -6,9 +6,11 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import com.reservation.common.dto.ErrorResponse;
+import com.reservation.common.error.ErrorCode;
+import com.reservation.common.error.ErrorResponseFactory;
 import com.reservation.memberservice.api.MemberController;
 import com.reservation.memberservice.api.SignUpController;
-import com.reservation.memberservice.dto.response.ErrorResponse;
 
 import lombok.extern.slf4j.Slf4j;
 

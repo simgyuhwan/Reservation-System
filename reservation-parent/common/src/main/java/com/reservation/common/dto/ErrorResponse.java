@@ -1,4 +1,4 @@
-package com.reservation.memberservice.dto.response;
+package com.reservation.common.dto;
 
 import java.util.List;
 import java.util.stream.Collectors;
