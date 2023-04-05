@@ -3,7 +3,6 @@ package com.reservation.performanceservice.application.mapper;
 import com.reservation.performanceservice.domain.Performance;
 import com.reservation.performanceservice.domain.PerformanceType;
 import com.reservation.performanceservice.dto.request.PerformanceDto;
-
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.processing.Generated;
@@ -11,7 +10,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2023-04-05T11:01:03+0900",
+    date = "2023-04-05T11:30:05+0900",
     comments = "version: 1.5.2.Final, compiler: javac, environment: Java 17.0.5 (Oracle Corporation)"
 )
 @Component
@@ -23,20 +22,20 @@ public class PerformanceRegisterMapperImpl implements PerformanceRegisterMapper 
             return null;
         }
 
-        PerformanceDto.PerformanceRegisterDtoBuilder performanceRegisterDto = PerformanceDto.builder();
+        PerformanceDto.PerformanceDtoBuilder performanceDto = PerformanceDto.builder();
 
-        performanceRegisterDto.userId( arg0.getUserId() );
+        performanceDto.userId( arg0.getUserId() );
         if ( arg0.getPerformanceType() != null ) {
-            performanceRegisterDto.performanceType( arg0.getPerformanceType().name() );
+            performanceDto.performanceType( arg0.getPerformanceType().name() );
         }
-        performanceRegisterDto.audienceCount( arg0.getAudienceCount() );
-        performanceRegisterDto.price( arg0.getPrice() );
-        performanceRegisterDto.contactPhoneNum( arg0.getContactPhoneNum() );
-        performanceRegisterDto.contactPersonName( arg0.getContactPersonName() );
-        performanceRegisterDto.performanceInfo( arg0.getPerformanceInfo() );
-        performanceRegisterDto.performancePlace( arg0.getPerformancePlace() );
+        performanceDto.audienceCount( arg0.getAudienceCount() );
+        performanceDto.price( arg0.getPrice() );
+        performanceDto.contactPhoneNum( arg0.getContactPhoneNum() );
+        performanceDto.contactPersonName( arg0.getContactPersonName() );
+        performanceDto.performanceInfo( arg0.getPerformanceInfo() );
+        performanceDto.performancePlace( arg0.getPerformancePlace() );
 
-        return performanceRegisterDto.build();
+        return performanceDto.build();
     }
 
     @Override
@@ -61,7 +60,7 @@ public class PerformanceRegisterMapperImpl implements PerformanceRegisterMapper 
 
         List<Performance> list = new ArrayList<Performance>( arg0.size() );
         for ( PerformanceDto performanceDto : arg0 ) {
-            list.add( toEntity(performanceDto) );
+            list.add( toEntity( performanceDto ) );
         }
 
         return list;

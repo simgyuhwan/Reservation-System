@@ -23,7 +23,7 @@ class PerformanceRegisterMapperTest {
 	@DisplayName("PerformanceRegisterMapper 테스트 : toEntity")
 	void toEntityTest() {
 		//given
-		PerformanceDto registerDto = PerformanceTestDataFactory.createPerformanceRegisterDto();
+		PerformanceDto registerDto = PerformanceTestDataFactory.createPerformanceDto();
 
 		//when
 		Performance result = mapper.toEntity(registerDto);

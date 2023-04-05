@@ -21,7 +21,7 @@ public class PerformanceTestDataFactory {
 	public final static String PERFORMANCE_INFO = "공연 소개";
 	public final static String PERFORMANCE_PLACE = "홍대 제 1극장";
 
-	public static PerformanceDto createPerformanceRegisterDto() {
+	public static PerformanceDto createPerformanceDto() {
 		return PerformanceDto.builder()
 			.userId(USER_ID)
 			.performanceStartDate(PERFORMANCE_START_DATE)
@@ -37,7 +37,7 @@ public class PerformanceTestDataFactory {
 			.build();
 	}
 
-	public static PerformanceDto createPerformanceRegisterDto(String userId, String performanceStartDt,
+	public static PerformanceDto createPerformanceDto(String userId, String performanceStartDt,
 		String performanceEndDt,
 		Set<String> performanceTimes, String performanceType, Integer audienceCount, Integer price,
 		String contactPhoneNum,
@@ -57,7 +57,7 @@ public class PerformanceTestDataFactory {
 			.build();
 	}
 
-	public static PerformanceDto createPerformanceRegisterDto(String startDt, String endDt) {
+	public static PerformanceDto createPerformanceDto(String startDt, String endDt) {
 		return PerformanceDto.builder()
 			.userId(USER_ID)
 			.performanceStartDate(startDt)
@@ -79,7 +79,7 @@ public class PerformanceTestDataFactory {
 	}
 
 	public static List<PerformanceDay> createPerformanceDays() {
-		PerformanceDto dto = createPerformanceRegisterDto();
+		PerformanceDto dto = createPerformanceDto();
 		return dto.toPerformanceDays(createPerformance());
 	}
 }

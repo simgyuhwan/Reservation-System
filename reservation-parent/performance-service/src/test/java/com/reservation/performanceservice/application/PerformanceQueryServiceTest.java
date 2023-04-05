@@ -87,7 +87,7 @@ class PerformanceQueryServiceTest {
 	}
 
 	private PerformanceDto createPerformanceRegisterDto() {
-		return PerformanceTestDataFactory.createPerformanceRegisterDto();
+		return PerformanceTestDataFactory.createPerformanceDto();
 	}
 
 	private Performance createPerformance() {
@@ -95,6 +95,6 @@ class PerformanceQueryServiceTest {
 	}
 
 	private PerformanceDto createPerformanceRegisterDto(String start, String end) {
-		return PerformanceTestDataFactory.createPerformanceRegisterDto(start, end);
+		return PerformanceTestDataFactory.createPerformanceDto(start, end);
 	}
 }

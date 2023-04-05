@@ -25,7 +25,7 @@ class PerformanceDayMapperTest {
     @DisplayName("PerformanceDayMapper 테스트 : toPerformanceDays")
     void toEntityTest() {
         //given
-        PerformanceDto registerDto = PerformanceTestDataFactory.createPerformanceRegisterDto();
+        PerformanceDto registerDto = PerformanceTestDataFactory.createPerformanceDto();
 
         //when
         List<PerformanceDay> performanceDays = mapper.toPerformanceDays(registerDto, null);

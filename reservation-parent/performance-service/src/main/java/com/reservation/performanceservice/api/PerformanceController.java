@@ -3,7 +3,9 @@ package com.reservation.performanceservice.api;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -25,5 +27,11 @@ public class PerformanceController {
 	public ResponseEntity performanceRegister(@RequestBody @Validated PerformanceDto registerDto) {
 		performanceQueryService.createPerformance(registerDto);
 		return ResponseEntity.status(HttpStatus.CREATED).build();
+	}
+
+	@PutMapping("/{userId}")
+	public ResponseEntity performanceUpdate(@RequestBody @Validated PerformanceDto updateDto, @PathVariable String userId) {
+
+		return ResponseEntity.ok().build();
 	}
 }
