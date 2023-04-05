@@ -109,9 +109,4 @@ public class Performance extends BaseEntity {
 			.forEach(this.performanceDays::add);
 	}
 
-	// public Set<String> getPerformanceTimes() {
-	// 	return performanceDays.stream()
-	// 		.map(PerformanceDay::getTimeString)
-	// 		.collect(toSet());
-	// }
 }
