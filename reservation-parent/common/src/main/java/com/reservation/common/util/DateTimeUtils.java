@@ -19,4 +19,15 @@ public class DateTimeUtils {
     public static LocalTime stringToLocalTime(String time) {
         return LocalTime.parse(time, DateTimeFormatter.ISO_LOCAL_TIME);
     }
+
+    public static boolean isBefore(String startDate, String endDate) {
+        LocalDate start = stringToLocalDate(startDate);
+        LocalDate end = stringToLocalDate(endDate);
+        return start.isBefore(end);
+    }
+
+    public static boolean isDateAfterToday(String date) {
+        LocalDate localDate = stringToLocalDate(date);
+        return localDate.isAfter(LocalDate.now());
+    }
 }

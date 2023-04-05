@@ -16,8 +16,8 @@ import com.reservation.performanceservice.dto.request.PerformanceDto;
  * @since 2023.04.03
  */
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
-public interface PerformanceRegisterMapper extends GenericMapper<PerformanceDto, Performance> {
-	PerformanceRegisterMapper INSTANCE = Mappers.getMapper(PerformanceRegisterMapper.class);
+public interface PerformanceDtoMapper extends GenericMapper<PerformanceDto, Performance> {
+	PerformanceDtoMapper INSTANCE = Mappers.getMapper(PerformanceDtoMapper.class);
 
 	@Mapping(target = "performanceType", expression = "java(PerformanceType.findByType(dto.getPerformanceType()))")
 	@Override

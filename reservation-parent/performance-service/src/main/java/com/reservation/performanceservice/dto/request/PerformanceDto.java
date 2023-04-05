@@ -34,6 +34,10 @@ public class PerformanceDto {
 	@Size(min = 2, max = 15, message = "등록자의 길이는 최소 2자리에서 15자리 이하입니다.")
 	private String userId;
 
+	@Schema(description = "공연 이름", example = "오페라의 유령")
+	@NotBlank(message = "공연 이름은 반드시 필요합니다.")
+	private String performanceName;
+
 	@Schema(description = "공연 시작 날짜", example = "2024-01-01")
 	@NotBlank(message = "공연 시작 날짜는 반드시 입력해야 합니다.")
 	@Pattern(regexp = "^(19|20)\\d{2}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])$", message = "공연 날짜 형식이 잘못되었습니다. ex) '2024-01-01'")
@@ -82,10 +86,12 @@ public class PerformanceDto {
 	private Set<String> performanceTimes = new HashSet<>();
 
 	@Builder
-	public PerformanceDto(String userId, String performanceStartDate, String performanceEndDate,
-		String performanceType, Integer audienceCount, Integer price, String contactPhoneNum, String contactPersonName,
-		String performanceInfo, String performancePlace, Set<String> performanceTimes) {
+	public PerformanceDto(String userId, String performanceName, String performanceStartDate,
+		String performanceEndDate, String performanceType, Integer audienceCount, Integer price,
+		String contactPhoneNum, String contactPersonName, String performanceInfo, String performancePlace,
+		Set<String> performanceTimes) {
 		this.userId = userId;
+		this.performanceName = performanceName;
 		this.performanceStartDate = performanceStartDate;
 		this.performanceEndDate = performanceEndDate;
 		this.performanceType = performanceType;
@@ -101,7 +107,6 @@ public class PerformanceDto {
 	public List<PerformanceDay> toPerformanceDays(Performance performance) {
 		LocalDate start = stringToLocalDate(this.performanceStartDate);
 		LocalDate end = stringToLocalDate(this.performanceEndDate);
-		dateValidate(start, end);
 
 		return performanceTimes.stream()
 				.map(time -> PerformanceDay.builder()
@@ -122,13 +127,4 @@ public class PerformanceDto {
 		return DateTimeUtils.stringToLocalTime(time);
 	}
 
-	private void dateValidate(LocalDate start, LocalDate end) {
-		if(end.isBefore(start)) {
-			throw new InvalidPerformanceDateException(ErrorCode.PERFORMANCE_END_DATE_BEFORE_START_DATE.getMessage());
-		}
-
-		if(start.isBefore(LocalDate.now())) {
-			throw new InvalidPerformanceDateException(ErrorCode.PERFORMANCE_START_DATE_IN_THE_PAST.getMessage());
-		}
-	}
 }

@@ -29,9 +29,8 @@ public class PerformanceController {
 		return ResponseEntity.status(HttpStatus.CREATED).build();
 	}
 
-	@PutMapping("/{userId}")
-	public ResponseEntity performanceUpdate(@RequestBody @Validated PerformanceDto updateDto, @PathVariable String userId) {
-
-		return ResponseEntity.ok().build();
+	@PutMapping("/{performanceId}")
+	public ResponseEntity performanceUpdate(@RequestBody @Validated PerformanceDto updateDto, @PathVariable Long performanceId) {
+		return ResponseEntity.ok(performanceQueryService.updatePerformance(performanceId, updateDto));
 	}
 }

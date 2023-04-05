@@ -16,11 +16,11 @@ import com.reservation.performanceservice.factory.PerformanceTestDataFactory;
  * @author sgh
  * @since 2023.04.03
  */
-class PerformanceRegisterMapperTest {
-	private PerformanceRegisterMapper mapper = PerformanceRegisterMapper.INSTANCE;
+class PerformanceDtoMapperTest {
+	private PerformanceDtoMapper mapper = PerformanceDtoMapper.INSTANCE;
 
 	@Test
-	@DisplayName("PerformanceRegisterMapper 테스트 : toEntity")
+	@DisplayName("PerformanceDtoMapper 테스트 : toEntity")
 	void toEntityTest() {
 		//given
 		PerformanceDto registerDto = PerformanceTestDataFactory.createPerformanceDto();
@@ -33,5 +33,17 @@ class PerformanceRegisterMapperTest {
 		assertThat(result.getAudienceCount()).isEqualTo(registerDto.getAudienceCount());
 		assertThat(result.getPerformancePlace()).isEqualTo(registerDto.getPerformancePlace());
 	}
+
+	@Test
+	@DisplayName("PerformanceDtoMapper 테스트 : update")
+	void updateTest() {
+		//given
+		Performance performance = PerformanceTestDataFactory.createPerformance();
+
+		//when
+
+		//then
+	}
+
 
 }

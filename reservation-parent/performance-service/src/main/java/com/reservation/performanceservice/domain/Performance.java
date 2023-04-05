@@ -33,6 +33,8 @@ public class Performance extends BaseEntity {
 
 	private String userId;
 
+	private String performanceName;
+
 	@Convert(converter = PerformanceTypeConverter.class)
 	private PerformanceType performanceType;
 
@@ -48,9 +50,10 @@ public class Performance extends BaseEntity {
 
 	private String performancePlace;
 
-	private Performance(String userId, PerformanceType performanceType, Integer audienceCount, Integer price,
+	private Performance(String userId, String performanceName,PerformanceType performanceType, Integer audienceCount, Integer price,
 		String contactPhoneNum, String contactPersonName, String performanceInfo, String performancePlace) {
 		this.userId = userId;
+		this.performanceName = performanceName;
 		this.performanceType = performanceType;
 		this.audienceCount = audienceCount;
 		this.price = price;
@@ -60,9 +63,9 @@ public class Performance extends BaseEntity {
 		this.performancePlace = performancePlace;
 	}
 
-	public static Performance of(String register, PerformanceType performanceType, Integer audienceCount, Integer price,
+	public static Performance of(String userId, String performanceName, PerformanceType performanceType, Integer audienceCount, Integer price,
 		String contactPhoneNum, String contactPersonName, String performanceInfo, String performancePlace) {
-		return new Performance(register, performanceType, audienceCount, price, contactPhoneNum, contactPersonName,
+		return new Performance(userId, performanceName,performanceType, audienceCount, price, contactPhoneNum, contactPersonName,
 			performanceInfo, performancePlace);
 	}
 }

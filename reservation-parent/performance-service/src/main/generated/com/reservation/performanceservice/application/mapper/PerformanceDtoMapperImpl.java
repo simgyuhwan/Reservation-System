@@ -10,11 +10,11 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2023-04-05T11:30:05+0900",
+    date = "2023-04-05T17:25:42+0900",
     comments = "version: 1.5.2.Final, compiler: javac, environment: Java 17.0.5 (Oracle Corporation)"
 )
 @Component
-public class PerformanceRegisterMapperImpl implements PerformanceRegisterMapper {
+public class PerformanceDtoMapperImpl implements PerformanceDtoMapper {
 
     @Override
     public PerformanceDto toDto(Performance arg0) {
@@ -25,6 +25,7 @@ public class PerformanceRegisterMapperImpl implements PerformanceRegisterMapper 
         PerformanceDto.PerformanceDtoBuilder performanceDto = PerformanceDto.builder();
 
         performanceDto.userId( arg0.getUserId() );
+        performanceDto.performanceName( arg0.getPerformanceName() );
         if ( arg0.getPerformanceType() != null ) {
             performanceDto.performanceType( arg0.getPerformanceType().name() );
         }
@@ -80,6 +81,7 @@ public class PerformanceRegisterMapperImpl implements PerformanceRegisterMapper 
         }
 
         String userId = null;
+        String performanceName = null;
         Integer audienceCount = null;
         Integer price = null;
         String contactPhoneNum = null;
@@ -88,6 +90,7 @@ public class PerformanceRegisterMapperImpl implements PerformanceRegisterMapper 
         String performancePlace = null;
 
         userId = dto.getUserId();
+        performanceName = dto.getPerformanceName();
         audienceCount = dto.getAudienceCount();
         price = dto.getPrice();
         contactPhoneNum = dto.getContactPhoneNum();
@@ -98,7 +101,7 @@ public class PerformanceRegisterMapperImpl implements PerformanceRegisterMapper 
         PerformanceType performanceType = PerformanceType.findByType(dto.getPerformanceType());
         Long id = null;
 
-        Performance performance = new Performance( id, userId, performanceType, audienceCount, price, contactPhoneNum, contactPersonName, performanceInfo, performancePlace );
+        Performance performance = new Performance( id, userId, performanceName, performanceType, audienceCount, price, contactPhoneNum, contactPersonName, performanceInfo, performancePlace );
 
         return performance;
     }

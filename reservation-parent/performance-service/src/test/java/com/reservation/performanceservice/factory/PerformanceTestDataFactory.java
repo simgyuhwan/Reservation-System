@@ -10,6 +10,7 @@ import com.reservation.performanceservice.dto.request.PerformanceDto;
 
 public class PerformanceTestDataFactory {
 	public final static String USER_ID = "test1";
+	public final static String PERFORMANCE_NAME = "오페라의 유령";
 	public final static String PERFORMANCE_START_DATE = "2023-06-01";
 	public final static String PERFORMANCE_END_DATE = "2023-10-01";
 	public final static Set<String> PERFORMANCE_TIMES = Set.of("12:00", "14:00", "15:00");
@@ -24,6 +25,7 @@ public class PerformanceTestDataFactory {
 	public static PerformanceDto createPerformanceDto() {
 		return PerformanceDto.builder()
 			.userId(USER_ID)
+			.performanceName(PERFORMANCE_NAME)
 			.performanceStartDate(PERFORMANCE_START_DATE)
 			.performanceEndDate(PERFORMANCE_END_DATE)
 			.performanceTimes(PERFORMANCE_TIMES)
@@ -37,13 +39,14 @@ public class PerformanceTestDataFactory {
 			.build();
 	}
 
-	public static PerformanceDto createPerformanceDto(String userId, String performanceStartDt,
+	public static PerformanceDto createPerformanceDto(String userId, String performanceName,String performanceStartDt,
 		String performanceEndDt,
 		Set<String> performanceTimes, String performanceType, Integer audienceCount, Integer price,
 		String contactPhoneNum,
 		String contactPersonName, String performanceInfo, String performancePlace) {
 		return PerformanceDto.builder()
 			.userId(userId)
+			.performanceName(performanceName)
 			.performanceStartDate(performanceStartDt)
 			.performanceEndDate(performanceEndDt)
 			.performanceTimes(performanceTimes)
@@ -60,6 +63,7 @@ public class PerformanceTestDataFactory {
 	public static PerformanceDto createPerformanceDto(String startDt, String endDt) {
 		return PerformanceDto.builder()
 			.userId(USER_ID)
+			.performanceName(PERFORMANCE_NAME)
 			.performanceStartDate(startDt)
 			.performanceEndDate(endDt)
 			.performanceTimes(PERFORMANCE_TIMES)
@@ -74,7 +78,7 @@ public class PerformanceTestDataFactory {
 	}
 
 	public static Performance createPerformance() {
-		return Performance.of(USER_ID, PerformanceType.CONCERT, AUDIENCE_COUNT, PRICE, CONTACT_PHONE_NUMBER,
+		return Performance.of(USER_ID, PERFORMANCE_NAME, PerformanceType.CONCERT, AUDIENCE_COUNT, PRICE, CONTACT_PHONE_NUMBER,
 			CONTACT_PERSON_NAME, PERFORMANCE_INFO, PERFORMANCE_PLACE);
 	}
 
