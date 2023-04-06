@@ -249,6 +249,7 @@ public class PerformanceApiTest {
 			.andExpect(jsonPath("$.contactPersonName").value(performanceDto.getContactPersonName()));
 	}
 
+
 	private PerformanceDto createPerformanceDtoWithInvalidDate() {
 		return PerformanceTestDataFactory.createPerformanceDto("2023-05-01", "2023-04-01");
 	}

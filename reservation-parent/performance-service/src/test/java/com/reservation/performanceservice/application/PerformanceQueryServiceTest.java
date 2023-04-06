@@ -139,11 +139,8 @@ class PerformanceQueryServiceTest {
 		PerformanceDto resultDto = performanceQueryService.updatePerformance(performanceId, updateDto);
 
 		//then
-		// assertThat(resultDto)
-		// 	.isEqualTo(updateDto)
-		// 	.extracting(PerformanceDto::getPerformanceTimes)
-		// 	.isEqualTo(updateDto.getPerformanceTimes());
 		assertThat(resultDto.getPerformanceTimes().size()).isEqualTo(updateDto.getPerformanceTimes().size());
+		assertThat(resultDto.getUserId()).isEqualTo(updateDto.getUserId());
 	}
 
 	private PerformanceDto createPerformanceDto() {
