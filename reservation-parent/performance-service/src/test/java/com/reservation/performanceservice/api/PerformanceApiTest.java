@@ -290,11 +290,6 @@ public class PerformanceApiTest {
 	@Test
 	@DisplayName("공연 조회 API : 공연 조회 성공, 200 반환")
 	void returnOf200CodeForPerformanceSearchSuccess() throws Exception {
-		//given
-
-		//when
-
-		//then
 		mockMvc.perform(get(PERFORMANCE_BASE_API_URL + "/" + USER_ID))
 			.andExpect(status().isOk());
 	}

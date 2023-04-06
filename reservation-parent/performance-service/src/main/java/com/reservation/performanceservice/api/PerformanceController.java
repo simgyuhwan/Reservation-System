@@ -41,6 +41,7 @@ public class PerformanceController {
 	}
 
 	@GetMapping("/{userId}")
+	@Operation(summary = "[공연] 공연 전체 조회", description = "공연 전체 조회 API")
 	public List<PerformanceDto> performanceSelectAll(@PathVariable String userId) {
 		return performanceCommandService.selectPerformances(userId);
 	}

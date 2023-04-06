@@ -90,8 +90,14 @@ public class PerformanceTestDataFactory {
 			CONTACT_PERSON_NAME, PERFORMANCE_INFO, PERFORMANCE_PLACE, createDefaultPerformanceDays());
 	}
 
+	public static List<Performance> createPerformanceList() {
+		List<Performance> performances = new ArrayList<>();
+		performances.add(createPerformance());
+		return performances;
+	}
+
 	public static List<PerformanceDay> createDefaultPerformanceDays() {
-		ArrayList<PerformanceDay> performanceDays = new ArrayList<>();
+		List<PerformanceDay> performanceDays = new ArrayList<>();
 		performanceDays.add(createPerformanceDay());
 		return performanceDays;
 	}
