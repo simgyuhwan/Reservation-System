@@ -80,6 +80,11 @@ public class PerformanceTestDataFactory {
 			.build();
 	}
 
+	public static List<PerformanceDto> createPerformanceDtoList() {
+		return List.of(createPerformanceDto("2100-01-01", "2200-01-01"),
+			createPerformanceDto("2200-01-01", "2300-01-01"));
+	}
+
 	public static Performance createPerformance() {
 		return Performance.of(USER_ID, PERFORMANCE_NAME, PerformanceType.CONCERT, AUDIENCE_COUNT, PRICE, CONTACT_PHONE_NUMBER,
 			CONTACT_PERSON_NAME, PERFORMANCE_INFO, PERFORMANCE_PLACE, createDefaultPerformanceDays());

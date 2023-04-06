@@ -37,4 +37,11 @@ public class PerformanceControllerAdvice {
 		ErrorResponse errorResponse = ErrorResponseFactory.from(ErrorCode.NO_REGISTERED_PERFORMANCE_INFORMATION);
 		return ResponseEntity.badRequest().body(errorResponse);
 	}
+
+	@ExceptionHandler(NoContentException.class)
+	public ResponseEntity<ErrorResponse> noContentException(NoContentException e) {
+		log.error("{} 이 등록한 공연이 없습니다.", e.getUserId());
+		ErrorResponse errorResponse = ErrorResponseFactory.from(ErrorCode.NO_REGISTERED_PERFORMANCE_INFORMATION);
+		return ResponseEntity.badRequest().body(errorResponse);
+	}
 }

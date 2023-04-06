@@ -1,15 +1,19 @@
 package com.reservation.performanceservice.api;
 
 import static com.reservation.performanceservice.factory.PerformanceTestDataFactory.*;
+import static org.assertj.core.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.BDDMockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Stream;
 
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -21,14 +25,20 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
+import net.bytebuddy.description.method.MethodDescription;
+
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.reservation.common.error.ErrorCode;
+import com.reservation.performanceservice.application.PerformanceCommandService;
 import com.reservation.performanceservice.application.PerformanceQueryService;
 import com.reservation.performanceservice.dto.request.PerformanceDto;
 import com.reservation.performanceservice.error.InvalidPerformanceDateException;
+import com.reservation.performanceservice.error.NoContentException;
 import com.reservation.performanceservice.error.PerformanceControllerAdvice;
 import com.reservation.performanceservice.error.PerformanceNotFoundException;
 import com.reservation.performanceservice.factory.PerformanceTestDataFactory;
@@ -52,6 +62,9 @@ public class PerformanceApiTest {
 
 	@Mock
 	private PerformanceQueryService performanceQueryService;
+
+	@Mock
+	private PerformanceCommandService performanceCommandService;
 
 	@BeforeEach()
 	void init() {
@@ -249,6 +262,60 @@ public class PerformanceApiTest {
 			.andExpect(jsonPath("$.contactPersonName").value(performanceDto.getContactPersonName()));
 	}
 
+	@Test
+	@DisplayName("공연 조회 API : 회원 ID로 등록된 공연이 없을 시, 400 반환")
+	void ReturnsBadRequestWhenThereIsNoRegisteredPerformances() throws Exception {
+		//given
+		willThrow(NoContentException.class)
+			.given(performanceCommandService)
+				.selectPerformances(USER_ID);
+		//when,then
+		mockMvc.perform(get(PERFORMANCE_BASE_API_URL + "/" + USER_ID))
+			.andExpect(status().isBadRequest());
+	}
+
+	@Test
+	@DisplayName("공연 조회 API : 회원 ID로 등록된 공연이 없을 시, 오류 메시지 반환")
+	void ReturnsErrorMessageWhenThereIsNoRegisteredPerformances() throws Exception {
+		//given
+		willThrow(NoContentException.class)
+			.given(performanceCommandService)
+			.selectPerformances(USER_ID);
+
+		//when, then
+		mockMvc.perform(get(PERFORMANCE_BASE_API_URL + "/" + USER_ID))
+			.andExpect(jsonPath("$.message").value(ErrorCode.NO_REGISTERED_PERFORMANCE_INFORMATION.getMessage()));
+	}
+
+	@Test
+	@DisplayName("공연 조회 API : 공연 조회 성공, 200 반환")
+	void returnOf200CodeForPerformanceSearchSuccess() throws Exception {
+		//given
+
+		//when
+
+		//then
+		mockMvc.perform(get(PERFORMANCE_BASE_API_URL + "/" + USER_ID))
+			.andExpect(status().isOk());
+	}
+
+	@Test
+	@DisplayName("공연 조회 API : 공연 조회 성공, 데이터 일치 확인")
+	void matchPerformanceSearchSuccessReturnData() throws Exception {
+		//given
+		List<PerformanceDto> performanceDtoList = createPerformanceDtoList();
+		when(performanceCommandService.selectPerformances(USER_ID)).thenReturn(performanceDtoList);
+
+		//when
+		MvcResult result = mockMvc.perform(get(PERFORMANCE_BASE_API_URL + "/" + USER_ID))
+			.andExpect(status().isOk())
+			.andReturn();
+
+		//then
+		TypeToken<List<PerformanceDto>> token = new TypeToken<>() {};
+		List<PerformanceDto> returnedPerformanceDtoList = gson.fromJson(result.getResponse().getContentAsString(), token.getType());
+		assertThat(performanceDtoList.size()).isEqualTo(returnedPerformanceDtoList.size());
+	}
 
 	private PerformanceDto createPerformanceDtoWithInvalidDate() {
 		return PerformanceTestDataFactory.createPerformanceDto("2023-05-01", "2023-04-01");
