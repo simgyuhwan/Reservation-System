@@ -23,32 +23,7 @@ subprojects {
     apply plugin: 'org.springframework.boot'
 
     dependencies {
-        implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-        implementation 'org.springframework.boot:spring-boot-starter-web'
-        annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
         testImplementation 'org.springframework.boot:spring-boot-starter-test'
-
-        // lombok
-        compileOnly 'org.projectlombok:lombok'
-        implementation 'org.projectlombok:lombok:1.18.24'
-        annotationProcessor 'org.projectlombok:lombok'
-
-        // gson
-        implementation group: 'com.google.code.gson', name: 'gson', version: '2.9.1'
-
-        // mapstruct
-        implementation 'org.mapstruct:mapstruct:1.5.2.Final'
-        annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.2.Final'
-        annotationProcessor 'org.projectlombok:lombok-mapstruct-binding:0.2.0'
-
-        // h2
-        testImplementation group: 'com.h2database', name: 'h2', version: '1.4.200'
-
-        // validation
-        implementation 'org.springframework.boot:spring-boot-starter-validation'
-
-        // open-api
-        implementation group: 'org.springdoc', name: 'springdoc-openapi-starter-webmvc-ui', version: '2.0.0'
     }
 
     configurations {
@@ -72,6 +47,8 @@ project(":common") {
 
 project(":config") {
     dependencies {
+        // open-api
+        implementation group: 'org.springdoc', name: 'springdoc-openapi-starter-webmvc-ui', version: '2.0.0'
     }
     bootJar { enabled = false }
     jar { enabled = true }
@@ -93,6 +70,14 @@ project(':performance-service') {
         implementation(project(':common'))
         runtimeOnly 'com.mysql:mysql-connector-j'
     }
+
+    tasks.named('test') {
+        useJUnitPlatform()
+    }
+}
+
+project(':discoveryServer') {
+
 
     tasks.named('test') {
         useJUnitPlatform()

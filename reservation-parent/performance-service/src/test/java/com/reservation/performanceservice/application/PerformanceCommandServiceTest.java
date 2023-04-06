@@ -2,17 +2,14 @@ package com.reservation.performanceservice.application;
 
 import static com.reservation.performanceservice.factory.PerformanceTestDataFactory.*;
 import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 import java.util.Collections;
 import java.util.List;
 
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.BDDMockito;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Spy;
@@ -23,7 +20,6 @@ import com.reservation.performanceservice.dao.PerformanceRepository;
 import com.reservation.performanceservice.domain.Performance;
 import com.reservation.performanceservice.dto.request.PerformanceDto;
 import com.reservation.performanceservice.error.NoContentException;
-import com.reservation.performanceservice.factory.PerformanceTestDataFactory;
 
 /**
  * PerformanceCommandServiceTest.java
@@ -47,7 +43,7 @@ class PerformanceCommandServiceTest {
 	@DisplayName("공연 전체 조회 실패: 회원이 등록한 공연 정보가 없음, 예외 발생")
 	void NoPerformanceInformationRegisteredByTheMemberException() {
 		//given
-		when(performanceRepository.findByUserIdOrderByCreateDtDesc(USER_ID)).thenReturn(Collections.EMPTY_LIST);
+		when(performanceRepository.findByUserIdOrderByCreateDtDesc(USER_ID)).thenReturn(Collections.emptyList());
 
 		//when, then
 		assertThatThrownBy(() -> performanceCommandService.selectPerformances(USER_ID))

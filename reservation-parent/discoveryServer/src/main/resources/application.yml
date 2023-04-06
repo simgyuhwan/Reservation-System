@@ -1,0 +1,35 @@
+spring:
+  profiles:
+    active:
+      - dev
+
+---
+
+eureka:
+  instance:
+    hostname: localhost
+  client:
+    register-with-eureka: false
+    fetch-registry: false
+
+spring:
+  config:
+    activate:
+      on-profile: dev
+
+  logging:
+    level:
+      org:
+        hibernate:
+          SQL: DEBUG
+
+server:
+  port: 8761
+
+---
+spring:
+  config:
+    activate:
+      on-profile: proc
+
+

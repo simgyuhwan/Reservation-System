@@ -13,6 +13,7 @@
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/common" />
             <option value="$PROJECT_DIR$/config" />
+            <option value="$PROJECT_DIR$/discoveryServer" />
             <option value="$PROJECT_DIR$/member-service" />
             <option value="$PROJECT_DIR$/performance-service" />
           </set>
