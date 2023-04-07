@@ -54,7 +54,7 @@ project(":config") {
     jar { enabled = true }
 }
 
-project(":member-service") {
+project(":memberservice") {
     dependencies {
         implementation(project(':common'))
         runtimeOnly 'com.mysql:mysql-connector-j'
@@ -65,7 +65,7 @@ project(":member-service") {
     }
 }
 
-project(':performance-service') {
+project(':performanceservice') {
     dependencies {
         implementation(project(':common'))
         runtimeOnly 'com.mysql:mysql-connector-j'
@@ -76,8 +76,7 @@ project(':performance-service') {
     }
 }
 
-project(':discoveryServer') {
-
+project(':discoveryserver') {
     tasks.named('test') {
         useJUnitPlatform()
     }
