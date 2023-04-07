@@ -48,4 +48,4 @@ management:
   endpoints:
     web:
       exposure:
-        include: httptrace
+        include: health, info, metrics, bus, refresh

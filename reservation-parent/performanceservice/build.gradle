@@ -30,6 +30,9 @@ dependencies {
 
     // eureka client
     implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client:4.0.0'
+
+    // actuator
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
 }
 
 tasks.withType(JavaCompile) {
