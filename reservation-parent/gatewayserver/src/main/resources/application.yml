@@ -1,0 +1,41 @@
+spring:
+  profiles:
+    active:
+      - dev
+
+---
+server:
+  port: 8000
+
+spring:
+  config:
+    activate:
+      on-profile: dev
+  application:
+    name: gateway-server
+
+  cloud:
+    gateway:
+      routes:
+        # Member Service
+        - id: member-service
+          uri: lb://MEMBER-SERVICE
+          predicates:
+            - Path=/member-service/**
+          filters:
+            - RewritePath=/member-service/(?<segment>.*), /$\{segment}
+
+        # Performance Service
+        - id: performance-service
+          uri: lb://PERFORMANCE-SERVICE
+          predicates:
+            - Path=/performance-service/**
+          filters:
+            - RewritePath=/performance-service/(?<segment>.*), /$\{segment}
+
+eureka:
+  instance:
+    instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka

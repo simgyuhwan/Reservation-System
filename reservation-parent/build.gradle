@@ -81,3 +81,9 @@ project(':discoveryserver') {
         useJUnitPlatform()
     }
 }
+
+project(':gatewayserver') {
+    tasks.named('test') {
+        useJUnitPlatform()
+    }
+}

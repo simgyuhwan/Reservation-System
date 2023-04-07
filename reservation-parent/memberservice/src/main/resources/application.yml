@@ -11,7 +11,7 @@ springdoc:
 
 ---
 server:
-  port: 8888
+  port: 0
 
 spring:
   config:
@@ -46,6 +46,8 @@ eureka:
   client:
     service-url:
       defaultZone: http://localhost:8761/eureka
+  instance:
+    instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
 ---
 spring:
   config:
