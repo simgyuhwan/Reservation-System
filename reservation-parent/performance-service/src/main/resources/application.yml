@@ -10,10 +10,15 @@ springdoc:
     path: /swagger
 
 ---
+server:
+  port: 9999
+
 spring:
   config:
     activate:
       on-profile: dev
+  application:
+    name: performance-service
   datasource:
     url: jdbc:mysql://${DB_URL}:${DB_PORT}/${DB_TABLE}?serverTimezone=Asia/Seoul
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -36,9 +41,10 @@ spring:
         hibernate:
           SQL: DEBUG
 
-server:
-  port: 9999
-
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka
 ---
 spring:
   config:

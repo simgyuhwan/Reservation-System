@@ -78,7 +78,6 @@ project(':performance-service') {
 
 project(':discoveryServer') {
 
-
     tasks.named('test') {
         useJUnitPlatform()
     }
