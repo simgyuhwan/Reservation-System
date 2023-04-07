@@ -1,0 +1,60 @@
+version: "3.8"
+
+services:
+  zookeeper:
+    image: wurstmeister/zookeeper:3.4.6
+    container_name: zookeeper
+    ports:
+      - "2181:2181"
+    networks:
+      - kafka
+
+  kafka-1:
+    image: wurstmeister/kafka:2.13-2.8.1
+    container_name: kafka-1
+    environment:
+      KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9092
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka-1:9092
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_BROKER_ID: 1
+    ports:
+      - "9092:9092"
+    depends_on:
+      - zookeeper
+    networks:
+      - kafka
+
+  kafka-2:
+    image: wurstmeister/kafka:2.13-2.8.1
+    container_name: kafka-2
+    environment:
+      KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9092
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka-2:9092
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_BROKER_ID: 2
+    ports:
+      - "9093:9092"
+    depends_on:
+      - zookeeper
+    networks:
+      - kafka
+
+  kafka-3:
+    image: wurstmeister/kafka:2.13-2.8.1
+    container_name: kafka-3
+    environment:
+      KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9092
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka-3:9092
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_BROKER_ID: 3
+    ports:
+      - "9094:9092"
+    depends_on:
+      - zookeeper
+    networks:
+      - kafka
+
+#external true를 하면 만들어 놓은 network를 사용하고 bridge를 하면 새로 생성함
+networks:
+  kafka:
+    external: true
