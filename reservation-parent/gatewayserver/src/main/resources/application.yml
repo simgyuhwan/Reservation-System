@@ -16,6 +16,10 @@ spring:
 
   cloud:
     gateway:
+      default-filters:
+        - name: GlobalLogFilter
+          args:
+            message: Sring Cloud Gateway Global Log Filter
       routes:
         # Member Service
         - id: member-service
@@ -39,3 +43,9 @@ eureka:
   client:
     service-url:
       defaultZone: http://localhost:8761/eureka
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: httptrace
