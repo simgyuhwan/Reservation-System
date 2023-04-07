@@ -4,7 +4,6 @@ spring:
       - dev
 
 ---
-
 eureka:
   instance:
     hostname: localhost
@@ -16,12 +15,6 @@ spring:
   config:
     activate:
       on-profile: dev
-
-  logging:
-    level:
-      org:
-        hibernate:
-          SQL: DEBUG
 
 server:
   port: 8761
