@@ -33,6 +33,9 @@ dependencies {
 
     // actuator
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
+
+    // kafka stream
+    implementation 'org.springframework.cloud:spring-cloud-starter-stream-kafka:4.0.1'
 }
 
 tasks.withType(JavaCompile) {

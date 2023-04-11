@@ -35,6 +35,17 @@ spring:
     database: mysql
     database-platform: org.hibernate.dialect.MySQL57Dialect
 
+    # kafka
+    cloud:
+      stream:
+        kafka:
+          binder:
+            brokers: localhost:9092
+        bindings:
+          basicProducer-out-0:
+            destination: performance-info
+            content-type: application/json
+
   logging:
     level:
       org:
@@ -53,6 +64,7 @@ management:
     web:
       exposure:
         include: health, info, metrics, bus, refresh
+
 ---
 spring:
   config:

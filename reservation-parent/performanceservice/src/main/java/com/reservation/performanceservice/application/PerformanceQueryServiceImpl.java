@@ -1,19 +1,15 @@
 package com.reservation.performanceservice.application;
 
 import java.time.LocalDate;
-import java.util.List;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.reservation.common.error.ErrorCode;
 import com.reservation.common.util.DateTimeUtils;
-import com.reservation.performanceservice.application.mapper.PerformanceDayMapper;
 import com.reservation.performanceservice.application.mapper.PerformanceDtoMapper;
-import com.reservation.performanceservice.dao.PerformanceDayRepository;
 import com.reservation.performanceservice.dao.PerformanceRepository;
 import com.reservation.performanceservice.domain.Performance;
-import com.reservation.performanceservice.domain.PerformanceDay;
 import com.reservation.performanceservice.dto.request.PerformanceDto;
 import com.reservation.performanceservice.error.InvalidPerformanceDateException;
 import com.reservation.performanceservice.error.PerformanceNotFoundException;
@@ -28,11 +24,13 @@ import lombok.extern.slf4j.Slf4j;
 public class PerformanceQueryServiceImpl implements PerformanceQueryService {
 	private final PerformanceRepository performanceRepository;
 	private final PerformanceDtoMapper performanceDtoMapper;
+	private final PerformanceProducer performanceProducer;
 
 	@Override
 	public void createPerformance(PerformanceDto registrationDto) {
 		validatePerformanceDate(registrationDto);
 		performanceRepository.save(performanceDtoMapper.toEntity(registrationDto));
+		performanceProducer.sendPerformance(registrationDto);
 	}
 
 	@Override

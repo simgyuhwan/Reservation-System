@@ -7,12 +7,10 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import com.reservation.common.error.ErrorCode;
 import com.reservation.common.util.DateTimeUtils;
 import com.reservation.performanceservice.annotation.ValidPerformanceTimes;
 import com.reservation.performanceservice.domain.Performance;
 import com.reservation.performanceservice.domain.PerformanceDay;
-import com.reservation.performanceservice.error.InvalidPerformanceDateException;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Min;
@@ -25,8 +23,10 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Getter
+@ToString
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class PerformanceDto {
 	@Schema(description = "회원 ID", example = "test")

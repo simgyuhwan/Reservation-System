@@ -37,6 +37,14 @@ spring:
             - Path=/performance-service/**
           filters:
             - RewritePath=/performance-service/(?<segment>.*), /$\{segment}
+
+        # Reservation Service
+        - id: reservation-service
+          uri: lb://RESERVATION-SERVICE
+          predicates:
+            - Path=/reservation-service/**
+          filters:
+            - RewritePath=/reservation-service/(?<segment>.*), /$\{segment}
       httpclient:
         connect-timeout: 1000
         response-timeout: 10s

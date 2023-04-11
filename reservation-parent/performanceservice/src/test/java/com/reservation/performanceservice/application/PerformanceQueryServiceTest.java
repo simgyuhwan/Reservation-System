@@ -42,6 +42,9 @@ class PerformanceQueryServiceTest {
 	@Mock
 	private PerformanceRepository performanceRepository;
 
+	@Mock
+	private PerformanceProducer performanceProducer;
+
 	@Spy
 	private PerformanceDayMapper performanceDayMapper = PerformanceDayMapper.INSTANCE;
 
