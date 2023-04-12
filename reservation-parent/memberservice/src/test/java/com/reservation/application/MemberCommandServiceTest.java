@@ -1,5 +1,7 @@
 package com.reservation.application;
 
+import static com.reservation.factory.MemberTestConstants.*;
+import static com.reservation.factory.MemberTestDataFactory.*;
 import static org.assertj.core.api.Assertions.*;
 import static org.mockito.BDDMockito.*;
 
@@ -13,7 +15,6 @@ import org.mockito.Mock;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import com.reservation.factory.MemberTestDataFactory;
 import com.reservation.memberservice.application.MemberCommandServiceImpl;
 import com.reservation.memberservice.application.mapper.MemberInfoDtoMapper;
 import com.reservation.memberservice.application.mapper.SignUpRequestMapper;
@@ -50,7 +51,7 @@ public class MemberCommandServiceTest {
 	@DisplayName("회원 추가 테스트 : 회원 가입 성공 테스트")
 	void signUp() {
 		//given
-		SignUpDto request = MemberTestDataFactory.createSignUpDto();
+		SignUpDto request = createSignUpDto();
 		Member member = Member.from(request);
 
 		given(memberRepository.save(any(Member.class))).willReturn(member);
@@ -66,9 +67,9 @@ public class MemberCommandServiceTest {
 	@DisplayName("회원 추가 테스트 : 중복된 회원 예외 발생 테스트")
 	void duplicateMemberRegistrationExceptionOccurs() {
 		//given, when
-		SignUpDto request = MemberTestDataFactory.createSignUpDto();
+		SignUpDto request = createSignUpDto();
 
-		given(memberRepository.existsByUserId(MemberTestDataFactory.USER_ID)).willReturn(true);
+		given(memberRepository.existsByUserId(USER_ID)).willReturn(true);
 
 		//then
 		assertThatThrownBy(() -> memberService.signUp(request))
@@ -79,11 +80,11 @@ public class MemberCommandServiceTest {
 	@DisplayName("회원 수정 테스트 : 존재하지 않는 회원 예외 발생 테스트")
 	void nonexistentMemberException() {
 		//given
-		given(memberRepository.findByUserId(MemberTestDataFactory.USER_ID)).willReturn(Optional.ofNullable(null));
+		given(memberRepository.findByUserId(USER_ID)).willReturn(Optional.ofNullable(null));
 
 		//then
-		assertThatThrownBy(() -> memberService.updateMemberInfo(MemberTestDataFactory.USER_ID,
-			MemberTestDataFactory.createUpdateMemberDto()))
+		assertThatThrownBy(() -> memberService.updateMemberInfo(USER_ID,
+			createUpdateMemberDto()))
 			.isInstanceOf(MemberNotFoundException.class);
 	}
 
@@ -91,12 +92,12 @@ public class MemberCommandServiceTest {
 	@DisplayName("회원 수정 테스트 : 회원 수정 성공 테스트")
 	void memberModificationSuccessTest() {
 		//given
-		MemberInfoDto memberInfoDto = MemberTestDataFactory.createMemberInfoDto();
+		MemberInfoDto memberInfoDto = createMemberInfoDto();
 
-		given(memberRepository.findByUserId(MemberTestDataFactory.USER_ID)).willReturn(Optional.of(MemberTestDataFactory.createMember()));
+		given(memberRepository.findByUserId(USER_ID)).willReturn(Optional.of(createMember()));
 
 		//when
-		MemberInfoDto result = memberService.updateMemberInfo(MemberTestDataFactory.USER_ID, MemberTestDataFactory.createUpdateMemberDto());
+		MemberInfoDto result = memberService.updateMemberInfo(USER_ID, createUpdateMemberDto());
 
 		//then
 		assertThat(result.getUserId()).isEqualTo(memberInfoDto.getUserId());

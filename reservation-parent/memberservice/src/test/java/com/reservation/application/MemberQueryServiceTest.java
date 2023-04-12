@@ -1,5 +1,6 @@
 package com.reservation.application;
 
+import static com.reservation.factory.MemberTestConstants.*;
 import static org.assertj.core.api.Assertions.*;
 import static org.mockito.BDDMockito.*;
 
@@ -50,7 +51,7 @@ public class MemberQueryServiceTest {
 		MemberInfoDto findMemberDto = memberQueryService.findMemberByUserId(member.getUserId());
 
 		//then
-		assertThat(findMemberDto.getUserId()).isEqualTo(MemberTestDataFactory.USER_ID);
+		assertThat(findMemberDto.getUserId()).isEqualTo(USER_ID);
 	}
 
 	@Test
@@ -60,7 +61,7 @@ public class MemberQueryServiceTest {
 		given(memberRepository.findByUserId(any())).willReturn(Optional.ofNullable(null));
 
 		//when
-		assertThatThrownBy(() -> memberQueryService.findMemberByUserId(MemberTestDataFactory.USER_ID))
+		assertThatThrownBy(() -> memberQueryService.findMemberByUserId(USER_ID))
 			.isInstanceOf(MemberNotFoundException.class);
 	}
 

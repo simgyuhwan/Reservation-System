@@ -1,5 +1,6 @@
 package com.reservation.api;
 
+import static com.reservation.factory.MemberTestConstants.*;
 import static com.reservation.factory.MemberTestDataFactory.*;
 import static org.hamcrest.Matchers.*;
 import static org.mockito.Mockito.any;
