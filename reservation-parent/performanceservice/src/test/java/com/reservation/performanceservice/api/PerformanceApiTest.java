@@ -139,7 +139,7 @@ public class PerformanceApiTest {
 	}
 
 	@ParameterizedTest
-	@MethodSource("registerValidityArgumentsList")
+	@MethodSource("invalidRegistrationValues")
 	@DisplayName("공연 등록 API : 필수 값 없을 시, Bed Request 반환")
 	void performanceRegistrationMandatoryExceptions(PerformanceDto registerDto) throws Exception {
 		mockMvc.perform(post(PERFORMANCE_BASE_API_URL)
@@ -322,7 +322,7 @@ public class PerformanceApiTest {
 		return "#".repeat(PERFORMANCE_MAXIMUM_COUNT + 1);
 	}
 
-	static Stream<Arguments> registerValidityArgumentsList() {
+	static Stream<Arguments> invalidRegistrationValues() {
 		return Stream.of(
 			Arguments.of(
 				createPerformanceDto(null, PERFORMANCE_NAME, PERFORMANCE_START_DATE, PERFORMANCE_END_DATE, PERFORMANCE_TIMES, PERFORMANCE_TYPE, AUDIENCE_COUNT,

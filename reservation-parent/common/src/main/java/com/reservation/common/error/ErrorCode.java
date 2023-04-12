@@ -25,7 +25,11 @@ public enum ErrorCode {
 	WRONG_PHONE_NUMBER("핸드폰 번호의 양식과 맞지 않습니다. ex) 010-xxxx-xxxx", 400),
 	NO_REGISTERED_PERFORMANCE_INFORMATION("등록된 공연 정보가 없습니다.", 400),
 	PERFORMANCE_NOT_FOUND_MESSAGE("해당 performanceId로 등록된 공연 정보가 없습니다. performanceId :", 400),
-	PERFORMANCE_DAY_NOT_FOUND_MESSAGE("해당 performanceId로 등록된 공연 날짜 정보가 없습니다. performanceId : ", 400);
+	PERFORMANCE_DAY_NOT_FOUND_MESSAGE("해당 performanceId로 등록된 공연 날짜 정보가 없습니다. performanceId : ", 400),
+
+	// reservation
+	RESERVATION_SEARCH_VALUE_INVALID("예약 가능한 공연 조회 값이 올바르지 않습니다.", 400);
+	;
 
 	private final String message;
 	private final int status;

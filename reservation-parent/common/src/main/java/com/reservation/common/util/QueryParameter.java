@@ -13,10 +13,10 @@ import lombok.Getter;
 @Getter
 public class QueryParameter {
     private String key;
-    private String value;
+    private Object value;
 
     @Builder
-    private QueryParameter(String key, String value) {
+    private QueryParameter(String key, Object value) {
         this.key = key;
         this.value = value;
     }
@@ -26,7 +26,7 @@ public class QueryParameter {
         return key + "=" + value;
     }
 
-    public QueryParameter of(String key, String value) {
+    public static QueryParameter of(String key, Object value) {
         return QueryParameter.builder()
             .key(key)
             .value(value)
