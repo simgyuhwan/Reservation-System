@@ -1,6 +1,6 @@
 package com.reservation.performanceservice.application;
 
-import static com.reservation.performanceservice.factory.PerformanceTestDataFactory.*;
+import static com.reservation.performanceservice.factory.PerformanceTestConstants.*;
 import static org.assertj.core.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.BDDMockito.*;
