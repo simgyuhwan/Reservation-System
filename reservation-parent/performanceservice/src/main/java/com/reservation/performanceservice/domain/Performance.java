@@ -1,14 +1,11 @@
 package com.reservation.performanceservice.domain;
 
-import static java.util.stream.Collectors.*;
-
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 import com.reservation.common.model.BaseEntity;
+import com.reservation.common.type.PerformanceType;
+import com.reservation.common.type.PerformanceTypeConverter;
 import com.reservation.performanceservice.dto.request.PerformanceDto;
 
 import jakarta.persistence.CascadeType;

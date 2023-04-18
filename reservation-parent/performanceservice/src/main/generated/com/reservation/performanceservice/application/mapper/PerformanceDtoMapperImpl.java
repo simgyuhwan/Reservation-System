@@ -2,7 +2,7 @@ package com.reservation.performanceservice.application.mapper;
 
 import com.reservation.performanceservice.domain.Performance;
 import com.reservation.performanceservice.domain.PerformanceDay;
-import com.reservation.performanceservice.domain.PerformanceType;
+import com.reservation.common.type.PerformanceType;
 import com.reservation.performanceservice.dto.request.PerformanceDto;
 import java.util.ArrayList;
 import java.util.List;

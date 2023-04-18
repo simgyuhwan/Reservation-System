@@ -1,4 +1,4 @@
-package com.reservation.performanceservice.domain;
+package com.reservation.common.type;
 
 import java.util.Objects;
 

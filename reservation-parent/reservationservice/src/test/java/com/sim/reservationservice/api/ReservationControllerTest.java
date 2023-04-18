@@ -20,16 +20,19 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.BDDMockito;
 import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import com.google.gson.Gson;
 import com.reservation.common.error.ErrorCode;
 import com.reservation.common.util.QueryParameter;
 import com.reservation.common.util.QueryParameterUtils;
+import com.sim.reservationservice.application.PerformanceQueryService;
 import com.sim.reservationservice.error.ReservationControllerAdvice;
 
 /**
@@ -42,12 +45,15 @@ import com.sim.reservationservice.error.ReservationControllerAdvice;
 @ExtendWith(MockitoExtension.class)
 class ReservationControllerTest {
 	private static String RESERVATION_BASE_URL = "/api/performances";
-	private static String VIEW_AVAILABLE_PERFORMANCES_URL = "/api/performances/available?";
+	private static String VIEW_RESERVATION_STATUS_URL = "/api/performances/available?";
 	private MockMvc mockMvc;
 	private Gson gson;
 
 	@InjectMocks
 	private ReservationController reservationController;
+
+	@Mock
+	private PerformanceQueryService performanceQueryService;
 
 	@BeforeEach
 	void init() {
@@ -62,19 +68,20 @@ class ReservationControllerTest {
 	// @DisplayName("공연 예약 현황 API : 모든 조건이 존재할 때, 공연 정보 반환")
 	// void returnPerformanceInformationWhenAllConditionsExist() throws Exception {
 	// 	//given
-	// 	when(performanceQueryService.)
+	// 	when(performanceQueryService.selectPerformances(any(), any())).thenReturn(performanceInfoList);
 	// 	//when
-	//
+	// 	ResultActions result = mockMvc.perform(get(VIEW_RESERVATION_STATUS_URL + createNormalQueryStrings()))
+	// 		.andExpect(status().isOk());
 	// 	//then
-	// 	assertThat(performanceInfos).isNotEmpty();
-	// 	assertThat(performanceInfos.get(0).getName()).isEqualsTo(...);
+	// 	result.andExpect(jsonPath("$.performanceInfoList").isNotEmpty())
+	// 		.andExpect(jsonPath("$.performanceInfoList[0].name").value("바람과 함께 사라지다"));
 	// }
 
 	@Test
 	@DisplayName("공연 예약 현황 API : 모든 조건이 존재할 때, 200 상태 코드 반환")
 	void allConditionsPresentReturnCode200() throws Exception {
 		String NORMAL_PARAMETERS = createNormalQueryStrings();
-		mockMvc.perform(get(VIEW_AVAILABLE_PERFORMANCES_URL + NORMAL_PARAMETERS)
+		mockMvc.perform(get(VIEW_RESERVATION_STATUS_URL + NORMAL_PARAMETERS)
 				.contentType(MediaType.APPLICATION_JSON))
 			.andExpect(status().isOk());
 	}
@@ -83,14 +90,14 @@ class ReservationControllerTest {
 	@Test
 	@DisplayName("공연 예약 현황 API : 현재일 보다 이전 날짜로 조회시, 400 코드 반환")
 	void nonExistentConditionReturns400Code() throws Exception{
-		mockMvc.perform(get( VIEW_AVAILABLE_PERFORMANCES_URL + createDateQueryStrings("1999-01-01", "1999-01-01")))
+		mockMvc.perform(get( VIEW_RESERVATION_STATUS_URL + createDateQueryStrings("1999-01-01", "1999-01-01")))
 		.andExpect(status().isBadRequest());
 	}
 
 	@Test
 	@DisplayName("공연 예약 현황 API : 현재일 보다 이전 날짜로 조회시, 오류 메시지 반환")
 	void nonExistentConditionReturnsErrorMessage() throws Exception{
-		mockMvc.perform(get( VIEW_AVAILABLE_PERFORMANCES_URL + createDateQueryStrings("1999-01-01", "1999-01-01")))
+		mockMvc.perform(get( VIEW_RESERVATION_STATUS_URL + createDateQueryStrings("1999-01-01", "1999-01-01")))
 			.andExpect(status().isBadRequest())
 			.andExpect(jsonPath("$.message").value(ErrorCode.RESERVATION_SEARCH_VALUE_INVALID.getMessage()));
 	}
@@ -99,7 +106,7 @@ class ReservationControllerTest {
 	@MethodSource("wrongDateAndTimeQueryStrings")
 	@DisplayName("공연 예약 현황 API : 잘못된 날짜, 시간 포맷시, 400 코드 반환")
 	void invalidDateOrTimeFormatReturns400Code(String invalidDateString) throws Exception {
-		mockMvc.perform(get(VIEW_AVAILABLE_PERFORMANCES_URL + invalidDateString))
+		mockMvc.perform(get(VIEW_RESERVATION_STATUS_URL + invalidDateString))
 			.andExpect(status().isBadRequest());
 	}
 
