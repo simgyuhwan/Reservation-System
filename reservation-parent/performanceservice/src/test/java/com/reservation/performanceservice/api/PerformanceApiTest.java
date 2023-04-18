@@ -31,8 +31,8 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.reservation.common.error.ErrorCode;
-import com.reservation.performanceservice.application.PerformanceCommandService;
 import com.reservation.performanceservice.application.PerformanceQueryService;
+import com.reservation.performanceservice.application.PerformanceCommandService;
 import com.reservation.performanceservice.dto.request.PerformanceDto;
 import com.reservation.performanceservice.error.InvalidPerformanceDateException;
 import com.reservation.performanceservice.error.NoContentException;
@@ -49,10 +49,10 @@ public class PerformanceApiTest {
 	private PerformanceController performanceController;
 
 	@Mock
-	private PerformanceQueryService performanceQueryService;
+	private PerformanceCommandService performanceCommandService;
 
 	@Mock
-	private PerformanceCommandService performanceCommandService;
+	private PerformanceQueryService performanceQueryService;
 
 	@BeforeEach()
 	void init() {
@@ -76,7 +76,7 @@ public class PerformanceApiTest {
 	void incorrectRegistrationScheduleErrorReturned() throws Exception {
 		//when
 		willThrow(InvalidPerformanceDateException.class)
-			.given(performanceQueryService)
+			.given(performanceCommandService)
 			.createPerformance(any());
 
 		ResultActions result = mockMvc.perform(post(PERFORMANCE_BASE_API_URL)
@@ -209,7 +209,7 @@ public class PerformanceApiTest {
 		//given
 		Long performanceId = 1L;
 		willThrow(PerformanceNotFoundException.class)
-			.given(performanceQueryService)
+			.given(performanceCommandService)
 				.updatePerformance(any(), any());
 
 		//when,then
@@ -239,7 +239,7 @@ public class PerformanceApiTest {
 		//given
 		Long performanceId = 1L;
 		PerformanceDto performanceDto = createPerformanceDto();
-		when(performanceQueryService.updatePerformance(any(), any())).thenReturn(performanceDto);
+		when(performanceCommandService.updatePerformance(any(), any())).thenReturn(performanceDto);
 
 		//when, then
 		mockMvc.perform(put(PERFORMANCE_BASE_API_URL + "/" + performanceId)
@@ -255,7 +255,7 @@ public class PerformanceApiTest {
 	void ReturnsBadRequestWhenThereIsNoRegisteredPerformances() throws Exception {
 		//given
 		willThrow(NoContentException.class)
-			.given(performanceCommandService)
+			.given(performanceQueryService)
 				.selectPerformances(USER_ID);
 		//when,then
 		mockMvc.perform(get(PERFORMANCE_BASE_API_URL + "/" + USER_ID))
@@ -267,7 +267,7 @@ public class PerformanceApiTest {
 	void ReturnsErrorMessageWhenThereIsNoRegisteredPerformances() throws Exception {
 		//given
 		willThrow(NoContentException.class)
-			.given(performanceCommandService)
+			.given(performanceQueryService)
 			.selectPerformances(USER_ID);
 
 		//when, then
@@ -287,7 +287,7 @@ public class PerformanceApiTest {
 	void matchPerformanceSearchSuccessReturnData() throws Exception {
 		//given
 		List<PerformanceDto> performanceDtoList = createPerformanceDtoList();
-		when(performanceCommandService.selectPerformances(USER_ID)).thenReturn(performanceDtoList);
+		when(performanceQueryService.selectPerformances(USER_ID)).thenReturn(performanceDtoList);
 
 		//when
 		MvcResult result = mockMvc.perform(get(PERFORMANCE_BASE_API_URL + "/" + USER_ID))

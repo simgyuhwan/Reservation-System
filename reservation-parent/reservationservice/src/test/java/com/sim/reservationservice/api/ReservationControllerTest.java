@@ -1,6 +1,8 @@
 package com.sim.reservationservice.api;
 
 import static com.sim.reservationservice.factory.ReservationTestConstants.*;
+import static org.assertj.core.api.Assertions.*;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -8,14 +10,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
 
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.mockito.BDDMockito;
 import org.mockito.InjectMocks;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
@@ -55,8 +58,20 @@ class ReservationControllerTest {
 		gson = new Gson();
 	}
 
+	// @Test
+	// @DisplayName("공연 예약 현황 API : 모든 조건이 존재할 때, 공연 정보 반환")
+	// void returnPerformanceInformationWhenAllConditionsExist() throws Exception {
+	// 	//given
+	// 	when(performanceQueryService.)
+	// 	//when
+	//
+	// 	//then
+	// 	assertThat(performanceInfos).isNotEmpty();
+	// 	assertThat(performanceInfos.get(0).getName()).isEqualsTo(...);
+	// }
+
 	@Test
-	@DisplayName("예약 가능한 공연 조회 API : 모든 조건이 존재할 때, 200 상태 코드 반환")
+	@DisplayName("공연 예약 현황 API : 모든 조건이 존재할 때, 200 상태 코드 반환")
 	void allConditionsPresentReturnCode200() throws Exception {
 		String NORMAL_PARAMETERS = createNormalQueryStrings();
 		mockMvc.perform(get(VIEW_AVAILABLE_PERFORMANCES_URL + NORMAL_PARAMETERS)
@@ -64,15 +79,16 @@ class ReservationControllerTest {
 			.andExpect(status().isOk());
 	}
 
+
 	@Test
-	@DisplayName("예약 가능한 공연 조회 API : 현재일 보다 이전 날짜로 조회시, 400 코드 반환")
+	@DisplayName("공연 예약 현황 API : 현재일 보다 이전 날짜로 조회시, 400 코드 반환")
 	void nonExistentConditionReturns400Code() throws Exception{
 		mockMvc.perform(get( VIEW_AVAILABLE_PERFORMANCES_URL + createDateQueryStrings("1999-01-01", "1999-01-01")))
 		.andExpect(status().isBadRequest());
 	}
 
 	@Test
-	@DisplayName("예약 가능한 공연 조회 API : 현재일 보다 이전 날짜로 조회시, 오류 메시지 반환")
+	@DisplayName("공연 예약 현황 API : 현재일 보다 이전 날짜로 조회시, 오류 메시지 반환")
 	void nonExistentConditionReturnsErrorMessage() throws Exception{
 		mockMvc.perform(get( VIEW_AVAILABLE_PERFORMANCES_URL + createDateQueryStrings("1999-01-01", "1999-01-01")))
 			.andExpect(status().isBadRequest())
@@ -81,9 +97,9 @@ class ReservationControllerTest {
 
 	@ParameterizedTest
 	@MethodSource("wrongDateAndTimeQueryStrings")
-	@DisplayName("예약 가능한 공연 조회 API : 잘못된 날짜, 시간 포맷시, 400 코드 반환")
-	void invalidDateOrTimeFormatReturns400Code(String queryString) throws Exception {
-		mockMvc.perform(get(VIEW_AVAILABLE_PERFORMANCES_URL + queryString))
+	@DisplayName("공연 예약 현황 API : 잘못된 날짜, 시간 포맷시, 400 코드 반환")
+	void invalidDateOrTimeFormatReturns400Code(String invalidDateString) throws Exception {
+		mockMvc.perform(get(VIEW_AVAILABLE_PERFORMANCES_URL + invalidDateString))
 			.andExpect(status().isBadRequest());
 	}
 

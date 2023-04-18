@@ -39,7 +39,7 @@ public class PerformanceDto {
 	private String performanceName;
 
 	@Schema(description = "공연 시작 날짜", example = "2024-01-01")
-	@NotBlank(message = "공연 시작 날짜는 반드시 입력해야 합니다.")
+	@NotBlank(message = "공연 시작 날짜는 반드시 입력 해야 합니다.")
 	@Pattern(regexp = "^(19|20)\\d{2}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])$", message = "공연 날짜 형식이 잘못되었습니다. ex) '2024-01-01'")
 	private String performanceStartDate;
 
@@ -80,7 +80,7 @@ public class PerformanceDto {
 	@NotBlank(message = "공연 장소는 반드시 입력해야 합니다.")
 	private String performancePlace;
 
-	@Schema(description = "공연 시간", example = "[15:00]")
+	@Schema(description = "공연 시작 시간", example = "[15:00]")
 	@NotEmpty(message = "공연 시간은 최소 1가지 이상 입력해야 합니다.")
 	@ValidPerformanceTimes
 	private Set<String> performanceTimes = new HashSet<>();

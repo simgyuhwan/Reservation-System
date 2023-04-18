@@ -1,48 +1,62 @@
 package com.reservation.performanceservice.application;
 
-import static java.util.stream.Collectors.*;
-
-import java.util.List;
-import java.util.stream.Collectors;
+import java.time.LocalDate;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import com.reservation.common.error.ErrorCode;
+import com.reservation.common.util.DateTimeUtils;
 import com.reservation.performanceservice.application.mapper.PerformanceDtoMapper;
 import com.reservation.performanceservice.dao.PerformanceRepository;
 import com.reservation.performanceservice.domain.Performance;
 import com.reservation.performanceservice.dto.request.PerformanceDto;
-import com.reservation.performanceservice.error.NoContentException;
+import com.reservation.performanceservice.error.InvalidPerformanceDateException;
+import com.reservation.performanceservice.error.PerformanceNotFoundException;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-/**
- * PerformanceCommandServiceImpl.java
- * 공연 Command 관련 서비스 구현체
- *
- * @author sgh
- * @since 2023.04.06
- */
 @Slf4j
 @Service
+@Transactional
 @RequiredArgsConstructor
-public class PerformanceCommandServiceImpl implements PerformanceCommandService{
-    private final PerformanceRepository performanceRepository;
-    private final PerformanceDtoMapper performanceDtoMapper;
+public class PerformanceCommandServiceImpl implements PerformanceCommandService {
+	private final PerformanceRepository performanceRepository;
+	private final PerformanceDtoMapper performanceDtoMapper;
+	private final PerformanceProducer performanceProducer;
 
-    @Override
-    public List<PerformanceDto> selectPerformances(String userId) {
-        List<Performance> performances = findByUserId(userId);
-        return performances.stream()
-            .map(performanceDtoMapper::toDto)
-            .collect(toList());
-    }
+	@Override
+	public void createPerformance(PerformanceDto registrationDto) {
+		validatePerformanceDate(registrationDto);
+		performanceRepository.save(performanceDtoMapper.toEntity(registrationDto));
+		performanceProducer.sendPerformance(registrationDto);
+	}
 
-    private List<Performance> findByUserId(String userId) {
-        List<Performance> performances = performanceRepository.findByUserIdOrderByCreateDtDesc(userId);
-        if(performances.isEmpty()) {
-            throw new NoContentException();
-        }
-        return performances;
-    }
+	@Override
+	public PerformanceDto updatePerformance(Long performanceId, PerformanceDto updateDto) {
+		validatePerformanceDate(updateDto);
+		Performance performance = getPerformanceById(performanceId);
+		performance.updateFromDto(updateDto);
+		return performanceDtoMapper.toDto(performance);
+	}
+
+	private Performance getPerformanceById(Long performanceId) {
+		return performanceRepository.findById(performanceId)
+			.orElseThrow(() -> new PerformanceNotFoundException(
+				ErrorCode.PERFORMANCE_DAY_NOT_FOUND_MESSAGE.getMessage() + performanceId));
+	}
+
+	private void validatePerformanceDate(PerformanceDto performanceDto) {
+		LocalDate start = DateTimeUtils.stringToLocalDate(performanceDto.getPerformanceStartDate());
+		LocalDate end = DateTimeUtils.stringToLocalDate(performanceDto.getPerformanceEndDate());
+
+		if(end.isBefore(start)) {
+			throw new InvalidPerformanceDateException(ErrorCode.PERFORMANCE_END_DATE_BEFORE_START_DATE.getMessage());
+		}
+
+		if(start.isBefore(LocalDate.now())) {
+			throw new InvalidPerformanceDateException(ErrorCode.PERFORMANCE_START_DATE_IN_THE_PAST.getMessage());
+		}
+	}
 }
