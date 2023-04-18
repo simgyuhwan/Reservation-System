@@ -29,8 +29,8 @@ public class PerformanceCommandServiceImpl implements PerformanceCommandService 
 	@Override
 	public void createPerformance(PerformanceDto registrationDto) {
 		validatePerformanceDate(registrationDto);
-		performanceRepository.save(performanceDtoMapper.toEntity(registrationDto));
-		performanceProducer.sendPerformance(registrationDto);
+		Performance performance = performanceRepository.save(performanceDtoMapper.toEntity(registrationDto));
+		performanceProducer.sendPerformance(performanceDtoMapper.toDto(performance));
 	}
 
 	@Override

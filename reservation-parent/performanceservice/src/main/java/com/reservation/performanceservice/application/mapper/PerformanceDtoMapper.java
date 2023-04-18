@@ -5,7 +5,6 @@ import static java.util.stream.Collectors.*;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import org.mapstruct.AfterMapping;
 import org.mapstruct.Mapper;
@@ -30,10 +29,11 @@ import com.reservation.performanceservice.dto.request.PerformanceDto;
 public interface PerformanceDtoMapper extends GenericMapper<PerformanceDto, Performance> {
 	PerformanceDtoMapper INSTANCE = Mappers.getMapper(PerformanceDtoMapper.class);
 
-	@Mapping(target = "performanceType", expression = "java(PerformanceType.findByType(dto.getPerformanceType()))")
+	@Mapping(target = "performanceType", expression = "java(com.reservation.common.type.PerformanceType.findByType(dto.getPerformanceType()))")
 	@Override
 	Performance toEntity(PerformanceDto dto);
 
+	@Mapping(target = "performanceId", source = "id")
 	@Mapping(target = "performanceType", expression = "java(entity.getPerformanceType().getType())")
 	@Mapping(target = "performanceTimes", source = "performanceDays", qualifiedByName = "mapTimesSet")
 	@Mapping(target = "performanceStartDate", source = "performanceDays", qualifiedByName = "startDateString")

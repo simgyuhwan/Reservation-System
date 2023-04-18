@@ -1,8 +1,8 @@
 package com.reservation.performanceservice.application.mapper;
 
+import com.reservation.common.type.PerformanceType;
 import com.reservation.performanceservice.domain.Performance;
 import com.reservation.performanceservice.domain.PerformanceDay;
-import com.reservation.common.type.PerformanceType;
 import com.reservation.performanceservice.dto.request.PerformanceDto;
 import java.util.ArrayList;
 import java.util.List;
@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2023-04-11T15:34:46+0900",
+    date = "2023-04-18T15:03:07+0900",
     comments = "version: 1.5.2.Final, compiler: javac, environment: Java 17.0.5 (Oracle Corporation)"
 )
 @Component
@@ -78,7 +78,7 @@ public class PerformanceDtoMapperImpl implements PerformanceDtoMapper {
         performanceInfo = dto.getPerformanceInfo();
         performancePlace = dto.getPerformancePlace();
 
-        PerformanceType performanceType = PerformanceType.findByType(dto.getPerformanceType());
+        PerformanceType performanceType = com.reservation.common.type.PerformanceType.findByType(dto.getPerformanceType());
         Long id = null;
         List<PerformanceDay> performanceDays = null;
 
@@ -97,6 +97,7 @@ public class PerformanceDtoMapperImpl implements PerformanceDtoMapper {
 
         PerformanceDto.PerformanceDtoBuilder performanceDto = PerformanceDto.builder();
 
+        performanceDto.performanceId( entity.getId() );
         performanceDto.performanceTimes( mapTimesSetString( entity.getPerformanceDays() ) );
         performanceDto.performanceStartDate( mapStartDateString( entity.getPerformanceDays() ) );
         performanceDto.performanceEndDate( mapEndDateString( entity.getPerformanceDays() ) );
