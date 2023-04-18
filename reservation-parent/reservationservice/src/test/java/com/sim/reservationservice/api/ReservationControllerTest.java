@@ -1,16 +1,15 @@
 package com.sim.reservationservice.api;
 
 import static com.sim.reservationservice.factory.ReservationTestConstants.*;
-import static org.assertj.core.api.Assertions.*;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Stream;
 
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -18,7 +17,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
-import org.mockito.BDDMockito;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -33,7 +31,9 @@ import com.reservation.common.error.ErrorCode;
 import com.reservation.common.util.QueryParameter;
 import com.reservation.common.util.QueryParameterUtils;
 import com.sim.reservationservice.application.PerformanceQueryService;
+import com.sim.reservationservice.dto.response.PerformanceInfo;
 import com.sim.reservationservice.error.ReservationControllerAdvice;
+import com.sim.reservationservice.factory.ReservationTestDataFactory;
 
 /**
  * ReservationControllerTest.java
@@ -64,18 +64,32 @@ class ReservationControllerTest {
 		gson = new Gson();
 	}
 
-	// @Test
-	// @DisplayName("공연 예약 현황 API : 모든 조건이 존재할 때, 공연 정보 반환")
-	// void returnPerformanceInformationWhenAllConditionsExist() throws Exception {
-	// 	//given
-	// 	when(performanceQueryService.selectPerformances(any(), any())).thenReturn(performanceInfoList);
-	// 	//when
-	// 	ResultActions result = mockMvc.perform(get(VIEW_RESERVATION_STATUS_URL + createNormalQueryStrings()))
-	// 		.andExpect(status().isOk());
-	// 	//then
-	// 	result.andExpect(jsonPath("$.performanceInfoList").isNotEmpty())
-	// 		.andExpect(jsonPath("$.performanceInfoList[0].name").value("바람과 함께 사라지다"));
-	// }
+	@Test
+	@DisplayName("공연 예약 현황 API : 모든 조건이 존재할 때, 공연 정보 반환")
+	void returnPerformanceInformationWhenAllConditionsExist() throws Exception {
+		//given
+		when(performanceQueryService.selectPerformances(any(), any())).thenReturn(createPerformanceInfoList());
+		//when
+		ResultActions result = mockMvc.perform(get(VIEW_RESERVATION_STATUS_URL + createNormalQueryStrings()))
+			.andExpect(status().isOk());
+		//then
+		result.andExpect(jsonPath("$[0].name").value(NAME))
+			.andExpect(jsonPath("$[0].info").value(INFO))
+			.andExpect(jsonPath("$[0].type").value(TYPE));
+	}
+
+	@Test
+	@DisplayName("공연 예약 현황 API : 일치하는 조건이 없을 때, 빈 리스트 반환")
+	void returnsAnEmptyListIfNoneOfTheConditionsMatch() throws Exception {
+		//given
+		when(performanceQueryService.selectPerformances(any(), any())).thenReturn(Collections.emptyList());
+		//when
+		ResultActions result = mockMvc.perform(get(VIEW_RESERVATION_STATUS_URL + createNormalQueryStrings()))
+			.andExpect(status().isOk());
+		//then
+		result.andExpect(jsonPath("$").isArray())
+			.andExpect(jsonPath("$").isEmpty());
+	}
 
 	@Test
 	@DisplayName("공연 예약 현황 API : 모든 조건이 존재할 때, 200 상태 코드 반환")
@@ -85,7 +99,6 @@ class ReservationControllerTest {
 				.contentType(MediaType.APPLICATION_JSON))
 			.andExpect(status().isOk());
 	}
-
 
 	@Test
 	@DisplayName("공연 예약 현황 API : 현재일 보다 이전 날짜로 조회시, 400 코드 반환")
@@ -173,5 +186,9 @@ class ReservationControllerTest {
 				createDateAndTimeQueryStrings(START_DATE_VALUE, END_DATE_VALUE, START_TIME_VALUE, "-----")
 			)
 		);
+	}
+
+	private List<PerformanceInfo> createPerformanceInfoList() {
+		return ReservationTestDataFactory.createPerformanceInfoList();
 	}
 }
