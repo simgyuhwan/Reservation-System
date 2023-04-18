@@ -1,0 +1,57 @@
+package com.sim.reservationservice.domain;
+
+import java.util.List;
+
+import com.reservation.common.model.BaseEntity;
+import com.reservation.common.type.PerformanceType;
+
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
+/**
+ * PerformanceInfo.java
+ * 공연 정보 Entity
+ *
+ * @author sgh
+ * @since 2023.04.18
+ */
+@Getter @Entity
+@Table(name = "performance_info")
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
+public class PerformanceInfo extends BaseEntity {
+	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "performance_info_id")
+	private Long id;
+	private String name;
+	private String info;
+	private String place;
+	private boolean isAvailable;
+	private Integer audienceCount;
+	private Integer availableSeats;
+	private Integer price;
+	private String contactPhoneNum;
+	private String contactPersonName;
+	private Long performanceId;
+	@Enumerated(EnumType.STRING)
+	private PerformanceType type;
+
+	@OneToMany(orphanRemoval = true, mappedBy = "performanceInfo", cascade = CascadeType.ALL)
+	private List<PerformanceDate> performanceDates;
+
+	public void setPerformanceDates(List<PerformanceDate> performanceDates) {
+		this.performanceDates = performanceDates;
+	}
+}

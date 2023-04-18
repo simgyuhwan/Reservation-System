@@ -31,7 +31,7 @@ import com.reservation.common.error.ErrorCode;
 import com.reservation.common.util.QueryParameter;
 import com.reservation.common.util.QueryParameterUtils;
 import com.sim.reservationservice.application.PerformanceQueryService;
-import com.sim.reservationservice.dto.response.PerformanceInfo;
+import com.sim.reservationservice.dto.response.PerformanceInfoDto;
 import com.sim.reservationservice.error.ReservationControllerAdvice;
 import com.sim.reservationservice.factory.ReservationTestDataFactory;
 
@@ -188,7 +188,7 @@ class ReservationControllerTest {
 		);
 	}
 
-	private List<PerformanceInfo> createPerformanceInfoList() {
+	private List<PerformanceInfoDto> createPerformanceInfoList() {
 		return ReservationTestDataFactory.createPerformanceInfoList();
 	}
 }

@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.data.domain.Pageable;
 
 import com.sim.reservationservice.dto.request.PerformanceSearchDto;
-import com.sim.reservationservice.dto.response.PerformanceInfo;
+import com.sim.reservationservice.dto.response.PerformanceInfoDto;
 
 /**
  * PerformanceQueryService.java
@@ -15,5 +15,5 @@ import com.sim.reservationservice.dto.response.PerformanceInfo;
  * @since 2023.04.18
  */
 public interface PerformanceQueryService {
-	List<PerformanceInfo> selectPerformances(PerformanceSearchDto performanceSearchDto, Pageable pageable);
+	List<PerformanceInfoDto> selectPerformances(PerformanceSearchDto performanceSearchDto, Pageable pageable);
 }

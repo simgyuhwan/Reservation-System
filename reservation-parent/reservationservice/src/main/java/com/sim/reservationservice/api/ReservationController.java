@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.sim.reservationservice.application.PerformanceQueryService;
 import com.sim.reservationservice.dto.request.PerformanceSearchDto;
-import com.sim.reservationservice.dto.response.PerformanceInfo;
+import com.sim.reservationservice.dto.response.PerformanceInfoDto;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -32,7 +32,7 @@ public class ReservationController {
 	private PerformanceQueryService performanceQueryService;
 
 	@GetMapping("/available")
-	public ResponseEntity<List<PerformanceInfo>> getPerformances(@ModelAttribute @Validated PerformanceSearchDto performanceSearchDto, Pageable pageable) {
+	public ResponseEntity<List<PerformanceInfoDto>> getPerformances(@ModelAttribute @Validated PerformanceSearchDto performanceSearchDto, Pageable pageable) {
 		return ResponseEntity.ok(performanceQueryService.selectPerformances(performanceSearchDto, pageable));
 	}
 }

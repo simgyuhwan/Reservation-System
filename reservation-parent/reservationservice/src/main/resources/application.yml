@@ -36,6 +36,22 @@ spring:
     database: mysql
     database-platform: org.hibernate.dialect.MySQL57Dialect
 
+#kafka
+  cloud:
+    stream:
+      kafka:
+        binder:
+          brokers: localhost:9092
+      function:
+        definition: performanceConsumer
+
+      #bindings
+      bindings:
+        performanceConsumer-in-0:
+          destination: performance-info
+
+
+#loging
   logging:
     level:
       org:

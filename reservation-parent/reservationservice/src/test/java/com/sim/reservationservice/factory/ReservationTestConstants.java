@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 
 /**
  * ReservationTestConstants.java
@@ -40,10 +41,14 @@ public class ReservationTestConstants {
 	public static final LocalDate END_DATE = LocalDate.now().plusYears(1);
 	public static final List<LocalTime> START_TIMES = Arrays.asList(LocalTime.of(12, 00),
 		LocalTime.of(14, 00));
+
+	public static final Set<String> START_TIMES_STRING = Set.of("11:00", "13:00");
 	public static final String PLACE = "홍대 1극장";
 	public static final boolean IS_AVAILABLE = true;
 	public static int AUDIENCE_COUNT = 150;
 	public static int AVAILABLE_SEATS = 100;
 	public static int PRICE = 15000;
 	public static String CONTACT_PHONE_NUM = "010-1234-4569";
+	public static String USER_ID = "test";
+	public static String CONTACT_PERSON_NAME = "홍길동";
 }
