@@ -57,7 +57,7 @@ sourceSets {
 }
 
 tasks.withType(JavaCompile) {
-    options.generatedSourceOutputDirectory = file(querydslDir)
+    options.generatedSourceOutputDirectory.set(file(querydslDir))
 }
 
 clean.doLast {
