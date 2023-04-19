@@ -31,15 +31,13 @@ public class PerformanceInfoConsumer {
     @Bean
     public Consumer<String> performanceConsumer() {
         return value -> {
-            ObjectMapper mapper = new ObjectMapper();
-            PerformanceDto performanceDto = null;
             try{
-                 performanceDto = mapper.readValue(value, PerformanceDto.class);
+                PerformanceDto performanceDto = new ObjectMapper().readValue(value, PerformanceDto.class);
+                performanceInfoRepository.save(performanceInfoMapper.toEntity(performanceDto));
             } catch (JsonProcessingException e) {
                 log.error("공연 정보 Consumer mapping error : {}, json : {}", e.getMessage(), value);
                 e.printStackTrace();
             }
-            performanceInfoRepository.save(performanceInfoMapper.toEntity(performanceDto));
         };
     }
 }

@@ -5,9 +5,9 @@ repositories {
 }
 
 dependencies {
-    annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
-    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-    implementation 'org.springframework.boot:spring-boot-starter-web'
+    annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor:3.0.4'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa:3.0.4'
+    implementation 'org.springframework.boot:spring-boot-starter-websocket:3.0.4'
 
     // mapstruct
     implementation 'org.mapstruct:mapstruct:1.5.2.Final'

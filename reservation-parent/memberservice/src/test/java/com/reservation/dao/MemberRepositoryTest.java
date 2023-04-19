@@ -13,7 +13,6 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.reservation.factory.MemberTestConstants;
 import com.reservation.memberservice.dao.MemberRepository;
 import com.reservation.memberservice.domain.Member;
 
