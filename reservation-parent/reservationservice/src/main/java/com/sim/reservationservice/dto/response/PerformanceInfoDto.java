@@ -3,6 +3,8 @@ package com.sim.reservationservice.dto.response;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.querydsl.core.annotations.QueryProjection;
+
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -29,6 +31,7 @@ public class PerformanceInfoDto {
     private List<PerformanceScheduleDto> schedules = new ArrayList<>();
 
     @Builder
+    @QueryProjection
     public PerformanceInfoDto(String name, String info, String type, String place, boolean isAvailable,
         String contactPhoneNum, Integer price, String contactPersonName, List<PerformanceScheduleDto> schedules) {
         this.name = name;
