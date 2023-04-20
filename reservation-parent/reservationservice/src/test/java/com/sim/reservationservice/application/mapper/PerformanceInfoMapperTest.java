@@ -1,7 +1,9 @@
 package com.sim.reservationservice.application.mapper;
 
+import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -29,6 +31,8 @@ class PerformanceInfoMapperTest {
 		PerformanceInfo entity = mapper.toEntity(dto);
 
 		//then
-		System.out.println(entity);
+		assertThat(entity.getName()).isEqualTo(dto.getPerformanceName());
+		assertThat(entity.getInfo()).isEqualTo(dto.getPerformanceInfo());
+		assertThat(entity.getPerformanceSchedules().size()).isEqualTo(dto.getPerformanceTimes().size());
 	}
 }

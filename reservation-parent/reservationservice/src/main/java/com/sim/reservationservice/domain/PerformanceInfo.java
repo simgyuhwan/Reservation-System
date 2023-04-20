@@ -39,19 +39,18 @@ public class PerformanceInfo extends BaseEntity {
 	private String info;
 	private String place;
 	private boolean isAvailable;
-	private Integer audienceCount;
-	private Integer availableSeats;
 	private Integer price;
 	private String contactPhoneNum;
 	private String contactPersonName;
 	private Long performanceId;
+
 	@Enumerated(EnumType.STRING)
 	private PerformanceType type;
 
 	@OneToMany(orphanRemoval = true, mappedBy = "performanceInfo", cascade = CascadeType.ALL)
-	private List<PerformanceDate> performanceDates;
+	private List<PerformanceSchedule> performanceSchedules;
 
-	public void setPerformanceDates(List<PerformanceDate> performanceDates) {
-		this.performanceDates = performanceDates;
+	public void setPerformanceSchedules(List<PerformanceSchedule> performanceSchedules) {
+		this.performanceSchedules = performanceSchedules;
 	}
 }

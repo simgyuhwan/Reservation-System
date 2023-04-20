@@ -1,8 +1,8 @@
 package com.sim.reservationservice.application.mapper;
 
 import com.reservation.common.type.PerformanceType;
-import com.sim.reservationservice.domain.PerformanceDate;
 import com.sim.reservationservice.domain.PerformanceInfo;
+import com.sim.reservationservice.domain.PerformanceSchedule;
 import com.sim.reservationservice.dto.request.PerformanceDto;
 import java.util.ArrayList;
 import java.util.List;
@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2023-04-18T17:14:58+0900",
+    date = "2023-04-20T15:56:36+0900",
     comments = "version: 1.5.2.Final, compiler: javac, environment: Java 17.0.5 (Oracle Corporation)"
 )
 @Component
@@ -26,7 +26,6 @@ public class PerformanceInfoMapperImpl implements PerformanceInfoMapper {
         PerformanceDto.PerformanceDtoBuilder performanceDto = PerformanceDto.builder();
 
         performanceDto.performanceId( arg0.getPerformanceId() );
-        performanceDto.audienceCount( arg0.getAudienceCount() );
         performanceDto.price( arg0.getPrice() );
         performanceDto.contactPhoneNum( arg0.getContactPhoneNum() );
         performanceDto.contactPersonName( arg0.getContactPersonName() );
@@ -77,8 +76,6 @@ public class PerformanceInfoMapperImpl implements PerformanceInfoMapper {
             return null;
         }
 
-        Integer audienceCount = null;
-        Integer availableSeats = null;
         String name = null;
         String info = null;
         String place = null;
@@ -87,8 +84,6 @@ public class PerformanceInfoMapperImpl implements PerformanceInfoMapper {
         String contactPersonName = null;
         Long performanceId = null;
 
-        audienceCount = dto.getAudienceCount();
-        availableSeats = dto.getAudienceCount();
         name = dto.getPerformanceName();
         info = dto.getPerformanceInfo();
         place = dto.getPerformancePlace();
@@ -100,9 +95,9 @@ public class PerformanceInfoMapperImpl implements PerformanceInfoMapper {
         boolean isAvailable = true;
         PerformanceType type = com.reservation.common.type.PerformanceType.findByType(dto.getPerformanceType());
         Long id = null;
-        List<PerformanceDate> performanceDates = null;
+        List<PerformanceSchedule> performanceSchedules = null;
 
-        PerformanceInfo performanceInfo = new PerformanceInfo( id, name, info, place, isAvailable, audienceCount, availableSeats, price, contactPhoneNum, contactPersonName, performanceId, type, performanceDates );
+        PerformanceInfo performanceInfo = new PerformanceInfo( id, name, info, place, isAvailable, price, contactPhoneNum, contactPersonName, performanceId, type, performanceSchedules );
 
         mapPerformanceDates( dto, performanceInfo );
 

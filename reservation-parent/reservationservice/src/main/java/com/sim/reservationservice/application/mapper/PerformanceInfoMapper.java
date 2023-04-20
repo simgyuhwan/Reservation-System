@@ -10,7 +10,7 @@ import org.mapstruct.ReportingPolicy;
 import org.mapstruct.factory.Mappers;
 
 import com.reservation.common.mapper.GenericMapper;
-import com.sim.reservationservice.domain.PerformanceDate;
+import com.sim.reservationservice.domain.PerformanceSchedule;
 import com.sim.reservationservice.domain.PerformanceInfo;
 import com.sim.reservationservice.dto.request.PerformanceDto;
 
@@ -26,8 +26,6 @@ public interface PerformanceInfoMapper extends GenericMapper<PerformanceDto, Per
 
 	@Mapping(target = "isAvailable", constant = "true")
 	@Mapping(target = "type", expression = "java(com.reservation.common.type.PerformanceType.findByType(dto.getPerformanceType()))")
-	@Mapping(target = "audienceCount", source = "audienceCount")
-	@Mapping(target = "availableSeats", source = "audienceCount")
 	@Mapping(target = "name", source = "performanceName")
 	@Mapping(target = "info", source = "performanceInfo")
 	@Mapping(target = "place", source = "performancePlace")
@@ -36,7 +34,7 @@ public interface PerformanceInfoMapper extends GenericMapper<PerformanceDto, Per
 
 	@AfterMapping
 	default void mapPerformanceDates(PerformanceDto dto, @MappingTarget PerformanceInfo performanceInfo) {
-		List<PerformanceDate> performanceDates = dto.toPerformanceDates(performanceInfo);
-		performanceInfo.setPerformanceDates(performanceDates);
+		List<PerformanceSchedule> performanceSchedules = dto.toPerformanceSchedules(performanceInfo);
+		performanceInfo.setPerformanceSchedules(performanceSchedules);
 	}
 }

@@ -26,10 +26,10 @@ import lombok.NoArgsConstructor;
  * @since 2023.04.18
  */
 @Entity @Getter
-@Table(name = "performance_date")
+@Table(name = "performance_schedule")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-public class PerformanceDate {
+public class PerformanceSchedule {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "performance_date_id")
     private Long id;
@@ -41,13 +41,17 @@ public class PerformanceDate {
     private LocalDate startDate;
     private LocalDate endDate;
     private LocalTime startTime;
+    private Integer availableSeats;
+    private Integer remainingSeats;
 
     @Builder
-    public PerformanceDate(PerformanceInfo performanceInfo, LocalDate startDate, LocalDate endDate,
-        LocalTime startTime) {
+    public PerformanceSchedule(PerformanceInfo performanceInfo, LocalDate startDate, LocalDate endDate, Integer availableSeats,
+        LocalTime startTime, Integer remainingSeats) {
         this.performanceInfo = performanceInfo;
         this.startDate = startDate;
         this.endDate = endDate;
         this.startTime = startTime;
+        this.availableSeats = availableSeats;
+        this.remainingSeats = remainingSeats;
     }
 }

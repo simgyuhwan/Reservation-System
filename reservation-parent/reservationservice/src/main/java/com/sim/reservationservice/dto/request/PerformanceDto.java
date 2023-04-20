@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Set;
 
 import com.reservation.common.util.DateTimeUtils;
-import com.sim.reservationservice.domain.PerformanceDate;
+import com.sim.reservationservice.domain.PerformanceSchedule;
 import com.sim.reservationservice.domain.PerformanceInfo;
 
 import lombok.AccessLevel;
@@ -42,16 +42,18 @@ public class PerformanceDto {
 	private String performancePlace;
 	private Set<String> performanceTimes = new HashSet<>();
 
-	public List<PerformanceDate> toPerformanceDates(PerformanceInfo performanceInfo) {
+	public List<PerformanceSchedule> toPerformanceSchedules(PerformanceInfo performanceInfo) {
 		LocalDate start = DateTimeUtils.stringToLocalDate(this.performanceStartDate);
 		LocalDate end = DateTimeUtils.stringToLocalDate(this.performanceEndDate);
 
 		return performanceTimes.stream()
-			.map(time -> PerformanceDate.builder()
+			.map(time -> PerformanceSchedule.builder()
 				.startDate(start)
 				.endDate(end)
 				.startTime(DateTimeUtils.stringToLocalTime(time))
 				.performanceInfo(performanceInfo)
+				.availableSeats(audienceCount)
+				.remainingSeats(audienceCount)
 				.build()
 			).collect(toList());
 	}
