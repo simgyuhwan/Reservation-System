@@ -2,17 +2,17 @@
 
 ## **목차**
 
-### [1. 프로젝트 개요](#프로젝트-개요)
+#### [1. 프로젝트 개요](#프로젝트-개요)
 
-### [2. 기술 스택](#2-기술-스택)
+#### [2. 기술 스택](#2-기술-스택)
 
-### [3. 아키텍처](#3-아키텍처)
+#### [3. 아키텍처](#3-아키텍처)
 
-### [4. Document](#4-document)
+#### [4. Document](#4-document)
 
-### [5. 요구사항](#5-요구사항)
+#### [5. 요구사항](#5-요구사항)
 
-### [6. 주요 포인트](#6-주요-포인트)
+#### [6. 주요 포인트](#6-주요-포인트)
 
 <br>
 
@@ -49,11 +49,11 @@ PostgreSQL
 
 # **4. Document**
 
-### \* [API 문서]()
+#### \* [API 문서](https://github.com/simgyuhwan/Reservation-and-Payment-System/blob/master/document/api-document.md)
 
-### \* [기능별 테스트 케이스]()
+#### \* [기능별 테스트 케이스](https://github.com/simgyuhwan/Reservation-and-Payment-System/blob/master/document/test-case.md)
 
-### \* [설치 및 실행 방법]()
+#### \* [설치 및 실행 방법](https://github.com/simgyuhwan/Reservation-and-Payment-System/blob/master/document/install-document.md)
 
 <br>
 
