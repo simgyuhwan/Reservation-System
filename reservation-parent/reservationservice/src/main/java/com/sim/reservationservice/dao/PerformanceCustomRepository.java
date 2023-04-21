@@ -16,5 +16,5 @@ import com.sim.reservationservice.dto.response.PerformanceInfoDto;
  * @since 2023.04.20
  */
 public interface PerformanceCustomRepository {
-    Page<List<PerformanceInfoDto>> selectPerformanceReservation(PerformanceSearchDto performanceSearchDto, Pageable pageable);
+    Page<PerformanceInfoDto> selectPerformanceReservation(PerformanceSearchDto performanceSearchDto, Pageable pageable);
 }

@@ -4,8 +4,10 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 
 import com.querydsl.core.annotations.QueryProjection;
+import com.sim.reservationservice.domain.PerformanceSchedule;
 
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -22,16 +24,26 @@ public class PerformanceScheduleDto {
 	private LocalDate startDate;
 	private LocalDate endDate;
 	private LocalTime startTime;
-	private Integer audienceCount;
+	private Integer remainingSeats;
 	private Integer availableSeats;
 
-	@QueryProjection
+	@Builder
 	public PerformanceScheduleDto(LocalDate startDate, LocalDate endDate, LocalTime startTime,
-		Integer audienceCount, Integer availableSeats) {
+		Integer remainingSeats, Integer availableSeats) {
 		this.startDate = startDate;
 		this.endDate = endDate;
 		this.startTime = startTime;
-		this.audienceCount = audienceCount;
+		this.remainingSeats = remainingSeats;
 		this.availableSeats = availableSeats;
+	}
+
+	public static PerformanceScheduleDto from(PerformanceSchedule performanceSchedule) {
+		return PerformanceScheduleDto.builder()
+			.startDate(performanceSchedule.getStartDate())
+			.endDate(performanceSchedule.getEndDate())
+			.startTime(performanceSchedule.getStartTime())
+			.remainingSeats(performanceSchedule.getRemainingSeats())
+			.availableSeats(performanceSchedule.getAvailableSeats())
+			.build();
 	}
 }

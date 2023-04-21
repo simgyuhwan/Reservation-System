@@ -2,8 +2,12 @@ package com.sim.reservationservice.dto.response;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import com.querydsl.core.annotations.QueryProjection;
+import com.reservation.common.type.PerformanceType;
+import com.sim.reservationservice.domain.PerformanceInfo;
+import com.sim.reservationservice.domain.PerformanceSchedule;
 
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -31,7 +35,6 @@ public class PerformanceInfoDto {
     private List<PerformanceScheduleDto> schedules = new ArrayList<>();
 
     @Builder
-    @QueryProjection
     public PerformanceInfoDto(String name, String info, String type, String place, boolean isAvailable,
         String contactPhoneNum, Integer price, String contactPersonName, List<PerformanceScheduleDto> schedules) {
         this.name = name;
@@ -45,4 +48,21 @@ public class PerformanceInfoDto {
         this.schedules = schedules;
     }
 
+    public static PerformanceInfoDto from(PerformanceInfo performanceInfo) {
+        List<PerformanceScheduleDto> performanceScheduleDtos = performanceInfo.getPerformanceSchedules().stream()
+            .map(PerformanceScheduleDto::from)
+            .toList();
+
+        return PerformanceInfoDto.builder()
+            .name(performanceInfo.getName())
+            .info(performanceInfo.getInfo())
+            .type(performanceInfo.getType().getName())
+            .place(performanceInfo.getPlace())
+            .isAvailable(performanceInfo.isAvailable())
+            .contactPhoneNum(performanceInfo.getContactPhoneNum())
+            .contactPersonName(performanceInfo.getContactPersonName())
+            .price(performanceInfo.getPrice())
+            .schedules(performanceScheduleDtos)
+            .build();
+    }
 }

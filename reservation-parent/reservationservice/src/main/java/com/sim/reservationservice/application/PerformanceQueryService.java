@@ -1,7 +1,6 @@
 package com.sim.reservationservice.application;
 
-import java.util.List;
-
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import com.sim.reservationservice.dto.request.PerformanceSearchDto;
@@ -15,5 +14,5 @@ import com.sim.reservationservice.dto.response.PerformanceInfoDto;
  * @since 2023.04.18
  */
 public interface PerformanceQueryService {
-	List<PerformanceInfoDto> selectPerformances(PerformanceSearchDto performanceSearchDto, Pageable pageable);
+	Page<PerformanceInfoDto> selectPerformances(PerformanceSearchDto performanceSearchDto, Pageable pageable);
 }

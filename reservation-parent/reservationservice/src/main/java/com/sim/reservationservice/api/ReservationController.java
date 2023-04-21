@@ -1,7 +1,6 @@
 package com.sim.reservationservice.api;
 
-import java.util.List;
-
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -29,10 +28,10 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping("/api/performances")
 @RequiredArgsConstructor
 public class ReservationController {
-	private PerformanceQueryService performanceQueryService;
+	private final PerformanceQueryService performanceQueryService;
 
 	@GetMapping("/available")
-	public ResponseEntity<List<PerformanceInfoDto>> getPerformances(@ModelAttribute @Validated PerformanceSearchDto performanceSearchDto, Pageable pageable) {
+	public ResponseEntity<Page<PerformanceInfoDto>> getPerformances(@ModelAttribute @Validated PerformanceSearchDto performanceSearchDto, Pageable pageable) {
 		return ResponseEntity.ok(performanceQueryService.selectPerformances(performanceSearchDto, pageable));
 	}
 }

@@ -34,7 +34,7 @@ Java 17
 Spring Boot 3.0.4
 Spring Data JPA
 QueryDsl
-Kafka
+Kafka 3.3.2
 Spring Cloud
 MSA architecture
 Redis

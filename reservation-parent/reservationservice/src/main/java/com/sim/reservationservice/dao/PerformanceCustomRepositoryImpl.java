@@ -1,5 +1,8 @@
 package com.sim.reservationservice.dao;
 
+import static com.sim.reservationservice.domain.QPerformanceInfo.*;
+import static com.sim.reservationservice.domain.QPerformanceSchedule.*;
+
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
@@ -8,6 +11,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -17,8 +21,6 @@ import com.sim.reservationservice.dto.request.PerformanceSearchDto;
 import com.sim.reservationservice.dto.response.PerformanceInfoDto;
 
 import lombok.RequiredArgsConstructor;
-import static com.sim.reservationservice.domain.QPerformanceInfo.performanceInfo;
-import static com.sim.reservationservice.domain.QPerformanceSchedule.performanceSchedule;
 
 /**
  * PerformanceCustomRepositoryImpl.java
@@ -32,23 +34,26 @@ import static com.sim.reservationservice.domain.QPerformanceSchedule.performance
 public class PerformanceCustomRepositoryImpl implements PerformanceCustomRepository{
 	private final JPAQueryFactory queryFactory;
 
+	@Transactional
 	@Override
-	public Page<List<PerformanceInfoDto>> selectPerformanceReservation(PerformanceSearchDto performanceSearchDto,
+	public Page<PerformanceInfoDto> selectPerformanceReservation(PerformanceSearchDto performanceSearchDto,
 		Pageable pageable) {
 		List<PerformanceInfo> performanceInfos = queryFactory.selectFrom(performanceInfo)
 			.join(performanceInfo.performanceSchedules, performanceSchedule)
 			.where(typeEq(performanceSearchDto.getType()),
 				nameLike(performanceSearchDto.getName()),
-				startDateAfter(performanceSearchDto.getStartDate()),
-				endDateBefore(performanceSearchDto.getEndDate()),
+				startDateGoe(performanceSearchDto.getStartDate()),
+				endDateLoe(performanceSearchDto.getEndDate()),
 				startTimeEq(performanceSearchDto.getStartTime()))
 			.orderBy(performanceSchedule.startDate.asc(), performanceInfo.name.asc())
 			.offset(pageable.getOffset())
 			.limit(pageable.getPageSize())
 			.fetch();
 
-		// return new PageImpl<>(performanceInfos, pageable, performanceInfos.size());
-		return null;
+		List<PerformanceInfoDto> performanceInfoDtos = performanceInfos.stream()
+			.map(PerformanceInfoDto::from).toList();
+
+		return new PageImpl<>(performanceInfoDtos, pageable, performanceInfoDtos.size());
 	}
 
 	private BooleanExpression typeEq(String type){
@@ -65,16 +70,16 @@ public class PerformanceCustomRepositoryImpl implements PerformanceCustomReposit
 		return null;
 	}
 
-	private BooleanExpression startDateAfter(LocalDate startDate) {
+	private BooleanExpression startDateGoe(LocalDate startDate) {
 		if(startDate != null) {
-			return performanceSchedule.startDate.after(startDate);
+			return performanceSchedule.startDate.goe(startDate);
 		}
 		return null;
 	}
 
-	private BooleanExpression endDateBefore(LocalDate endDate) {
+	private BooleanExpression endDateLoe(LocalDate endDate) {
 		if(endDate != null) {
-			return performanceSchedule.endDate.before(endDate);
+			return performanceSchedule.endDate.loe(endDate);
 		}
 		return null;
 	}

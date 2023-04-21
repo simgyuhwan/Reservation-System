@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.reservation.common.model.BaseEntity;
 import com.reservation.common.type.PerformanceType;
+import com.sim.reservationservice.dto.response.PerformanceInfoDto;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -53,4 +54,5 @@ public class PerformanceInfo extends BaseEntity {
 	public void setPerformanceSchedules(List<PerformanceSchedule> performanceSchedules) {
 		this.performanceSchedules = performanceSchedules;
 	}
+
 }
