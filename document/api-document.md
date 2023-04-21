@@ -1,4 +1,123 @@
-# **서비스 및 API**
+# **API 문서**
+
+각 api의 보다 더 자세한 내용은 서비스의 **/swagger** 를 통해서 확인이 가능하다.
+
+---
+
+## 목차
+
+[회원 API](#회원-api)
+
+[공연 API](#공연-api)
+
+[예약 API]()
+
+---
+
+## 회원 API
+
+| Index | Feature   | Method | End Point   | query string | Request Body | Response Body |
+| ----- | --------- | ------ | ----------- | ------------ | ------------ | ------------- |
+| 1     | 회원 가입 | POST   | /api/signup |              | {            |
+
+"userId": "string",
+"username": "string",
+"password": "string",
+"phoneNum": "010-496-4055",
+"address": "string"
+} | code : 201 |
+| 2. | 회원 조회 | GET | /api/members/{userId} | | | code : 200
+{
+"userId": "string",
+"phoneNum": "string",
+"username": "string",
+"address": "string"
+} |
+| 3. | 회원 수정 | PUT | /api/members/{userId} | | {
+"userId": "string",
+"phoneNum": "95-464-5765",
+"username": "string",
+"address": "string"
+} | code : 200
+{
+"userId": "string",
+"phoneNum": "string",
+"username": "string",
+"address": "string"
+} |
+
+## 공연 API
+
+| Index | Feature   | Method | End Point         | query string | Request Body | Response Body |
+| ----- | --------- | ------ | ----------------- | ------------ | ------------ | ------------- |
+| 1     | 공연 등록 | POST   | /api/performances |              | {            |
+
+"performanceId": 0,
+"userId": "test",
+"performanceName": "오페라의 유령",
+"performanceStartDate": "2024-01-01",
+"performanceEndDate": "2024-01-01",
+"performanceType": "THEATER",
+"audienceCount": 100,
+"price": 10000,
+"contactPhoneNum": "010-1234-1234",
+"contactPersonName": "홍길동",
+"performanceInfo": "끝까지 간다....",
+"performancePlace": "홍대 시네마",
+"performanceTimes": "[15:00]"
+} | code : 201 |
+| 2. | 회원이 등록한 공연 전체 조회 | GET | /api/performances/{userId} | | | code : 200
+[
+{
+"performanceId": 0,
+"userId": "test",
+"performanceName": "오페라의 유령",
+"performanceStartDate": "2024-01-01",
+"performanceEndDate": "2024-01-01",
+"performanceType": "THEATER",
+"audienceCount": 100,
+"price": 10000,
+"contactPhoneNum": "010-1234-1234",
+"contactPersonName": "홍길동",
+"performanceInfo": "끝까지 간다....",
+"performancePlace": "홍대 시네마",
+"performanceTimes": "[15:00]"
+}
+] |
+| 3. | 공연 수정 | PUT | /api/performances/{performanceId} | | {
+"performanceId": 0,
+"userId": "test",
+"performanceName": "오페라의 유령",
+"performanceStartDate": "2024-01-01",
+"performanceEndDate": "2024-01-01",
+"performanceType": "THEATER",
+"audienceCount": 100,
+"price": 10000,
+"contactPhoneNum": "010-1234-1234",
+"contactPersonName": "홍길동",
+"performanceInfo": "끝까지 간다....",
+"performancePlace": "홍대 시네마",
+"performanceTimes": "[15:00]"
+} | code : 200
+{
+"performanceId": 0,
+"userId": "test",
+"performanceName": "오페라의 유령",
+"performanceStartDate": "2024-01-01",
+"performanceEndDate": "2024-01-01",
+"performanceType": "THEATER",
+"audienceCount": 100,
+"price": 10000,
+"contactPhoneNum": "010-1234-1234",
+"contactPersonName": "홍길동",
+"performanceInfo": "끝까지 간다....",
+"performancePlace": "홍대 시네마",
+"performanceTimes": "[15:00]"
+} |
+
+---
+
+# Before
 
 ## 1. 회원 서비스
 
