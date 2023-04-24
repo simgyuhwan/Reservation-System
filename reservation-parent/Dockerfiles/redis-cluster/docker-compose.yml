@@ -11,7 +11,6 @@ services:
       - 6380:6380
       - 6381:6381
       - 6379:6379
-      - 6382:6382
 
   redis-node-1:
     network_mode: "service:redis-cluster"
@@ -31,23 +30,13 @@ services:
       - ./redis2.conf:/usr/local/etc/redis/redis.conf
     command: redis-server /usr/local/etc/redis/redis.conf
 
-  redis-node-3:
-    network_mode: "service:redis-cluster"
-    platform: linux/x86_64
-    image: redis:6.2
-    container_name: redis-3
-    volumes:
-      - ./redis3.conf:/usr/local/etc/redis/redis.conf
-    command: redis-server /usr/local/etc/redis/redis.conf
-
   redis-cluster-entry:
     network_mode: "service:redis-cluster"
     platform: linux/x86_64
     image: redis:6.2
     container_name: redis-cluster-entry
-    command: redis-cli --cluster create 127.0.0.1:6379 127.0.0.1:6380 127.0.0.1:6381 127.0.0.1:6382 --cluster-yes
+    command: redis-cli --cluster create 127.0.0.1:6379 127.0.0.1:6380 127.0.0.1:6381 --cluster-yes
     depends_on:
       - redis-cluster
       - redis-node-1
       - redis-node-2
-      - redis-node-3
