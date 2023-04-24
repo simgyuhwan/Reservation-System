@@ -13,6 +13,7 @@ import com.sim.reservationservice.application.PerformanceQueryService;
 import com.sim.reservationservice.dto.request.PerformanceSearchDto;
 import com.sim.reservationservice.dto.response.PerformanceInfoDto;
 
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -31,6 +32,7 @@ public class ReservationController {
 	private final PerformanceQueryService performanceQueryService;
 
 	@GetMapping("/available")
+	@Operation(summary = "[예약] 예약 현황 조회", description = "예약 현황 조회 API")
 	public ResponseEntity<Page<PerformanceInfoDto>> getPerformances(@ModelAttribute @Validated PerformanceSearchDto performanceSearchDto, Pageable pageable) {
 		return ResponseEntity.ok(performanceQueryService.selectPerformances(performanceSearchDto, pageable));
 	}
