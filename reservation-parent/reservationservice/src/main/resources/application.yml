@@ -38,6 +38,15 @@ spring:
     ## Debug 용
 #    show-sql: true
 
+#Redis
+  data:
+    redis:
+      cluster:
+        nodes:
+          - localhost:6379
+          - localhost:6380
+          - localhost:6381
+
 #kafka
   cloud:
     stream:
@@ -72,3 +81,4 @@ management:
     web:
       exposure:
         include: health, info, metrics, bus, refresh
+

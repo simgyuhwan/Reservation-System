@@ -2,6 +2,8 @@ package com.sim.reservationservice.api;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,10 +32,12 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class ReservationController {
 	private final PerformanceQueryService performanceQueryService;
+	private final RedisTemplate redisTemplate;
 
 	@GetMapping("/available")
 	@Operation(summary = "[예약] 예약 현황 조회", description = "예약 현황 조회 API")
 	public ResponseEntity<Page<PerformanceInfoDto>> getPerformances(@ModelAttribute @Validated PerformanceSearchDto performanceSearchDto, Pageable pageable) {
 		return ResponseEntity.ok(performanceQueryService.selectPerformances(performanceSearchDto, pageable));
 	}
+
 }
