@@ -18,6 +18,7 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -55,4 +56,19 @@ public class PerformanceInfo extends BaseEntity {
 		this.performanceSchedules = performanceSchedules;
 	}
 
+	@Builder
+	public PerformanceInfo(String name, String info, String place, boolean isAvailable, Integer price,
+		String contactPhoneNum, String contactPersonName, Long performanceId,
+		PerformanceType type, List<PerformanceSchedule> performanceSchedules) {
+		this.name = name;
+		this.info = info;
+		this.place = place;
+		this.isAvailable = isAvailable;
+		this.price = price;
+		this.contactPhoneNum = contactPhoneNum;
+		this.contactPersonName = contactPersonName;
+		this.performanceId = performanceId;
+		this.type = type;
+		this.performanceSchedules = performanceSchedules;
+	}
 }

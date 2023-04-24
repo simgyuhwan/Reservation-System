@@ -47,6 +47,7 @@ public class ReservationTestConstants {
 	public static final boolean IS_AVAILABLE = true;
 	public static int AUDIENCE_COUNT = 150;
 	public static int AVAILABLE_SEATS = 100;
+	public static int REMAINING_SEATS = 100;
 	public static int PRICE = 15000;
 	public static String CONTACT_PHONE_NUM = "010-1234-4569";
 	public static String USER_ID = "test";

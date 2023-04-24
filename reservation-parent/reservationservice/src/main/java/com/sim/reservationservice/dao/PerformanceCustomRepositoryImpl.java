@@ -44,7 +44,8 @@ public class PerformanceCustomRepositoryImpl implements PerformanceCustomReposit
 				nameLike(performanceSearchDto.getName()),
 				startDateGoe(performanceSearchDto.getStartDate()),
 				endDateLoe(performanceSearchDto.getEndDate()),
-				startTimeEq(performanceSearchDto.getStartTime()))
+				startTimeEq(performanceSearchDto.getStartTime()),
+				placeLike(performanceSearchDto.getPlace()))
 			.orderBy(performanceSchedule.startDate.asc(), performanceInfo.name.asc())
 			.offset(pageable.getOffset())
 			.limit(pageable.getPageSize())
@@ -87,6 +88,13 @@ public class PerformanceCustomRepositoryImpl implements PerformanceCustomReposit
 	private BooleanExpression startTimeEq(LocalTime startTime) {
 		if(startTime != null) {
 			return performanceSchedule.startTime.eq(startTime);
+		}
+		return null;
+	}
+
+	private BooleanExpression placeLike(String place) {
+		if(place != null) {
+			return performanceInfo.place.like("%" + place  + "%");
 		}
 		return null;
 	}

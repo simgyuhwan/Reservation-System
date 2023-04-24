@@ -2,8 +2,18 @@ package com.sim.reservationservice.factory;
 
 import static com.sim.reservationservice.factory.ReservationTestConstants.*;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+
+import com.reservation.common.type.PerformanceType;
+import com.sim.reservationservice.domain.PerformanceInfo;
+import com.sim.reservationservice.domain.PerformanceSchedule;
 import com.sim.reservationservice.dto.request.PerformanceDto;
 import com.sim.reservationservice.dto.response.PerformanceInfoDto;
 
@@ -17,10 +27,16 @@ import com.sim.reservationservice.dto.response.PerformanceInfoDto;
 public class ReservationTestDataFactory {
 
 	public static List<PerformanceInfoDto> createPerformanceInfoList() {
-		return List.of(createPerformanceInfo());
+		return List.of(createPerformanceInfoDto());
 	}
 
-	public static PerformanceInfoDto createPerformanceInfo() {
+	public static Page<PerformanceInfoDto> createPerformanceInfoListForPage() {
+		List<PerformanceInfoDto> performanceInfoDtoList = List.of(createPerformanceInfoDto());
+		PageRequest pageable = PageRequest.of(1, 15);
+		return new PageImpl<>(performanceInfoDtoList,pageable, performanceInfoDtoList.size());
+	}
+
+	public static PerformanceInfoDto createPerformanceInfoDto() {
 		return PerformanceInfoDto.builder()
 			.name(NAME)
 			.info(INFO)
@@ -49,5 +65,61 @@ public class ReservationTestDataFactory {
 			.contactPersonName(CONTACT_PERSON_NAME)
 			.performanceTimes(START_TIMES_STRING)
 			.build();
+	}
+
+	public static PerformanceInfo createPerformanceInfo() {
+		PerformanceInfo performanceInfo = PerformanceInfo.builder()
+			.performanceId(1L)
+			.name(NAME)
+			.info(INFO)
+			.isAvailable(IS_AVAILABLE)
+			.contactPersonName(CONTACT_PERSON_NAME)
+			.contactPhoneNum(CONTACT_PHONE_NUM)
+			.type(PerformanceType.findByType(TYPE))
+			.place(PLACE)
+			.build();
+
+		performanceInfo.setPerformanceSchedules(createPerformanceSchedules(performanceInfo));
+
+		return performanceInfo;
+	}
+
+	public static PerformanceInfo createPerformanceInfo(String name, String place, PerformanceType type) {
+		PerformanceInfo performanceInfo = PerformanceInfo.builder()
+			.performanceId(2L)
+			.name(name)
+			.place(place)
+			.type(type)
+			.info(INFO)
+			.isAvailable(IS_AVAILABLE)
+			.contactPersonName(CONTACT_PERSON_NAME)
+			.contactPhoneNum(CONTACT_PHONE_NUM)
+			.build();
+
+		performanceInfo.setPerformanceSchedules(createPerformanceSchedules(performanceInfo));
+
+		return performanceInfo;
+	}
+
+	public static List<PerformanceSchedule> createPerformanceSchedules(PerformanceInfo performanceInfo) {
+		PerformanceSchedule performanceSchedule1 = PerformanceSchedule.builder()
+			.startDate(START_DATE)
+			.endDate(END_DATE)
+			.startTime(LocalTime.of(11, 00))
+			.performanceInfo(performanceInfo)
+			.remainingSeats(REMAINING_SEATS)
+			.availableSeats(AVAILABLE_SEATS)
+			.build();
+
+		PerformanceSchedule performanceSchedule2 = PerformanceSchedule.builder()
+			.startDate(START_DATE)
+			.endDate(END_DATE)
+			.startTime(LocalTime.of(12, 30))
+			.performanceInfo(performanceInfo)
+			.remainingSeats(REMAINING_SEATS)
+			.availableSeats(AVAILABLE_SEATS)
+			.build();
+
+		return List.of(performanceSchedule1, performanceSchedule2);
 	}
 }
