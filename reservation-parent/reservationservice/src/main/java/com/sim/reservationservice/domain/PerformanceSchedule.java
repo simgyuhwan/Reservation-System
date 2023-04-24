@@ -31,7 +31,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class PerformanceSchedule {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "performance_date_id")
+    @Column(name = "performance_schedule_id")
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)

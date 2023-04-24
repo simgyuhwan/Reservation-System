@@ -26,15 +26,17 @@ public class PerformanceScheduleDto {
 	private LocalTime startTime;
 	private Integer remainingSeats;
 	private Integer availableSeats;
+	private Long performanceScheduleId;
 
 	@Builder
 	public PerformanceScheduleDto(LocalDate startDate, LocalDate endDate, LocalTime startTime,
-		Integer remainingSeats, Integer availableSeats) {
+		Integer remainingSeats, Integer availableSeats, Long performanceScheduleId) {
 		this.startDate = startDate;
 		this.endDate = endDate;
 		this.startTime = startTime;
 		this.remainingSeats = remainingSeats;
 		this.availableSeats = availableSeats;
+		this.performanceScheduleId = performanceScheduleId;
 	}
 
 	public static PerformanceScheduleDto from(PerformanceSchedule performanceSchedule) {
@@ -44,6 +46,7 @@ public class PerformanceScheduleDto {
 			.startTime(performanceSchedule.getStartTime())
 			.remainingSeats(performanceSchedule.getRemainingSeats())
 			.availableSeats(performanceSchedule.getAvailableSeats())
+			.performanceScheduleId(performanceSchedule.getId())
 			.build();
 	}
 }

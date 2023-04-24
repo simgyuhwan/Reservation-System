@@ -44,9 +44,12 @@ public class PerformanceInfoDto {
     @Schema(description = "공연 시작 시간", example = "[15:00]")
     private List<PerformanceScheduleDto> schedules = new ArrayList<>();
 
+    private Long performanceInfoId;
+
     @Builder
-    public PerformanceInfoDto(String name, String info, String type, String place, boolean isAvailable,
+    public PerformanceInfoDto(Long performanceInfoId, String name, String info, String type, String place, boolean isAvailable,
         String contactPhoneNum, Integer price, String contactPersonName, List<PerformanceScheduleDto> schedules) {
+        this.performanceInfoId = performanceInfoId;
         this.name = name;
         this.info = info;
         this.type = type;
@@ -64,6 +67,7 @@ public class PerformanceInfoDto {
             .toList();
 
         return PerformanceInfoDto.builder()
+            .performanceInfoId(performanceInfo.getId())
             .name(performanceInfo.getName())
             .info(performanceInfo.getInfo())
             .type(performanceInfo.getType().getName())
