@@ -13,11 +13,11 @@ import com.querydsl.core.types.Path;
  * QMember is a Querydsl query type for Member
  */
 @Generated("com.querydsl.codegen.DefaultEntitySerializer")
-public class QueryMember extends EntityPathBase<Member> {
+public class QMember extends EntityPathBase<Member> {
 
     private static final long serialVersionUID = -610705726L;
 
-    public static final QueryMember member = new QueryMember("member1");
+    public static final QMember member = new QMember("member1");
 
     public final com.reservation.common.model.QBaseEntity _super = new com.reservation.common.model.QBaseEntity(this);
 
@@ -42,15 +42,15 @@ public class QueryMember extends EntityPathBase<Member> {
 
     public final StringPath username = createString("username");
 
-    public QueryMember(String variable) {
+    public QMember(String variable) {
         super(Member.class, forVariable(variable));
     }
 
-    public QueryMember(Path<? extends Member> path) {
+    public QMember(Path<? extends Member> path) {
         super(path.getType(), path.getMetadata());
     }
 
-    public QueryMember(PathMetadata metadata) {
+    public QMember(PathMetadata metadata) {
         super(Member.class, metadata);
     }
 

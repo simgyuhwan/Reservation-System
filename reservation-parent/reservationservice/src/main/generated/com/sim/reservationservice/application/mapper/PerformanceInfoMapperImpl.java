@@ -1,6 +1,8 @@
 package com.sim.reservationservice.application.mapper;
 
+import com.reservation.common.type.PerformanceType;
 import com.sim.reservationservice.domain.PerformanceInfo;
+import com.sim.reservationservice.domain.PerformanceSchedule;
 import com.sim.reservationservice.dto.request.PerformanceDto;
 import java.util.ArrayList;
 import java.util.List;
@@ -9,7 +11,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2023-04-24T17:33:24+0900",
+    date = "2023-04-25T15:49:21+0900",
     comments = "version: 1.5.2.Final, compiler: javac, environment: Java 17.0.5 (Oracle Corporation)"
 )
 @Component
@@ -65,7 +67,7 @@ public class PerformanceInfoMapperImpl implements PerformanceInfoMapper {
             return;
         }
 
-        mapPerformanceDates( arg0, arg1 );
+        afterMapping( arg0, arg1 );
     }
 
     @Override
@@ -74,19 +76,30 @@ public class PerformanceInfoMapperImpl implements PerformanceInfoMapper {
             return null;
         }
 
-        PerformanceInfo.PerformanceInfoBuilder performanceInfo = PerformanceInfo.builder();
+        String name = null;
+        String info = null;
+        String place = null;
+        Integer price = null;
+        String contactPhoneNum = null;
+        String contactPersonName = null;
+        Long performanceId = null;
 
-        performanceInfo.name( dto.getPerformanceName() );
-        performanceInfo.info( dto.getPerformanceInfo() );
-        performanceInfo.place( dto.getPerformancePlace() );
-        performanceInfo.price( dto.getPrice() );
-        performanceInfo.contactPhoneNum( dto.getContactPhoneNum() );
-        performanceInfo.contactPersonName( dto.getContactPersonName() );
-        performanceInfo.performanceId( dto.getPerformanceId() );
+        name = dto.getPerformanceName();
+        info = dto.getPerformanceInfo();
+        place = dto.getPerformancePlace();
+        price = dto.getPrice();
+        contactPhoneNum = dto.getContactPhoneNum();
+        contactPersonName = dto.getContactPersonName();
+        performanceId = dto.getPerformanceId();
 
-        performanceInfo.isAvailable( true );
-        performanceInfo.type( com.reservation.common.type.PerformanceType.findByType(dto.getPerformanceType()) );
+        boolean isAvailable = true;
+        PerformanceType type = com.reservation.common.type.PerformanceType.findByType(dto.getPerformanceType());
+        List<PerformanceSchedule> performanceSchedules = null;
 
-        return performanceInfo.build();
+        PerformanceInfo performanceInfo = new PerformanceInfo( name, info, place, isAvailable, price, contactPhoneNum, contactPersonName, performanceId, type, performanceSchedules );
+
+        afterMapping( dto, performanceInfo );
+
+        return performanceInfo;
     }
 }

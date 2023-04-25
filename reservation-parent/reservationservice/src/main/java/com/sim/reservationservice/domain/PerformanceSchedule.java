@@ -43,15 +43,17 @@ public class PerformanceSchedule {
     private LocalTime startTime;
     private Integer availableSeats;
     private Integer remainingSeats;
+    private boolean isAvailable;
 
     @Builder
     public PerformanceSchedule(PerformanceInfo performanceInfo, LocalDate startDate, LocalDate endDate, Integer availableSeats,
-        LocalTime startTime, Integer remainingSeats) {
+        LocalTime startTime, Integer remainingSeats, boolean isAvailable) {
         this.performanceInfo = performanceInfo;
         this.startDate = startDate;
         this.endDate = endDate;
         this.startTime = startTime;
         this.availableSeats = availableSeats;
         this.remainingSeats = remainingSeats;
+        this.isAvailable = isAvailable;
     }
 }

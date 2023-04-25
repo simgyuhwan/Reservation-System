@@ -32,7 +32,6 @@ import lombok.NoArgsConstructor;
 @Getter @Entity
 @Table(name = "performance_info")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor
 public class PerformanceInfo extends BaseEntity {
 	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "performance_info_id")
@@ -56,7 +55,34 @@ public class PerformanceInfo extends BaseEntity {
 		this.performanceSchedules = performanceSchedules;
 	}
 
-	@Builder
+	public static PerformanceInfo of(Long id, String name, String info, String place, boolean isAvailable, Integer price,
+		String contactPhoneNum, String contactPersonName, Long performanceId,
+		PerformanceType type, List<PerformanceSchedule> performanceSchedules) {
+		return new PerformanceInfo(id, name, info, place, isAvailable, price, contactPhoneNum, contactPersonName, performanceId, type, performanceSchedules);
+	}
+
+	public static PerformanceInfo of(String name, String info, String place, boolean isAvailable, Integer price,
+		String contactPhoneNum, String contactPersonName, Long performanceId,
+		PerformanceType type, List<PerformanceSchedule> performanceSchedules) {
+		return new PerformanceInfo(null, name, info, place, isAvailable, price, contactPhoneNum, contactPersonName, performanceId, type, performanceSchedules);
+	}
+
+	private PerformanceInfo(Long id, String name, String info, String place, boolean isAvailable, Integer price,
+		String contactPhoneNum, String contactPersonName, Long performanceId,
+		PerformanceType type, List<PerformanceSchedule> performanceSchedules) {
+		this.id = id;
+		this.name = name;
+		this.info = info;
+		this.place = place;
+		this.isAvailable = isAvailable;
+		this.price = price;
+		this.contactPhoneNum = contactPhoneNum;
+		this.contactPersonName = contactPersonName;
+		this.performanceId = performanceId;
+		this.type = type;
+		this.performanceSchedules = performanceSchedules;
+	}
+
 	public PerformanceInfo(String name, String info, String place, boolean isAvailable, Integer price,
 		String contactPhoneNum, String contactPersonName, Long performanceId,
 		PerformanceType type, List<PerformanceSchedule> performanceSchedules) {

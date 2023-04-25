@@ -68,36 +68,16 @@ public class ReservationTestDataFactory {
 	}
 
 	public static PerformanceInfo createPerformanceInfo() {
-		PerformanceInfo performanceInfo = PerformanceInfo.builder()
-			.performanceId(1L)
-			.name(NAME)
-			.info(INFO)
-			.isAvailable(IS_AVAILABLE)
-			.contactPersonName(CONTACT_PERSON_NAME)
-			.contactPhoneNum(CONTACT_PHONE_NUM)
-			.type(PerformanceType.findByType(TYPE))
-			.place(PLACE)
-			.build();
-
+		PerformanceInfo performanceInfo = PerformanceInfo.of(1L, NAME, INFO, PLACE, IS_AVAILABLE, PRICE,
+			CONTACT_PHONE_NUM, CONTACT_PERSON_NAME, 1L, PerformanceType.findByType(TYPE), null);
 		performanceInfo.setPerformanceSchedules(createPerformanceSchedules(performanceInfo));
-
 		return performanceInfo;
 	}
 
 	public static PerformanceInfo createPerformanceInfo(String name, String place, PerformanceType type) {
-		PerformanceInfo performanceInfo = PerformanceInfo.builder()
-			.performanceId(2L)
-			.name(name)
-			.place(place)
-			.type(type)
-			.info(INFO)
-			.isAvailable(IS_AVAILABLE)
-			.contactPersonName(CONTACT_PERSON_NAME)
-			.contactPhoneNum(CONTACT_PHONE_NUM)
-			.build();
-
+		PerformanceInfo performanceInfo = PerformanceInfo.of(name, INFO, place, IS_AVAILABLE, PRICE, CONTACT_PHONE_NUM,
+			CONTACT_PERSON_NAME, 2L, type, null);
 		performanceInfo.setPerformanceSchedules(createPerformanceSchedules(performanceInfo));
-
 		return performanceInfo;
 	}
 

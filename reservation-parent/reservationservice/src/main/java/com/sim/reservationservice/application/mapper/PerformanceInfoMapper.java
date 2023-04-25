@@ -10,8 +10,8 @@ import org.mapstruct.ReportingPolicy;
 import org.mapstruct.factory.Mappers;
 
 import com.reservation.common.mapper.GenericMapper;
-import com.sim.reservationservice.domain.PerformanceSchedule;
 import com.sim.reservationservice.domain.PerformanceInfo;
+import com.sim.reservationservice.domain.PerformanceSchedule;
 import com.sim.reservationservice.dto.request.PerformanceDto;
 
 /**
@@ -33,8 +33,9 @@ public interface PerformanceInfoMapper extends GenericMapper<PerformanceDto, Per
 	PerformanceInfo toEntity(PerformanceDto dto);
 
 	@AfterMapping
-	default void mapPerformanceDates(PerformanceDto dto, @MappingTarget PerformanceInfo performanceInfo) {
+	default void afterMapping(PerformanceDto dto, @MappingTarget PerformanceInfo performanceInfo) {
 		List<PerformanceSchedule> performanceSchedules = dto.toPerformanceSchedules(performanceInfo);
 		performanceInfo.setPerformanceSchedules(performanceSchedules);
 	}
+
 }

@@ -28,6 +28,8 @@ public class QPerformanceSchedule extends EntityPathBase<PerformanceSchedule> {
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
+    public final BooleanPath isAvailable = createBoolean("isAvailable");
+
     public final QPerformanceInfo performanceInfo;
 
     public final NumberPath<Integer> remainingSeats = createNumber("remainingSeats", Integer.class);

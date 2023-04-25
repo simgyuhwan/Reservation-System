@@ -54,6 +54,7 @@ public class PerformanceDto {
 				.performanceInfo(performanceInfo)
 				.availableSeats(audienceCount)
 				.remainingSeats(audienceCount)
+				.isAvailable(performanceInfo.isAvailable())
 				.build()
 			).collect(toList());
 	}
