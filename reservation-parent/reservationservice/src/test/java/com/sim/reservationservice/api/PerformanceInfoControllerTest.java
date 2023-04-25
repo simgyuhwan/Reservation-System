@@ -6,7 +6,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -44,21 +43,21 @@ import com.sim.reservationservice.factory.ReservationTestDataFactory;
  * @since 2023.04.12
  */
 @ExtendWith(MockitoExtension.class)
-class ReservationControllerTest {
+class PerformanceInfoControllerTest {
 	private static String RESERVATION_BASE_URL = "/api/performances";
 	private static String VIEW_RESERVATION_STATUS_URL = "/api/performances/available?";
 	private MockMvc mockMvc;
 	private Gson gson;
 
 	@InjectMocks
-	private ReservationController reservationController;
+	private PerformanceInfoController performanceInfoController;
 
 	@Mock
 	private PerformanceQueryService performanceQueryService;
 
 	@BeforeEach
 	void init() {
-		mockMvc = MockMvcBuilders.standaloneSetup(reservationController)
+		mockMvc = MockMvcBuilders.standaloneSetup(performanceInfoController)
 			.setControllerAdvice(ReservationControllerAdvice.class)
 			.setCustomArgumentResolvers(new PageableHandlerMethodArgumentResolver())
 			.build();

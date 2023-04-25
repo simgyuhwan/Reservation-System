@@ -22,14 +22,15 @@ create table performance_info
 DROP TABLE IF EXISTS performance_schedule;
 create table performance_schedule
 (
-    performance_date_id bigint auto_increment
+    performance_schedule_id bigint auto_increment
         primary key,
-    available_seats     int    null,
-    end_date            date   null,
-    remaining_seats     int    null,
-    start_date          date   null,
-    start_time          time   null,
-    performance_info_id bigint null,
+    available_seats         int    null,
+    end_date                date   null,
+    is_available            bit    not null,
+    remaining_seats         int    null,
+    start_date              date   null,
+    start_time              time   null,
+    performance_info_id     bigint null,
     constraint FK589h4gqixl73d1wllmm9bvrt9
         foreign key (performance_info_id) references performance_info (performance_info_id)
 );
