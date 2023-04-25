@@ -120,7 +120,7 @@ public class PerformanceDto {
 					.performance(performance)
 					.build()
 				)
-				.collect(Collectors.toList());
+				.toList();
 	}
 
 	private LocalDate stringToLocalDate(String date) {

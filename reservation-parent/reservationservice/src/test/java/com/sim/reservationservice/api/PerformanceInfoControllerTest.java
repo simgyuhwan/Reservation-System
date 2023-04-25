@@ -44,7 +44,6 @@ import com.sim.reservationservice.factory.ReservationTestDataFactory;
  */
 @ExtendWith(MockitoExtension.class)
 class PerformanceInfoControllerTest {
-	private static String RESERVATION_BASE_URL = "/api/performances";
 	private static String VIEW_RESERVATION_STATUS_URL = "/api/performances/available?";
 	private MockMvc mockMvc;
 	private Gson gson;
