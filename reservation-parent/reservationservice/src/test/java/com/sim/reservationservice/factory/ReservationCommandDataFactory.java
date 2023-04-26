@@ -3,6 +3,7 @@ package com.sim.reservationservice.factory;
 import static com.sim.reservationservice.factory.ReservationCommandConstants.*;
 
 import com.sim.reservationservice.dto.request.ReservationDto;
+import com.sim.reservationservice.dto.response.ReservationInfoDto;
 
 /**
  * ReservationCommandDataFactory.java
@@ -32,6 +33,17 @@ public class ReservationCommandDataFactory {
 			.name(name)
 			.phoneNum(phoneNum)
 			.email(email)
+			.build();
+	}
+
+	public static ReservationInfoDto createReservationInfoDto() {
+		return ReservationInfoDto.builder()
+			.id(1L)
+			.name(NAME)
+			.phoneNum(PHONE_NUM)
+			.performanceName(PERFORMANCE_NAME)
+			.date(PERFORMANCE_DATE)
+			.time(PERFORMANCE_TIME)
 			.build();
 	}
 }

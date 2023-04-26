@@ -26,6 +26,7 @@ import com.google.gson.Gson;
 import com.reservation.common.error.ErrorCode;
 import com.sim.reservationservice.application.ReservationCommandService;
 import com.sim.reservationservice.dto.request.ReservationDto;
+import com.sim.reservationservice.dto.response.ReservationInfoDto;
 import com.sim.reservationservice.error.PerformanceInfoNotFoundException;
 import com.sim.reservationservice.error.ReservationControllerAdvice;
 import com.sim.reservationservice.error.ReservationNotPossibleException;
@@ -58,6 +59,32 @@ class ReservationApiTest {
 		gson = new Gson();
 		mockMvc = MockMvcBuilders.standaloneSetup(reservationController)
 			.setControllerAdvice(ReservationControllerAdvice.class).build();
+	}
+
+	@Test
+	@DisplayName("공연 예약 API : 공연 예약 성공, 반환 값 확인")
+	void performanceReservationSuccessReturnValueVerification() throws Exception {
+		//given
+		when(reservationCommandService.createReservation(any(), any(), any())).thenReturn(createReservationInfoDto());
+
+		//when
+		ResultActions result = mockMvc.perform(post(DEFAULT_RESERVATION_URL)
+			.contentType(MediaType.APPLICATION_JSON)
+			.content(gson.toJson(createReservationDto())));
+
+		//then
+		result.andExpect(jsonPath("$.name").value(NAME))
+			.andExpect(jsonPath("$.phoneNum").value(PHONE_NUM))
+			.andExpect(jsonPath("$.performanceName").value(PERFORMANCE_NAME));
+	}
+
+	@Test
+	@DisplayName("공연 예약 API : 공연 예약 성공, 201 반환")
+	void return200OnPerformanceReservationSuccess() throws Exception {
+		mockMvc.perform(post(DEFAULT_RESERVATION_URL)
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(gson.toJson(createReservationDto())))
+			.andExpect(status().isCreated());
 	}
 
 	@Test
@@ -218,6 +245,10 @@ class ReservationApiTest {
 
 	private static ReservationDto createReservationDto(String userId, String name, String phoneNum, String email) {
 		return ReservationCommandDataFactory.createReservationDto(userId, name, phoneNum, email);
+	}
+
+	private static ReservationInfoDto createReservationInfoDto() {
+		return ReservationCommandDataFactory.createReservationInfoDto();
 	}
 
 }
