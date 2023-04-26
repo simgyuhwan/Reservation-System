@@ -31,7 +31,7 @@ import lombok.RequiredArgsConstructor;
  */
 @Repository
 @RequiredArgsConstructor
-public class PerformanceCustomRepositoryImpl implements PerformanceCustomRepository{
+public class PerformanceCustomRepositoryImpl implements PerformanceCustomRepository {
 	private final JPAQueryFactory queryFactory;
 
 	@Transactional
@@ -39,6 +39,7 @@ public class PerformanceCustomRepositoryImpl implements PerformanceCustomReposit
 	public Page<PerformanceInfoDto> selectPerformanceReservation(PerformanceSearchDto performanceSearchDto,
 		Pageable pageable) {
 		List<PerformanceInfo> performanceInfos = queryFactory.selectFrom(performanceInfo)
+			.distinct()
 			.join(performanceInfo.performanceSchedules, performanceSchedule)
 			.where(typeEq(performanceSearchDto.getType()),
 				nameLike(performanceSearchDto.getName()),
@@ -57,44 +58,44 @@ public class PerformanceCustomRepositoryImpl implements PerformanceCustomReposit
 		return new PageImpl<>(performanceInfoDtos, pageable, performanceInfoDtos.size());
 	}
 
-	private BooleanExpression typeEq(String type){
-		if(type != null) {
+	private BooleanExpression typeEq(String type) {
+		if (type != null) {
 			return performanceInfo.type.eq(PerformanceType.findByType(type));
 		}
 		return null;
 	}
 
 	private BooleanExpression nameLike(String name) {
-		if(name != null) {
+		if (name != null) {
 			return performanceInfo.name.like("%" + name + "%");
 		}
 		return null;
 	}
 
 	private BooleanExpression startDateGoe(LocalDate startDate) {
-		if(startDate != null) {
+		if (startDate != null) {
 			return performanceSchedule.startDate.goe(startDate);
 		}
 		return null;
 	}
 
 	private BooleanExpression endDateLoe(LocalDate endDate) {
-		if(endDate != null) {
+		if (endDate != null) {
 			return performanceSchedule.endDate.loe(endDate);
 		}
 		return null;
 	}
 
 	private BooleanExpression startTimeEq(LocalTime startTime) {
-		if(startTime != null) {
+		if (startTime != null) {
 			return performanceSchedule.startTime.eq(startTime);
 		}
 		return null;
 	}
 
 	private BooleanExpression placeLike(String place) {
-		if(place != null) {
-			return performanceInfo.place.like("%" + place  + "%");
+		if (place != null) {
+			return performanceInfo.place.like("%" + place + "%");
 		}
 		return null;
 	}
