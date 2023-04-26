@@ -59,6 +59,9 @@ spring:
       bindings:
         performanceConsumer-in-0:
           destination: performance-info
+          consumer:
+            maxAttempts: 3
+            backOffInitialInterval: 100
 
 #loging
   logging:
