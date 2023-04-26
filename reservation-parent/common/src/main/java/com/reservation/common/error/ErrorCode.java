@@ -28,8 +28,11 @@ public enum ErrorCode {
 	PERFORMANCE_DAY_NOT_FOUND_MESSAGE("해당 performanceId로 등록된 공연 날짜 정보가 없습니다. performanceId : ", 400),
 
 	// reservation
-	RESERVATION_SEARCH_VALUE_INVALID("예약 가능한 공연 조회 값이 올바르지 않습니다.", 400);
-	;
+	RESERVATION_SEARCH_VALUE_INVALID("예약 가능한 공연 조회 값이 올바르지 않습니다.", 400),
+	INVALID_PERFORMANCE_RESERVATION_INFORMATION("잘못된 공연 예약 정보입니다.", 400),
+	PERFORMANCE_SOLD_OUT_ERROR_MESSAGE("죄송합니다. 해당 공연은 매진되어 예약이 불가능합니다.", 400),
+	NO_PERFORMANCE_INFORMATION_ERROR_MESSAGE("죄송합니다. 해당 공연은 등록되어 있지 않습니다.", 404),
+	RESERVATION_NOT_POSSIBLE_ERROR_MESSAGE("죄송합니다. 해당 공연은 예약이 불가능합니다.", 400);
 
 	private final String message;
 	private final int status;

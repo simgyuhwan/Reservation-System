@@ -1,15 +1,13 @@
 package com.sim.reservationservice.factory;
 
-import static com.sim.reservationservice.factory.ReservationTestConstants.*;
+import static com.sim.reservationservice.factory.ReservationQueryConstants.*;
 
-import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 
 import com.reservation.common.type.PerformanceType;
 import com.sim.reservationservice.domain.PerformanceInfo;
@@ -18,13 +16,13 @@ import com.sim.reservationservice.dto.request.PerformanceDto;
 import com.sim.reservationservice.dto.response.PerformanceInfoDto;
 
 /**
- * ReservationTestDataFactory.java
- * 예약 서비스 관련 팩토리 클래스
+ * ReservationQueryDataFactory.java
+ * 예약 서비스 조회 관련 팩토리 클래스
  *
  * @author sgh
  * @since 2023.04.12
  */
-public class ReservationTestDataFactory {
+public class ReservationQueryDataFactory {
 
 	public static List<PerformanceInfoDto> createPerformanceInfoList() {
 		return List.of(createPerformanceInfoDto());
@@ -33,7 +31,7 @@ public class ReservationTestDataFactory {
 	public static Page<PerformanceInfoDto> createPerformanceInfoListForPage() {
 		List<PerformanceInfoDto> performanceInfoDtoList = List.of(createPerformanceInfoDto());
 		PageRequest pageable = PageRequest.of(1, 15);
-		return new PageImpl<>(performanceInfoDtoList,pageable, performanceInfoDtoList.size());
+		return new PageImpl<>(performanceInfoDtoList, pageable, performanceInfoDtoList.size());
 	}
 
 	public static PerformanceInfoDto createPerformanceInfoDto() {
@@ -102,4 +100,5 @@ public class ReservationTestDataFactory {
 
 		return List.of(performanceSchedule1, performanceSchedule2);
 	}
+
 }

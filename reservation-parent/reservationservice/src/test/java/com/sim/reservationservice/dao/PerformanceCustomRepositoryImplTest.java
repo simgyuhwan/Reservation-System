@@ -1,6 +1,6 @@
 package com.sim.reservationservice.dao;
 
-import static com.sim.reservationservice.factory.ReservationTestConstants.*;
+import static com.sim.reservationservice.factory.ReservationQueryConstants.*;
 import static org.assertj.core.api.Assertions.*;
 
 import java.time.LocalDate;
@@ -22,7 +22,7 @@ import com.sim.reservationservice.domain.PerformanceInfo;
 import com.sim.reservationservice.dto.request.PerformanceSearchDto;
 import com.sim.reservationservice.dto.response.PerformanceInfoDto;
 import com.sim.reservationservice.dto.response.PerformanceScheduleDto;
-import com.sim.reservationservice.factory.ReservationTestDataFactory;
+import com.sim.reservationservice.factory.ReservationQueryDataFactory;
 
 /**
  * PerformanceCustomRepositoryImplTest.java
@@ -126,7 +126,7 @@ class PerformanceCustomRepositoryImplTest {
 
 	@Test
 	@DisplayName("공연 예약 현황 조회 : startDate 를 지난 날짜로 지정하여 조회 테스트")
-	void oneYearAgoDateLookupTest(){
+	void oneYearAgoDateLookupTest() {
 		//given
 		LocalDate lastYear = START_DATE.minusYears(1);
 		PerformanceSearchDto searchDto = PerformanceSearchDto.builder()
@@ -184,10 +184,10 @@ class PerformanceCustomRepositoryImplTest {
 	}
 
 	private PerformanceInfo createPerformanceInfo() {
-		return ReservationTestDataFactory.createPerformanceInfo();
+		return ReservationQueryDataFactory.createPerformanceInfo();
 	}
 
 	private PerformanceInfo createPerformanceInfo(String name, String place, PerformanceType type) {
-		return ReservationTestDataFactory.createPerformanceInfo(name, place, type);
+		return ReservationQueryDataFactory.createPerformanceInfo(name, place, type);
 	}
 }

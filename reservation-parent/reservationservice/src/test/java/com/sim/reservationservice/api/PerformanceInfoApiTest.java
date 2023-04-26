@@ -1,6 +1,6 @@
 package com.sim.reservationservice.api;
 
-import static com.sim.reservationservice.factory.ReservationTestConstants.*;
+import static com.sim.reservationservice.factory.ReservationQueryConstants.*;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -32,18 +32,18 @@ import com.reservation.common.util.QueryParameter;
 import com.reservation.common.util.QueryParameterUtils;
 import com.sim.reservationservice.application.PerformanceQueryService;
 import com.sim.reservationservice.dto.response.PerformanceInfoDto;
-import com.sim.reservationservice.error.ReservationControllerAdvice;
-import com.sim.reservationservice.factory.ReservationTestDataFactory;
+import com.sim.reservationservice.error.PerformanceInfoControllerAdvice;
+import com.sim.reservationservice.factory.ReservationQueryDataFactory;
 
 /**
  * ReservationControllerTest.java
- * 예약 API 테스트
+ * 예약 관련 공연 API 테스트
  *
  * @author sgh
  * @since 2023.04.12
  */
 @ExtendWith(MockitoExtension.class)
-class PerformanceInfoControllerTest {
+class PerformanceInfoApiTest {
 	private static String VIEW_RESERVATION_STATUS_URL = "/api/performances/available?";
 	private MockMvc mockMvc;
 	private Gson gson;
@@ -57,7 +57,7 @@ class PerformanceInfoControllerTest {
 	@BeforeEach
 	void init() {
 		mockMvc = MockMvcBuilders.standaloneSetup(performanceInfoController)
-			.setControllerAdvice(ReservationControllerAdvice.class)
+			.setControllerAdvice(PerformanceInfoControllerAdvice.class)
 			.setCustomArgumentResolvers(new PageableHandlerMethodArgumentResolver())
 			.build();
 		gson = new Gson();
@@ -88,15 +88,15 @@ class PerformanceInfoControllerTest {
 
 	@Test
 	@DisplayName("공연 예약 현황 API : 현재일 보다 이전 날짜로 조회시, 400 코드 반환")
-	void nonExistentConditionReturns400Code() throws Exception{
-		mockMvc.perform(get( VIEW_RESERVATION_STATUS_URL + createDateQueryStrings("1999-01-01", "1999-01-01")))
-		.andExpect(status().isBadRequest());
+	void nonExistentConditionReturns400Code() throws Exception {
+		mockMvc.perform(get(VIEW_RESERVATION_STATUS_URL + createDateQueryStrings("1999-01-01", "1999-01-01")))
+			.andExpect(status().isBadRequest());
 	}
 
 	@Test
 	@DisplayName("공연 예약 현황 API : 현재일 보다 이전 날짜로 조회시, 오류 메시지 반환")
-	void nonExistentConditionReturnsErrorMessage() throws Exception{
-		mockMvc.perform(get( VIEW_RESERVATION_STATUS_URL + createDateQueryStrings("1999-01-01", "1999-01-01")))
+	void nonExistentConditionReturnsErrorMessage() throws Exception {
+		mockMvc.perform(get(VIEW_RESERVATION_STATUS_URL + createDateQueryStrings("1999-01-01", "1999-01-01")))
 			.andExpect(status().isBadRequest())
 			.andExpect(jsonPath("$.message").value(ErrorCode.RESERVATION_SEARCH_VALUE_INVALID.getMessage()));
 	}
@@ -141,7 +141,8 @@ class PerformanceInfoControllerTest {
 		return parameters;
 	}
 
-	private static String createDateAndTimeQueryStrings(String startDate, String endDate, String startTime, String endTime) {
+	private static String createDateAndTimeQueryStrings(String startDate, String endDate, String startTime,
+		String endTime) {
 		List<QueryParameter> queryParameters = new ArrayList<>();
 		queryParameters.add(QueryParameter.of(START_DATE_KEY, startDate));
 		queryParameters.add(QueryParameter.of(END_DATE_KEY, endDate));
@@ -175,6 +176,6 @@ class PerformanceInfoControllerTest {
 	}
 
 	private Page<PerformanceInfoDto> createPerformanceInfoListForPage() {
-		return ReservationTestDataFactory.createPerformanceInfoListForPage();
+		return ReservationQueryDataFactory.createPerformanceInfoListForPage();
 	}
 }

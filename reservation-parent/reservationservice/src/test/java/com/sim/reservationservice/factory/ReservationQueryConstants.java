@@ -7,13 +7,13 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * ReservationTestConstants.java
- * 예약 서비스 태스트 관련 상수
+ * ReservationQueryConstants.java
+ * 예약 서비스 조회 관련 상수 클래스
  *
  * @author sgh
  * @since 2023.04.12
  */
-public class ReservationTestConstants {
+public class ReservationQueryConstants {
 	public static final String START_DATE_KEY = "startDate";
 	public static final String END_DATE_KEY = "endDate";
 	public static final String NAME_KEY = "name";

@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 
 import com.sim.reservationservice.domain.PerformanceInfo;
 import com.sim.reservationservice.dto.request.PerformanceDto;
-import com.sim.reservationservice.factory.ReservationTestDataFactory;
+import com.sim.reservationservice.factory.ReservationQueryDataFactory;
 
 /**
  * PerformanceInfoMapperTest.java
@@ -19,11 +19,11 @@ import com.sim.reservationservice.factory.ReservationTestDataFactory;
 class PerformanceInfoMapperTest {
 	private PerformanceInfoMapper mapper = PerformanceInfoMapper.INSTANCE;
 
-    @Test
+	@Test
 	@DisplayName("Mapper 테스트 : toEntity")
 	void toEntityTest() {
 		//given
-		PerformanceDto dto = ReservationTestDataFactory.createPerformanceDto();
+		PerformanceDto dto = ReservationQueryDataFactory.createPerformanceDto();
 
 		//when
 		PerformanceInfo entity = mapper.toEntity(dto);
