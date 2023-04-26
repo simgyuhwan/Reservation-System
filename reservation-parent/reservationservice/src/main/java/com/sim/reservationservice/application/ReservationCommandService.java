@@ -11,6 +11,5 @@ import com.sim.reservationservice.dto.response.ReservationInfoDto;
  * @since 2023.04.26
  */
 public interface ReservationCommandService {
-
 	ReservationInfoDto createReservation(Long performanceId, Long scheduleId, ReservationDto reservationDto);
 }
