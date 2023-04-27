@@ -39,7 +39,6 @@ public class PerformanceCustomRepositoryImpl implements PerformanceCustomReposit
 	public Page<PerformanceInfoDto> selectPerformanceReservation(PerformanceSearchDto performanceSearchDto,
 		Pageable pageable) {
 		List<PerformanceInfo> performanceInfos = queryFactory.selectFrom(performanceInfo)
-			.distinct()
 			.join(performanceInfo.performanceSchedules, performanceSchedule)
 			.where(typeEq(performanceSearchDto.getType()),
 				nameLike(performanceSearchDto.getName()),

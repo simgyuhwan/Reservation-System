@@ -5,6 +5,7 @@ import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+import java.util.NoSuchElementException;
 import java.util.stream.Stream;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -85,6 +86,24 @@ class ReservationApiTest {
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(gson.toJson(createReservationDto())))
 			.andExpect(status().isCreated());
+	}
+
+	@Test
+	@DisplayName("공연 예약 API : 공연에 속하지 않은 공연 신청 시, 오류 메시지 반환")
+	void exceptionForApplicationForNonPerformance() throws Exception {
+		//given
+		when(reservationCommandService.createReservation(any(), any(), any())).thenThrow(
+			NoSuchElementException.class);
+
+		//when
+		ResultActions result = mockMvc.perform(post(DEFAULT_RESERVATION_URL)
+			.contentType(MediaType.APPLICATION_JSON)
+			.content(gson.toJson(createReservationDto())));
+
+		//then
+		result.andExpect(status().isBadRequest())
+			.andExpect(
+				jsonPath("$.message").value(ErrorCode.SCHEDULE_NOT_PART_OF_THE_PERFORMANCE_ERROR_MESSAGE.getMessage()));
 	}
 
 	@Test

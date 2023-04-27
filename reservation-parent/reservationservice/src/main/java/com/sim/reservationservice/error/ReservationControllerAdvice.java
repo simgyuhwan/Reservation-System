@@ -1,5 +1,7 @@
 package com.sim.reservationservice.error;
 
+import java.util.NoSuchElementException;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -50,6 +52,13 @@ public class ReservationControllerAdvice {
 	public ResponseEntity<ErrorResponse> reservationNotPossibleException(ReservationNotPossibleException e) {
 		log.error(e.getMessage());
 		ErrorResponse errorResponse = createErrorResponse(ErrorCode.RESERVATION_NOT_POSSIBLE_ERROR_MESSAGE);
+		return ResponseEntity.badRequest().body(errorResponse);
+	}
+
+	@ExceptionHandler(NoSuchElementException.class)
+	public ResponseEntity<ErrorResponse> noSuchElementException(NoSuchElementException e) {
+		log.error(e.getMessage());
+		ErrorResponse errorResponse = createErrorResponse(ErrorCode.SCHEDULE_NOT_PART_OF_THE_PERFORMANCE_ERROR_MESSAGE);
 		return ResponseEntity.badRequest().body(errorResponse);
 	}
 
