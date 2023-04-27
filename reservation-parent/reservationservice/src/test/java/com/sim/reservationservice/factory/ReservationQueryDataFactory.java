@@ -72,6 +72,13 @@ public class ReservationQueryDataFactory {
 		return performanceInfo;
 	}
 
+	public static PerformanceInfo createPerformanceInfoWithScheduleId() {
+		PerformanceInfo performanceInfo = PerformanceInfo.of(1L, NAME, INFO, PLACE, IS_AVAILABLE, PRICE,
+			CONTACT_PHONE_NUM, CONTACT_PERSON_NAME, 1L, PerformanceType.findByType(TYPE), null);
+		performanceInfo.setPerformanceSchedules(createPerformanceSchedulesWithId(performanceInfo));
+		return performanceInfo;
+	}
+
 	public static PerformanceInfo createPerformanceInfo() {
 		PerformanceInfo performanceInfo = PerformanceInfo.of(1L, NAME, INFO, PLACE, IS_AVAILABLE, PRICE,
 			CONTACT_PHONE_NUM, CONTACT_PERSON_NAME, 1L, PerformanceType.findByType(TYPE), null);

@@ -7,8 +7,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.reservation.common.error.ErrorMessage;
 import com.sim.reservationservice.dao.PerformanceInfoRepository;
+import com.sim.reservationservice.dao.ReservationRepository;
 import com.sim.reservationservice.domain.PerformanceInfo;
 import com.sim.reservationservice.domain.PerformanceSchedule;
+import com.sim.reservationservice.domain.Reservation;
 import com.sim.reservationservice.dto.request.ReservationDto;
 import com.sim.reservationservice.dto.response.ReservationInfoDto;
 import com.sim.reservationservice.error.PerformanceInfoNotFoundException;
@@ -29,6 +31,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class ReservationCommandServiceImpl implements ReservationCommandService {
 	private final PerformanceInfoRepository performanceInfoRepository;
+	private final ReservationRepository reservationRepository;
 
 	@Override
 	public ReservationInfoDto createReservation(Long performanceId, Long scheduleId, ReservationDto reservationDto) {
@@ -36,7 +39,10 @@ public class ReservationCommandServiceImpl implements ReservationCommandService 
 		PerformanceSchedule schedule = findPerformanceSchedule(performanceInfo, scheduleId);
 
 		validationReservation(performanceInfo, schedule);
-		return null;
+
+		Reservation reservation = reservationRepository.save(Reservation.of(reservationDto, schedule));
+
+		return ReservationInfoDto.of(reservation, schedule, performanceInfo.getName());
 	}
 
 	private void validationReservation(PerformanceInfo performanceInfo, PerformanceSchedule schedule) {

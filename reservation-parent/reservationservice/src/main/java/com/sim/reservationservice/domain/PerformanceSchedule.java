@@ -3,6 +3,8 @@ package com.sim.reservationservice.domain;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
+import com.reservation.common.model.BaseEntity;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -30,7 +32,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "performance_schedule")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-public class PerformanceSchedule {
+public class PerformanceSchedule extends BaseEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "performance_schedule_id")
@@ -63,4 +65,5 @@ public class PerformanceSchedule {
 	public boolean isSoldOut() {
 		return !isAvailable;
 	}
+
 }

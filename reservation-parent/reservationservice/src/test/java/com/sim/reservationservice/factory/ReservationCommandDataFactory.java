@@ -2,6 +2,8 @@ package com.sim.reservationservice.factory;
 
 import static com.sim.reservationservice.factory.ReservationCommandConstants.*;
 
+import com.sim.reservationservice.domain.Reservation;
+import com.sim.reservationservice.domain.ReservationStatus;
 import com.sim.reservationservice.dto.request.ReservationDto;
 import com.sim.reservationservice.dto.response.ReservationInfoDto;
 
@@ -13,6 +15,15 @@ import com.sim.reservationservice.dto.response.ReservationInfoDto;
  * @since 2023.04.26
  */
 public class ReservationCommandDataFactory {
+
+	public static Reservation createReservation() {
+		return Reservation.of(createReservationDto(), null);
+	}
+
+	public static Reservation createReservationWithId() {
+		return new Reservation(1L, USER_ID, NAME, PHONE_NUM, EMAIL, IS_EMAIL_RECEIVE_DENIED, IS_SNS_RECEIVE_DENIED,
+			null, ReservationStatus.RESERVED);
+	}
 
 	public static ReservationDto createReservationDto() {
 		return ReservationDto.builder()

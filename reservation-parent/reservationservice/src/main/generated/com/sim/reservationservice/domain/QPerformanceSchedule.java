@@ -22,13 +22,21 @@ public class QPerformanceSchedule extends EntityPathBase<PerformanceSchedule> {
 
     public static final QPerformanceSchedule performanceSchedule = new QPerformanceSchedule("performanceSchedule");
 
+    public final com.reservation.common.model.QBaseEntity _super = new com.reservation.common.model.QBaseEntity(this);
+
     public final NumberPath<Integer> availableSeats = createNumber("availableSeats", Integer.class);
+
+    //inherited
+    public final DateTimePath<java.time.LocalDateTime> createDt = _super.createDt;
 
     public final DatePath<java.time.LocalDate> endDate = createDate("endDate", java.time.LocalDate.class);
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
     public final BooleanPath isAvailable = createBoolean("isAvailable");
+
+    //inherited
+    public final BooleanPath isDelete = _super.isDelete;
 
     public final QPerformanceInfo performanceInfo;
 
@@ -37,6 +45,9 @@ public class QPerformanceSchedule extends EntityPathBase<PerformanceSchedule> {
     public final DatePath<java.time.LocalDate> startDate = createDate("startDate", java.time.LocalDate.class);
 
     public final TimePath<java.time.LocalTime> startTime = createTime("startTime", java.time.LocalTime.class);
+
+    //inherited
+    public final DateTimePath<java.time.LocalDateTime> updateDt = _super.updateDt;
 
     public QPerformanceSchedule(String variable) {
         this(PerformanceSchedule.class, forVariable(variable), INITS);

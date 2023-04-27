@@ -25,19 +25,19 @@ import lombok.extern.slf4j.Slf4j;
 @Configuration
 @RequiredArgsConstructor
 public class PerformanceInfoConsumer {
-    private final PerformanceInfoMapper performanceInfoMapper;
-    private final PerformanceInfoRepository performanceInfoRepository;
+	private final PerformanceInfoMapper performanceInfoMapper;
+	private final PerformanceInfoRepository performanceInfoRepository;
 
-    @Bean
-    public Consumer<String> performanceConsumer() {
-        return value -> {
-            try{
-                PerformanceDto performanceDto = new ObjectMapper().readValue(value, PerformanceDto.class);
-                performanceInfoRepository.save(performanceInfoMapper.toEntity(performanceDto));
-            } catch (JsonProcessingException e) {
-                log.error("공연 정보 Consumer mapping error : {}, json : {}", e.getMessage(), value);
-                e.printStackTrace();
-            }
-        };
-    }
+	@Bean
+	public Consumer<String> performanceConsumer() {
+		return value -> {
+			try {
+				PerformanceDto performanceDto = new ObjectMapper().readValue(value, PerformanceDto.class);
+				performanceInfoRepository.save(performanceInfoMapper.toEntity(performanceDto));
+			} catch (JsonProcessingException e) {
+				log.error("공연 정보 Consumer mapping error : {}, json : {}", e.getMessage(), value);
+				e.printStackTrace();
+			}
+		};
+	}
 }

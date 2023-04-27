@@ -225,36 +225,16 @@ class ReservationApiTest {
 
 	static Stream<Arguments> reservedDTOWithNullOrBlankValues() {
 		return Stream.of(
-			Arguments.of(
-				createReservationDto(null, NAME, PHONE_NUM, EMAIL)
-			),
-			Arguments.of(
-				createReservationDto(USER_ID, null, PHONE_NUM, EMAIL)
-			),
-			Arguments.of(
-				createReservationDto(USER_ID, NAME, null, EMAIL)
-			),
-			Arguments.of(
-				createReservationDto(USER_ID, NAME, PHONE_NUM, null)
-			),
-			Arguments.of(
-				createReservationDto(null, null, null, null)
-			),
-			Arguments.of(
-				createReservationDto("", NAME, PHONE_NUM, EMAIL)
-			),
-			Arguments.of(
-				createReservationDto(USER_ID, "", PHONE_NUM, EMAIL)
-			),
-			Arguments.of(
-				createReservationDto(USER_ID, NAME, "", EMAIL)
-			),
-			Arguments.of(
-				createReservationDto(USER_ID, NAME, PHONE_NUM, "")
-			),
-			Arguments.of(
-				createReservationDto("", "", "", "")
-			)
+			Arguments.of(createReservationDto(null, NAME, PHONE_NUM, EMAIL)),
+			Arguments.of(createReservationDto(USER_ID, null, PHONE_NUM, EMAIL)),
+			Arguments.of(createReservationDto(USER_ID, NAME, null, EMAIL)),
+			Arguments.of(createReservationDto(USER_ID, NAME, PHONE_NUM, null)),
+			Arguments.of(createReservationDto(null, null, null, null)),
+			Arguments.of(createReservationDto("", NAME, PHONE_NUM, EMAIL)),
+			Arguments.of(createReservationDto(USER_ID, "", PHONE_NUM, EMAIL)),
+			Arguments.of(createReservationDto(USER_ID, NAME, "", EMAIL)),
+			Arguments.of(createReservationDto(USER_ID, NAME, PHONE_NUM, "")),
+			Arguments.of(createReservationDto("", "", "", ""))
 		);
 	}
 

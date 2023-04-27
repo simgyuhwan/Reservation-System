@@ -13,8 +13,11 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.sim.reservationservice.dao.PerformanceInfoRepository;
+import com.sim.reservationservice.dao.ReservationRepository;
 import com.sim.reservationservice.domain.PerformanceInfo;
+import com.sim.reservationservice.domain.Reservation;
 import com.sim.reservationservice.dto.request.ReservationDto;
+import com.sim.reservationservice.dto.response.ReservationInfoDto;
 import com.sim.reservationservice.error.PerformanceInfoNotFoundException;
 import com.sim.reservationservice.error.ReservationNotPossibleException;
 import com.sim.reservationservice.factory.ReservationCommandDataFactory;
@@ -38,10 +41,49 @@ class ReservationCommandServiceTest {
 	@Mock
 	private PerformanceInfoRepository performanceInfoRepository;
 
+	@Mock
+	private ReservationRepository reservationRepository;
+
 	@Test
-	@DisplayName("예약 신청 : 등록된 공연 정보 없음 예외")
+	@DisplayName("예약 신청 성공 : 예약 도메인 저장 확인")
+	void reservationWholesalerSaveConfirmation() {
+		//given
+		when(performanceInfoRepository.findById(PERFORMANCE_ID)).thenReturn(Optional.of(createPerformanceInfo()));
+		when(reservationRepository.save(any())).thenReturn(createReservationWithId());
+
+		//when
+		reservationCommandService.createReservation(PERFORMANCE_ID, SCHEDULE_ID,
+			createReservationDto());
+
+		//then
+		verify(reservationRepository).save(any());
+	}
+
+	@Test
+	@DisplayName("예약 신청 성공 : 이용자 정보 일치 확인")
+	void reservationRequestSuccessfulRegistrationValueConfirmation() {
+		//given
+		ReservationDto reservationDto = createReservationDto();
+		PerformanceInfo performanceInfo = createPerformanceInfo();
+		Reservation reservation = createReservationWithId();
+
+		when(performanceInfoRepository.findById(PERFORMANCE_ID)).thenReturn(Optional.of(performanceInfo));
+		when(reservationRepository.save(any())).thenReturn(reservation);
+
+		//when
+		ReservationInfoDto reservationInfoDto = reservationCommandService.createReservation(PERFORMANCE_ID, SCHEDULE_ID,
+			reservationDto);
+
+		//then
+		assertThat(reservationInfoDto.getName()).isEqualTo(reservationDto.getName());
+		assertThat(reservationInfoDto.getPhoneNum()).isEqualTo(reservationDto.getPhoneNum());
+		assertThat(reservationInfoDto.getEmail()).isEqualTo(reservationDto.getEmail());
+	}
+
+	@Test
+	@DisplayName("예약 신청 실패 : 등록된 공연 정보 없음 예외")
 	void noRegisteredPerformanceInformationException() {
-		when(performanceInfoRepository.findById(PERFORMANCE_ID)).thenReturn(Optional.ofNullable(null));
+		when(performanceInfoRepository.findById(PERFORMANCE_ID)).thenReturn(Optional.empty());
 
 		assertThatThrownBy(() ->
 			reservationCommandService.createReservation(PERFORMANCE_ID, SCHEDULE_ID, createReservationDto())
@@ -49,7 +91,7 @@ class ReservationCommandServiceTest {
 	}
 
 	@Test
-	@DisplayName("예약 신청 : 예약 불가능한 공연 예외")
+	@DisplayName("예약 신청 실패 : 예약 불가능한 공연 예외")
 	void unReservablePerformanceException() {
 		when(performanceInfoRepository.findById(PERFORMANCE_ID)).thenReturn(
 			Optional.of(createDisablePerformanceInfo()));
@@ -60,7 +102,7 @@ class ReservationCommandServiceTest {
 	}
 
 	@Test
-	@DisplayName("예약 신청 : 매진된 공연 예외")
+	@DisplayName("예약 신청 실패 : 매진된 공연 예외")
 	void exceptionForPerformanceSoldOut() {
 		when(performanceInfoRepository.findById(PERFORMANCE_ID)).thenReturn(
 			Optional.of(createSoldOutPerformanceInfo()));
@@ -70,13 +112,17 @@ class ReservationCommandServiceTest {
 	}
 
 	@Test
-	@DisplayName("예약 신청 : 공연에 속하지 않은 공연 일자 예외")
+	@DisplayName("예약 신청 실패 : 공연에 속하지 않은 공연 일자 예외")
 	void excludingPerformanceDatesNotInTheSchedule() {
 		when(performanceInfoRepository.findById(PERFORMANCE_ID)).thenReturn(
 			Optional.of(createSoldOutPerformanceInfo()));
 
 		assertThatThrownBy(
 			() -> reservationCommandService.createReservation(PERFORMANCE_ID, -1L, createReservationDto()));
+	}
+
+	private Reservation createReservationWithId() {
+		return ReservationCommandDataFactory.createReservationWithId();
 	}
 
 	private ReservationDto createReservationDto() {
@@ -90,4 +136,9 @@ class ReservationCommandServiceTest {
 	private PerformanceInfo createSoldOutPerformanceInfo() {
 		return ReservationQueryDataFactory.createSoldOutPerformanceInfo();
 	}
+
+	private PerformanceInfo createPerformanceInfo() {
+		return ReservationQueryDataFactory.createPerformanceInfoWithScheduleId();
+	}
+
 }
