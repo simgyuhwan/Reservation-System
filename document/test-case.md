@@ -18,25 +18,31 @@
 
 ---
 
-# **1. 공연**
+# 기능별 테스트 케이스
 
-### **1) 공연 등록 API**
+# 공연
 
-#### 요청 시 필수 입력값
+## 1. 공연 등록 API(POST /api/performances)
 
-- 회원 ID
-- 공연 이름
-- 공연 시작일
-- 공연 종료일
-- 공연 종류(콘서트, 극장, 뮤지컬, 기타)
-- 수용 관객 수
-- 가격
-- 담당자 이름
-- 담당자 번호
-- 공연 소개
-- 공연 장소
+### 요청 시 필수 입력값
 
-#### 검증
+| 매개변수 이름        | 설명           |
+| -------------------- | -------------- |
+| performanceId        | 공연 ID        |
+| userId               | 회원 ID        |
+| performanceName      | 공연 이름      |
+| performanceStartDate | 공연 시작일    |
+| performanceEndDate   | 공연 종료일    |
+| performanceType      | 공연 타입      |
+| audienceCount        | 관객 수        |
+| price                | 가격           |
+| contactPhoneNum      | 담당자 번호    |
+| contactPersonName    | 담당자 이름    |
+| performanceInfo      | 공연 정보      |
+| performancePlace     | 공연 장소      |
+| performanceTimes     | 공연 시작 시간 |
+
+### 검증
 
 1. 모든 값이 제공되었는지 확인
 2. 종료일이 시작일보다 먼저인지 확인
@@ -47,23 +53,27 @@
 
 ---
 
-### **2) 공연 수정 API**
+## 2. 공연 수정 API(PUT /api/performances/{performanceId}
 
-#### 요청 시 필수 입력값
+### 요청 시 필수 입력값
 
-- 회원 ID
-- 공연 이름
-- 공연 시작일
-- 공연 종료일
-- 공연 종류(콘서트, 극장, 뮤지컬, 기타)
-- 수용 관객 수
-- 가격
-- 담당자 이름
-- 담당자 번호
-- 공연 소개
-- 공연 장소
+| 매개변수 이름        | 설명           |
+| -------------------- | -------------- |
+| performanceId        | 공연 ID        |
+| userId               | 회원 ID        |
+| performanceName      | 공연 이름      |
+| performanceStartDate | 공연 시작일    |
+| performanceEndDate   | 공연 종료일    |
+| performanceType      | 공연 타입      |
+| audienceCount        | 관객 수        |
+| price                | 가격           |
+| contactPhoneNum      | 담당자 번호    |
+| contactPersonName    | 담당자 이름    |
+| performanceInfo      | 공연 정보      |
+| performancePlace     | 공연 장소      |
+| performanceTimes     | 공연 시작 시간 |
 
-#### 검증
+### 검증
 
 1. 존재하지 않는 공연 조회시, 오류메시지 반환
 2. 종료일이 시작일보다 먼저인지 확인
@@ -71,13 +81,15 @@
 
 ---
 
-### **3) 공연 조회 API**
+## 3. 공연 조회 API
 
-#### 요청 시 필수 입력값
+### 요청 시 필수 입력값
 
-- 회원 ID
+| 매개변수 이름 | 설명    |
+| ------------- | ------- |
+| userId        | 회원 ID |
 
-#### 검증
+### 검증
 
 1. 회원 ID로 등록된 공연이 없을 시, 오류 메시지 반환
 2. 회원이 등록한 공연이 1개 이상 있는 경우, 공연 리스트 반환
@@ -85,28 +97,32 @@
 
 ---
 
-# **2. 예약**
+# 예약
 
-### 1. 공연 예약 현황 조회 API (_GET /reservation-service/api/performances/available_)
+## 1. 공연 예약 현황 조회 API (_GET /reservation-service/api/performances/available_)
 
-#### 요청 시 필수 입력값(쿼리 스트링)
+### 요청 시 필수 입력값(쿼리 스트링)
 
-- 공연 시작 날짜 (nullable, ex = 2023-04-12)
-- 공연 종료 날짜 (nullable, ex = 2023-04-12)
-- 공연 시작 시간 (nullable, ex = 12:12)
-- 공연 종료 시간 (nullable, ex = 12:12)
-- 공연 이름 (nullable, size = 100)
-- 공연 타입 (nullable)
-- 공연 장소 (nullable)
-- Pageable 정보
+| 매개변수 이름 | 설명           |
+| ------------- | -------------- |
+| startDate     | 공연 시작 날짜 |
+| endDate       | 공연 종료 날짜 |
+| startTime     | 공연 시작 시간 |
+| endTime(X)    | 공연 종료 시간 |
+| name          | 공연 이름      |
+| type          | 공연 타입      |
+| place         | 공연 장소      |
+| 페이지 정보   | Pageable       |
 
 **요청 예시**
 
 ```java
-reservation-service/api/performances/available?startDate=2024-01-01&endDate=2025-01-01&name=바람과 함께 사라지다&startTime=11:00&endTime=13:00&type=MUSICAL&place=홍대1극장
+reservation-service/api/performances/available
+	?startDate=2024-01-01&endDate=2025-01-01&name=바람과 함께 사라지다
+	&startTime=11:00&endTime=13:00&type=MUSICAL&place=홍대1극장
 ```
 
-#### 검증
+### 검증
 
 1. 모든 조건이 주어젔을 때, 조건에 맞는 공연 정보 반환 확인
 2. 조건 중 일부만 주어졌을 때, 주어징 조건에 맞는 공연 정보 반환 확인
@@ -114,3 +130,25 @@ reservation-service/api/performances/available?startDate=2024-01-01&endDate=2025
 4. 잘못된 형식의 조건이 주어졌을 때, 오류 메시지 반환 확인
 5. 조건에 맞는 공연 정보가 없을 때, 빈 리스트 반환 확인
 6. 날짜, 시간 데이터의 시작과 끝이 잘못되었을 시, 오류 메시지 반환.
+
+## 2. 공연 예약 API (POST _/reservation-service/api/performances/{performanceId}/schedules/{scheduleId}/reservations_
+
+| 매개변수 이름        | 설명             |
+| -------------------- | ---------------- |
+| userId\*             | 회원 ID          |
+| isEmailReceiveDenied | 이메일 수신 거부 |
+| isSnsReceiveDenied   | SNS 수신 거부    |
+| name\*               | 예약자 이름      |
+| phoneNum\*           | 예약자 번호      |
+| email\*              | 예약자 이메일    |
+
+### 검증
+
+1. 필수로 등록되어야 할 값이 null 또는 공백일시 오류 메시지 반환
+2. 잘못된 이메일 형식일 시, 오류 메시지 반환
+3. 잘못된 핸드폰 번호 형식일 시, 오류 메시지 반환
+4. 좌석이 매진되어 예약 불가능일 시, 오류 메시지 반환
+5. 등록 공연 정보가 없을 시, 오류 메시지 반환
+6. 예약 불가능한 공연일 시, 오류 메시지 반환
+7. 공연 예약 성공, 201 반환
+8. 공연에 속하지 않은 공연 신청 시, 오류 메시지 반환

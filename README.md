@@ -32,12 +32,12 @@ MSA 아키텍처를 이용해서 간단한 하나의 시스템을 만들어 보�
 ```
 Java 17
 Spring Boot 3.0.4
-Spring Data JPA
-QueryDsl
+Spring Data JPA 3.0.4
+QueryDsl 5.0.0
 Kafka 3.3.2
-Spring Cloud
+Spring Cloud 2022.0.2
 MSA architecture
-Redis
+Redis 3.0.5
 Docker
 MySQL
 PostgreSQL
