@@ -25,35 +25,42 @@ import lombok.NoArgsConstructor;
  * @author sgh
  * @since 2023.04.18
  */
-@Entity @Getter
+@Entity
+@Getter
 @Table(name = "performance_schedule")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 public class PerformanceSchedule {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "performance_schedule_id")
-    private Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "performance_schedule_id")
+	private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "performance_info_id")
-    private PerformanceInfo performanceInfo;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "performance_info_id")
+	private PerformanceInfo performanceInfo;
 
-    private LocalDate startDate;
-    private LocalDate endDate;
-    private LocalTime startTime;
-    private Integer availableSeats;
-    private Integer remainingSeats;
-    private boolean isAvailable;
+	private LocalDate startDate;
+	private LocalDate endDate;
+	private LocalTime startTime;
+	private Integer availableSeats;
+	private Integer remainingSeats;
+	private boolean isAvailable;
 
-    @Builder
-    public PerformanceSchedule(PerformanceInfo performanceInfo, LocalDate startDate, LocalDate endDate, Integer availableSeats,
-        LocalTime startTime, Integer remainingSeats, boolean isAvailable) {
-        this.performanceInfo = performanceInfo;
-        this.startDate = startDate;
-        this.endDate = endDate;
-        this.startTime = startTime;
-        this.availableSeats = availableSeats;
-        this.remainingSeats = remainingSeats;
-        this.isAvailable = isAvailable;
-    }
+	@Builder
+	public PerformanceSchedule(PerformanceInfo performanceInfo, LocalDate startDate, LocalDate endDate,
+		Integer availableSeats,
+		LocalTime startTime, Integer remainingSeats, boolean isAvailable) {
+		this.performanceInfo = performanceInfo;
+		this.startDate = startDate;
+		this.endDate = endDate;
+		this.startTime = startTime;
+		this.availableSeats = availableSeats;
+		this.remainingSeats = remainingSeats;
+		this.isAvailable = isAvailable;
+	}
+
+	public boolean isSoldOut() {
+		return !isAvailable;
+	}
 }

@@ -1,6 +1,7 @@
 package com.sim.reservationservice.domain;
 
 import java.util.List;
+import java.util.Optional;
 
 import com.reservation.common.model.BaseEntity;
 import com.reservation.common.type.PerformanceType;
@@ -26,11 +27,13 @@ import lombok.NoArgsConstructor;
  * @author sgh
  * @since 2023.04.18
  */
-@Getter @Entity
+@Getter
+@Entity
 @Table(name = "performance_info")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class PerformanceInfo extends BaseEntity {
-	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "performance_info_id")
 	private Long id;
 	private String name;
@@ -52,16 +55,25 @@ public class PerformanceInfo extends BaseEntity {
 		this.performanceSchedules = performanceSchedules;
 	}
 
-	public static PerformanceInfo of(Long id, String name, String info, String place, boolean isAvailable, Integer price,
+	public Optional<PerformanceSchedule> findScheduleById(Long performanceScheduleId) {
+		return performanceSchedules.stream()
+			.filter(s -> s.getId() == performanceScheduleId)
+			.findFirst();
+	}
+
+	public static PerformanceInfo of(Long id, String name, String info, String place, boolean isAvailable,
+		Integer price,
 		String contactPhoneNum, String contactPersonName, Long performanceId,
 		PerformanceType type, List<PerformanceSchedule> performanceSchedules) {
-		return new PerformanceInfo(id, name, info, place, isAvailable, price, contactPhoneNum, contactPersonName, performanceId, type, performanceSchedules);
+		return new PerformanceInfo(id, name, info, place, isAvailable, price, contactPhoneNum, contactPersonName,
+			performanceId, type, performanceSchedules);
 	}
 
 	public static PerformanceInfo of(String name, String info, String place, boolean isAvailable, Integer price,
 		String contactPhoneNum, String contactPersonName, Long performanceId,
 		PerformanceType type, List<PerformanceSchedule> performanceSchedules) {
-		return new PerformanceInfo(null, name, info, place, isAvailable, price, contactPhoneNum, contactPersonName, performanceId, type, performanceSchedules);
+		return new PerformanceInfo(null, name, info, place, isAvailable, price, contactPhoneNum, contactPersonName,
+			performanceId, type, performanceSchedules);
 	}
 
 	private PerformanceInfo(Long id, String name, String info, String place, boolean isAvailable, Integer price,

@@ -65,10 +65,24 @@ public class ReservationQueryDataFactory {
 			.build();
 	}
 
+	public static PerformanceInfo createSoldOutPerformanceInfo() {
+		PerformanceInfo performanceInfo = PerformanceInfo.of(1L, NAME, INFO, PLACE, IS_AVAILABLE, PRICE,
+			CONTACT_PHONE_NUM, CONTACT_PERSON_NAME, 1L, PerformanceType.findByType(TYPE), null);
+		performanceInfo.setPerformanceSchedules(List.of(createSoldOutPerformanceSchedule(performanceInfo)));
+		return performanceInfo;
+	}
+
 	public static PerformanceInfo createPerformanceInfo() {
 		PerformanceInfo performanceInfo = PerformanceInfo.of(1L, NAME, INFO, PLACE, IS_AVAILABLE, PRICE,
 			CONTACT_PHONE_NUM, CONTACT_PERSON_NAME, 1L, PerformanceType.findByType(TYPE), null);
 		performanceInfo.setPerformanceSchedules(createPerformanceSchedules(performanceInfo));
+		return performanceInfo;
+	}
+
+	public static PerformanceInfo createDisablePerformanceInfo() {
+		PerformanceInfo performanceInfo = PerformanceInfo.of(1L, NAME, INFO, PLACE, false, PRICE,
+			CONTACT_PHONE_NUM, CONTACT_PERSON_NAME, 1L, PerformanceType.findByType(TYPE), null);
+		performanceInfo.setPerformanceSchedules(createPerformanceSchedulesWithId(performanceInfo));
 		return performanceInfo;
 	}
 
@@ -80,14 +94,15 @@ public class ReservationQueryDataFactory {
 	}
 
 	public static List<PerformanceSchedule> createPerformanceSchedules(PerformanceInfo performanceInfo) {
-		PerformanceSchedule performanceSchedule1 = PerformanceSchedule.builder()
-			.startDate(START_DATE)
-			.endDate(END_DATE)
-			.startTime(LocalTime.of(11, 00))
-			.performanceInfo(performanceInfo)
-			.remainingSeats(REMAINING_SEATS)
-			.availableSeats(AVAILABLE_SEATS)
-			.build();
+		PerformanceSchedule performanceSchedule1 =
+			PerformanceSchedule.builder()
+				.startDate(START_DATE)
+				.endDate(END_DATE)
+				.startTime(LocalTime.of(11, 00))
+				.performanceInfo(performanceInfo)
+				.remainingSeats(REMAINING_SEATS)
+				.availableSeats(AVAILABLE_SEATS)
+				.build();
 
 		PerformanceSchedule performanceSchedule2 = PerformanceSchedule.builder()
 			.startDate(START_DATE)
@@ -99,6 +114,21 @@ public class ReservationQueryDataFactory {
 			.build();
 
 		return List.of(performanceSchedule1, performanceSchedule2);
+	}
+
+	public static List<PerformanceSchedule> createPerformanceSchedulesWithId(PerformanceInfo performanceInfo) {
+		PerformanceSchedule performanceSchedule1 = new PerformanceSchedule(1L, performanceInfo, START_DATE, END_DATE,
+			LocalTime.of(11, 00), AVAILABLE_SEATS, REMAINING_SEATS, true);
+
+		PerformanceSchedule performanceSchedule2 = new PerformanceSchedule(2L, performanceInfo, START_DATE, END_DATE,
+			LocalTime.of(12, 30), AVAILABLE_SEATS, REMAINING_SEATS, true);
+
+		return List.of(performanceSchedule1, performanceSchedule2);
+	}
+
+	public static PerformanceSchedule createSoldOutPerformanceSchedule(PerformanceInfo performanceInfo) {
+		return new PerformanceSchedule(1L, performanceInfo, START_DATE, END_DATE, LocalTime.now(), AVAILABLE_SEATS,
+			REMAINING_SEATS, false);
 	}
 
 }

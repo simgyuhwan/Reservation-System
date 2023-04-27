@@ -1,5 +1,7 @@
 package com.sim.reservationservice.error;
 
+import com.reservation.common.error.ErrorMessage;
+
 import lombok.Getter;
 
 /**
@@ -11,11 +13,18 @@ import lombok.Getter;
  */
 @Getter
 public class SoldOutException extends RuntimeException {
+	private Long performanceScheduleId;
+
 	public SoldOutException() {
 		super();
 	}
 
 	public SoldOutException(String message) {
 		super(message);
+	}
+
+	public SoldOutException(ErrorMessage errorMessage, Long performanceScheduleId) {
+		super(errorMessage.name() + performanceScheduleId);
+		this.performanceScheduleId = performanceScheduleId;
 	}
 }
