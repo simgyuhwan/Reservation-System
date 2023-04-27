@@ -8,9 +8,9 @@ package com.sim.reservationservice.domain;
  * @since 2023.04.27
  */
 public enum ReservationStatus {
-	RESERVED("예약됨"),
-	CANCELED("취소됨"),
-	COMPLETED("완료됨");
+	RESERVED("예약 완료"),
+	CANCELED("예약 취소"),
+	COMPLETED("예약 종료");
 
 	private final String status;
 
