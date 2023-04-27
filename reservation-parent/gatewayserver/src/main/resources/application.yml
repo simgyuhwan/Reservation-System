@@ -66,3 +66,15 @@ management:
   endpoint:
     gateway:
       enabled: true
+
+# SpringDoc
+springdoc:
+  swagger-ui:
+    path: /swagger
+    urls:
+      - name: Reservation-service
+        url: http://localhost:8000/reservation-service/api-docs
+      - name: Performance-service
+        url: http://localhost:8000/performance-service/api-docs
+      - name: Member-service
+        url: http://localhost:8000/member-service/api-docs
