@@ -3,6 +3,7 @@ package com.sim.reservationservice.application;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.sim.reservationservice.dao.PerformanceCustomRepository;
 import com.sim.reservationservice.dto.request.PerformanceSearchDto;
@@ -20,8 +21,9 @@ import lombok.extern.slf4j.Slf4j;
  */
 @Slf4j
 @Service
+@Transactional(readOnly = true)
 @RequiredArgsConstructor
-public class PerformanceQueryServiceImpl implements PerformanceQueryService{
+public class PerformanceQueryServiceImpl implements PerformanceQueryService {
 	private final PerformanceCustomRepository performanceCustomRepository;
 
 	@Override

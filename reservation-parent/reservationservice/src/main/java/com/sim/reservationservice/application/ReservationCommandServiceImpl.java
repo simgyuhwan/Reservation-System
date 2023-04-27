@@ -3,6 +3,7 @@ package com.sim.reservationservice.application;
 import java.util.NoSuchElementException;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.reservation.common.error.ErrorMessage;
 import com.sim.reservationservice.dao.PerformanceInfoRepository;
@@ -24,6 +25,7 @@ import lombok.RequiredArgsConstructor;
  * @since 2023.04.26
  */
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class ReservationCommandServiceImpl implements ReservationCommandService {
 	private final PerformanceInfoRepository performanceInfoRepository;
@@ -32,6 +34,7 @@ public class ReservationCommandServiceImpl implements ReservationCommandService 
 	public ReservationInfoDto createReservation(Long performanceId, Long scheduleId, ReservationDto reservationDto) {
 		PerformanceInfo performanceInfo = findPerformanceById(performanceId);
 		PerformanceSchedule schedule = findPerformanceSchedule(performanceInfo, scheduleId);
+
 		validationReservation(performanceInfo, schedule);
 		return null;
 	}
