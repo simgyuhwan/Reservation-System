@@ -45,11 +45,11 @@ public class ReservationQueryConstants {
 	public static final Set<String> START_TIMES_STRING = Set.of("11:00", "13:00");
 	public static final String PLACE = "홍대 1극장";
 	public static final boolean IS_AVAILABLE = true;
-	public static int AUDIENCE_COUNT = 150;
-	public static int AVAILABLE_SEATS = 100;
-	public static int REMAINING_SEATS = 100;
-	public static int PRICE = 15000;
-	public static String CONTACT_PHONE_NUM = "010-1234-4569";
-	public static String USER_ID = "test";
-	public static String CONTACT_PERSON_NAME = "홍길동";
+	public static final int AUDIENCE_COUNT = 150;
+	public static final int AVAILABLE_SEATS = 100;
+	public static final int REMAINING_SEATS = 100;
+	public static final int PRICE = 15000;
+	public static final String CONTACT_PHONE_NUM = "010-1234-4569";
+	public static final String USER_ID = "test";
+	public static final String CONTACT_PERSON_NAME = "홍길동";
 }
