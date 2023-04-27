@@ -6,8 +6,6 @@ create table performance_info
     create_date         datetime(6)  null,
     is_delete           bit          null,
     update_date         datetime(6)  null,
-    audience_count      int          null,
-    available_seats     int          null,
     contact_person_name varchar(255) null,
     contact_phone_num   varchar(255) null,
     info                varchar(255) null,
@@ -18,6 +16,7 @@ create table performance_info
     price               int          null,
     type                varchar(255) null
 );
+
 
 DROP TABLE IF EXISTS performance_schedule;
 create table performance_schedule
