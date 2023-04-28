@@ -3,6 +3,7 @@ package com.sim.reservationservice.domain;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
+import com.reservation.common.error.ErrorMessage;
 import com.reservation.common.model.BaseEntity;
 import com.sim.reservationservice.error.SoldOutException;
 
@@ -67,7 +68,7 @@ public class PerformanceSchedule extends BaseEntity {
 
 	public void reserveSeat() {
 		if (isSoldOut()) {
-			throw new SoldOutException();
+			throw new SoldOutException(ErrorMessage.SOLD_OUT_PERFORMANCE, id);
 		}
 		decreaseRemainingSeats();
 		updateAvailability();
