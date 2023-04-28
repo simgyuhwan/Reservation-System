@@ -65,6 +65,14 @@ public class ReservationQueryDataFactory {
 			.build();
 	}
 
+	public static PerformanceInfo createPerformanceInfoWithOneSeats() {
+		PerformanceInfo performanceInfo = createPerformanceInfo();
+		List<PerformanceSchedule> schedulesWithOneSeats = createPerformanceSchedulesWithOneSeats(
+			performanceInfo);
+		performanceInfo.setPerformanceSchedules(schedulesWithOneSeats);
+		return performanceInfo;
+	}
+
 	public static PerformanceInfo createSoldOutPerformanceInfo() {
 		PerformanceInfo performanceInfo = PerformanceInfo.of(1L, NAME, INFO, PLACE, IS_AVAILABLE, PRICE,
 			CONTACT_PHONE_NUM, CONTACT_PERSON_NAME, 1L, PerformanceType.findByType(TYPE), null);
@@ -98,6 +106,10 @@ public class ReservationQueryDataFactory {
 			CONTACT_PERSON_NAME, 2L, type, null);
 		performanceInfo.setPerformanceSchedules(createPerformanceSchedules(performanceInfo));
 		return performanceInfo;
+	}
+
+	public static List<PerformanceSchedule> createPerformanceSchedulesWithOneSeats(PerformanceInfo performanceInfo) {
+		return List.of(createPerformanceScheduleOneSeat(performanceInfo));
 	}
 
 	public static List<PerformanceSchedule> createPerformanceSchedules(PerformanceInfo performanceInfo) {
@@ -136,6 +148,11 @@ public class ReservationQueryDataFactory {
 	public static PerformanceSchedule createSoldOutPerformanceSchedule(PerformanceInfo performanceInfo) {
 		return new PerformanceSchedule(1L, performanceInfo, START_DATE, END_DATE, LocalTime.now(), AVAILABLE_SEATS,
 			REMAINING_SEATS, false);
+	}
+
+	public static PerformanceSchedule createPerformanceScheduleOneSeat(PerformanceInfo performanceInfo) {
+		return new PerformanceSchedule(1L, performanceInfo, START_DATE, END_DATE, LocalTime.now(), AVAILABLE_SEATS,
+			1, true);
 	}
 
 }

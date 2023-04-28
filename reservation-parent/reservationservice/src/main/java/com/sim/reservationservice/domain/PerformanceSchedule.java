@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 
 import com.reservation.common.model.BaseEntity;
+import com.sim.reservationservice.error.SoldOutException;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -33,6 +34,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 public class PerformanceSchedule extends BaseEntity {
+	private static final int NO_SEAT = 0;
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "performance_schedule_id")
@@ -62,8 +65,25 @@ public class PerformanceSchedule extends BaseEntity {
 		this.isAvailable = isAvailable;
 	}
 
-	public boolean isSoldOut() {
-		return !isAvailable;
+	public void reserveSeat() {
+		if (isSoldOut()) {
+			throw new SoldOutException();
+		}
+		decreaseRemainingSeats();
+		updateAvailability();
 	}
 
+	private void updateAvailability() {
+		if (remainingSeats == NO_SEAT) {
+			isAvailable = false;
+		}
+	}
+
+	private boolean isSoldOut() {
+		return remainingSeats <= 0 || !isAvailable;
+	}
+
+	private void decreaseRemainingSeats() {
+		--remainingSeats;
+	}
 }

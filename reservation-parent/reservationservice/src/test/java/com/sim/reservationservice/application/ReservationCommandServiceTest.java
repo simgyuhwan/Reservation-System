@@ -15,6 +15,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import com.sim.reservationservice.dao.PerformanceInfoRepository;
 import com.sim.reservationservice.dao.ReservationRepository;
 import com.sim.reservationservice.domain.PerformanceInfo;
+import com.sim.reservationservice.domain.PerformanceSchedule;
 import com.sim.reservationservice.domain.Reservation;
 import com.sim.reservationservice.dto.request.ReservationDto;
 import com.sim.reservationservice.dto.response.ReservationInfoDto;
@@ -81,6 +82,27 @@ class ReservationCommandServiceTest {
 	}
 
 	@Test
+	@DisplayName("예약 신청 성공 : 하나 남은 좌석 예약 신청 후 매진 확인")
+	void verificationOfSoldOutAfterReservation() {
+		//given
+		ReservationDto reservationDto = createReservationDto();
+		PerformanceInfo infoWithOneSeats = createPerformanceInfoWithOneSeats();
+		Reservation reservation = createReservationWithId();
+
+		when(performanceInfoRepository.findById(PERFORMANCE_ID)).thenReturn(Optional.of(infoWithOneSeats));
+		when(reservationRepository.save(any())).thenReturn(reservation);
+
+		//when
+		reservationCommandService.createReservation(PERFORMANCE_ID, SCHEDULE_ID,
+			reservationDto);
+
+		//then
+		PerformanceSchedule schedule = infoWithOneSeats.getPerformanceSchedules().get(0);
+		assertThat(schedule.isAvailable()).isFalse();
+		assertThat(schedule.getRemainingSeats()).isEqualTo(0);
+	}
+
+	@Test
 	@DisplayName("예약 신청 실패 : 등록된 공연 정보 없음 예외")
 	void noRegisteredPerformanceInformationException() {
 		when(performanceInfoRepository.findById(PERFORMANCE_ID)).thenReturn(Optional.empty());
@@ -139,6 +161,10 @@ class ReservationCommandServiceTest {
 
 	private PerformanceInfo createPerformanceInfo() {
 		return ReservationQueryDataFactory.createPerformanceInfoWithScheduleId();
+	}
+
+	public PerformanceInfo createPerformanceInfoWithOneSeats() {
+		return ReservationQueryDataFactory.createPerformanceInfoWithOneSeats();
 	}
 
 }

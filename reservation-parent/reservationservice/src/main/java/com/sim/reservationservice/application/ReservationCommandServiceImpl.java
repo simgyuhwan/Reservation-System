@@ -15,7 +15,6 @@ import com.sim.reservationservice.dto.request.ReservationDto;
 import com.sim.reservationservice.dto.response.ReservationInfoDto;
 import com.sim.reservationservice.error.PerformanceInfoNotFoundException;
 import com.sim.reservationservice.error.ReservationNotPossibleException;
-import com.sim.reservationservice.error.SoldOutException;
 
 import lombok.RequiredArgsConstructor;
 
@@ -38,21 +37,18 @@ public class ReservationCommandServiceImpl implements ReservationCommandService 
 		PerformanceInfo performanceInfo = findPerformanceById(performanceId);
 		PerformanceSchedule schedule = findPerformanceSchedule(performanceInfo, scheduleId);
 
-		validationReservation(performanceInfo, schedule);
+		validationReservation(performanceInfo);
+		schedule.reserveSeat();
 
 		Reservation reservation = reservationRepository.save(Reservation.of(reservationDto, schedule));
 
 		return ReservationInfoDto.of(reservation, schedule, performanceInfo.getName());
 	}
 
-	private void validationReservation(PerformanceInfo performanceInfo, PerformanceSchedule schedule) {
+	private void validationReservation(PerformanceInfo performanceInfo) {
 		if (!performanceInfo.isAvailable()) {
 			throw new ReservationNotPossibleException(ErrorMessage.RESERVATION_NOT_AVAILABLE,
 				performanceInfo.getPerformanceId());
-		}
-
-		if (schedule.isSoldOut()) {
-			throw new SoldOutException(ErrorMessage.SOLD_OUT_PERFORMANCE, schedule.getId());
 		}
 	}
 
