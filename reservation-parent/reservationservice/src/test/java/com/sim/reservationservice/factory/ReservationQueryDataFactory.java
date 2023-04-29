@@ -145,6 +145,11 @@ public class ReservationQueryDataFactory {
 		return List.of(performanceSchedule1, performanceSchedule2);
 	}
 
+	public static PerformanceSchedule createPerformanceSchedule(PerformanceInfo performanceInfo) {
+		return new PerformanceSchedule(1L, performanceInfo, START_DATE, END_DATE, LocalTime.now(), AVAILABLE_SEATS,
+			REMAINING_SEATS, true);
+	}
+
 	public static PerformanceSchedule createSoldOutPerformanceSchedule(PerformanceInfo performanceInfo) {
 		return new PerformanceSchedule(1L, performanceInfo, START_DATE, END_DATE, LocalTime.now(), AVAILABLE_SEATS,
 			REMAINING_SEATS, false);

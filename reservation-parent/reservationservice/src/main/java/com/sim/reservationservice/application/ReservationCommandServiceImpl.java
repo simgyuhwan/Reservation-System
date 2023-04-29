@@ -5,6 +5,8 @@ import java.util.concurrent.TimeUnit;
 
 import org.redisson.api.RLock;
 import org.redisson.api.RedissonClient;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
@@ -20,9 +22,11 @@ import com.sim.reservationservice.domain.Reservation;
 import com.sim.reservationservice.dto.request.ReservationDto;
 import com.sim.reservationservice.dto.response.ReservationInfoDto;
 import com.sim.reservationservice.error.PerformanceInfoNotFoundException;
+import com.sim.reservationservice.error.PerformanceScheduleNotFoundException;
 import com.sim.reservationservice.error.ReservationNotPossibleException;
 import com.sim.reservationservice.error.SoldOutException;
 
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 
 /**
@@ -37,7 +41,6 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class ReservationCommandServiceImpl implements ReservationCommandService {
 	private static final String SEAT_LOCK = "seat_lock";
-	private static final String PERFORMANCE_SCHEDULE = "performance-schedule-";
 	private static final int WAIT_TIME = 1;
 	private static final int LEASE_TIME = 2;
 
@@ -45,21 +48,12 @@ public class ReservationCommandServiceImpl implements ReservationCommandService 
 	private final ReservationRepository reservationRepository;
 	private final PerformanceScheduleRepository performanceScheduleRepository;
 	private final RedissonClient redissonClient;
-	private final RedisTemplate<String, Object> redisTemplate;
 
 	@Override
 	public ReservationInfoDto createReservation(Long performanceId, Long scheduleId, ReservationDto reservationDto) {
-		HashOperations<String, Object, Object> hashOperations = redisTemplate.opsForHash();
-		Boolean isAvailable = (Boolean)hashOperations.get(PERFORMANCE_SCHEDULE + scheduleId, "isAvailable");
+		Boolean isReservable = getReserveAvailability(scheduleId);
 
-		if (isAvailable == null) {
-			PerformanceSchedule schedule = performanceScheduleRepository.findById(scheduleId)
-				.orElseThrow(RuntimeException::new);
-			hashOperations.put(PERFORMANCE_SCHEDULE + scheduleId, "isAvailable", schedule.isAvailable());
-			isAvailable = schedule.isAvailable();
-		}
-
-		if (!isAvailable) {
+		if (!isReservable) {
 			throw new SoldOutException(ErrorMessage.SOLD_OUT_PERFORMANCE, scheduleId);
 		}
 
@@ -76,7 +70,7 @@ public class ReservationCommandServiceImpl implements ReservationCommandService 
 			validationReservation(performanceInfo);
 			schedule.reserveSeat();
 
-			hashOperations.put(PERFORMANCE_SCHEDULE + scheduleId, "isAvailable", schedule.isAvailable());
+			updateReserveAvailability(scheduleId, schedule.isAvailable());
 
 			Reservation reservation = reservationRepository.save(Reservation.of(reservationDto, schedule));
 			return ReservationInfoDto.of(reservation, schedule, performanceInfo.getName());
@@ -105,5 +99,17 @@ public class ReservationCommandServiceImpl implements ReservationCommandService 
 			.orElseThrow(() -> new PerformanceInfoNotFoundException(ErrorMessage.PERFORMANCE_NOT_FOUND, performanceId));
 	}
 
+	@Cacheable(value = "performance-reserve-availability", key = "#scheduleId")
+	public Boolean getReserveAvailability(Long scheduleId) {
+		return performanceScheduleRepository.findById(scheduleId)
+			.orElseThrow(() -> new PerformanceScheduleNotFoundException(ErrorMessage.PERFORMANCE_SCHEDULE_NOT_FOUND, scheduleId))
+			.isAvailable();
+
+	}
+
+	@CachePut(value = "performance-reserve-availability", key = "#scheduleId")
+	public Boolean updateReserveAvailability(Long scheduleId, Boolean isAvailable) {
+		return isAvailable;
+	}
 }
 

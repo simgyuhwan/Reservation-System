@@ -13,18 +13,10 @@ import lombok.Getter;
  */
 @Getter
 public class PerformanceInfoNotFoundException extends RuntimeException {
-	private Long performanceId;
+	private final Long id;
 
-	public PerformanceInfoNotFoundException() {
-		super();
-	}
-
-	public PerformanceInfoNotFoundException(String message) {
-		super(message);
-	}
-
-	public PerformanceInfoNotFoundException(ErrorMessage message, Long performanceId) {
-		super(message.name() + performanceId);
-		this.performanceId = performanceId;
+	public PerformanceInfoNotFoundException(ErrorMessage message, Long id) {
+		super(message.name() + id);
+		this.id= id;
 	}
 }

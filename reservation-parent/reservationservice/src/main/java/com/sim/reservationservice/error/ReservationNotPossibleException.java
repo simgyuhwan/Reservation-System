@@ -13,18 +13,10 @@ import lombok.Getter;
  */
 @Getter
 public class ReservationNotPossibleException extends RuntimeException {
-	private Long performanceId;
+	private final Long id;
 
-	public ReservationNotPossibleException() {
-		super();
-	}
-
-	public ReservationNotPossibleException(String message) {
-		super(message);
-	}
-
-	public ReservationNotPossibleException(ErrorMessage errorMessage, Long performanceId) {
-		super(errorMessage.name() + performanceId);
-		this.performanceId = performanceId;
+	public ReservationNotPossibleException(ErrorMessage errorMessage, Long id) {
+		super(errorMessage.name() + id);
+		this.id = id;
 	}
 }
