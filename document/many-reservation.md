@@ -47,7 +47,7 @@ public ReservationInfoDto createReservation(Long performanceId, Long scheduleId,
 
 ### **RedisConfig**
 
-Redis의 직접적인 접근을 위해 **`RedisTemplate`**를 `**Bean**`에 등록했다. 
+Redis의 직접적인 접근을 위해 `RedisTemplate`를 `Bean`에 등록했다. 
 
 ```java
 public class RedisConfig {

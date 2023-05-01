@@ -12,7 +12,6 @@
 
 [예약 API]()
 
-[결제 API]()
 
 ---
 
@@ -94,17 +93,8 @@
 - DELETE /reservations/{reservationId}: 예약 취소 요청
 - GET /reservations/{reservationId}/payment: 결제 정보 확인 요청
 
-## 4. 결제
 
-    결제 정보 처리, 결제 상태 저장, 결제 취소 기능
-
-### 결제 API
-
-- POST /payments: 결제 요청
-- PUT /payments/{paymentId}: 결제 상태 업데이트 요청
-- DELETE /payments/{paymentId}: 결제 취소 요청
-
-## 5. 이벤트
+## 4. 이벤트
 
     예약, 결제, 취소에 대한 이벤트 발행 기능 제공, 이벤트를 수신하여 내부 데이터를 업데이트하는 기능
 
@@ -115,7 +105,7 @@
 - POST /events/cancellations: 취소 이벤트 발행 요청
 - POST /events/{serviceId}: 이벤트 수신 요청
 
-## 6. 보안
+## 5. 보안
 
     인증 및 인가 처리 기능
 
@@ -123,7 +113,7 @@
 
 - POST /auth: 인증 및 인가 처리 요청
 
-## 7. 알림
+## 6. 알림
 
     예약, 결제, 취소 알림을 전송하는 기능
 
@@ -133,6 +123,6 @@
 - POST /notifications/payments: 결제 알림 전송 요청
 - POST /notifications/cancellations: 취소 알림 전송 요청
 
-## 8. 게이트웨이
+## 7. 게이트웨이
 
     모든 클라이언트의 요청을 각 서비스로 전달하는 역할을 하는 서비스.
