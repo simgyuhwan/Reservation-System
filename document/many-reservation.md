@@ -61,11 +61,11 @@ public class RedisConfig {
 	@Primary
 	@Bean
 	public RedisTemplate<String, Object> redisTemplate() {
-		RedisTemplate<String, Object> redisTemplate = new RedisTemplate<>();
-		redisTemplate.setConnectionFactory(redisConnectionFactory());
-		redisTemplate.setKeySerializer(new StringRedisSerializer());
-		redisTemplate.setValueSerializer(new Jackson2JsonRedisSerializer<>(Object.class));
-		return redisTemplate;
+   RedisTemplate<String, Object> redisTemplate = new RedisTemplate<>();
+   redisTemplate.setConnectionFactory(redisConnectionFactory());
+   redisTemplate.setKeySerializer(new StringRedisSerializer());
+   redisTemplate.setValueSerializer(new Jackson2JsonRedisSerializer<>(Object.class));
+   return redisTemplate;
 	}
 }
 ```
@@ -96,7 +96,7 @@ if (isAvailable == null) {
 
 ```java
 if (!isAvailable) {
-	throw new SoldOutException(ErrorMessage.SOLD_OUT_PERFORMANCE, scheduleId);
+ throw new SoldOutException(ErrorMessage.SOLD_OUT_PERFORMANCE, scheduleId);
 }
 ```
 
@@ -176,35 +176,35 @@ public ReservationInfoDto createReservation(Long performanceId, Long scheduleId,
 
 ```java
 public ReservationInfoDto createReservation(Long performanceId, Long scheduleId, ReservationDto reservationDto) {
-		Boolean isReservable = getReserveAvailability(scheduleId);
+  Boolean isReservable = getReserveAvailability(scheduleId);
 
-		if (!isReservable) {
-			throw new SoldOutException(ErrorMessage.SOLD_OUT_PERFORMANCE, scheduleId);
-		}
+  if (!isReservable) {
+    throw new SoldOutException(ErrorMessage.SOLD_OUT_PERFORMANCE, scheduleId);
+  }
 
-		RLock lock = redissonClient.getLock(SEAT_LOCK);
+  RLock lock = redissonClient.getLock(SEAT_LOCK);
 
-		try {
-			if (!(lock.tryLock(WAIT_TIME, LEASE_TIME, TimeUnit.SECONDS))) {
-				throw new RuntimeException("Seat Lock 획득 실패");
-			}
+  try {
+    if (!(lock.tryLock(WAIT_TIME, LEASE_TIME, TimeUnit.SECONDS))) {
+      throw new RuntimeException("Seat Lock 획득 실패");
+    }
 
-			PerformanceInfo performanceInfo = findPerformanceById(performanceId);
-			PerformanceSchedule schedule = findPerformanceSchedule(performanceInfo, scheduleId);
+    PerformanceInfo performanceInfo = findPerformanceById(performanceId);
+    PerformanceSchedule schedule = findPerformanceSchedule(performanceInfo, scheduleId);
 
-			validationReservation(performanceInfo);
-			schedule.reserveSeat();
+    validationReservation(performanceInfo);
+    schedule.reserveSeat();
 
-			updateReserveAvailability(scheduleId, schedule.isAvailable());
+    updateReserveAvailability(scheduleId, schedule.isAvailable());
 
-			Reservation reservation = reservationRepository.save(Reservation.of(reservationDto, schedule));
-			return ReservationInfoDto.of(reservation, schedule, performanceInfo.getName());
-		} catch (InterruptedException e) {
-			throw new RuntimeException(e);
-		} finally {
-			lock.unlock();
-		}
-	}
+    Reservation reservation = reservationRepository.save(Reservation.of(reservationDto, schedule));
+    return ReservationInfoDto.of(reservation, schedule, performanceInfo.getName());
+  } catch (InterruptedException e) {
+    throw new RuntimeException(e);
+  } finally {
+    lock.unlock();
+  }
+}
 
 @Cacheable(value = "performance-reserve-availability", key = "#scheduleId")
 public Boolean getReserveAvailability(Long scheduleId) {
