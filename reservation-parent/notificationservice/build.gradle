@@ -47,18 +47,3 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-redis'
     implementation 'org.redisson:redisson-spring-boot-starter:3.20.0';
 }
-
-//def querydslDir = "$buildDir/generated/querydsl"
-//
-//sourceSets {
-//    main.java.srcDirs += [querydslDir]
-//}
-//
-//tasks.withType(JavaCompile) {
-//    options.encoding = "UTF-8"
-//    options.generatedSourceOutputDirectory.set(file(querydslDir))
-//}
-//
-//clean.doLast {
-//    file(querydslDir).deleteDir()
-//}
