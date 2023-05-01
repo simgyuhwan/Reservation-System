@@ -2,11 +2,17 @@ package com.sim.reservationservice.dto.request;
 
 import static java.util.stream.Collectors.*;
 
+import java.time.Instant;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import com.reservation.common.util.DateTimeUtils;
 import com.sim.reservationservice.domain.PerformanceSchedule;
 import com.sim.reservationservice.domain.PerformanceInfo;
@@ -28,6 +34,10 @@ import lombok.ToString;
 @ToString
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class PerformanceDto {
+	@JsonSerialize(using = LocalDateTimeSerializer.class)
+	@JsonDeserialize(using = LocalDateTimeDeserializer.class)
+	private LocalDateTime timestamp;
+
 	private Long performanceId;
 	private String userId;
 	private String performanceName;
@@ -60,10 +70,11 @@ public class PerformanceDto {
 	}
 
 	@Builder
-	public PerformanceDto(Long performanceId, String userId, String performanceName, String performanceStartDate,
+	public PerformanceDto(LocalDateTime timestamp, Long performanceId, String userId, String performanceName, String performanceStartDate,
 		String performanceEndDate, String performanceType, Integer audienceCount, Integer price,
 		String contactPhoneNum, String contactPersonName, String performanceInfo, String performancePlace,
 		Set<String> performanceTimes) {
+		this.timestamp = timestamp;
 		this.performanceId = performanceId;
 		this.userId = userId;
 		this.performanceName = performanceName;

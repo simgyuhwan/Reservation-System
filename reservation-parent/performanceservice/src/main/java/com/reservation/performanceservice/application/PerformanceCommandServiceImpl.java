@@ -2,11 +2,13 @@ package com.reservation.performanceservice.application;
 
 import java.time.LocalDate;
 
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.reservation.common.error.ErrorCode;
 import com.reservation.common.util.DateTimeUtils;
+import com.reservation.performanceservice.application.mapper.CreatedEventMapper;
 import com.reservation.performanceservice.application.mapper.PerformanceDtoMapper;
 import com.reservation.performanceservice.dao.PerformanceRepository;
 import com.reservation.performanceservice.domain.Performance;
@@ -24,13 +26,14 @@ import lombok.extern.slf4j.Slf4j;
 public class PerformanceCommandServiceImpl implements PerformanceCommandService {
 	private final PerformanceRepository performanceRepository;
 	private final PerformanceDtoMapper performanceDtoMapper;
-	private final PerformanceProducer performanceProducer;
+	private final ApplicationEventPublisher eventPublisher;
+	private final CreatedEventMapper createdEventMapper;
 
 	@Override
 	public void createPerformance(PerformanceDto registrationDto) {
 		validatePerformanceDate(registrationDto);
 		Performance performance = performanceRepository.save(performanceDtoMapper.toEntity(registrationDto));
-		performanceProducer.sendPerformance(performanceDtoMapper.toDto(performance));
+		eventPublisher.publishEvent(createdEventMapper.toDto(performance));
 	}
 
 	@Override

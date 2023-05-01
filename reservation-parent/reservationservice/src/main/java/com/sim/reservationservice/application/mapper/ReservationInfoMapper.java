@@ -17,5 +17,4 @@ import com.sim.reservationservice.dto.response.ReservationInfoDto;
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface ReservationInfoMapper extends GenericMapper<ReservationInfoDto, Reservation> {
 	ReservationInfoMapper INSTANCE = Mappers.getMapper(ReservationInfoMapper.class);
-
 }

@@ -4,6 +4,7 @@ import org.springframework.cloud.stream.function.StreamBridge;
 import org.springframework.stereotype.Service;
 
 import com.reservation.performanceservice.dto.request.PerformanceDto;
+import com.reservation.performanceservice.event.PerformanceCreatedEvent;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,8 +22,8 @@ import lombok.extern.slf4j.Slf4j;
 public class PerformanceProducer {
 	private final StreamBridge streamBridge;
 
-	public void sendPerformance(PerformanceDto performanceDto){
-		log.info("Performance send : {}", performanceDto);
-		streamBridge.send("performance-info", performanceDto);
+	public void sendPerformance(PerformanceCreatedEvent performanceCreatedEvent){
+		log.info("Performance send : {}", performanceCreatedEvent);
+		streamBridge.send("performance-info", performanceCreatedEvent);
 	}
 }
