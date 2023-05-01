@@ -218,3 +218,10 @@ public Boolean updateReserveAvailability(Long scheduleId, Boolean isAvailable) {
 	return isAvailable;
 }
 ```
+
+
+## **참고**
+[낙관적과 비관적 락](https://sabarada.tistory.com/175)   
+[트랜잭션 락과 2차 캐시](https://happyer16.tistory.com/entry/16%EC%9E%A5-%ED%8A%B8%EB%9E%9C%EC%9E%AD%EC%85%98%EA%B3%BC-%EB%9D%BD-2%EC%B0%A8-%EC%BA%90%EC%8B%9C)  
+[레디스를 활용한 분산락](https://hyperconnect.github.io/2019/11/15/redis-distributed-lock-1.html)  
+[레디스 설치 및 Redisson 분산락 구현](https://it-hhhj2.tistory.com/102)

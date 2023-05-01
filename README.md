@@ -1,18 +1,12 @@
 # **공연 예약 및 결제 시스템**
 
 ## **목차**
-
-#### [1. 프로젝트 개요](#프로젝트-개요)
-
-#### [2. 기술 스택](#2-eab8b0ec88a0-ec8aa4ed839d-1)
-
-#### [3. 아키텍처](#3-ec9584ed82a4ed858decb298-1)
-
-#### [4. Document](#4-document-1)
-
-#### [5. 요구사항](#5-ec9a94eab5acec82aced95ad-1)
-
-#### [6. 주요 포인트](#6-eca3bcec9a94-ed8facec9db8ed8ab8-1)
+#### [1. 프로젝트 개요](#프로젝트-개요)  
+#### [2. 기술 스택](#2-eab8b0ec88a0-ec8aa4ed839d-1)  
+#### [3. 아키텍처](#3-ec9584ed82a4ed858decb298-1)  
+#### [4. Document](#4-document-1)  
+#### [5. 요구사항](#5-ec9a94eab5acec82aced95ad-1)  
+#### [6. 주요 포인트](#6-eca3bcec9a94-ed8facec9db8ed8ab8-1)  
 
 <br>
 
@@ -102,4 +96,4 @@ PostgreSQL
 
 # **6. 주요 포인트**
 
-### [1. 예약 신청이 동시에 엄청난 양이 온다면?]()
+### [1. 예약 신청이 동시에 엄청난 양이 온다면?](https://github.com/simgyuhwan/Reservation-and-Payment-System/blob/master/document/many-reservation.md)  
