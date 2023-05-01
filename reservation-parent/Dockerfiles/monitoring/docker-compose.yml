@@ -9,7 +9,7 @@ services:
       - MYSQL_USER=zipkin
       - MYSQL_PASSWORD=zipkin
     ports:
-      - "33306:33306"
+      - "33333:3306"
   zipkin:
     image: openzipkin/zipkin
     container_name: zipkin
@@ -19,7 +19,7 @@ services:
       - MYSQL_USER=zipkin
       - MYSQL_PASS=zipkin
       - MYSQL_HOST=zipkin-mysql
-      - MYSQL_TCP_PORT=33306
+      - MYSQL_TCP_PORT=3306
     ports:
       - "9411:9411"
     depends_on:
@@ -35,7 +35,7 @@ services:
       - MYSQL_USER=zipkin
       - MYSQL_PASS=zipkin
       - MYSQL_HOST=zipkin-mysql
-      - MYSQL_TCP_PORT=33306
+      - MYSQL_TCP_PORT=3306
     depends_on:
       - storage
     restart: always

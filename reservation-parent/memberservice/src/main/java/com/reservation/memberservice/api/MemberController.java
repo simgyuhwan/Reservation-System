@@ -14,6 +14,7 @@ import com.reservation.memberservice.application.MemberQueryService;
 import com.reservation.memberservice.dto.request.UpdateMemberDto;
 import com.reservation.memberservice.dto.response.MemberInfoDto;
 
+import io.micrometer.observation.Observation;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

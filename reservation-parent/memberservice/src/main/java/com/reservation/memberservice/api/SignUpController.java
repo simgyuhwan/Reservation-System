@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.reservation.memberservice.application.MemberCommandService;
 import com.reservation.memberservice.dto.request.SignUpDto;
 
+import io.micrometer.observation.annotation.Observed;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -29,6 +30,7 @@ import lombok.extern.slf4j.Slf4j;
 public class SignUpController {
 	private final MemberCommandService memberCommandService;
 
+	@Observed
 	@PostMapping("/signup")
 	@Operation(summary = "[회원] 회원 가입", description = "회원 가입 API")
 	public ResponseEntity<Void> signUpNewMember(@Validated @RequestBody SignUpDto signUpDto) {
