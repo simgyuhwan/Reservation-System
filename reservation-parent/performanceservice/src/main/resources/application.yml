@@ -35,16 +35,20 @@ spring:
     database: mysql
     database-platform: org.hibernate.dialect.MySQL57Dialect
 
-    # kafka
-    cloud:
-      stream:
-        kafka:
-          binder:
-            brokers: localhost:9092
+  # kafka
+  cloud:
+    stream:
+      kafka:
+        binder:
+          brokers: localhost:9092
         bindings:
           basicProducer-out-0:
-            destination: performance-info
-            content-type: application/json
+            producer:
+              retries: 3 # 재시도 횟수
+      bindings:
+        basicProducer-out-0:
+          destination: performance-info
+          content-type: application/json
 
   logging:
     level:
