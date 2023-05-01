@@ -133,3 +133,15 @@ project(':reservationservice') {
         useJUnitPlatform()
     }
 }
+
+project(':notificationservice') {
+    dependencies {
+        implementation(project(':common'))
+        runtimeOnly 'com.mysql:mysql-connector-j'
+    }
+
+    tasks.named('test') {
+        useJUnitPlatform()
+    }
+}
+

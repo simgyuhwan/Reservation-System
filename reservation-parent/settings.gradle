@@ -6,3 +6,5 @@ include('performanceservice')
 include('discoveryserver')
 include('gatewayserver')
 include('reservationservice')
+include 'notificationservice'
+

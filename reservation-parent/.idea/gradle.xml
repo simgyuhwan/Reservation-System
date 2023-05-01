@@ -16,6 +16,7 @@
             <option value="$PROJECT_DIR$/discoveryserver" />
             <option value="$PROJECT_DIR$/gatewayserver" />
             <option value="$PROJECT_DIR$/memberservice" />
+            <option value="$PROJECT_DIR$/notificationservice" />
             <option value="$PROJECT_DIR$/performanceservice" />
             <option value="$PROJECT_DIR$/reservationservice" />
           </set>

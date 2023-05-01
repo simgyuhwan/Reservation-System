@@ -19,7 +19,7 @@ public class PerformanceCreatedEventHandler {
 	@Async("defaultExecutor")
 	@TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
 	public void sendCreatedEvent(PerformanceCreatedEvent performanceCreatedEvent) {
-		log.info("Performance Created Event Publishing...");
+		log.info("Publishing a performance creation event");
 		performanceProducer.sendPerformance(performanceCreatedEvent);
 	}
 

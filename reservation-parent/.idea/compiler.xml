@@ -22,6 +22,7 @@
           <entry name="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.eclipse.jdt/ecj/3.26.0/4837be609a3368a0f7e7cf0dc1bdbc7fe94993de/ecj-3.26.0.jar" />
         </processorPath>
         <module name="reservation-parent.common.main" />
+        <module name="reservation-parent.notificationservice.main" />
         <module name="reservation-parent.reservationservice.main" />
       </profile>
       <profile name="Gradle Imported" enabled="true">
