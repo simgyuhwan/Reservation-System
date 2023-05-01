@@ -104,7 +104,6 @@ public class ReservationCommandServiceImpl implements ReservationCommandService 
 		return performanceScheduleRepository.findById(scheduleId)
 			.orElseThrow(() -> new PerformanceScheduleNotFoundException(ErrorMessage.PERFORMANCE_SCHEDULE_NOT_FOUND, scheduleId))
 			.isAvailable();
-
 	}
 
 	@CachePut(value = "performance-reserve-availability", key = "#scheduleId")
@@ -113,3 +112,4 @@ public class ReservationCommandServiceImpl implements ReservationCommandService 
 	}
 }
 
+많은 요청
