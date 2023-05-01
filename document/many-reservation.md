@@ -38,8 +38,6 @@ public ReservationInfoDto createReservation(Long performanceId, Long scheduleId,
     validationReservation(performanceInfo);
     schedule.reserveSeat();
 
-    updateReserveAvailability(scheduleId, schedule.isAvailable());
-
     Reservation reservation = reservationRepository.save(Reservation.of(reservationDto, schedule));
     return ReservationInfoDto.of(reservation, schedule, performanceInfo.getName());
 }
