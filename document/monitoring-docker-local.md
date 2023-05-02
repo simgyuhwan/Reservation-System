@@ -115,9 +115,10 @@ management:
     web:
       exposure:
         include: health, info, metrics, info, prometheus, httptrace
-	tracing:
-	    sampling:
-	      probability: 1.0
+
+  tracing:
+    sampling:
+      probability: 1.0
 ```
 
 `mamagement.tracing.sampling.probability`는 추적 데이터가 얼마나 많이 수집되는 결정하는 비율이다. **0.0~1.0** 까지의 범위를 설정할 수 있는데. 1은 모든 요청을 추적한다는 것이다. 1로 할 경우 성능이나 저장 공간에 영향을 줄 수 있으니 적절한 값으로 설정해야 한다. 테스트 환경이니 1로 설정했다.
