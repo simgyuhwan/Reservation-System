@@ -28,5 +28,4 @@ public class PerformanceCreatedEventHandler {
 		log.info("Publishing performance creation event to notification service");
 		// 알림 서비스로 전송
 	}
-
 }
