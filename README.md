@@ -100,5 +100,5 @@ PostgreSQL
 # **6. 이슈**
 
 ### [1. 예약 신청이 동시에 엄청난 양이 온다면?](https://github.com/simgyuhwan/Reservation-and-Payment-System/blob/master/document/many-reservation.md)  
-### [2. 관심사의 분리](https://github.com/simgyuhwan/Reservation-System/blob/master/document/separationOfConcerns.md)
-### [3. 모니터링 구성(Local + Docker)]()
+### [2. 관심사의 분리](https://github.com/simgyuhwan/Reservation-System/blob/master/document/separation-of-concerns.md)
+### [3. 모니터링 구성(Local + Docker)](https://github.com/simgyuhwan/Reservation-System/blob/master/document/monitoring-docker-local.md)
