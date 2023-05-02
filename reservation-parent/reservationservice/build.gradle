@@ -46,19 +46,9 @@ dependencies {
     // redis
     implementation 'org.springframework.boot:spring-boot-starter-data-redis'
     implementation 'org.redisson:redisson-spring-boot-starter:3.20.0';
-}
 
-//def querydslDir = "$buildDir/generated/querydsl"
-//
-//sourceSets {
-//    main.java.srcDirs += [querydslDir]
-//}
-//
-//tasks.withType(JavaCompile) {
-//    options.encoding = "UTF-8"
-//    options.generatedSourceOutputDirectory.set(file(querydslDir))
-//}
-//
-//clean.doLast {
-//    file(querydslDir).deleteDir()
-//}
+    // Micrometer Tracing and zipkin integration
+    implementation 'io.micrometer:micrometer-tracing-bridge-brave'
+    implementation 'io.zipkin.reporter2:zipkin-reporter-brave'
+    implementation 'io.micrometer:micrometer-observation'
+}

@@ -68,7 +68,10 @@ management:
     web:
       exposure:
         include: health, info, metrics, bus, refresh
-
+  # micrometer Tracing
+  tracing:
+    sampling:
+      probability: 1.0
 ---
 spring:
   config:

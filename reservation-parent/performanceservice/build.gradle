@@ -36,6 +36,11 @@ dependencies {
 
     // kafka stream
     implementation 'org.springframework.cloud:spring-cloud-starter-stream-kafka:4.0.1'
+
+    // Micrometer Tracing and zipkin integration
+    implementation 'io.micrometer:micrometer-tracing-bridge-brave'
+    implementation 'io.zipkin.reporter2:zipkin-reporter-brave'
+    implementation 'io.micrometer:micrometer-observation'
 }
 
 tasks.withType(JavaCompile) {
