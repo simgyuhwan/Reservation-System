@@ -56,7 +56,7 @@ public class PerformanceCreatedEventHandler {
   // 예약 서비스로 전송
   @EventListener(PerformanceCreatedEvent.class)
 	public void sendToReservationService(PerformanceCreatedEvent performanceCreatedEvent) {
-		log.info("Publishing a performance creation event");
+		log.info("Publishing a performance creation event to reservation service");
 		performanceProducer.sendPerformance(performanceCreatedEvent);
 	}
 
@@ -103,7 +103,7 @@ public class PerformanceCreatedEventHandler {
 @Async("defaultExecutor")
 @TransactionalEventListener
 public void sendToReservationService(PerformanceCreatedEvent performanceCreatedEvent) {
-	log.info("Publishing a performance creation event");
+	log.info("Publishing a performance creation event to reservation service");
 	performanceProducer.sendPerformance(performanceCreatedEvent);
 }
 
