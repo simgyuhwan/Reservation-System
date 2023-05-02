@@ -37,7 +37,9 @@ QueryDsl 5.0.0
 Kafka 3.3.2
 Redis 3.0.5
 Micrometer Tracing
-Zipkin 2.24.1
+Prometheus 2.37.7
+Zipkin 2.24
+Grafana 9.5.1
 Docker
 MySQL
 PostgreSQL
