@@ -50,11 +50,11 @@ spring:
           destination: performance-info
           content-type: application/json
 
-  logging:
-    level:
-      org:
-        hibernate:
-          SQL: DEBUG
+logging:
+  level:
+    org:
+      hibernate:
+        SQL: DEBUG
 
 eureka:
   client:

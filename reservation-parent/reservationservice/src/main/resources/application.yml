@@ -64,11 +64,11 @@ spring:
             backOffInitialInterval: 100
 
 #loging
-  logging:
-    level:
-      org:
-        hibernate:
-          SQL: DEBUG
+logging:
+  level:
+    org:
+      hibernate:
+        SQL: DEBUG
 
 #Eureka
 eureka:

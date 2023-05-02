@@ -58,12 +58,12 @@ spring:
 #      #bindings
 #      bindings:
 
-  #loging
-  logging:
-    level:
-      org:
-        hibernate:
-          SQL: DEBUG
+#loging
+logging:
+  level:
+    org:
+      hibernate:
+        SQL: DEBUG
 
 #Eureka
 eureka:
