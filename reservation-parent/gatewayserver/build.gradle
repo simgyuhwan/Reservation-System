@@ -26,6 +26,16 @@ dependencies {
     // spring doc
     implementation 'org.springdoc:springdoc-openapi-starter-webflux-ui:2.1.0'
 
+    // Micrometer Tracing and zipkin integration
+    implementation 'io.micrometer:micrometer-tracing-bridge-brave'
+    implementation 'io.zipkin.reporter2:zipkin-reporter-brave'
+    implementation 'io.micrometer:micrometer-observation'
+
+    // Micrometer to Prometheus
+    implementation 'io.micrometer:micrometer-registry-prometheus'
+
+    // aop
+    implementation 'org.springframework.boot:spring-boot-starter-aop'
 }
 
 tasks.withType(JavaCompile) {

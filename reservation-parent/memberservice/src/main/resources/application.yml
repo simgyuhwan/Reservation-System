@@ -46,7 +46,7 @@ logging:
         web: DEBUG
   # Display TraceId and SpanId
   pattern:
-    level: "%5p [${spring.application.name:},%X{traceId:-},%X{spanId:-}]"
+    level: "%5p [${spring.application.name:},trace-id : %X{traceId:-}, span-id : %X{spanId:-}]"
 
 # eureka
 eureka:
@@ -60,7 +60,7 @@ management:
   endpoints:
     web:
       exposure:
-        include: health, info, metrics, bus, refresh
+        include: health, info, metrics, bus, refresh, info, prometheus, httptrace
   # micrometer Tracing
   tracing:
     sampling:

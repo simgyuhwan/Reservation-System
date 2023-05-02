@@ -14,6 +14,7 @@ import com.reservation.memberservice.application.MemberQueryService;
 import com.reservation.memberservice.dto.request.UpdateMemberDto;
 import com.reservation.memberservice.dto.response.MemberInfoDto;
 
+import io.micrometer.core.annotation.Timed;
 import io.micrometer.observation.Observation;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
@@ -35,12 +36,14 @@ public class MemberController {
 	private final MemberCommandService memberCommandService;
 
 	@GetMapping("/{userId}")
+	@Timed(value = "members.search", longTask = true)
 	@Operation(summary = "[회원] 회원 조회", description = "회원 조회 API")
 	public ResponseEntity<MemberInfoDto> getMember(@PathVariable String userId) {
 		return ResponseEntity.ok(memberQueryService.findMemberByUserId(userId));
 	}
 
 	@PutMapping("/{userId}")
+	@Timed(value = "members.update", longTask = true)
 	@Operation(summary = "[회원] 회원 수정", description = "회원 수정 API")
 	public ResponseEntity<MemberInfoDto> updateMemberInfo(@PathVariable String userId,
 		@RequestBody @Validated UpdateMemberDto updateMemberDto) {

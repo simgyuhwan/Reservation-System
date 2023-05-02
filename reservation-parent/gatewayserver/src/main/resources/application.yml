@@ -62,7 +62,7 @@ management:
   endpoints:
     web:
       exposure:
-        include: health, info, metrics, bus, refresh, gateway
+        include: health, info, metrics, bus, refresh, gateway, prometheus, httptrace
   endpoint:
     gateway:
       enabled: true
