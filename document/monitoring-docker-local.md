@@ -1,7 +1,9 @@
 # 모니터링 구성(local + docker)
 
 <aside>
-💡 모든 docker 파일은 reservation-parent/Dockerfils 에 있다.
+💡 모든 docker 파일은 reservation-parent/Dockerfiles 에 있다.
+	
+	
 </aside>  
 
 <br>
@@ -93,7 +95,7 @@ Micrometer Tracing 및 Spring Boot 3.0를 사용하면 직접 설정해줘야 �
 
 이 부분에서 삽질을 많이 했다. 찾아본 자료대로 했는데. 뭔가 하나씩 안되었었는데. 결국 해냄
 
-먼저 바로 위에 의존성을 추가했지만 **Actuator**는 필수이다.  그리고 의존성을 몇 개 더 추가해야 한다.
+먼저 바로 위에 의존성을 추가했지만 **Actuator**는 필수이다.  그리고 의존성을 몇 를를 더 추가해야 한다.
 
 ### **의존성 추가**
 
