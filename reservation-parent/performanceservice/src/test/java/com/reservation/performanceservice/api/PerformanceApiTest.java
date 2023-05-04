@@ -1,7 +1,6 @@
 package com.reservation.performanceservice.api;
 
-import static com.reservation.performanceservice.factory.PerformanceTestConstants.*;
-import static com.reservation.performanceservice.factory.PerformanceTestDataFactory.*;
+import static com.reservation.performanceservice.factory.PerformanceDtoFactory.*;
 import static org.assertj.core.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.BDDMockito.*;
@@ -39,10 +38,25 @@ import com.reservation.performanceservice.error.InvalidPerformanceDateException;
 import com.reservation.performanceservice.error.NoContentException;
 import com.reservation.performanceservice.error.PerformanceControllerAdvice;
 import com.reservation.performanceservice.error.PerformanceNotFoundException;
-import com.reservation.performanceservice.factory.PerformanceTestDataFactory;
+import com.reservation.performanceservice.factory.PerformanceDtoFactory;
+import com.reservation.performanceservice.factory.PerformanceFactory;
 
 @ExtendWith(MockitoExtension.class)
 public class PerformanceApiTest {
+	private static final String PERFORMANCE_BASE_API_URL = PerformanceFactory.PERFORMANCE_BASE_API_URL;
+	private static final String USER_ID = PerformanceFactory.USER_ID;
+	private static final String PERFORMANCE_NAME = PerformanceFactory.PERFORMANCE_NAME;
+	private static final String PERFORMANCE_START_DATE = PerformanceFactory.PERFORMANCE_START_DATE;
+	private static final String PERFORMANCE_END_DATE = PerformanceFactory.PERFORMANCE_END_DATE;
+	private static final Set<String> PERFORMANCE_TIMES = PerformanceFactory.PERFORMANCE_TIMES;
+	private static final String PERFORMANCE_TYPE = PerformanceFactory.PERFORMANCE_TYPE;
+	private static final Integer AUDIENCE_COUNT = PerformanceFactory.AUDIENCE_COUNT;
+	private static final Integer PRICE = PerformanceFactory.PRICE;
+	private static final String CONTACT_PHONE_NUMBER = PerformanceFactory.CONTACT_PHONE_NUMBER;
+	private static final String CONTACT_PERSON_NAME = PerformanceFactory.CONTACT_PERSON_NAME;
+	private static final String PERFORMANCE_INFO = PerformanceFactory.PERFORMANCE_INFO;
+	private static final String PERFORMANCE_PLACE = PerformanceFactory.PERFORMANCE_PLACE;
+
 	private static final String USER_PARAM_KEY = "?userId=" ;
 	private MockMvc mockMvc;
 	private Gson gson;
@@ -72,7 +86,7 @@ public class PerformanceApiTest {
 		void performanceRegisterSuccessTest() throws Exception{
 			mockMvc.perform(post(PERFORMANCE_BASE_API_URL)
 					.contentType(MediaType.APPLICATION_JSON)
-					.content(gson.toJson(PerformanceTestDataFactory.createPerformanceDto())))
+					.content(gson.toJson(PerformanceDtoFactory.createPerformanceDto())))
 				.andExpect(status().isCreated());
 		}
 
@@ -256,7 +270,7 @@ public class PerformanceApiTest {
 		@DisplayName("등록된 공연 정보가 없을 때, 예외 발생 및 오류 메시지 반환")
 		void noPerformanceRegisteredWithUserIdException() throws Exception {
 			//given
-			Long performanceId = 1L;
+			long performanceId = 1L;
 			willThrow(PerformanceNotFoundException.class)
 				.given(performanceCommandService)
 				.updatePerformance(any(), any());
@@ -273,7 +287,7 @@ public class PerformanceApiTest {
 		@DisplayName("공연 수정 성공, 200 반환")
 		void performanceModificationSuccessTest() throws Exception {
 			//given
-			Long performanceId = 1L;
+			long performanceId = 1L;
 
 			// when, then
 			mockMvc.perform(put(PERFORMANCE_BASE_API_URL + "/" + performanceId)
@@ -286,7 +300,7 @@ public class PerformanceApiTest {
 		@DisplayName("공연 수정 성공, 반환 값 일치 확인")
 		void checkPerformanceModificationSuccessReturnValueMatching() throws Exception {
 			//given
-			Long performanceId = 1L;
+			long performanceId = 1L;
 			PerformanceDto performanceDto = createPerformanceDto();
 			when(performanceCommandService.updatePerformance(any(), any())).thenReturn(performanceDto);
 
@@ -354,6 +368,10 @@ public class PerformanceApiTest {
 			List<PerformanceDto> returnedPerformanceDtoList = gson.fromJson(result.getResponse().getContentAsString(), token.getType());
 			assertThat(performanceDtoList.size()).isEqualTo(returnedPerformanceDtoList.size());
 		}
+
+		private List<PerformanceDto> createPerformanceDtoList() {
+			return List.of(PerformanceDtoFactory.createPerformanceDto());
+		}
 	}
 
 	@Nested
@@ -390,11 +408,11 @@ public class PerformanceApiTest {
 	}
 
 	private PerformanceDto createPerformanceDtoWithInvalidDate() {
-		return PerformanceTestDataFactory.createPerformanceDto("2023-05-01", "2023-04-01");
+		return PerformanceDtoFactory.createPerformanceDto("2023-05-01", "2023-04-01");
 	}
 
 	private PerformanceDto createPerformanceDto() {
-		return PerformanceTestDataFactory.createPerformanceDto();
+		return PerformanceDtoFactory.createPerformanceDto();
 	}
 
 	private static PerformanceDto createPerformanceDto(String userId, String performanceName, String performanceStartDt,
@@ -402,7 +420,7 @@ public class PerformanceApiTest {
 		Set<String> performanceTimes, String performanceType, Integer audienceCount, Integer price,
 		String contactPhoneNum,
 		String contactPersonName, String performanceIntroduction, String performancePlace) {
-		return PerformanceTestDataFactory.createPerformanceDto(userId,performanceName, performanceStartDt, performanceEndDt,
+		return PerformanceDtoFactory.createPerformanceDto(userId,performanceName, performanceStartDt, performanceEndDt,
 			performanceTimes, performanceType,
 			audienceCount, price, contactPhoneNum, contactPersonName, performanceIntroduction, performancePlace);
 	}

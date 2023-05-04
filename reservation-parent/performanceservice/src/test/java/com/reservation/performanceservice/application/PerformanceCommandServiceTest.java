@@ -25,7 +25,8 @@ import com.reservation.performanceservice.domain.Performance;
 import com.reservation.performanceservice.dto.request.PerformanceDto;
 import com.reservation.performanceservice.error.InvalidPerformanceDateException;
 import com.reservation.performanceservice.error.PerformanceNotFoundException;
-import com.reservation.performanceservice.factory.PerformanceTestDataFactory;
+import com.reservation.performanceservice.factory.PerformanceDtoFactory;
+import com.reservation.performanceservice.factory.PerformanceFactory;
 
 /**
  * PerformanceQueryServiceTest.java
@@ -130,7 +131,7 @@ class PerformanceCommandServiceTest {
 		//given
 		Long performanceId = 1L;
 		when(performanceRepository.findById(performanceId)).thenReturn(Optional.of(createPerformance()));
-		PerformanceDto updateDto = PerformanceTestDataFactory.createPerformanceDto(USER_ID, "change_name",
+		PerformanceDto updateDto = PerformanceDtoFactory.createPerformanceDto(USER_ID, "change_name",
 			"2045-01-01", "2045-05-30",
 			Set.of("09:00", "10:00", "11:00"), "CONSORT", 500, 19000, "010-1111-111",
 			"CHANGE", "change_info", "change_place");
@@ -144,14 +145,14 @@ class PerformanceCommandServiceTest {
 	}
 
 	private PerformanceDto createPerformanceDto() {
-		return PerformanceTestDataFactory.createPerformanceDto();
+		return PerformanceDtoFactory.createPerformanceDto();
 	}
 
 	private Performance createPerformance() {
-		return PerformanceTestDataFactory.createPerformance();
+		return PerformanceFactory.createPerformance();
 	}
 
 	private PerformanceDto createPerformanceDto(String start, String end) {
-		return PerformanceTestDataFactory.createPerformanceDto(start, end);
+		return PerformanceDtoFactory.createPerformanceDto(start, end);
 	}
 }

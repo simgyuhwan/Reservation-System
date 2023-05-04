@@ -1,14 +1,15 @@
 package com.reservation.performanceservice.application;
 
-import static com.reservation.performanceservice.factory.PerformanceTestConstants.*;
-import static com.reservation.performanceservice.factory.PerformanceTestDataFactory.*;
+import static com.reservation.performanceservice.factory.PerformanceDtoFactory.*;
 import static org.assertj.core.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -21,9 +22,12 @@ import com.reservation.performanceservice.dao.PerformanceRepository;
 import com.reservation.performanceservice.domain.Performance;
 import com.reservation.performanceservice.dto.request.PerformanceDto;
 import com.reservation.performanceservice.error.NoContentException;
+import com.reservation.performanceservice.error.PerformanceNotFoundException;
+import com.reservation.performanceservice.factory.PerformanceDtoFactory;
+import com.reservation.performanceservice.factory.PerformanceFactory;
 
 /**
- * PerformanceCommandServiceTest.java
+ * performanceQueryServiceTest.java
  *
  * @author sgh
  * @since 2023.04.06
@@ -32,7 +36,7 @@ import com.reservation.performanceservice.error.NoContentException;
 class PerformanceQueryServiceTest {
 
 	@InjectMocks
-	private PerformanceQueryServiceImpl performanceCommandService;
+	private PerformanceQueryServiceImpl performanceQueryService;
 
 	@Mock
 	private PerformanceRepository performanceRepository;
@@ -40,29 +44,76 @@ class PerformanceQueryServiceTest {
 	@Spy
 	private PerformanceDtoMapper performanceDtoMapper = PerformanceDtoMapper.INSTANCE;
 
-	@Test
-	@DisplayName("공연 전체 조회 실패: 회원이 등록한 공연 정보가 없음, 예외 발생")
-	void NoPerformanceInformationRegisteredByTheMemberException() {
-		//given
-		when(performanceRepository.findByUserIdOrderByCreateDtDesc(USER_ID)).thenReturn(Collections.emptyList());
+	@Nested
+	@DisplayName("회원이 등록한 공연 전체 조회")
+	class ViewAllPerformancesRegisteredByMemberTest {
+		private String USER_ID = PerformanceFactory.USER_ID;
 
-		//when, then
-		assertThatThrownBy(() -> performanceCommandService.selectPerformances(USER_ID))
-			.isInstanceOf(NoContentException.class);
+		@Test
+		@DisplayName("공연 전체 조회 실패: 회원이 등록한 공연 정보가 없음, 예외 발생")
+		void NoPerformanceInformationRegisteredByTheMemberException() {
+			//given
+			when(performanceRepository.findByUserIdOrderByCreateDtDesc(USER_ID)).thenReturn(Collections.emptyList());
+
+			//when, then
+			assertThatThrownBy(() -> performanceQueryService.selectPerformances(USER_ID))
+				.isInstanceOf(NoContentException.class);
+		}
+
+		@Test
+		@DisplayName("공연 전체 조회 성공")
+		void successfulViewingOfAllPerformances() {
+			//given
+			List<Performance> performances = createPerformanceList();
+			when(performanceRepository.findByUserIdOrderByCreateDtDesc(USER_ID)).thenReturn(performances);
+
+			//when
+			List<PerformanceDto> result = performanceQueryService.selectPerformances(USER_ID);
+
+			//then
+			assertThat(result.size()).isEqualTo(performances.size());
+			assertThat(result.get(0).getUserId()).isEqualTo(USER_ID);
+		}
+
+		private List<Performance> createPerformanceList() {
+			return PerformanceFactory.createPerformanceList();
+		}
+
+	}
+	
+	@Nested
+	@DisplayName("공연 ID로 공연 상세 정보 조회")
+	class ViewPerformanceDetailsByIdTest {
+		private static final Long PERFORMANCE_ID = 1L;
+		
+		@Test
+		@DisplayName("존재하지 않은 공연 ID로 예외 발생")
+		void nonExistentPerformanceIDExceptionOccurred() {
+			when(performanceRepository.findById(PERFORMANCE_ID)).thenReturn(Optional.empty());
+			assertThatThrownBy(() -> performanceQueryService.selectPerformanceById(PERFORMANCE_ID))
+				.isInstanceOf(PerformanceNotFoundException.class);
+		}
+
+		@Test
+		@DisplayName("공연 ID로 공연 상세 조회 성공")
+		void performanceDetailsInquirySuccess() {
+			//given
+			when(performanceRepository.findById(PERFORMANCE_ID)).thenReturn(Optional.of(createPerformance()));
+
+			//when
+			PerformanceDto performanceDto = performanceQueryService.selectPerformanceById(PERFORMANCE_ID);
+
+			//then
+
+
+		}
+
+
+
 	}
 
-	@Test
-	@DisplayName("공연 전체 조회 성공")
-	void successfulViewingOfAllPerformances() {
-		//given
-		List<Performance> performances = createPerformanceList();
-		when(performanceRepository.findByUserIdOrderByCreateDtDesc(USER_ID)).thenReturn(performances);
-
-		//when
-		List<PerformanceDto> result = performanceCommandService.selectPerformances(USER_ID);
-
-		//then
-		assertThat(result.size()).isEqualTo(performances.size());
-		assertThat(result.get(0).getUserId()).isEqualTo(USER_ID);
+	private Performance createPerformance() {
+		return PerformanceFactory.createPerformance();
 	}
+
 }

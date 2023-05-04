@@ -6,11 +6,13 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.reservation.common.error.ErrorMessage;
 import com.reservation.performanceservice.application.mapper.PerformanceDtoMapper;
 import com.reservation.performanceservice.dao.PerformanceRepository;
 import com.reservation.performanceservice.domain.Performance;
 import com.reservation.performanceservice.dto.request.PerformanceDto;
 import com.reservation.performanceservice.error.NoContentException;
+import com.reservation.performanceservice.error.PerformanceNotFoundException;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -39,7 +41,8 @@ public class PerformanceQueryServiceImpl implements PerformanceQueryService {
 
     @Override
     public PerformanceDto selectPerformanceById(Long performanceId) {
-        return null;
+        Performance performance = findById(performanceId);
+        return performanceDtoMapper.toDto(performance);
     }
 
     private List<Performance> findByUserId(String userId) {
@@ -48,5 +51,10 @@ public class PerformanceQueryServiceImpl implements PerformanceQueryService {
             throw new NoContentException();
         }
         return performances;
+    }
+
+    private Performance findById(Long performanceId) {
+        return performanceRepository.findById(performanceId)
+            .orElseThrow(() -> new PerformanceNotFoundException(ErrorMessage.PERFORMANCE_NOT_FOUND, performanceId));
     }
 }

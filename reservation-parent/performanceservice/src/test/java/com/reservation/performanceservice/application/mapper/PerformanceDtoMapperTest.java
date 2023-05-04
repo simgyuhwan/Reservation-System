@@ -2,14 +2,13 @@ package com.reservation.performanceservice.application.mapper;
 
 import static org.assertj.core.api.Assertions.*;
 
-import java.util.Set;
-
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import com.reservation.performanceservice.domain.Performance;
 import com.reservation.performanceservice.dto.request.PerformanceDto;
-import com.reservation.performanceservice.factory.PerformanceTestDataFactory;
+import com.reservation.performanceservice.factory.PerformanceDtoFactory;
+import com.reservation.performanceservice.factory.PerformanceFactory;
 
 /**
  * PerformanceRegisterMapperTest.java
@@ -25,7 +24,7 @@ class PerformanceDtoMapperTest {
 	@DisplayName("Mapper 테스트 : toEntity")
 	void toEntityTest() {
 		//given
-		PerformanceDto registerDto = PerformanceTestDataFactory.createPerformanceDto();
+		PerformanceDto registerDto = PerformanceDtoFactory.createPerformanceDto();
 
 		//when
 		Performance result = mapper.toEntity(registerDto);
@@ -40,7 +39,7 @@ class PerformanceDtoMapperTest {
 	@DisplayName("Mapper 테스트 : toEntity 시, PerformanceDays AfterMapping 변환 테스트")
 	void afterMappingTest() {
 		//given
-		PerformanceDto registerDto = PerformanceTestDataFactory.createPerformanceDto();
+		PerformanceDto registerDto = PerformanceDtoFactory.createPerformanceDto();
 
 		//when
 		Performance result = mapper.toEntity(registerDto);
@@ -53,7 +52,7 @@ class PerformanceDtoMapperTest {
 	@DisplayName("Mapper 테스트 : toDto")
 	void updateMappingTest() {
 		//given
-		Performance performance = PerformanceTestDataFactory.createPerformance();
+		Performance performance = PerformanceFactory.createPerformance();
 
 		//when
 		PerformanceDto result = mapper.toDto(performance);

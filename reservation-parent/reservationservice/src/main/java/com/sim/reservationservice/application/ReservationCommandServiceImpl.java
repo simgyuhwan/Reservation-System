@@ -96,7 +96,7 @@ public class ReservationCommandServiceImpl implements ReservationCommandService 
 
 	private PerformanceInfo findPerformanceById(Long performanceId) {
 		return performanceInfoRepository.findById(performanceId)
-			.orElseThrow(() -> new PerformanceInfoNotFoundException(ErrorMessage.PERFORMANCE_NOT_FOUND, performanceId));
+			.orElseThrow(() -> new PerformanceInfoNotFoundException(ErrorMessage.PERFORMANCEINFO_NOT_FOUND, performanceId));
 	}
 
 	@Cacheable(value = "performance-reserve-availability", key = "#scheduleId")

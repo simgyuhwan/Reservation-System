@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.reservation.common.error.ErrorCode;
+import com.reservation.common.error.ErrorMessage;
 import com.reservation.common.util.DateTimeUtils;
 import com.reservation.performanceservice.application.mapper.CreatedEventMapper;
 import com.reservation.performanceservice.application.mapper.PerformanceDtoMapper;
@@ -47,7 +48,7 @@ public class PerformanceCommandServiceImpl implements PerformanceCommandService 
 	private Performance getPerformanceById(Long performanceId) {
 		return performanceRepository.findById(performanceId)
 			.orElseThrow(() -> new PerformanceNotFoundException(
-				ErrorCode.PERFORMANCE_DAY_NOT_FOUND_MESSAGE.getMessage() + performanceId));
+				ErrorMessage.PERFORMANCE_NOT_FOUND, performanceId));
 	}
 
 	private void validatePerformanceDate(PerformanceDto performanceDto) {

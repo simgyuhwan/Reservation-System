@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test;
 
 import com.reservation.performanceservice.domain.PerformanceDay;
 import com.reservation.performanceservice.dto.request.PerformanceDto;
-import com.reservation.performanceservice.factory.PerformanceTestDataFactory;
+import com.reservation.performanceservice.factory.PerformanceDtoFactory;
 
 /**
  * PerformanceDayMapperTest.java
@@ -25,7 +25,7 @@ class PerformanceDayMapperTest {
     @DisplayName("PerformanceDayMapper 테스트 : toPerformanceDays")
     void toEntityTest() {
         //given
-        PerformanceDto registerDto = PerformanceTestDataFactory.createPerformanceDto();
+        PerformanceDto registerDto = PerformanceDtoFactory.createPerformanceDto();
 
         //when
         List<PerformanceDay> performanceDays = mapper.toPerformanceDays(registerDto, null);
