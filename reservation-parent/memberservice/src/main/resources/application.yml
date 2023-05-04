@@ -36,6 +36,14 @@ spring:
     database: mysql
     database-platform: org.hibernate.dialect.MySQL57Dialect
 
+  cloud:
+    # FeignClient url
+    openfeign:
+      client:
+        config:
+          performance.url: http://localhost:8000/performance-service/api/performances
+
+
 #logging
 logging:
   level:

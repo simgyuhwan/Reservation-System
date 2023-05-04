@@ -35,8 +35,8 @@ spring:
     database: mysql
     database-platform: org.hibernate.dialect.MySQL57Dialect
 
-  # kafka
   cloud:
+    # kafka
     stream:
       kafka:
         binder:
@@ -50,12 +50,14 @@ spring:
           destination: performance-info
           content-type: application/json
 
+# Logging
 logging:
   level:
     org:
       hibernate:
         SQL: DEBUG
 
+# Eureka
 eureka:
   client:
     service-url:
@@ -63,6 +65,7 @@ eureka:
   instance:
     instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
 
+# Actuator
 management:
   endpoints:
     web:
