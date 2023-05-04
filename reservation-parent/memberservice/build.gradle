@@ -52,17 +52,3 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-aop'
 }
 
-def querydslDir = "$buildDir/generated/querydsl"
-
-sourceSets {
-    main.java.srcDirs += [ querydslDir ]
-}
-
-tasks.withType(JavaCompile) {
-    options.encoding = "UTF-8"
-    options.generatedSourceOutputDirectory.set(file(querydslDir))
-}
-
-clean.doLast {
-    file(querydslDir).deleteDir()
-}
