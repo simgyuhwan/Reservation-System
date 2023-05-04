@@ -6,19 +6,19 @@
 
 ### [▶ 공연](#▶공연)
 
-#### [1. 공연 등록 API](#1-공연-등록-api-1)
+#### [1. 공연 등록 API](#1-공연-등록-apipost-apiperformances)
 
-#### [2. 공연 수정 API](#2-공연-수정-api-1)
+#### [2. 공연 수정 API](#2-공연-수정-apiput-apiperformancesperformanceid)
 
-#### [3. 회원ID로 등록된 공연 조회 API](#3-회원id로-등록된-공연-조회-api-1)
+#### [3. 회원ID로 등록된 공연 조회 API](#3-회원id로-등록된-공연-조회-apiget-apiperformancesuseriduserid)
 
-#### [4. 공연ID 공연 상세 조회 API](#4-공연id-공연-상세-조회-api-1)
+#### [4. 공연ID 공연 상세 조회 API](#4-공연id-공연-상세-조회-apiget-apiperformancesperformanceid)
 
 ### [▶ 예약](#▶-예약)
 
-#### [1. 공연 예약 현황 조회 API](#1-공연-예약-현황-조회-api-1)
+#### [1. 공연 예약 현황 조회 API](#1-공연-예약-현황-조회-api-get-reservation-serviceapiperformancesavailable)
 
-#### [2. 공연 예약 신청 API](#2-공연-예약-신청-api-1)
+#### [2. 공연 예약 신청 API](#2-공연-예약-신청-api-post-reservation-serviceapiperformancesperformanceidschedulesscheduleidreservations)
 
 ---
 
