@@ -2,7 +2,15 @@
 
 ## 목차
 
-### [▶ 회원]()
+### [▶ 회원](#▶-회원)
+
+#### [1. 회원 가입 API](#1-회원-가입-apipost-apisignup)
+
+#### [2. 회원 조회 API](#2-회원-조회-apiget-apimembersuserid)
+
+#### [3. 회원 수정 API](#3-회원-수정-apiput-apimembersuserid)
+
+#### [4. 회원이 등록한 공연 조회 AP](#4-회원이-등록한-공연-조회-api-get-apimembersuseridperformances)
 
 ### [▶ 공연](#▶공연)
 
@@ -22,7 +30,70 @@
 
 ---
 
+<br>
+
+# ▶ 회원
+
+<br>
+
+## 1. 회원 가입 API(POST /api/signup)
+
+### 요청 시 필수 입력값
+
+| 매개변수 이름 | 설명        |
+| ------------- | ----------- |
+| \*userId      | 회원 ID     |
+| \*username    | 이름        |
+| \*password    | 비밀번호    |
+| \*phoneNum    | 핸드폰 번호 |
+| \*address     | 주소        |
+
+### 검증
+
+1. 회원 가입 성공, 201 상태 코드 반환
+2. 필수 값 미포함 시, 400 상태 코드 반환
+3. 각 필드 값 유효성 검증 실패 시, 400 상태 코드 반환
+4. 각 필드 값 유효성 검증 실패 시, 필드별 오류 메시지 반환
+
+---
+
+<br>
+
+## 2. 회원 조회 API(GET /api/members/{userId})
+
+---
+
+<br>
+
+## 3. 회원 수정 API(PUT /api/members/{userId})
+
+---
+
+<br>
+
+## 4. 회원이 등록한 공연 조회 API( GET /api/members/{userId}/performances)
+
+### 요청 시 필수 입력값
+
+| 파라미터 | 설명    |
+| -------- | ------- |
+| userId   | 회원 ID |
+
+### 검증
+
+1. 등록된 공연 정보가 없으면 빈 리스트로 반환
+2. 유효하지 않은 회원 ID, 400 상태 코드 반환
+3. 유효하지 않은 회원 ID, 오류 메시지 확인
+4. 공연 서비스의 요청 장애 시, 빈 리스트 반환
+5. 등록된 공연 정보 조회 성공, 200 상태 코드 반환
+
+---
+
+<br>
+
 # ▶ 공연
+
+<br>
 
 ## 1. 공연 등록 API(POST /api/performances)
 
@@ -120,7 +191,6 @@
 ---
 
 <br>
-<br>
 
 # ▶ 예약
 
@@ -128,18 +198,18 @@
 
 ## 1. 공연 예약 현황 조회 API (_GET /reservation-service/api/performances/available_)
 
-### 요청 시 필수 입력값(쿼리 스트링)
+### 요청 시 필수 입력값
 
-| 매개변수 이름 | 설명           |
-| ------------- | -------------- |
-| startDate     | 공연 시작 날짜 |
-| endDate       | 공연 종료 날짜 |
-| startTime     | 공연 시작 시간 |
-| endTime(X)    | 공연 종료 시간 |
-| name          | 공연 이름      |
-| type          | 공연 타입      |
-| place         | 공연 장소      |
-| 페이지 정보   | Pageable       |
+| 파라미터    | 설명           |
+| ----------- | -------------- |
+| startDate   | 공연 시작 날짜 |
+| endDate     | 공연 종료 날짜 |
+| startTime   | 공연 시작 시간 |
+| endTime(X)  | 공연 종료 시간 |
+| name        | 공연 이름      |
+| type        | 공연 타입      |
+| place       | 공연 장소      |
+| 페이지 정보 | Pageable       |
 
 **요청 예시**
 

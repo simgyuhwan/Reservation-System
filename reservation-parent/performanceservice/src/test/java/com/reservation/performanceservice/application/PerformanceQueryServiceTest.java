@@ -45,15 +45,12 @@ class PerformanceQueryServiceTest {
 	@Nested
 	@DisplayName("회원이 등록한 공연 전체 조회")
 	class ViewAllPerformancesRegisteredByMemberTest {
-		private String USER_ID = PerformanceFactory.USER_ID;
+		private final String USER_ID = PerformanceFactory.USER_ID;
 
 		@Test
 		@DisplayName("공연 전체 조회 실패: 회원이 등록한 공연 정보가 없음, 예외 발생")
 		void NoPerformanceInformationRegisteredByTheMemberException() {
-			//given
 			when(performanceRepository.findByUserIdOrderByCreateDtDesc(USER_ID)).thenReturn(Collections.emptyList());
-
-			//when, then
 			assertThatThrownBy(() -> performanceQueryService.selectPerformances(USER_ID))
 				.isInstanceOf(NoContentException.class);
 		}

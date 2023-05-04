@@ -34,13 +34,20 @@ public class MemberQueryServiceImpl implements MemberQueryService {
 	@Override
 	public MemberInfoDto findMemberByUserId(String userId) {
 		Assert.hasText(userId, "user id must exist");
-		Member member = memberRepository.findByUserId(userId)
-			.orElseThrow(() -> new InvalidUserIdException(ErrorMessage.INVALID_USER_ID, userId));
+		Member member = findByUserId(userId);
 		return memberInfoDtoMapper.toDto(member);
 	}
 
 	@Override
 	public MemberPerformanceDto selectPerformancesByUserId(String userId) {
+		Assert.hasText(userId, "user id must exist");
+		findMemberByUserId(userId);
 		return null;
+	}
+
+
+	private Member findByUserId(String userId) {
+		return memberRepository.findByUserId(userId)
+			.orElseThrow(() -> new InvalidUserIdException(ErrorMessage.INVALID_USER_ID, userId));
 	}
 }

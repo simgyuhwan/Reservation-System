@@ -4,10 +4,15 @@ import static org.assertj.core.api.Assertions.*;
 import static org.mockito.BDDMockito.*;
 
 import java.util.Optional;
+import java.util.stream.Stream;
 
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Spy;
@@ -20,7 +25,6 @@ import com.reservation.memberservice.dao.MemberRepository;
 import com.reservation.memberservice.domain.Member;
 import com.reservation.memberservice.dto.response.MemberInfoDto;
 import com.reservation.memberservice.error.InvalidUserIdException;
-import com.reservation.memberservice.error.MemberNotFoundException;
 
 /**
  * MemberQueryServiceTest.java
@@ -45,36 +49,75 @@ public class MemberQueryServiceTest {
 	@Spy
 	MemberInfoDtoMapper memberInfoDtoMapper = MemberInfoDtoMapper.INSTANCE;
 
-	@Test
-	@DisplayName("회원 조회 테스트: 성공 테스트")
-	void memberInquirySuccessTest() {
-		//given
-		Member member = MemberFactory.createMember();
-		given(memberRepository.findByUserId(member.getUserId())).willReturn(Optional.of(member));
+	@Nested
+	@DisplayName("회원 ID로 회원 상세 조회")
+	class ViewMemberDetailsByMemberIdTest {
+		@Test
+		@DisplayName("회원 조회 성공, 값 일치 확인")
+		void memberInquirySuccessTest() {
+			//given
+			Member member = MemberFactory.createMember();
+			given(memberRepository.findByUserId(member.getUserId())).willReturn(Optional.of(member));
 
-		//when
-		MemberInfoDto findMemberDto = memberQueryService.findMemberByUserId(member.getUserId());
+			//when
+			MemberInfoDto findMemberDto = memberQueryService.findMemberByUserId(member.getUserId());
 
-		//then
-		assertThat(findMemberDto.getUserId()).isEqualTo(USER_ID);
+			//then
+			assertThat(findMemberDto.getUserId()).isEqualTo(USER_ID);
+			assertThat(findMemberDto.getAddress()).isEqualTo(ADDRESS);
+			assertThat(findMemberDto.getUsername()).isEqualTo(USERNAME);
+		}
+
+		@Test
+		@DisplayName("유효하지 않은 회원 ID, 예외 발생")
+		void noMembersMatchingException() {
+			given(memberRepository.findByUserId(any())).willReturn(Optional.ofNullable(null));
+			assertThatThrownBy(() -> memberQueryService.findMemberByUserId(USER_ID))
+				.isInstanceOf(InvalidUserIdException.class);
+		}
+
+		@ParameterizedTest
+		@MethodSource("emptyUserId")
+		@DisplayName("잘못된 UserID 값, 예외 발생")
+		void invalidUserIdValueTest(String userId) {
+			assertThatThrownBy(() -> memberQueryService.findMemberByUserId(userId))
+				.isInstanceOf(IllegalArgumentException.class);
+		}
+
+		static Stream<Arguments> emptyUserId() {
+			return Stream.of(
+				Arguments.of(""),
+				Arguments.of((Object)null)
+			);
+		}
 	}
 
-	@Test
-	@DisplayName("회원 조회 테스트 : 일치하는 userId 없음 예외 발생 테스트")
-	void noMembersMatchingException() {
-		//given
-		given(memberRepository.findByUserId(any())).willReturn(Optional.ofNullable(null));
+	@Nested
+	@DisplayName("회원 ID로 공연 조회")
+	class PerformanceSearchByMemberIdTest {
 
-		//when
-		assertThatThrownBy(() -> memberQueryService.findMemberByUserId(USER_ID))
-			.isInstanceOf(InvalidUserIdException.class);
+		@Test
+		@DisplayName("유효하지 않은 ID 조회로 예외 발생")
+		void invalidIDLookupExceptionOccurred() {
+			when(memberRepository.findByUserId(USER_ID)).thenReturn(Optional.empty());
+			assertThatThrownBy(() -> memberQueryService.selectPerformancesByUserId(USER_ID))
+				.isInstanceOf(InvalidUserIdException.class);
+		}
+
+		@ParameterizedTest
+		@MethodSource("emptyUserId")
+		@DisplayName("잘못된 UserID 값, 예외 발생")
+		void invalidUserIdValueTest(String userId) {
+			assertThatThrownBy(() -> memberQueryService.selectPerformancesByUserId(userId))
+				.isInstanceOf(IllegalArgumentException.class);
+		}
+
+		static Stream<Arguments> emptyUserId() {
+			return Stream.of(
+				Arguments.of(""),
+				Arguments.of((Object)null)
+			);
+		}
 	}
 
-	@Test
-	@DisplayName("회원 조회 테스트 : userId, null 값 예외 발생 테스트")
-	void invalidUserIdValueTest() {
-		assertThatThrownBy(() -> memberQueryService.findMemberByUserId(null))
-			.isInstanceOf(IllegalArgumentException.class)
-			.hasMessage("user id must exist");
-	}
 }

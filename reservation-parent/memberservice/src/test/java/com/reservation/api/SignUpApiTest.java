@@ -62,10 +62,10 @@ public class SignUpApiTest {
 	}
 
 	@Test
-	@DisplayName("회원가입 성공 테스트")
+	@DisplayName("회원가입 성공")
 	void memberRegistrationSuccessTest() throws Exception {
 		//given
-		SignUpDto request = SignUpDtoFactory.createSignUpDto();
+		SignUpDto request = createSignUpDto();
 
 		//when
 		ResultActions result = mockMvc.perform(post(SIGNUP_URL)
@@ -80,7 +80,7 @@ public class SignUpApiTest {
 
 	@ParameterizedTest
 	@MethodSource("signUpValidityArgumentsList")
-	@DisplayName("회원가입 실패 메시지 확인 테스트: 회원 가입 필수 값 미포함 예외")
+	@DisplayName("회원 가입 필수 값 미포함 예외")
 	void memberRegistrationValidationTest(String userId, String username, String password,
 		String phoneNum, String address) throws Exception {
 		//given
@@ -96,7 +96,7 @@ public class SignUpApiTest {
 	}
 
 	@Test
-	@DisplayName("회원가입 실패 메시지 확인 테스트 : 아이디 미포함 실패")
+	@DisplayName("아이디 미포함 실패")
 	void invalidUserIdEntryTest() throws Exception {
 		//given
 		SignUpDto request = createSignUpDto(null, USERNAME, PASSWORD, PHONE_NUM, ADDRESS);
@@ -114,7 +114,7 @@ public class SignUpApiTest {
 	}
 
 	@Test
-	@DisplayName("회원가입 실패 메시지 확인 테스트 : 아이디값 사이즈 최소 이하 실패")
+	@DisplayName("아이디 값 사이즈 최소 이하 실패")
 	void idValueSizeMinimumOrLessFailureTest() throws Exception {
 		//given
 		SignUpDto request = createSignUpDto("1", USERNAME, PASSWORD, PHONE_NUM, ADDRESS);
@@ -132,7 +132,7 @@ public class SignUpApiTest {
 	}
 
 	@Test
-	@DisplayName("회원가입 실패 메시지 확인 테스트 : 아이디값 사이즈 최대 이상 실패")
+	@DisplayName("아이디 값 사이즈 최대 이상 실패")
 	void idValueSizeMaximumOrThanFailureTest() throws Exception {
 		//given
 		SignUpDto request = createSignUpDto("123456789101112222", USERNAME, PASSWORD, PHONE_NUM,
@@ -151,7 +151,7 @@ public class SignUpApiTest {
 	}
 
 	@Test
-	@DisplayName("회원가입 실패 메시지 확인 테스트: 이름 미포함 실패")
+	@DisplayName("이름 미포함 실패")
 	void enteringAnInvalidNameValueTest() throws Exception {
 		//given
 		SignUpDto request = createSignUpDto(USER_ID, "", PASSWORD, PHONE_NUM, ADDRESS);
@@ -169,7 +169,7 @@ public class SignUpApiTest {
 	}
 
 	@Test
-	@DisplayName("회원가입 실패 메시지 확인 테스트 : 핸드폰 번호 미포함 실패")
+	@DisplayName("핸드폰 번호 미포함 실패")
 	void enterANullPhoneNumberTest() throws Exception {
 		//given
 		SignUpDto request = createSignUpDto(USER_ID, USERNAME, PASSWORD, null, ADDRESS);
@@ -187,7 +187,7 @@ public class SignUpApiTest {
 	}
 
 	@Test
-	@DisplayName("회원가입 실패 메시지 확인 테스트 : 잘못된 핸드폰 번호 등록 실패")
+	@DisplayName("잘못된 핸드폰 번호 등록 실패")
 	void enterTheWrongPhoneNumberTest() throws Exception {
 		//given
 		SignUpDto request = createSignUpDto(USER_ID, USERNAME, PASSWORD, "-0-30-", ADDRESS);
@@ -205,7 +205,7 @@ public class SignUpApiTest {
 	}
 
 	@Test
-	@DisplayName("회원가입 실패 메시지 확인 테스트 : 비밀번호 미포함 실패")
+	@DisplayName("비밀번호 미포함 실패")
 	void failedToNotIncludeAddressTest() throws Exception {
 		//given
 		SignUpDto request = createSignUpDto(USER_ID, USERNAME, "", PHONE_NUM, ADDRESS);
@@ -223,7 +223,7 @@ public class SignUpApiTest {
 	}
 
 	@Test
-	@DisplayName("회원가입 실패 메시지 확인 테스트 : 주소 값 미포함 실패")
+	@DisplayName("주소 값 미포함 실패")
 	void failedToNotIncludePhoneNumTest() throws Exception {
 		//given
 		SignUpDto request = createSignUpDto(USER_ID, USERNAME, PASSWORD, PHONE_NUM, "");
