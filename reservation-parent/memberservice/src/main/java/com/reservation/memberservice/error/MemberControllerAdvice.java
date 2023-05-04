@@ -42,9 +42,16 @@ public class MemberControllerAdvice {
 
 	@ExceptionHandler(MemberNotFoundException.class)
 	public ResponseEntity<ErrorResponse> memberNotFoundException(MemberNotFoundException e) {
-		log.error("there are no matching members : {}", e.getUserId());
+		log.error(e.getMessage());
 		ErrorResponse errorResponse = ErrorResponseFactory.from(ErrorCode.NO_MEMBERS_MATCHED);
-		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
+	}
+
+	@ExceptionHandler(InvalidUserIdException.class)
+	public ResponseEntity<ErrorResponse> invalidUserIdException(InvalidUserIdException e) {
+		log.error(e.getMessage());
+		ErrorResponse errorResponse = ErrorResponseFactory.from(ErrorCode.INVALID_USER_ID_VALUE);
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
 	}
 
 }

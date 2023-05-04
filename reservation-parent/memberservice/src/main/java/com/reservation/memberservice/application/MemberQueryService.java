@@ -1,6 +1,7 @@
 package com.reservation.memberservice.application;
 
 import com.reservation.memberservice.dto.response.MemberInfoDto;
+import com.reservation.memberservice.dto.response.MemberPerformanceDto;
 
 /**
  * MemberQueryService.java
@@ -11,4 +12,6 @@ import com.reservation.memberservice.dto.response.MemberInfoDto;
  */
 public interface MemberQueryService {
 	MemberInfoDto findMemberByUserId(String userId);
+
+	MemberPerformanceDto selectPerformancesByUserId(String userId);
 }

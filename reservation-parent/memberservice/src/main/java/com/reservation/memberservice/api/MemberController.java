@@ -11,12 +11,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.reservation.common.dto.PerformanceDto;
 import com.reservation.memberservice.application.MemberCommandService;
 import com.reservation.memberservice.application.MemberQueryService;
 import com.reservation.memberservice.client.PerformanceApiClient;
 import com.reservation.memberservice.dto.request.UpdateMemberDto;
 import com.reservation.memberservice.dto.response.MemberInfoDto;
-import com.reservation.common.dto.PerformanceDto;
+import com.reservation.memberservice.dto.response.MemberPerformanceDto;
 
 import io.micrometer.core.annotation.Timed;
 import io.swagger.v3.oas.annotations.Operation;
@@ -37,7 +38,6 @@ import lombok.extern.slf4j.Slf4j;
 public class MemberController {
 	private final MemberQueryService memberQueryService;
 	private final MemberCommandService memberCommandService;
-	private final PerformanceApiClient performanceApiClient;
 
 	@GetMapping("/{userId}")
 	@Timed(value = "members.search", longTask = true)
@@ -52,6 +52,11 @@ public class MemberController {
 	public ResponseEntity<MemberInfoDto> updateMemberInfo(@PathVariable String userId,
 		@RequestBody @Validated UpdateMemberDto updateMemberDto) {
 		return ResponseEntity.ok(memberCommandService.updateMemberInfo(userId, updateMemberDto));
+	}
+
+	@GetMapping("/{userId}/performances")
+	public MemberPerformanceDto selectPerformancesByUserId(@PathVariable String userId) {
+		return memberQueryService.selectPerformancesByUserId(userId);
 	}
 
 }

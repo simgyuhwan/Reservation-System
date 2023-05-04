@@ -15,7 +15,7 @@ import com.reservation.common.dto.PerformanceDto;
  * @author sgh
  * @since 2023.05.04
  */
-@FeignClient(name = "performance")
+@FeignClient(name = "performance-service", path = "/api/performances")
 public interface PerformanceApiClient {
 
 	@GetMapping

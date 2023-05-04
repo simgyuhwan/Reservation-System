@@ -41,8 +41,10 @@ spring:
     openfeign:
       client:
         config:
-          performance.url: http://localhost:8000/performance-service/api/performances
-
+          performance:
+            connectTimeout: 5000
+            readTimeout: 5000
+            loggerLevel: full
 
 #logging
 logging:
@@ -52,6 +54,8 @@ logging:
         SQL: DEBUG
       springframework:
         web: DEBUG
+
+
   # Display TraceId and SpanId
   pattern:
     level: "%5p [${spring.application.name:},trace-id : %X{traceId:-}, span-id : %X{spanId:-}]"

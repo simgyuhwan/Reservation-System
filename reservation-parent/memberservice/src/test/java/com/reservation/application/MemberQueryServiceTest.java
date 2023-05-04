@@ -19,6 +19,7 @@ import com.reservation.memberservice.application.mapper.MemberInfoDtoMapper;
 import com.reservation.memberservice.dao.MemberRepository;
 import com.reservation.memberservice.domain.Member;
 import com.reservation.memberservice.dto.response.MemberInfoDto;
+import com.reservation.memberservice.error.InvalidUserIdException;
 import com.reservation.memberservice.error.MemberNotFoundException;
 
 /**
@@ -66,7 +67,7 @@ public class MemberQueryServiceTest {
 
 		//when
 		assertThatThrownBy(() -> memberQueryService.findMemberByUserId(USER_ID))
-			.isInstanceOf(MemberNotFoundException.class);
+			.isInstanceOf(InvalidUserIdException.class);
 	}
 
 	@Test

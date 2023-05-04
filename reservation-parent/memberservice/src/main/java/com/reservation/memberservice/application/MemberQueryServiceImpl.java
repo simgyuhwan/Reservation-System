@@ -4,10 +4,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
+import com.reservation.common.error.ErrorMessage;
 import com.reservation.memberservice.application.mapper.MemberInfoDtoMapper;
 import com.reservation.memberservice.dao.MemberRepository;
 import com.reservation.memberservice.domain.Member;
 import com.reservation.memberservice.dto.response.MemberInfoDto;
+import com.reservation.memberservice.dto.response.MemberPerformanceDto;
+import com.reservation.memberservice.error.InvalidUserIdException;
 import com.reservation.memberservice.error.MemberNotFoundException;
 
 import lombok.RequiredArgsConstructor;
@@ -32,8 +35,12 @@ public class MemberQueryServiceImpl implements MemberQueryService {
 	public MemberInfoDto findMemberByUserId(String userId) {
 		Assert.hasText(userId, "user id must exist");
 		Member member = memberRepository.findByUserId(userId)
-			.orElseThrow(() -> new MemberNotFoundException("Member with userId not found", userId));
+			.orElseThrow(() -> new InvalidUserIdException(ErrorMessage.INVALID_USER_ID, userId));
 		return memberInfoDtoMapper.toDto(member);
 	}
 
+	@Override
+	public MemberPerformanceDto selectPerformancesByUserId(String userId) {
+		return null;
+	}
 }

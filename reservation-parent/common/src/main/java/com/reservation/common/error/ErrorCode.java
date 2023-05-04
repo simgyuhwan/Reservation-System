@@ -15,6 +15,8 @@ public enum ErrorCode {
 	SIGNUP_INPUT_VALUE_INVALID("입력 값이 올바르지 않습니다.", 400),
 	DUPLICATE_MEMBER_ID_VALUE("중복된 회원 ID 입니다.", 409),
 	NO_MEMBERS_MATCHED("일치하는 회원이 없습니다", 404),
+	INVALID_USER_ID_VALUE("유효하지 않은 회원 ID입니다.", 400)
+	,
 
 	// performance
 	INVALID_PERFORMANCE_DATE_VALUE("잘못된 공연 날짜 정보입니다.", 400),

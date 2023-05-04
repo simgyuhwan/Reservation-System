@@ -24,7 +24,7 @@ import com.reservation.memberservice.domain.Member;
 import com.reservation.memberservice.dto.request.SignUpDto;
 import com.reservation.memberservice.dto.response.MemberInfoDto;
 import com.reservation.memberservice.error.DuplicateMemberException;
-import com.reservation.memberservice.error.MemberNotFoundException;
+import com.reservation.memberservice.error.InvalidUserIdException;
 
 /**
  * MemberService.java
@@ -91,7 +91,7 @@ public class MemberCommandServiceTest {
 		//then
 		assertThatThrownBy(() -> memberService.updateMemberInfo(USER_ID,
 			createUpdateMemberDto()))
-			.isInstanceOf(MemberNotFoundException.class);
+			.isInstanceOf(InvalidUserIdException.class);
 	}
 
 	@Test

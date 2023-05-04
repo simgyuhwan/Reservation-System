@@ -1,5 +1,7 @@
 package com.reservation.memberservice.error;
 
+import com.reservation.common.error.ErrorMessage;
+
 import lombok.Getter;
 
 /**
@@ -11,14 +13,10 @@ import lombok.Getter;
  */
 @Getter
 public class MemberNotFoundException extends RuntimeException {
-	private String userId;
+	private long id;
 
-	public MemberNotFoundException(String message) {
-		super(message);
-	}
-
-	public MemberNotFoundException(String message, String userId) {
-		super(message);
-		this.userId = userId;
+	public MemberNotFoundException(ErrorMessage message, Long memberId) {
+		super(message.name() + memberId);
+		this.id = memberId;
 	}
 }
