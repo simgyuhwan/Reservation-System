@@ -1,6 +1,5 @@
 package com.reservation.performanceservice.application;
 
-import static com.reservation.performanceservice.factory.PerformanceDtoFactory.*;
 import static org.assertj.core.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
@@ -23,7 +22,6 @@ import com.reservation.performanceservice.domain.Performance;
 import com.reservation.performanceservice.dto.request.PerformanceDto;
 import com.reservation.performanceservice.error.NoContentException;
 import com.reservation.performanceservice.error.PerformanceNotFoundException;
-import com.reservation.performanceservice.factory.PerformanceDtoFactory;
 import com.reservation.performanceservice.factory.PerformanceFactory;
 
 /**
@@ -98,18 +96,17 @@ class PerformanceQueryServiceTest {
 		@DisplayName("공연 ID로 공연 상세 조회 성공")
 		void performanceDetailsInquirySuccess() {
 			//given
-			when(performanceRepository.findById(PERFORMANCE_ID)).thenReturn(Optional.of(createPerformance()));
+			Performance performance = createPerformance();
+			when(performanceRepository.findById(PERFORMANCE_ID)).thenReturn(Optional.of(performance));
 
 			//when
 			PerformanceDto performanceDto = performanceQueryService.selectPerformanceById(PERFORMANCE_ID);
 
 			//then
-
-
+			assertThat(performanceDto.getUserId()).isEqualTo(performance.getUserId());
+			assertThat(performanceDto.getPerformancePlace()).isEqualTo(performance.getPerformancePlace());
+			assertThat(performanceDto.getPerformanceName()).isEqualTo(performance.getPerformanceName());
 		}
-
-
-
 	}
 
 	private Performance createPerformance() {
