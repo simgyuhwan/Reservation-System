@@ -1,27 +1,28 @@
-# **테스트 케이스**
-
-간단한 API 별 테스트 케이스
-
----
+# 기능별 테스트 케이스
 
 ## 목차
 
-[1. 공연](#1-공연)
+### [▶ 회원]()
 
-- [1) 공연 등록 API](#1-공연-등록-api)
-- [2) 공연 수정 API](#2-공연-수정-api)
-- [3) 공연 조회 API](#3-공연-조회-api)
+### [▶ 공연](#▶공연)
 
-[2. 예약](#2-예약)
+#### [1. 공연 등록 API](#1-공연-등록-api-1)
 
-- [1) 공연 예약 현황 조회 API](#1-공연-예약-현황-조회-api-get-reservation-serviceapiperformancesavailable)
-- [2) 공연 예약 신청 API](#2-공연-예약-신청-api-post-reservation-serviceapiperformancesperformanceidschedulesscheduleidreservations)
+#### [2. 공연 수정 API](#2-공연-수정-api-1)
+
+#### [3. 회원ID로 등록된 공연 조회 API](#3-회원id로-등록된-공연-조회-api-1)
+
+#### [4. 공연ID 공연 상세 조회 API](#4-공연id-공연-상세-조회-api-1)
+
+### [▶ 예약](#▶-예약)
+
+#### [1. 공연 예약 현황 조회 API](#1-공연-예약-현황-조회-api-1)
+
+#### [2. 공연 예약 신청 API](#2-공연-예약-신청-api-1)
 
 ---
 
-# 기능별 테스트 케이스
-
-# 공연
+# ▶ 공연
 
 ## 1. 공연 등록 API(POST /api/performances)
 
@@ -54,7 +55,9 @@
 
 ---
 
-## 2. 공연 수정 API(PUT /api/performances/{performanceId}
+<br>
+
+## 2. 공연 수정 API(PUT /api/performances/{performanceId})
 
 ### 요청 시 필수 입력값
 
@@ -82,9 +85,11 @@
 
 ---
 
-## 3. 공연 조회 API
+<br>
 
-### 요청 시 필수 입력값
+## 3. 회원ID로 등록된 공연 조회 API(GET /api/performances?userId={userId})
+
+### 요청 시 필수 입력값(Query Param)
 
 | 매개변수 이름 | 설명    |
 | ------------- | ------- |
@@ -98,7 +103,28 @@
 
 ---
 
-# 예약
+<br>
+
+## 4. 공연ID 공연 상세 조회 API(GET /api/performances/{performanceId}
+
+### 요청 시 필수 입력값
+
+| 매개변수 이름 | 설명    |
+| ------------- | ------- |
+| performanceId | 공연 ID |
+
+1. 공연 ID로 등록된 공연이 없을 시, 오류 메시지 반환
+2. 공연 ID로 등록된 공연이 없을 시, 400 코드 반
+3. 공연 ID로 공연 상세 정보 반
+
+---
+
+<br>
+<br>
+
+# ▶ 예약
+
+<br>
 
 ## 1. 공연 예약 현황 조회 API (_GET /reservation-service/api/performances/available_)
 
@@ -132,6 +158,8 @@ reservation-service/api/performances/available
 5. 조건에 맞는 공연 정보가 없을 때, 빈 리스트 반환 확인
 6. 날짜, 시간 데이터의 시작과 끝이 잘못되었을 시, 오류 메시지 반환.
 
+<br>
+
 ## 2. 공연 예약 신청 API (POST _/reservation-service/api/performances/{performanceId}/schedules/{scheduleId}/reservations_
 
 | 매개변수 이름        | 설명             |
@@ -153,4 +181,4 @@ reservation-service/api/performances/available
 6. 예약 불가능한 공연일 시, 오류 메시지 반환
 7. 공연 예약 성공, 201 반환
 8. 공연에 속하지 않은 공연 신청 시, 오류 메시지 반환
-   9
+9. 하나 남은 좌석 예약 신청 후 매진 확
