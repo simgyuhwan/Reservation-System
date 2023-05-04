@@ -37,6 +37,11 @@ public class PerformanceQueryServiceImpl implements PerformanceQueryService {
             .collect(toList());
     }
 
+    @Override
+    public PerformanceDto selectPerformanceById(Long performanceId) {
+        return null;
+    }
+
     private List<Performance> findByUserId(String userId) {
         List<Performance> performances = performanceRepository.findByUserIdOrderByCreateDtDesc(userId);
         if(performances.isEmpty()) {

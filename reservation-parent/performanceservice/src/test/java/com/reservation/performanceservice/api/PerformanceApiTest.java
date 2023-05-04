@@ -66,7 +66,7 @@ public class PerformanceApiTest {
 
 	@Nested
 	@DisplayName("공연 등록에 관한 API")
-	class performanceRegistrationAPI{
+	class PerformanceRegistrationApiTest{
 		@Test
 		@DisplayName("공연 등록 성공 - 201 상태코드 반환")
 		void performanceRegisterSuccessTest() throws Exception{
@@ -251,7 +251,7 @@ public class PerformanceApiTest {
 
 	@Nested
 	@DisplayName("공연 정보 수정 API")
-	class performanceInformationEditingApi {
+	class PerformanceInformationEditingApiTest {
 		@Test
 		@DisplayName("등록된 공연 정보가 없을 때, 예외 발생 및 오류 메시지 반환")
 		void noPerformanceRegisteredWithUserIdException() throws Exception {
@@ -301,10 +301,9 @@ public class PerformanceApiTest {
 
 	}
 
-
 	@Nested
 	@DisplayName("회원 ID로 등록된 공연 조회 API")
-	class performanceSearchApiWithUserID {
+	class PerformanceSearchApiWithUserIDTest {
 
 		@Test
 		@DisplayName("회원 ID로 등록된 공연이 없을 시, 400 반환")
@@ -357,6 +356,39 @@ public class PerformanceApiTest {
 		}
 	}
 
+	@Nested
+	@DisplayName("공연 id를 통한 공연 상세정보 조회")
+	class PerformanceSelectByPerformanceIdTest{
+		private static final Long PERFORMANCE_ID = 1L;
+		private static final String PERFORMANCE_SEARCH_URL = "/api/performances/";
+
+		@Test
+		@DisplayName("공연 ID에 일치하는 공연 정보 없음, 400 상태 코드 반환")
+		void noMatchingPerformanceIDReturnCode400() throws Exception{
+			when(performanceQueryService.selectPerformanceById(PERFORMANCE_ID)).thenThrow(PerformanceNotFoundException.class);
+			mockMvc.perform(get(PERFORMANCE_SEARCH_URL + PERFORMANCE_ID))
+				.andExpect(status().isBadRequest());
+		}
+
+		@Test
+		@DisplayName("공연 ID에 일치하는 공연 정보 없음, 에러 메시지 확인")
+		void noMatchingPerformanceIDCheckErrorMessage() throws Exception {
+			when(performanceQueryService.selectPerformanceById(PERFORMANCE_ID)).thenThrow(PerformanceNotFoundException.class);
+			mockMvc.perform(get(PERFORMANCE_SEARCH_URL + PERFORMANCE_ID))
+				.andExpect(jsonPath("$.message").value(ErrorCode.NO_REGISTERED_PERFORMANCE_INFORMATION.getMessage()));
+		}
+
+		@Test
+		@DisplayName("공연 ID로 공연 상세 정보 반환 성공")
+		void returnPerformanceDetailsByPerformanceID() throws Exception {
+			when(performanceQueryService.selectPerformanceById(PERFORMANCE_ID)).thenReturn(createPerformanceDto());
+			mockMvc.perform(get(PERFORMANCE_SEARCH_URL + PERFORMANCE_ID))
+				.andExpect(status().isOk())
+				.andExpect(jsonPath("$.userId").value(USER_ID))
+				.andExpect(jsonPath("$.performanceName").value(PERFORMANCE_NAME));
+		}
+	}
+
 	private PerformanceDto createPerformanceDtoWithInvalidDate() {
 		return PerformanceTestDataFactory.createPerformanceDto("2023-05-01", "2023-04-01");
 	}
@@ -378,6 +410,5 @@ public class PerformanceApiTest {
 	private static String createMaximumString() {
 		return "#".repeat(PERFORMANCE_MAXIMUM_COUNT + 1);
 	}
-
 
 }

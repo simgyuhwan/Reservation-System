@@ -48,4 +48,9 @@ public class PerformanceController {
 		return performanceQueryService.selectPerformances(userId);
 	}
 
+	@GetMapping("/{performanceId}")
+	public PerformanceDto performanceSelectById(@PathVariable Long performanceId) {
+		return performanceQueryService.selectPerformanceById(performanceId);
+	}
+
 }
