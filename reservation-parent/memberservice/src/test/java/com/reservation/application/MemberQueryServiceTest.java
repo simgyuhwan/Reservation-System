@@ -1,6 +1,5 @@
 package com.reservation.application;
 
-import static com.reservation.factory.MemberTestConstants.*;
 import static org.assertj.core.api.Assertions.*;
 import static org.mockito.BDDMockito.*;
 
@@ -14,7 +13,7 @@ import org.mockito.Mock;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import com.reservation.factory.MemberTestDataFactory;
+import com.reservation.factory.MemberFactory;
 import com.reservation.memberservice.application.MemberQueryServiceImpl;
 import com.reservation.memberservice.application.mapper.MemberInfoDtoMapper;
 import com.reservation.memberservice.dao.MemberRepository;
@@ -30,6 +29,11 @@ import com.reservation.memberservice.error.MemberNotFoundException;
  */
 @ExtendWith(MockitoExtension.class)
 public class MemberQueryServiceTest {
+	public final static String USER_ID = MemberFactory.USER_ID;
+	public final static String PHONE_NUM = MemberFactory.PHONE_NUM;
+	public final static String USERNAME = MemberFactory.USERNAME;
+	public final static String ADDRESS = MemberFactory.ADDRESS;
+	public final static String PASSWORD = MemberFactory.PASSWORD;
 
 	@InjectMocks
 	private MemberQueryServiceImpl memberQueryService;
@@ -44,7 +48,7 @@ public class MemberQueryServiceTest {
 	@DisplayName("회원 조회 테스트: 성공 테스트")
 	void memberInquirySuccessTest() {
 		//given
-		Member member = MemberTestDataFactory.createMember();
+		Member member = MemberFactory.createMember();
 		given(memberRepository.findByUserId(member.getUserId())).willReturn(Optional.of(member));
 
 		//when

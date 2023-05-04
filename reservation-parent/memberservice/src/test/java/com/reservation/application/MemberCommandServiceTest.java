@@ -1,7 +1,6 @@
 package com.reservation.application;
 
-import static com.reservation.factory.MemberTestConstants.*;
-import static com.reservation.factory.MemberTestDataFactory.*;
+import static com.reservation.factory.MemberFactory.*;
 import static org.assertj.core.api.Assertions.*;
 import static org.mockito.BDDMockito.*;
 
@@ -15,6 +14,8 @@ import org.mockito.Mock;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import com.reservation.factory.MemberFactory;
+import com.reservation.factory.SignUpDtoFactory;
 import com.reservation.memberservice.application.MemberCommandServiceImpl;
 import com.reservation.memberservice.application.mapper.MemberInfoDtoMapper;
 import com.reservation.memberservice.application.mapper.SignUpRequestMapper;
@@ -34,6 +35,11 @@ import com.reservation.memberservice.error.MemberNotFoundException;
  */
 @ExtendWith(MockitoExtension.class)
 public class MemberCommandServiceTest {
+	public final static String USER_ID = MemberFactory.USER_ID;
+	public final static String PHONE_NUM = MemberFactory.PHONE_NUM;
+	public final static String USERNAME = MemberFactory.USERNAME;
+	public final static String ADDRESS = MemberFactory.ADDRESS;
+	public final static String PASSWORD = MemberFactory.PASSWORD;
 
 	@InjectMocks
 	private MemberCommandServiceImpl memberService;
@@ -103,5 +109,9 @@ public class MemberCommandServiceTest {
 		assertThat(result.getUserId()).isEqualTo(memberInfoDto.getUserId());
 		assertThat(result.getAddress()).isEqualTo(memberInfoDto.getAddress());
 		assertThat(result.getPhoneNum()).isEqualTo(memberInfoDto.getPhoneNum());
+	}
+
+	private SignUpDto createSignUpDto() {
+		return SignUpDtoFactory.createSignUpDto();
 	}
 }

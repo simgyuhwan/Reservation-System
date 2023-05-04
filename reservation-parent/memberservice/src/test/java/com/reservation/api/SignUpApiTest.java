@@ -1,6 +1,5 @@
 package com.reservation.api;
 
-import static com.reservation.factory.MemberTestConstants.*;
 import static org.mockito.BDDMockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -23,7 +22,8 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import com.google.gson.Gson;
-import com.reservation.factory.MemberTestDataFactory;
+import com.reservation.factory.MemberFactory;
+import com.reservation.factory.SignUpDtoFactory;
 import com.reservation.memberservice.api.SignUpController;
 import com.reservation.memberservice.application.MemberCommandService;
 import com.reservation.memberservice.dto.request.SignUpDto;
@@ -38,6 +38,11 @@ import com.reservation.memberservice.error.MemberControllerAdvice;
  */
 @ExtendWith(MockitoExtension.class)
 public class SignUpApiTest {
+	public final static String USER_ID = MemberFactory.USER_ID;
+	public final static String PHONE_NUM = MemberFactory.PHONE_NUM;
+	public final static String USERNAME = MemberFactory.USERNAME;
+	public final static String ADDRESS = MemberFactory.ADDRESS;
+	public final static String PASSWORD = MemberFactory.PASSWORD;
 	private final static String SIGNUP_URL = "/api/signup";
 
 	private MockMvc mockMvc;
@@ -60,7 +65,7 @@ public class SignUpApiTest {
 	@DisplayName("회원가입 성공 테스트")
 	void memberRegistrationSuccessTest() throws Exception {
 		//given
-		SignUpDto request = MemberTestDataFactory.createSignUpDto();
+		SignUpDto request = SignUpDtoFactory.createSignUpDto();
 
 		//when
 		ResultActions result = mockMvc.perform(post(SIGNUP_URL)
@@ -79,7 +84,7 @@ public class SignUpApiTest {
 	void memberRegistrationValidationTest(String userId, String username, String password,
 		String phoneNum, String address) throws Exception {
 		//given
-		SignUpDto request = MemberTestDataFactory.createSignUpDto(userId, username, password, phoneNum, address);
+		SignUpDto request = createSignUpDto(userId, username, password, phoneNum, address);
 
 		//when
 		ResultActions result = mockMvc.perform(post(SIGNUP_URL)
@@ -94,7 +99,7 @@ public class SignUpApiTest {
 	@DisplayName("회원가입 실패 메시지 확인 테스트 : 아이디 미포함 실패")
 	void invalidUserIdEntryTest() throws Exception {
 		//given
-		SignUpDto request = MemberTestDataFactory.createSignUpDto(null, USERNAME, PASSWORD, PHONE_NUM, ADDRESS);
+		SignUpDto request = createSignUpDto(null, USERNAME, PASSWORD, PHONE_NUM, ADDRESS);
 
 		//when
 		ResultActions result = mockMvc.perform(post(SIGNUP_URL)
@@ -112,7 +117,7 @@ public class SignUpApiTest {
 	@DisplayName("회원가입 실패 메시지 확인 테스트 : 아이디값 사이즈 최소 이하 실패")
 	void idValueSizeMinimumOrLessFailureTest() throws Exception {
 		//given
-		SignUpDto request = MemberTestDataFactory.createSignUpDto("1", USERNAME, PASSWORD, PHONE_NUM, ADDRESS);
+		SignUpDto request = createSignUpDto("1", USERNAME, PASSWORD, PHONE_NUM, ADDRESS);
 
 		//when
 		ResultActions result = mockMvc.perform(post(SIGNUP_URL)
@@ -130,7 +135,7 @@ public class SignUpApiTest {
 	@DisplayName("회원가입 실패 메시지 확인 테스트 : 아이디값 사이즈 최대 이상 실패")
 	void idValueSizeMaximumOrThanFailureTest() throws Exception {
 		//given
-		SignUpDto request = MemberTestDataFactory.createSignUpDto("123456789101112222", USERNAME, PASSWORD, PHONE_NUM,
+		SignUpDto request = createSignUpDto("123456789101112222", USERNAME, PASSWORD, PHONE_NUM,
 			ADDRESS);
 
 		//when
@@ -149,7 +154,7 @@ public class SignUpApiTest {
 	@DisplayName("회원가입 실패 메시지 확인 테스트: 이름 미포함 실패")
 	void enteringAnInvalidNameValueTest() throws Exception {
 		//given
-		SignUpDto request = MemberTestDataFactory.createSignUpDto(USER_ID, "", PASSWORD, PHONE_NUM, ADDRESS);
+		SignUpDto request = createSignUpDto(USER_ID, "", PASSWORD, PHONE_NUM, ADDRESS);
 
 		//when
 		ResultActions result = mockMvc.perform(post(SIGNUP_URL)
@@ -167,7 +172,7 @@ public class SignUpApiTest {
 	@DisplayName("회원가입 실패 메시지 확인 테스트 : 핸드폰 번호 미포함 실패")
 	void enterANullPhoneNumberTest() throws Exception {
 		//given
-		SignUpDto request = MemberTestDataFactory.createSignUpDto(USER_ID, USERNAME, PASSWORD, null, ADDRESS);
+		SignUpDto request = createSignUpDto(USER_ID, USERNAME, PASSWORD, null, ADDRESS);
 
 		//when
 		ResultActions result = mockMvc.perform(post(SIGNUP_URL)
@@ -185,7 +190,7 @@ public class SignUpApiTest {
 	@DisplayName("회원가입 실패 메시지 확인 테스트 : 잘못된 핸드폰 번호 등록 실패")
 	void enterTheWrongPhoneNumberTest() throws Exception {
 		//given
-		SignUpDto request = MemberTestDataFactory.createSignUpDto(USER_ID, USERNAME, PASSWORD, "-0-30-", ADDRESS);
+		SignUpDto request = createSignUpDto(USER_ID, USERNAME, PASSWORD, "-0-30-", ADDRESS);
 
 		//when
 		ResultActions result = mockMvc.perform(post(SIGNUP_URL)
@@ -203,7 +208,7 @@ public class SignUpApiTest {
 	@DisplayName("회원가입 실패 메시지 확인 테스트 : 비밀번호 미포함 실패")
 	void failedToNotIncludeAddressTest() throws Exception {
 		//given
-		SignUpDto request = MemberTestDataFactory.createSignUpDto(USER_ID, USERNAME, "", PHONE_NUM, ADDRESS);
+		SignUpDto request = createSignUpDto(USER_ID, USERNAME, "", PHONE_NUM, ADDRESS);
 
 		//when
 		ResultActions result = mockMvc.perform(post(SIGNUP_URL)
@@ -221,7 +226,7 @@ public class SignUpApiTest {
 	@DisplayName("회원가입 실패 메시지 확인 테스트 : 주소 값 미포함 실패")
 	void failedToNotIncludePhoneNumTest() throws Exception {
 		//given
-		SignUpDto request = MemberTestDataFactory.createSignUpDto(USER_ID, USERNAME, PASSWORD, PHONE_NUM, "");
+		SignUpDto request = createSignUpDto(USER_ID, USERNAME, PASSWORD, PHONE_NUM, "");
 
 		//when
 		ResultActions result = mockMvc.perform(post(SIGNUP_URL)
@@ -249,5 +254,13 @@ public class SignUpApiTest {
 			Arguments.of("john", "John", "password", null, "Seoul"),
 			Arguments.of("john", "John", "password", "1234567890", "서울")
 		);
+	}
+
+	private SignUpDto createSignUpDto() {
+		return SignUpDtoFactory.createSignUpDto();
+	}
+
+	private SignUpDto createSignUpDto(String userId, String username, String password, String phoneNum, String address) {
+		return SignUpDtoFactory.createSignUpDto(userId,username, password, phoneNum, address);
 	}
 }

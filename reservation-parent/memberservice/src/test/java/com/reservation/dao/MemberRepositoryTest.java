@@ -1,6 +1,5 @@
 package com.reservation.dao;
 
-import static com.reservation.factory.MemberTestConstants.*;
 import static org.assertj.core.api.Assertions.*;
 
 import java.util.List;
@@ -13,6 +12,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.reservation.factory.MemberFactory;
 import com.reservation.memberservice.dao.MemberRepository;
 import com.reservation.memberservice.domain.Member;
 
@@ -29,6 +29,11 @@ import jakarta.persistence.PersistenceContext;
 @Transactional
 @DataJpaTest
 public class MemberRepositoryTest {
+	public final static String USER_ID = MemberFactory.USER_ID;
+	public final static String PHONE_NUM = MemberFactory.PHONE_NUM;
+	public final static String USERNAME = MemberFactory.USERNAME;
+	public final static String ADDRESS = MemberFactory.ADDRESS;
+	public final static String PASSWORD = MemberFactory.PASSWORD;
 
 	@Autowired
 	private MemberRepository memberRepository;

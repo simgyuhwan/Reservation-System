@@ -40,6 +40,7 @@ Spring Boot 3.0.4
 Spring Data JPA 3.0.4
 MapStruct 1.5.2
 QueryDsl 5.0.0
+FeignClient 4.0.0
 Kafka 3.3.2
 Redis 3.0.5
 Micrometer Tracing

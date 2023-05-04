@@ -6,7 +6,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mapstruct.factory.Mappers;
 
-import com.reservation.factory.MemberTestDataFactory;
+import com.reservation.factory.MemberFactory;
 import com.reservation.memberservice.application.mapper.MemberInfoDtoMapper;
 import com.reservation.memberservice.domain.Member;
 import com.reservation.memberservice.dto.response.MemberInfoDto;
@@ -24,7 +24,7 @@ class MemberInfoDtoMapperTest {
 	@DisplayName("MemberInfoDtoMapper 테스트 : toDTO 테스트")
 	void toDtoTest() {
 		//given
-		Member member = MemberTestDataFactory.createMember();
+		Member member = MemberFactory.createMember();
 
 		//when
 		MemberInfoDto result = mapper.toDto(member);
@@ -39,7 +39,7 @@ class MemberInfoDtoMapperTest {
 	@DisplayName("MemberInfoDtoMapper 테스트 : toEntity 테스트")
 	void toEntityTest() {
 		//given
-		MemberInfoDto memberInfoDto = MemberTestDataFactory.createMemberInfoDto();
+		MemberInfoDto memberInfoDto = MemberFactory.createMemberInfoDto();
 
 		//when
 		Member result = mapper.toEntity(memberInfoDto);

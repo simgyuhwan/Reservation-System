@@ -1,7 +1,6 @@
 package com.reservation.api;
 
-import static com.reservation.factory.MemberTestConstants.*;
-import static com.reservation.factory.MemberTestDataFactory.*;
+import static com.reservation.factory.MemberFactory.*;
 import static org.hamcrest.Matchers.*;
 import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.*;
@@ -25,7 +24,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import com.google.gson.Gson;
-import com.reservation.factory.MemberTestDataFactory;
+import com.reservation.factory.MemberFactory;
 import com.reservation.memberservice.api.MemberController;
 import com.reservation.memberservice.application.MemberCommandService;
 import com.reservation.memberservice.application.MemberQueryService;
@@ -44,6 +43,11 @@ import com.reservation.memberservice.error.MemberNotFoundException;
 @ExtendWith(MockitoExtension.class)
 public class MemberApiTest {
 	private final static String MEMBER_API_URL = "/api/members";
+	public final static String USER_ID = MemberFactory.USER_ID;
+	public final static String PHONE_NUM = MemberFactory.PHONE_NUM;
+	public final static String USERNAME = MemberFactory.USERNAME;
+	public final static String ADDRESS = MemberFactory.ADDRESS;
+	public final static String PASSWORD = MemberFactory.PASSWORD;
 
 	private MockMvc mockMvc;
 	private Gson gson = new Gson();
@@ -120,7 +124,7 @@ public class MemberApiTest {
 		//then
 		mockMvc.perform(put(MEMBER_API_URL + "/" + userIDDoesNotExist)
 				.contentType(MediaType.APPLICATION_JSON)
-				.content(gson.toJson(MemberTestDataFactory.createUpdateMemberDto())))
+				.content(gson.toJson(MemberFactory.createUpdateMemberDto())))
 			.andExpect(status().isNotFound());
 	}
 

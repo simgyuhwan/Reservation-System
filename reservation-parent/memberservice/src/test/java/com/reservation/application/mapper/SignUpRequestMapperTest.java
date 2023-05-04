@@ -6,7 +6,8 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mapstruct.factory.Mappers;
 
-import com.reservation.factory.MemberTestDataFactory;
+import com.reservation.factory.MemberFactory;
+import com.reservation.factory.SignUpDtoFactory;
 import com.reservation.memberservice.application.mapper.SignUpRequestMapper;
 import com.reservation.memberservice.domain.Member;
 import com.reservation.memberservice.dto.request.SignUpDto;
@@ -25,7 +26,7 @@ class SignUpRequestMapperTest {
 	@DisplayName("SignUpRequestMapper 테스트 : toDTO 테스트")
 	void toDtoTest() {
 		//given
-		Member member = MemberTestDataFactory.createMember();
+		Member member = MemberFactory.createMember();
 
 		//when
 		SignUpDto result = mapper.toDto(member);
@@ -40,7 +41,7 @@ class SignUpRequestMapperTest {
 	@DisplayName("SignUpRequestMapper 테스트 : toEntity 테스트")
 	void toEntityTest() {
 		//given
-		SignUpDto signUpDto = MemberTestDataFactory.createSignUpDto();
+		SignUpDto signUpDto = createSignUpDto();
 
 		//when
 		Member result = mapper.toEntity(signUpDto);
@@ -49,5 +50,9 @@ class SignUpRequestMapperTest {
 		assertThat(result.getUserId()).isEqualTo(signUpDto.getUserId());
 		assertThat(result.getUsername()).isEqualTo(signUpDto.getUsername());
 		assertThat(result.getAddress()).isEqualTo(signUpDto.getAddress());
+	}
+
+	private SignUpDto createSignUpDto() {
+		return SignUpDtoFactory.createSignUpDto();
 	}
 }
