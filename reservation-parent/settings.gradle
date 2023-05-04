@@ -7,4 +7,5 @@ include('discoveryserver')
 include('gatewayserver')
 include('reservationservice')
 include 'notificationservice'
+include('eventservice')
 

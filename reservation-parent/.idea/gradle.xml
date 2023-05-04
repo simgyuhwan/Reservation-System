@@ -14,6 +14,7 @@
             <option value="$PROJECT_DIR$/common" />
             <option value="$PROJECT_DIR$/config" />
             <option value="$PROJECT_DIR$/discoveryserver" />
+            <option value="$PROJECT_DIR$/eventservice" />
             <option value="$PROJECT_DIR$/gatewayserver" />
             <option value="$PROJECT_DIR$/memberservice" />
             <option value="$PROJECT_DIR$/notificationservice" />
