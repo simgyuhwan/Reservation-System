@@ -13,6 +13,7 @@ import com.reservation.memberservice.dto.response.MemberInfoDto;
  * @since 2023.03.23
  */
 public class MemberFactory {
+	public final static Long MEMBER_ID = 1L;
 	public final static String USER_ID = "test";
 	public final static String PHONE_NUM = "010-1111-9999";
 	public final static String USERNAME = "이순신";

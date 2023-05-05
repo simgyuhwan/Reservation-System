@@ -1,7 +1,5 @@
 package com.reservation.memberservice.api;
 
-import java.util.List;
-
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,10 +9,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.reservation.common.dto.PerformanceDto;
 import com.reservation.memberservice.application.MemberCommandService;
 import com.reservation.memberservice.application.MemberQueryService;
-import com.reservation.memberservice.client.PerformanceApiClient;
 import com.reservation.memberservice.dto.request.UpdateMemberDto;
 import com.reservation.memberservice.dto.response.MemberInfoDto;
 import com.reservation.memberservice.dto.response.MemberPerformanceDto;
@@ -54,9 +50,9 @@ public class MemberController {
 		return ResponseEntity.ok(memberCommandService.updateMemberInfo(userId, updateMemberDto));
 	}
 
-	@GetMapping("/{userId}/performances")
-	public MemberPerformanceDto selectPerformancesByUserId(@PathVariable String userId) {
-		return memberQueryService.selectPerformancesByUserId(userId);
+	@GetMapping("/{memberId}/performances")
+	public MemberPerformanceDto selectPerformancesById(@PathVariable Long memberId) {
+		return memberQueryService.selectPerformancesById(memberId);
 	}
 
 }

@@ -50,7 +50,7 @@ public class ReservationQueryDataFactory {
 	public static PerformanceDto createPerformanceDto() {
 		return PerformanceDto.builder()
 			.performanceId(1L)
-			.userId(USER_ID)
+			.memberId(MEMBER_ID)
 			.performanceName(NAME)
 			.performanceStartDate(START_DATE_VALUE)
 			.performanceEndDate(END_DATE_VALUE)

@@ -34,6 +34,7 @@ public class ReservationQueryConstants {
 	public static final Integer PAGE_VALUE = 0;
 	public static final Integer SIZE_VALUE = 10;
 
+	public static final Long MEMBER_ID = 1L;
 	public static final String NAME = "바람과 함께 사라지다";
 	public static final String INFO = "공연 소개";
 	public static final String TYPE = "MUSICAL";

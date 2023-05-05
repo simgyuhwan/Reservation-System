@@ -5,7 +5,6 @@ import java.util.List;
 
 import com.reservation.common.dto.PerformanceDto;
 
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

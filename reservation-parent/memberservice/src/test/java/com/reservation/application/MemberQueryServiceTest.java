@@ -25,6 +25,7 @@ import com.reservation.memberservice.dao.MemberRepository;
 import com.reservation.memberservice.domain.Member;
 import com.reservation.memberservice.dto.response.MemberInfoDto;
 import com.reservation.memberservice.error.InvalidUserIdException;
+import com.reservation.memberservice.error.MemberNotFoundException;
 
 /**
  * MemberQueryServiceTest.java
@@ -34,11 +35,12 @@ import com.reservation.memberservice.error.InvalidUserIdException;
  */
 @ExtendWith(MockitoExtension.class)
 public class MemberQueryServiceTest {
-	public final static String USER_ID = MemberFactory.USER_ID;
-	public final static String PHONE_NUM = MemberFactory.PHONE_NUM;
-	public final static String USERNAME = MemberFactory.USERNAME;
-	public final static String ADDRESS = MemberFactory.ADDRESS;
-	public final static String PASSWORD = MemberFactory.PASSWORD;
+	private final static Long MEMBER_ID = MemberFactory.MEMBER_ID;
+	private final static String USER_ID = MemberFactory.USER_ID;
+	private final static String PHONE_NUM = MemberFactory.PHONE_NUM;
+	private final static String USERNAME = MemberFactory.USERNAME;
+	private final static String ADDRESS = MemberFactory.ADDRESS;
+	private final static String PASSWORD = MemberFactory.PASSWORD;
 
 	@InjectMocks
 	private MemberQueryServiceImpl memberQueryService;
@@ -99,25 +101,18 @@ public class MemberQueryServiceTest {
 		@Test
 		@DisplayName("유효하지 않은 ID 조회로 예외 발생")
 		void invalidIDLookupExceptionOccurred() {
-			when(memberRepository.findByUserId(USER_ID)).thenReturn(Optional.empty());
-			assertThatThrownBy(() -> memberQueryService.selectPerformancesByUserId(USER_ID))
-				.isInstanceOf(InvalidUserIdException.class);
+			when(memberRepository.findById(MEMBER_ID)).thenReturn(Optional.empty());
+			assertThatThrownBy(() -> memberQueryService.selectPerformancesById(MEMBER_ID))
+				.isInstanceOf(MemberNotFoundException.class);
 		}
 
-		@ParameterizedTest
-		@MethodSource("emptyUserId")
+		@Test
 		@DisplayName("잘못된 UserID 값, 예외 발생")
-		void invalidUserIdValueTest(String userId) {
-			assertThatThrownBy(() -> memberQueryService.selectPerformancesByUserId(userId))
+		void invalidUserIdValueTest() {
+			assertThatThrownBy(() -> memberQueryService.selectPerformancesById(null))
 				.isInstanceOf(IllegalArgumentException.class);
 		}
 
-		static Stream<Arguments> emptyUserId() {
-			return Stream.of(
-				Arguments.of(""),
-				Arguments.of((Object)null)
-			);
-		}
 	}
 
 }

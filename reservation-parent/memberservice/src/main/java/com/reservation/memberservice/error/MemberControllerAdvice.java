@@ -43,7 +43,7 @@ public class MemberControllerAdvice {
 	@ExceptionHandler(MemberNotFoundException.class)
 	public ResponseEntity<ErrorResponse> memberNotFoundException(MemberNotFoundException e) {
 		log.error(e.getMessage());
-		ErrorResponse errorResponse = ErrorResponseFactory.from(ErrorCode.NO_MEMBERS_MATCHED);
+		ErrorResponse errorResponse = ErrorResponseFactory.from(ErrorCode.MEMBER_NOT_FOUND);
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
 	}
 

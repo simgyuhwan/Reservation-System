@@ -38,6 +38,7 @@ import com.reservation.memberservice.dto.response.MemberInfoDto;
 import com.reservation.memberservice.dto.response.MemberPerformanceDto;
 import com.reservation.memberservice.error.InvalidUserIdException;
 import com.reservation.memberservice.error.MemberControllerAdvice;
+import com.reservation.memberservice.error.MemberNotFoundException;
 
 /**
  * MemberApiTest.java
@@ -49,11 +50,12 @@ import com.reservation.memberservice.error.MemberControllerAdvice;
 @ExtendWith(MockitoExtension.class)
 public class MemberApiTest {
 	private final static String MEMBER_API_URL = "/api/members";
-	public final static String USER_ID = MemberFactory.USER_ID;
-	public final static String PHONE_NUM = MemberFactory.PHONE_NUM;
-	public final static String USERNAME = MemberFactory.USERNAME;
-	public final static String ADDRESS = MemberFactory.ADDRESS;
-	public final static String PASSWORD = MemberFactory.PASSWORD;
+	private final static String USER_ID = MemberFactory.USER_ID;
+	private final static String PHONE_NUM = MemberFactory.PHONE_NUM;
+	private final static String USERNAME = MemberFactory.USERNAME;
+	private final static String ADDRESS = MemberFactory.ADDRESS;
+	private final static String PASSWORD = MemberFactory.PASSWORD;
+	private final static Long MEMBER_ID = MemberFactory.MEMBER_ID;
 
 	private MockMvc mockMvc;
 	private Gson gson = new Gson();
@@ -189,8 +191,7 @@ public class MemberApiTest {
 	@Nested
 	@DisplayName("회원 ID로 등록된 공연 정보 조회")
 	class SearchPerformanceRegisteredByUserIdTest {
-		private static final String USER_ID = MemberPerformanceFactory.USER_ID;
-		private static final String VIEW_PERFORMANCES_REGISTERED_BY_MEMBERS_URL = "/api/members/" + USER_ID + "/performances";
+		private static final String VIEW_PERFORMANCES_REGISTERED_BY_MEMBERS_URL = "/api/members/" + MEMBER_ID + "/performances";
 
 		@Test
 		@DisplayName("등록된 공연 조회 성공, 필드 값 확인")
@@ -198,7 +199,7 @@ public class MemberApiTest {
 			//given
 			String PERFORMANCE_NAME = PerformanceDtoFactory.PERFORMANCE_NAME;
 			String USERNAME = MemberPerformanceFactory.USER_NAME;
-			when(memberQueryService.selectPerformancesByUserId(USER_ID)).thenReturn(createMemberPerformanceDto());
+			when(memberQueryService.selectPerformancesById(MEMBER_ID)).thenReturn(createMemberPerformanceDto());
 
 			//when
 			ResultActions result = mockMvc.perform(get(VIEW_PERFORMANCES_REGISTERED_BY_MEMBERS_URL))
@@ -213,7 +214,7 @@ public class MemberApiTest {
 		@Test
 		@DisplayName("유효하지 않은 회원 ID, 400 상태 코드 반환")
 		void returnUnregisteredMember400Code() throws Exception{
-			when(memberQueryService.selectPerformancesByUserId(USER_ID)).thenThrow(InvalidUserIdException.class);
+			when(memberQueryService.selectPerformancesById(MEMBER_ID)).thenThrow(MemberNotFoundException.class);
 			mockMvc.perform(get(VIEW_PERFORMANCES_REGISTERED_BY_MEMBERS_URL))
 				.andExpect(status().isBadRequest());
 		}
@@ -221,9 +222,9 @@ public class MemberApiTest {
 		@Test
 		@DisplayName("유효하지 않은 회원 ID, 에러 메시지 확인")
 		void returnErrorMessageWhenThereIsNoRegisteredMember() throws Exception {
-			when(memberQueryService.selectPerformancesByUserId(USER_ID)).thenThrow(InvalidUserIdException.class);
+			when(memberQueryService.selectPerformancesById(MEMBER_ID)).thenThrow(MemberNotFoundException.class);
 			mockMvc.perform(get(VIEW_PERFORMANCES_REGISTERED_BY_MEMBERS_URL))
-				.andExpect(jsonPath("$.message").value(ErrorCode.INVALID_USER_ID_VALUE.getMessage()));
+				.andExpect(jsonPath("$.message").value(ErrorCode.MEMBER_NOT_FOUND.getMessage()));
 		}
 
 		private MemberPerformanceDto createMemberPerformanceDto() {

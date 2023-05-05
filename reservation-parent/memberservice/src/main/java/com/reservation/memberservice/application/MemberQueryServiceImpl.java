@@ -39,15 +39,19 @@ public class MemberQueryServiceImpl implements MemberQueryService {
 	}
 
 	@Override
-	public MemberPerformanceDto selectPerformancesByUserId(String userId) {
-		Assert.hasText(userId, "user id must exist");
-		findMemberByUserId(userId);
+	public MemberPerformanceDto selectPerformancesById(Long memberId) {
+		Assert.notNull(memberId, "memberId must not be null");
+		findById(memberId);
 		return null;
 	}
-
 
 	private Member findByUserId(String userId) {
 		return memberRepository.findByUserId(userId)
 			.orElseThrow(() -> new InvalidUserIdException(ErrorMessage.INVALID_USER_ID, userId));
+	}
+
+	private Member findById(Long memberId) {
+		return memberRepository.findById(memberId)
+			.orElseThrow(() -> new MemberNotFoundException(ErrorMessage.MEMBER_NOT_FOUND, memberId));
 	}
 }
