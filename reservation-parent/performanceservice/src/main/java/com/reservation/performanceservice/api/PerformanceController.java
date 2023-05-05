@@ -53,9 +53,4 @@ public class PerformanceController {
 	public PerformanceDto performanceSelectById(@PathVariable Long performanceId) {
 		return performanceQueryService.selectPerformanceById(performanceId);
 	}
-
-	@PostMapping("/test")
-	public String test() {
-		return "test";
-	}
 }

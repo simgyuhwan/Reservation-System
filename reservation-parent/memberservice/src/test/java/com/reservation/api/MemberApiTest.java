@@ -28,6 +28,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import com.google.gson.Gson;
 import com.reservation.common.error.ErrorCode;
 import com.reservation.factory.MemberFactory;
+import com.reservation.factory.MemberInfoDtoFactory;
 import com.reservation.factory.MemberPerformanceFactory;
 import com.reservation.factory.PerformanceDtoFactory;
 import com.reservation.memberservice.api.MemberController;
@@ -55,13 +56,11 @@ public class MemberApiTest {
 	private final static String PHONE_NUM = MemberFactory.PHONE_NUM;
 	private final static String USERNAME = MemberFactory.USERNAME;
 	private final static String ADDRESS = MemberFactory.ADDRESS;
-	private final static String PASSWORD = MemberFactory.PASSWORD;
 	private final static Long MEMBER_ID = MemberFactory.MEMBER_ID;
 	String PERFORMANCE_NAME = PerformanceDtoFactory.PERFORMANCE_NAME;
 
 	private MockMvc mockMvc;
-	private Gson gson = new Gson();
-	private static String userIDDoesNotExist = "userIDDoesNotExist";
+	private final Gson gson = new Gson();
 
 	@InjectMocks
 	private MemberController memberController;
@@ -80,8 +79,58 @@ public class MemberApiTest {
 	}
 
 	@Nested
-	@DisplayName("회원 ID로 회원 정보 조회 API 테스트")
+	@DisplayName("memberId로 회원 정보 조회 API 테스트")
+	class MemberLookupApiTestByMemberIdTest {
+		private final String MEMBER_SEARCH_URL = MEMBER_API_URL + "/" + MEMBER_ID;
+
+		@Test
+		@DisplayName("memberId로 등록된 회원이 없을 시, 400 상태 코드 반환")
+		void return400StatusCodeWhenNoRegisteredMember() throws Exception {
+			when(memberQueryService.findMemberById(MEMBER_ID)).thenThrow(MemberNotFoundException.class);
+			mockMvc.perform(get(MEMBER_SEARCH_URL)).andExpect(status().isBadRequest());
+		}
+
+		@Test
+		@DisplayName("memberId로 등록된 회원이 없을 시, 오류 메시지 확인")
+		void checkUnregisteredMemberErrorMessage() throws Exception {
+			when(memberQueryService.findMemberById(MEMBER_ID)).thenThrow(MemberNotFoundException.class);
+			mockMvc.perform(get(MEMBER_SEARCH_URL))
+				.andExpect(jsonPath("$.message").value(ErrorCode.MEMBER_NOT_FOUND.getMessage()));
+		}
+
+		@Test
+		@DisplayName("등록된 회원 정보 조회 성공, 200 상태 코드 반환")
+		void memberInquirySuccess200StatusCodeReturned() throws Exception {
+			when(memberQueryService.findMemberById(MEMBER_ID)).thenReturn(createMemberInfoDto());
+			mockMvc.perform(get(MEMBER_SEARCH_URL)).andExpect(status().isOk());
+		}
+
+		@Test
+		@DisplayName("등록된 회원 정보 조회 성공, 응답 값 확인")
+		void checkMemberInquirySuccessResponseValue() throws Exception {
+			// given
+			MemberInfoDto memberInfoDto = createMemberInfoDto();
+			when(memberQueryService.findMemberById(MEMBER_ID)).thenReturn(memberInfoDto);
+
+			// when
+			ResultActions result = mockMvc.perform(get(MEMBER_SEARCH_URL));
+
+			// then
+			result.andExpect(jsonPath("$.userId").value(memberInfoDto.getUserId()))
+				.andExpect(jsonPath("$.phoneNum").value(memberInfoDto.getPhoneNum()))
+				.andExpect(jsonPath("$.username").value(memberInfoDto.getUsername()));
+		}
+
+		private MemberInfoDto createMemberInfoDto() {
+			return MemberInfoDtoFactory.createMemberInfoDto();
+		}
+	}
+
+	@Nested
+	@DisplayName("로그인 ID로 회원 정보 조회 API 테스트")
 	class MemberLookupAPITestByUserIDTest {
+		private final String USER_PARAM_KEY = "?userId=";
+
 		@Test
 		@DisplayName("성공 테스트, 응답 값 확인 테스트")
 		void memberInquirySuccessTest() throws Exception {
@@ -92,8 +141,7 @@ public class MemberApiTest {
 			when(memberQueryService.findMemberByUserId(USER_ID)).thenReturn(memberInfoDto);
 
 			//then
-			mockMvc.perform(get(MEMBER_API_URL + "/" + USER_ID)
-					.contentType(MediaType.APPLICATION_JSON))
+			mockMvc.perform(get(MEMBER_API_URL + USER_PARAM_KEY + USER_ID))
 				.andExpect(jsonPath("$.userId", is(USER_ID)))
 				.andExpect(jsonPath("$.phoneNum", is(PHONE_NUM)))
 				.andExpect(jsonPath("$.username", is(USERNAME)))
@@ -110,21 +158,24 @@ public class MemberApiTest {
 			when(memberQueryService.findMemberByUserId(USER_ID)).thenReturn(memberInfoDto);
 
 			//then
-			mockMvc.perform(get(MEMBER_API_URL + "/" + USER_ID)
-					.contentType(MediaType.APPLICATION_JSON))
+			mockMvc.perform(get(MEMBER_API_URL + USER_PARAM_KEY + USER_ID))
 				.andExpect(status().isOk());
 		}
 
 		@Test
-		@DisplayName("일치하는 userId 없음, 400 상태 코드 반환")
+		@DisplayName("일치하는 로그인 ID 없음, 400 상태 코드 반환")
 		void noMatchingUserIdTestFailed() throws Exception {
-			//when
 			when(memberQueryService.findMemberByUserId(USER_ID)).thenThrow(InvalidUserIdException.class);
-
-			//then
-			mockMvc.perform(get(MEMBER_API_URL + "/" + USER_ID)
-					.contentType(MediaType.APPLICATION_JSON))
+			mockMvc.perform(get(MEMBER_API_URL + USER_PARAM_KEY + USER_ID))
 				.andExpect(status().isBadRequest());
+		}
+
+		@Test
+		@DisplayName("일치하는 로그인 ID 없음, 오류 메시지 반환")
+		void noMatchingLoginIDReturnErrorMessage() throws Exception {
+			when(memberQueryService.findMemberByUserId(USER_ID)).thenThrow(InvalidUserIdException.class);
+			mockMvc.perform(get(MEMBER_API_URL + USER_PARAM_KEY + USER_ID))
+				.andExpect(jsonPath("$.message").value(ErrorCode.INVALID_USER_ID_VALUE.getMessage()));
 		}
 	}
 
@@ -132,13 +183,14 @@ public class MemberApiTest {
 	@DisplayName("회원 정보 수정 API 테스트")
 	class MemberInformationModificationAPITest {
 		@Test
-		@DisplayName("존재하지 않는 userId 요청시, 400 상태 코드 반환")
+		@DisplayName("존재하지 않는 로그인 ID 요청시, 400 상태 코드 반환")
 		void putApiNoMatchingUserIdTestFailed() throws Exception {
 			//when
 			when(memberCommandService.updateMemberInfo(any(), any())).thenThrow(
 				InvalidUserIdException.class);
 
 			//then
+			String userIDDoesNotExist = "userIDDoesNotExist";
 			mockMvc.perform(put(MEMBER_API_URL + "/" + userIDDoesNotExist)
 					.contentType(MediaType.APPLICATION_JSON)
 					.content(gson.toJson(MemberFactory.createUpdateMemberDto())))

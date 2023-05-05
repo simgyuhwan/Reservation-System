@@ -41,6 +41,12 @@ public class MemberQueryServiceImpl implements MemberQueryService {
 	private final CircuitBreakerRegistry registry;
 
 	@Override
+	public MemberInfoDto findMemberById(Long memberId) {
+		Member member = findById(memberId);
+		return memberInfoDtoMapper.toDto(member);
+	}
+
+	@Override
 	public MemberInfoDto findMemberByUserId(String userId) {
 		Assert.hasText(userId, "user id must exist");
 		Member member = findByUserId(userId);

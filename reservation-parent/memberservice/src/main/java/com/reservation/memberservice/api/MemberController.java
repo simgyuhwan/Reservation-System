@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.reservation.memberservice.application.MemberCommandService;
@@ -35,15 +36,22 @@ public class MemberController {
 	private final MemberQueryService memberQueryService;
 	private final MemberCommandService memberCommandService;
 
-	@GetMapping("/{userId}")
-	@Timed(value = "members.search", longTask = true)
-	@Operation(summary = "[회원] 회원 조회", description = "회원 조회 API")
-	public ResponseEntity<MemberInfoDto> getMember(@PathVariable String userId) {
-		return ResponseEntity.ok(memberQueryService.findMemberByUserId(userId));
+	@GetMapping("/{memberId}")
+	@Timed(value = "members.search.id")
+	@Operation(summary = "[회원] memberId로 회원 조회")
+	public MemberInfoDto getMemberById(@PathVariable Long memberId) {
+		return memberQueryService.findMemberById(memberId);
+	}
+
+	@GetMapping
+	@Timed(value = "members.search.userId")
+	@Operation(summary = "[회원] 로그인 아이디로 회원 조회", description = "userId 회원 조회 API")
+	public MemberInfoDto getMember(@RequestParam("userId") String userId) {
+		return memberQueryService.findMemberByUserId(userId);
 	}
 
 	@PutMapping("/{userId}")
-	@Timed(value = "members.update", longTask = true)
+	@Timed(value = "members.update")
 	@Operation(summary = "[회원] 회원 수정", description = "회원 수정 API")
 	public ResponseEntity<MemberInfoDto> updateMemberInfo(@PathVariable String userId,
 		@RequestBody @Validated UpdateMemberDto updateMemberDto) {
@@ -51,6 +59,8 @@ public class MemberController {
 	}
 
 	@GetMapping("/{memberId}/performances")
+	@Timed(value = "members.search.performances")
+	@Operation(summary = "[회원] 회원이 등록한 공연 조회", description = "회원 ID로 등록한 공연 조회")
 	public MemberPerformanceDto selectPerformancesById(@PathVariable Long memberId) {
 		return memberQueryService.selectPerformancesById(memberId);
 	}

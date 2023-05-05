@@ -11,6 +11,8 @@ import com.reservation.memberservice.dto.response.MemberPerformanceDto;
  * @since 2023.03.23
  */
 public interface MemberQueryService {
+	MemberInfoDto findMemberById(Long memberId);
+
 	MemberInfoDto findMemberByUserId(String userId);
 
 	MemberPerformanceDto selectPerformancesById(Long memberId);

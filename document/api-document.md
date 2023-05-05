@@ -18,8 +18,10 @@ API의 간단한 목록과 각 상세 정보들이 기록된 문서이다.
 ### **API**
 
 - POST /member-service/api/signup: 회원가입 요청
-- GET /member-service/api/members/{userId}: 사용자 정보 조회 요청
-- PUT /member-service/api/members/{userId}: 사용자 정보 수정 요청
+- GET /member-service/api/members?userId={userId}: 로그인 ID로 사용자 정보 조회
+- PUT /member-service/api/members/{userId}: 사용자 정보 수정
+- GET /member-service/api/members/{memberId}/performances: 회원이 등록한 공연 조회
+- GET /member-service/api/members/{memberId} : memberId로 사용자 정보 조회
 
 - POST /login: 로그인 요청
 - POST /logout: 로그아웃 요청
@@ -114,11 +116,12 @@ API의 간단한 목록과 각 상세 정보들이 기록된 문서이다.
 
 ---
 
-| Index |  Feature  | Method | End Point                            | query string | Request Body                                                                                                                          |
-| ----- | :-------: | :----: | ------------------------------------ | ------------ | ------------------------------------------------------------------------------------------------------------------------------------- |
-| 1     | 회원 가입 |  POST  | /member-service/api/signup           |              | {<br>"userId": "string",<br>"username": "string",<br>"password":"string",<br>"phoneNum": "010-496-4055",<br> "address": "string"<br>} |
-| 2.    | 회원 조회 |  GET   | /member-service/api/members/{userId} |              |
-| 3.    | 회원 수정 |  PUT   | /member-service/api/members/{userId} |              | {<br>"userId": "string",<br>"phoneNum": "95-464-5765",<br>"username": "string"<br>"address": "string"<br>}                            |
+| Index |          Feature           | Method | End Point                                           | query string | Request Body                                                                                                                          |
+| ----- | :------------------------: | :----: | --------------------------------------------------- | ------------ | ------------------------------------------------------------------------------------------------------------------------------------- |
+| 1     |         회원 가입          |  POST  | /member-service/api/signup                          |              | {<br>"userId": "string",<br>"username": "string",<br>"password":"string",<br>"phoneNum": "010-496-4055",<br> "address": "string"<br>} |
+| 2.    | 로그인 ID로 회원 상세 조회 |  GET   | /member-service/api/members?userId={userId}         |              |
+| 3.    |         회원 수정          |  PUT   | /member-service/api/members/{userId}                |              | {<br>"userId": "string",<br>"phoneNum": "95-464-5765",<br>"username": "string"<br>"address": "string"<br>}                            |
+| 4.    |  회원이 등록한 공연 조회   |  GET   | /member-service/api/members/{memberId}/performances |              |
 
 ---
 
@@ -129,7 +132,7 @@ API의 간단한 목록과 각 상세 정보들이 기록된 문서이다.
 | Index | Feature                             | Method | End Point                                             | query string | Request Body                                                                                                                                                                                                                                                                                                                                                                                                                                           |
 | ----- | ----------------------------------- | ------ | ----------------------------------------------------- | ------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | 1     | 공연 등록                           | POST   | /performance-service/api/performances                 |              | {<br>"performanceId": 0,<br>"userId": "test",<br>"performanceName": "오페라의 유령",<br>"performanceStartDate": "2024-01-01",<br>"performanceEndDate": "2024-01-01",<br>"performanceType": "THEATER",<br>"audienceCount": 100,<br>"price": 10000,<br>"contactPhoneNum": "010-1234-1234",<br>"contactPersonName": "홍길동",<br>"performanceInfo": "끝까지 간다....",<br>"performancePlace": "홍대 시네마",<br>"performanceTimes": "[15:00]"<br>}        |
-| 2.    | 회원 ID를 사용하여 등록된 공연 조회 | GET    | /performance-service/api/performances                 | userId=test  |
+| 2.    | 회원 ID를 사용하여 등록된 공연 조회 | GET    | /performance-service/api/performances                 | memberId=1   |
 | 3.    | 공연 수정                           | PUT    | /performance-service/api/performances/{performanceId} |              | <br>{<br>"performanceId": 0,<br>"userId": "test",<br>"performanceName":<br>"오페라의 유령",<br>"performanceStartDate": "2024-01-01",<br>"performanceEndDate": "2024-01-01",<br>"performanceType": "THEATER",<br>"audienceCount": 100,<br>"price": 10000,<br>"contactPhoneNum": "010-1234-1234",<br>"contactPersonName": "홍길동",<br>"performanceInfo": "끝까지 간다....",<br>"performancePlace": "홍대 시네마",<br>"performanceTimes": "[15:00]"<br>} |
 | 4.    | 공연 상세 조회                      | GET    | /performance-service/api/performances/{performanceId} |              |
 
