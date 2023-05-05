@@ -53,5 +53,8 @@ dependencies {
 
     // feignClient
     implementation 'org.springframework.cloud:spring-cloud-starter-openfeign:4.0.0'
+
+    // circuit Breaker
+    implementation 'org.springframework.cloud:spring-cloud-starter-circuitbreaker-resilience4j:3.0.0'
 }
 

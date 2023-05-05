@@ -6,6 +6,7 @@ import org.springframework.util.Assert;
 
 import com.reservation.common.error.ErrorMessage;
 import com.reservation.memberservice.application.mapper.MemberInfoDtoMapper;
+import com.reservation.memberservice.client.PerformanceApiClient;
 import com.reservation.memberservice.dao.MemberRepository;
 import com.reservation.memberservice.domain.Member;
 import com.reservation.memberservice.dto.response.MemberInfoDto;
@@ -30,6 +31,7 @@ import lombok.extern.slf4j.Slf4j;
 public class MemberQueryServiceImpl implements MemberQueryService {
 	private final MemberRepository memberRepository;
 	private final MemberInfoDtoMapper memberInfoDtoMapper;
+	private final PerformanceApiClient performanceApiClient;
 
 	@Override
 	public MemberInfoDto findMemberByUserId(String userId) {
@@ -41,7 +43,8 @@ public class MemberQueryServiceImpl implements MemberQueryService {
 	@Override
 	public MemberPerformanceDto selectPerformancesById(Long memberId) {
 		Assert.notNull(memberId, "memberId must not be null");
-		findById(memberId);
+		Member member = findById(memberId);
+
 		return null;
 	}
 
