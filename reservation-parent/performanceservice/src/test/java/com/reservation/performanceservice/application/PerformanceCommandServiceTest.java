@@ -131,7 +131,7 @@ class PerformanceCommandServiceTest {
 		//given
 		Long performanceId = 1L;
 		when(performanceRepository.findById(performanceId)).thenReturn(Optional.of(createPerformance()));
-		PerformanceDto updateDto = PerformanceDtoFactory.createPerformanceDto(USER_ID, "change_name",
+		PerformanceDto updateDto = PerformanceDtoFactory.createPerformanceDto(MEMBER_ID, "change_name",
 			"2045-01-01", "2045-05-30",
 			Set.of("09:00", "10:00", "11:00"), "CONSORT", 500, 19000, "010-1111-111",
 			"CHANGE", "change_info", "change_place");
@@ -141,7 +141,7 @@ class PerformanceCommandServiceTest {
 
 		//then
 		assertThat(resultDto.getPerformanceTimes().size()).isEqualTo(updateDto.getPerformanceTimes().size());
-		assertThat(resultDto.getUserId()).isEqualTo(updateDto.getUserId());
+		assertThat(resultDto.getMemberId()).isEqualTo(updateDto.getMemberId());
 	}
 
 	private PerformanceDto createPerformanceDto() {

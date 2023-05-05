@@ -12,7 +12,7 @@ import com.reservation.performanceservice.dto.request.PerformanceDto;
  * @since 2023.04.06
  */
 public interface PerformanceQueryService {
-	List<PerformanceDto> selectPerformances(String userId);
+	List<PerformanceDto> selectPerformances(Long memberId);
 
 	PerformanceDto selectPerformanceById(Long performanceId);
 }

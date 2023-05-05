@@ -32,8 +32,8 @@ public class PerformanceQueryServiceImpl implements PerformanceQueryService {
     private final PerformanceDtoMapper performanceDtoMapper;
 
     @Override
-    public List<PerformanceDto> selectPerformances(String userId) {
-        List<Performance> performances = findByUserId(userId);
+    public List<PerformanceDto> selectPerformances(Long memberId) {
+        List<Performance> performances = findByUserId(memberId);
         return performances.stream()
             .map(performanceDtoMapper::toDto)
             .collect(toList());
@@ -45,8 +45,8 @@ public class PerformanceQueryServiceImpl implements PerformanceQueryService {
         return performanceDtoMapper.toDto(performance);
     }
 
-    private List<Performance> findByUserId(String userId) {
-        List<Performance> performances = performanceRepository.findByUserIdOrderByCreateDtDesc(userId);
+    private List<Performance> findByUserId(Long memberId) {
+        List<Performance> performances = performanceRepository.findByMemberIdOrderByCreateDtDesc(memberId);
         if(performances.isEmpty()) {
             throw new NoContentException();
         }

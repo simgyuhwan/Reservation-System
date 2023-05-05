@@ -11,8 +11,8 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2023-05-04T17:30:20+0900",
-    comments = "version: 1.5.2.Final, compiler: javac, environment: Java 17.0.5 (Oracle Corporation)"
+    date = "2023-05-05T15:50:46+0900",
+    comments = "version: 1.5.2.Final, compiler: javac, environment: Java 17.0.6 (Amazon.com Inc.)"
 )
 @Component
 public class CreatedEventMapperImpl implements CreatedEventMapper {
@@ -23,7 +23,6 @@ public class CreatedEventMapperImpl implements CreatedEventMapper {
             return null;
         }
 
-        String userId = null;
         String performanceName = null;
         PerformanceType performanceType = null;
         Integer audienceCount = null;
@@ -33,7 +32,6 @@ public class CreatedEventMapperImpl implements CreatedEventMapper {
         String performanceInfo = null;
         String performancePlace = null;
 
-        userId = arg0.getUserId();
         performanceName = arg0.getPerformanceName();
         if ( arg0.getPerformanceType() != null ) {
             performanceType = Enum.valueOf( PerformanceType.class, arg0.getPerformanceType() );
@@ -46,9 +44,10 @@ public class CreatedEventMapperImpl implements CreatedEventMapper {
         performancePlace = arg0.getPerformancePlace();
 
         Long id = null;
+        Long memberId = null;
         List<PerformanceDay> performanceDays = null;
 
-        Performance performance = new Performance( id, userId, performanceName, performanceType, audienceCount, price, contactPhoneNum, contactPersonName, performanceInfo, performancePlace, performanceDays );
+        Performance performance = new Performance( id, memberId, performanceName, performanceType, audienceCount, price, contactPhoneNum, contactPersonName, performanceInfo, performancePlace, performanceDays );
 
         return performance;
     }
@@ -100,7 +99,6 @@ public class CreatedEventMapperImpl implements CreatedEventMapper {
         performanceCreatedEvent.performanceTimes( mapTimesSetString( entity.getPerformanceDays() ) );
         performanceCreatedEvent.performanceStartDate( mapStartDateString( entity.getPerformanceDays() ) );
         performanceCreatedEvent.performanceEndDate( mapEndDateString( entity.getPerformanceDays() ) );
-        performanceCreatedEvent.userId( entity.getUserId() );
         performanceCreatedEvent.performanceName( entity.getPerformanceName() );
         performanceCreatedEvent.audienceCount( entity.getAudienceCount() );
         performanceCreatedEvent.price( entity.getPrice() );

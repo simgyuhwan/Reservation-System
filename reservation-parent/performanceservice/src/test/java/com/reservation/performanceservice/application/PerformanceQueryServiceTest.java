@@ -45,13 +45,13 @@ class PerformanceQueryServiceTest {
 	@Nested
 	@DisplayName("회원이 등록한 공연 전체 조회")
 	class ViewAllPerformancesRegisteredByMemberTest {
-		private final String USER_ID = PerformanceFactory.USER_ID;
+		private final Long MEMBER_ID = PerformanceFactory.MEMBER_ID;
 
 		@Test
 		@DisplayName("공연 전체 조회 실패: 회원이 등록한 공연 정보가 없음, 예외 발생")
 		void NoPerformanceInformationRegisteredByTheMemberException() {
-			when(performanceRepository.findByUserIdOrderByCreateDtDesc(USER_ID)).thenReturn(Collections.emptyList());
-			assertThatThrownBy(() -> performanceQueryService.selectPerformances(USER_ID))
+			when(performanceRepository.findByMemberIdOrderByCreateDtDesc(MEMBER_ID)).thenReturn(Collections.emptyList());
+			assertThatThrownBy(() -> performanceQueryService.selectPerformances(MEMBER_ID))
 				.isInstanceOf(NoContentException.class);
 		}
 
@@ -60,20 +60,19 @@ class PerformanceQueryServiceTest {
 		void successfulViewingOfAllPerformances() {
 			//given
 			List<Performance> performances = createPerformanceList();
-			when(performanceRepository.findByUserIdOrderByCreateDtDesc(USER_ID)).thenReturn(performances);
+			when(performanceRepository.findByMemberIdOrderByCreateDtDesc(MEMBER_ID)).thenReturn(performances);
 
 			//when
-			List<PerformanceDto> result = performanceQueryService.selectPerformances(USER_ID);
+			List<PerformanceDto> result = performanceQueryService.selectPerformances(MEMBER_ID);
 
 			//then
 			assertThat(result.size()).isEqualTo(performances.size());
-			assertThat(result.get(0).getUserId()).isEqualTo(USER_ID);
+			assertThat(result.get(0).getMemberId()).isEqualTo(MEMBER_ID);
 		}
 
 		private List<Performance> createPerformanceList() {
 			return PerformanceFactory.createPerformanceList();
 		}
-
 	}
 	
 	@Nested
@@ -100,7 +99,7 @@ class PerformanceQueryServiceTest {
 			PerformanceDto performanceDto = performanceQueryService.selectPerformanceById(PERFORMANCE_ID);
 
 			//then
-			assertThat(performanceDto.getUserId()).isEqualTo(performance.getUserId());
+			assertThat(performanceDto.getMemberId()).isEqualTo(performance.getMemberId());
 			assertThat(performanceDto.getPerformancePlace()).isEqualTo(performance.getPerformancePlace());
 			assertThat(performanceDto.getPerformanceName()).isEqualTo(performance.getPerformanceName());
 		}

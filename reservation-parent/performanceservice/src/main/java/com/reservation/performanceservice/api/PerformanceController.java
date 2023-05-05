@@ -44,8 +44,8 @@ public class PerformanceController {
 
 	@GetMapping
 	@Operation(summary = "[공연] 회원 ID 전체 공연 조회", description = "회원 공연 조회 API")
-	public List<PerformanceDto> performanceSelectAll(@RequestParam String userId) {
-		return performanceQueryService.selectPerformances(userId);
+	public List<PerformanceDto> performanceSelectAll(@RequestParam Long memberId) {
+		return performanceQueryService.selectPerformances(memberId);
 	}
 
 	@GetMapping("/{performanceId}")
@@ -54,4 +54,8 @@ public class PerformanceController {
 		return performanceQueryService.selectPerformanceById(performanceId);
 	}
 
+	@PostMapping("/test")
+	public String test() {
+		return "test";
+	}
 }

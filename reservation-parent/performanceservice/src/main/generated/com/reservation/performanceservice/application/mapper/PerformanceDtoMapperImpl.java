@@ -11,8 +11,8 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2023-05-04T17:30:20+0900",
-    comments = "version: 1.5.2.Final, compiler: javac, environment: Java 17.0.5 (Oracle Corporation)"
+    date = "2023-05-05T15:50:46+0900",
+    comments = "version: 1.5.2.Final, compiler: javac, environment: Java 17.0.6 (Amazon.com Inc.)"
 )
 @Component
 public class PerformanceDtoMapperImpl implements PerformanceDtoMapper {
@@ -60,7 +60,7 @@ public class PerformanceDtoMapperImpl implements PerformanceDtoMapper {
             return null;
         }
 
-        String userId = null;
+        Long memberId = null;
         String performanceName = null;
         Integer audienceCount = null;
         Integer price = null;
@@ -69,7 +69,7 @@ public class PerformanceDtoMapperImpl implements PerformanceDtoMapper {
         String performanceInfo = null;
         String performancePlace = null;
 
-        userId = dto.getUserId();
+        memberId = dto.getMemberId();
         performanceName = dto.getPerformanceName();
         audienceCount = dto.getAudienceCount();
         price = dto.getPrice();
@@ -82,7 +82,7 @@ public class PerformanceDtoMapperImpl implements PerformanceDtoMapper {
         Long id = null;
         List<PerformanceDay> performanceDays = null;
 
-        Performance performance = new Performance( id, userId, performanceName, performanceType, audienceCount, price, contactPhoneNum, contactPersonName, performanceInfo, performancePlace, performanceDays );
+        Performance performance = new Performance( id, memberId, performanceName, performanceType, audienceCount, price, contactPhoneNum, contactPersonName, performanceInfo, performancePlace, performanceDays );
 
         mapPerformanceDays( dto, performance );
 
@@ -101,7 +101,7 @@ public class PerformanceDtoMapperImpl implements PerformanceDtoMapper {
         performanceDto.performanceTimes( mapTimesSetString( entity.getPerformanceDays() ) );
         performanceDto.performanceStartDate( mapStartDateString( entity.getPerformanceDays() ) );
         performanceDto.performanceEndDate( mapEndDateString( entity.getPerformanceDays() ) );
-        performanceDto.userId( entity.getUserId() );
+        performanceDto.memberId( entity.getMemberId() );
         performanceDto.performanceName( entity.getPerformanceName() );
         performanceDto.audienceCount( entity.getAudienceCount() );
         performanceDto.price( entity.getPrice() );

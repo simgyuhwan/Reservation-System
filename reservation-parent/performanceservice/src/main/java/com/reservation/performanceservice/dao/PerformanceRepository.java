@@ -13,5 +13,5 @@ import com.reservation.performanceservice.domain.Performance;
  * @since 2023.04.03
  */
 public interface PerformanceRepository extends JpaRepository<Performance, Long> {
-	List<Performance> findByUserIdOrderByCreateDtDesc(String userId);
+	List<Performance> findByMemberIdOrderByCreateDtDesc(Long memberId);
 }

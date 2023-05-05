@@ -5,7 +5,6 @@ import java.time.LocalTime;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import com.reservation.common.util.DateTimeUtils;
 import com.reservation.performanceservice.annotation.ValidPerformanceTimes;
@@ -29,13 +28,11 @@ import lombok.ToString;
 @ToString
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class PerformanceDto {
-
 	private Long performanceId;
 
-	@Schema(description = "회원 ID", example = "test")
-	@NotBlank(message = "등록자 정보는 반드시 필요합니다.")
-	@Size(min = 2, max = 15, message = "등록자의 길이는 최소 2자리에서 15자리 이하입니다.")
-	private String userId;
+	@Schema(description = "회원 ID", example = "회원의 식별자 값")
+	@NotNull(message = "memberId는 반드시 필요합니다.")
+	private Long memberId;
 
 	@Schema(description = "공연 이름", example = "오페라의 유령")
 	@NotBlank(message = "공연 이름은 반드시 필요합니다.")
@@ -83,18 +80,18 @@ public class PerformanceDto {
 	@NotBlank(message = "공연 장소는 반드시 입력해야 합니다.")
 	private String performancePlace;
 
-	@Schema(description = "공연 시작 시간", example = "[15:00]")
+	@Schema(description = "공연 시작 시간", example = "[\"14:00\", \"17:00\", \"20:00\"]")
 	@NotEmpty(message = "공연 시간은 최소 1가지 이상 입력해야 합니다.")
 	@ValidPerformanceTimes
 	private Set<String> performanceTimes = new HashSet<>();
 
 	@Builder
-	public PerformanceDto(Long performanceId, String userId, String performanceName, String performanceStartDate,
+	public PerformanceDto(Long performanceId, Long memberId, String performanceName, String performanceStartDate,
 		String performanceEndDate, String performanceType, Integer audienceCount, Integer price,
 		String contactPhoneNum, String contactPersonName, String performanceInfo, String performancePlace,
 		Set<String> performanceTimes) {
 		this.performanceId = performanceId;
-		this.userId = userId;
+		this.memberId = memberId;
 		this.performanceName = performanceName;
 		this.performanceStartDate = performanceStartDate;
 		this.performanceEndDate = performanceEndDate;

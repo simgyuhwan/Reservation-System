@@ -5,7 +5,7 @@ import java.util.Set;
 import com.reservation.performanceservice.dto.request.PerformanceDto;
 
 public class PerformanceDtoFactory {
-	public final static String USER_ID = "test1";
+	public final static Long MEMBER_ID = 1L;
 	public final static String PERFORMANCE_NAME = "오페라의 유령";
 	public final static String PERFORMANCE_START_DATE = "2023-06-01";
 	public final static String PERFORMANCE_END_DATE = "2023-10-01";
@@ -29,7 +29,7 @@ public class PerformanceDtoFactory {
 
 	public static PerformanceDto createPerformanceDto() {
 		return PerformanceDto.builder()
-			.userId(USER_ID)
+			.memberId(MEMBER_ID)
 			.performanceName(PERFORMANCE_NAME)
 			.performanceStartDate(PERFORMANCE_START_DATE)
 			.performanceEndDate(PERFORMANCE_END_DATE)
@@ -44,13 +44,13 @@ public class PerformanceDtoFactory {
 			.build();
 	}
 
-	public static PerformanceDto createPerformanceDto(String userId, String performanceName,String performanceStartDt,
+	public static PerformanceDto createPerformanceDto(Long memberId, String performanceName,String performanceStartDt,
 		String performanceEndDt,
 		Set<String> performanceTimes, String performanceType, Integer audienceCount, Integer price,
 		String contactPhoneNum,
 		String contactPersonName, String performanceInfo, String performancePlace) {
 		return PerformanceDto.builder()
-			.userId(userId)
+			.memberId(memberId)
 			.performanceName(performanceName)
 			.performanceStartDate(performanceStartDt)
 			.performanceEndDate(performanceEndDt)
@@ -67,7 +67,7 @@ public class PerformanceDtoFactory {
 
 	public static PerformanceDto createPerformanceDto(String startDt, String endDt) {
 		return PerformanceDto.builder()
-			.userId(USER_ID)
+			.memberId(MEMBER_ID)
 			.performanceName(PERFORMANCE_NAME)
 			.performanceStartDate(startDt)
 			.performanceEndDate(endDt)

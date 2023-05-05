@@ -39,7 +39,7 @@ public class PerformanceDto {
 	private LocalDateTime timestamp;
 
 	private Long performanceId;
-	private String userId;
+	private Long memberId;
 	private String performanceName;
 	private String performanceStartDate;
 	private String performanceEndDate;
@@ -70,13 +70,13 @@ public class PerformanceDto {
 	}
 
 	@Builder
-	public PerformanceDto(LocalDateTime timestamp, Long performanceId, String userId, String performanceName, String performanceStartDate,
+	public PerformanceDto(LocalDateTime timestamp, Long performanceId, Long memberId, String performanceName, String performanceStartDate,
 		String performanceEndDate, String performanceType, Integer audienceCount, Integer price,
 		String contactPhoneNum, String contactPersonName, String performanceInfo, String performancePlace,
 		Set<String> performanceTimes) {
 		this.timestamp = timestamp;
 		this.performanceId = performanceId;
-		this.userId = userId;
+		this.memberId = memberId;
 		this.performanceName = performanceName;
 		this.performanceStartDate = performanceStartDate;
 		this.performanceEndDate = performanceEndDate;

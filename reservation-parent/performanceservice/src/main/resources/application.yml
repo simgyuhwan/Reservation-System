@@ -57,8 +57,6 @@ logging:
       hibernate:
         SQL: DEBUG
 
-
-
 # Eureka
 eureka:
   client:

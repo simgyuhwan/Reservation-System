@@ -36,6 +36,8 @@ public class QPerformance extends EntityPathBase<Performance> {
     //inherited
     public final BooleanPath isDelete = _super.isDelete;
 
+    public final NumberPath<Long> memberId = createNumber("memberId", Long.class);
+
     public final ListPath<PerformanceDay, QPerformanceDay> performanceDays = this.<PerformanceDay, QPerformanceDay>createList("performanceDays", PerformanceDay.class, QPerformanceDay.class, PathInits.DIRECT2);
 
     public final StringPath performanceInfo = createString("performanceInfo");
@@ -50,8 +52,6 @@ public class QPerformance extends EntityPathBase<Performance> {
 
     //inherited
     public final DateTimePath<java.time.LocalDateTime> updateDt = _super.updateDt;
-
-    public final StringPath userId = createString("userId");
 
     public QPerformance(String variable) {
         super(Performance.class, forVariable(variable));

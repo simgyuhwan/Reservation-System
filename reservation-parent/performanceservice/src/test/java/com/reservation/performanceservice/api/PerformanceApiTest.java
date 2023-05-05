@@ -44,7 +44,7 @@ import com.reservation.performanceservice.factory.PerformanceFactory;
 @ExtendWith(MockitoExtension.class)
 public class PerformanceApiTest {
 	private static final String PERFORMANCE_BASE_API_URL = PerformanceFactory.PERFORMANCE_BASE_API_URL;
-	private static final String USER_ID = PerformanceFactory.USER_ID;
+	private static final Long MEMBER_ID = PerformanceFactory.MEMBER_ID;
 	private static final String PERFORMANCE_NAME = PerformanceFactory.PERFORMANCE_NAME;
 	private static final String PERFORMANCE_START_DATE = PerformanceFactory.PERFORMANCE_START_DATE;
 	private static final String PERFORMANCE_END_DATE = PerformanceFactory.PERFORMANCE_END_DATE;
@@ -57,7 +57,7 @@ public class PerformanceApiTest {
 	private static final String PERFORMANCE_INFO = PerformanceFactory.PERFORMANCE_INFO;
 	private static final String PERFORMANCE_PLACE = PerformanceFactory.PERFORMANCE_PLACE;
 
-	private static final String USER_PARAM_KEY = "?userId=" ;
+	private static final String MEMBER_PARAM_KEY = "?memberId=" ;
 	private MockMvc mockMvc;
 	private Gson gson;
 
@@ -110,7 +110,7 @@ public class PerformanceApiTest {
 		@DisplayName("수용 관객, 최소 값 이상이 아니면 오류 메시지 반환")
 		void minimumAudienceException() throws Exception {
 			//given
-			PerformanceDto registerDto = createPerformanceDto(USER_ID, PERFORMANCE_NAME, PERFORMANCE_START_DATE,
+			PerformanceDto registerDto = createPerformanceDto(MEMBER_ID, PERFORMANCE_NAME, PERFORMANCE_START_DATE,
 				PERFORMANCE_END_DATE,
 				PERFORMANCE_TIMES, PERFORMANCE_TYPE, 1,
 				PRICE, CONTACT_PHONE_NUMBER, CONTACT_PERSON_NAME, PERFORMANCE_INFO, PERFORMANCE_PLACE);
@@ -127,7 +127,7 @@ public class PerformanceApiTest {
 		@DisplayName("잘못된 담당자 핸드폰 번호 입력시, 오류 메시지 반환")
 		void wrongContactNumberException() throws Exception {
 			//given
-			PerformanceDto registerDto = createPerformanceDto(USER_ID, PERFORMANCE_NAME, PERFORMANCE_START_DATE,
+			PerformanceDto registerDto = createPerformanceDto(MEMBER_ID, PERFORMANCE_NAME, PERFORMANCE_START_DATE,
 				PERFORMANCE_END_DATE,
 				PERFORMANCE_TIMES, PERFORMANCE_TYPE, AUDIENCE_COUNT,
 				PRICE, "01012345678", CONTACT_PERSON_NAME, PERFORMANCE_INFO, PERFORMANCE_PLACE);
@@ -144,7 +144,7 @@ public class PerformanceApiTest {
 		@DisplayName("공연 정보 길이 최댓값 초과시, 오류 메시지 반환 ")
 		void performanceInformationMaximumValueException() throws Exception {
 			//given
-			PerformanceDto registerDto = createPerformanceDto(USER_ID, PERFORMANCE_NAME, PERFORMANCE_START_DATE,
+			PerformanceDto registerDto = createPerformanceDto(MEMBER_ID, PERFORMANCE_NAME, PERFORMANCE_START_DATE,
 				PERFORMANCE_END_DATE,
 				PERFORMANCE_TIMES, PERFORMANCE_TYPE, AUDIENCE_COUNT,
 				PRICE, CONTACT_PHONE_NUMBER, CONTACT_PERSON_NAME, createMaximumString(), PERFORMANCE_PLACE);
@@ -173,7 +173,7 @@ public class PerformanceApiTest {
 		void incorrectPerformanceStartDateFormat() throws Exception {
 			//given
 			String wrongStartDate = "-------";
-			PerformanceDto registerDto = createPerformanceDto(USER_ID, PERFORMANCE_NAME, wrongStartDate,
+			PerformanceDto registerDto = createPerformanceDto(MEMBER_ID, PERFORMANCE_NAME, wrongStartDate,
 				PERFORMANCE_END_DATE,
 				PERFORMANCE_TIMES, PERFORMANCE_TYPE, AUDIENCE_COUNT,
 				PRICE, CONTACT_PHONE_NUMBER, CONTACT_PERSON_NAME, PERFORMANCE_INFO, PERFORMANCE_PLACE);
@@ -191,7 +191,7 @@ public class PerformanceApiTest {
 		void incorrectPerformanceEndDateFormat() throws Exception {
 			//given
 			String wrongEndDate = "-----------";
-			PerformanceDto registerDto = createPerformanceDto(USER_ID, PERFORMANCE_NAME, PERFORMANCE_START_DATE,
+			PerformanceDto registerDto = createPerformanceDto(MEMBER_ID, PERFORMANCE_NAME, PERFORMANCE_START_DATE,
 				wrongEndDate,
 				PERFORMANCE_TIMES, PERFORMANCE_TYPE, AUDIENCE_COUNT,
 				PRICE, CONTACT_PHONE_NUMBER, CONTACT_PERSON_NAME, PERFORMANCE_INFO, PERFORMANCE_PLACE);
@@ -209,7 +209,7 @@ public class PerformanceApiTest {
 		void incorrectPerformanceTimeFormat() throws Exception {
 			//given
 			String wrongPerformanceTime = "--------";
-			PerformanceDto registerDto = createPerformanceDto(USER_ID, PERFORMANCE_NAME, PERFORMANCE_START_DATE,
+			PerformanceDto registerDto = createPerformanceDto(MEMBER_ID, PERFORMANCE_NAME, PERFORMANCE_START_DATE,
 				PERFORMANCE_END_DATE,
 				Set.of(wrongPerformanceTime), PERFORMANCE_TYPE, AUDIENCE_COUNT,
 				PRICE, CONTACT_PHONE_NUMBER, CONTACT_PERSON_NAME, PERFORMANCE_INFO, PERFORMANCE_PLACE);
@@ -227,37 +227,37 @@ public class PerformanceApiTest {
 					createPerformanceDto(null, PERFORMANCE_NAME, PERFORMANCE_START_DATE, PERFORMANCE_END_DATE, PERFORMANCE_TIMES, PERFORMANCE_TYPE, AUDIENCE_COUNT,
 						PRICE, CONTACT_PHONE_NUMBER, CONTACT_PERSON_NAME, PERFORMANCE_INFO, PERFORMANCE_PLACE)),
 				Arguments.of(
-					createPerformanceDto(USER_ID, null, PERFORMANCE_START_DATE, PERFORMANCE_END_DATE, PERFORMANCE_TIMES, PERFORMANCE_TYPE, AUDIENCE_COUNT, PRICE,
+					createPerformanceDto(MEMBER_ID, null, PERFORMANCE_START_DATE, PERFORMANCE_END_DATE, PERFORMANCE_TIMES, PERFORMANCE_TYPE, AUDIENCE_COUNT, PRICE,
 						CONTACT_PHONE_NUMBER, CONTACT_PERSON_NAME, PERFORMANCE_INFO, PERFORMANCE_PLACE)),
 				Arguments.of(
-					createPerformanceDto(USER_ID, PERFORMANCE_NAME, null, PERFORMANCE_END_DATE, PERFORMANCE_TIMES, PERFORMANCE_TYPE, AUDIENCE_COUNT, PRICE,
+					createPerformanceDto(MEMBER_ID, PERFORMANCE_NAME, null, PERFORMANCE_END_DATE, PERFORMANCE_TIMES, PERFORMANCE_TYPE, AUDIENCE_COUNT, PRICE,
 						CONTACT_PHONE_NUMBER, CONTACT_PERSON_NAME, PERFORMANCE_INFO, PERFORMANCE_PLACE)),
 				Arguments.of(
-					createPerformanceDto(USER_ID, PERFORMANCE_NAME, PERFORMANCE_START_DATE, null, PERFORMANCE_TIMES, PERFORMANCE_TYPE, AUDIENCE_COUNT, PRICE,
+					createPerformanceDto(MEMBER_ID, PERFORMANCE_NAME, PERFORMANCE_START_DATE, null, PERFORMANCE_TIMES, PERFORMANCE_TYPE, AUDIENCE_COUNT, PRICE,
 						CONTACT_PHONE_NUMBER, CONTACT_PERSON_NAME, PERFORMANCE_INFO, PERFORMANCE_PLACE)),
 				Arguments.of(
-					createPerformanceDto(USER_ID, PERFORMANCE_NAME, PERFORMANCE_START_DATE, PERFORMANCE_END_DATE, null, PERFORMANCE_TYPE, AUDIENCE_COUNT,
+					createPerformanceDto(MEMBER_ID, PERFORMANCE_NAME, PERFORMANCE_START_DATE, PERFORMANCE_END_DATE, null, PERFORMANCE_TYPE, AUDIENCE_COUNT,
 						PRICE, CONTACT_PHONE_NUMBER, CONTACT_PERSON_NAME, PERFORMANCE_INFO, PERFORMANCE_PLACE)),
 				Arguments.of(
-					createPerformanceDto(USER_ID, PERFORMANCE_NAME, PERFORMANCE_START_DATE, PERFORMANCE_END_DATE, PERFORMANCE_TIMES, null, AUDIENCE_COUNT,
+					createPerformanceDto(MEMBER_ID, PERFORMANCE_NAME, PERFORMANCE_START_DATE, PERFORMANCE_END_DATE, PERFORMANCE_TIMES, null, AUDIENCE_COUNT,
 						PRICE, CONTACT_PHONE_NUMBER, CONTACT_PERSON_NAME, PERFORMANCE_INFO, PERFORMANCE_PLACE)),
 				Arguments.of(
-					createPerformanceDto(USER_ID, PERFORMANCE_NAME, PERFORMANCE_START_DATE, PERFORMANCE_END_DATE, PERFORMANCE_TIMES, PERFORMANCE_TYPE, null,
+					createPerformanceDto(MEMBER_ID, PERFORMANCE_NAME, PERFORMANCE_START_DATE, PERFORMANCE_END_DATE, PERFORMANCE_TIMES, PERFORMANCE_TYPE, null,
 						PRICE, CONTACT_PHONE_NUMBER, CONTACT_PERSON_NAME, PERFORMANCE_INFO, PERFORMANCE_PLACE)),
 				Arguments.of(
-					createPerformanceDto(USER_ID, PERFORMANCE_NAME, PERFORMANCE_START_DATE, PERFORMANCE_END_DATE, PERFORMANCE_TIMES, PERFORMANCE_TYPE, AUDIENCE_COUNT,
+					createPerformanceDto(MEMBER_ID, PERFORMANCE_NAME, PERFORMANCE_START_DATE, PERFORMANCE_END_DATE, PERFORMANCE_TIMES, PERFORMANCE_TYPE, AUDIENCE_COUNT,
 						null, CONTACT_PHONE_NUMBER, CONTACT_PERSON_NAME, PERFORMANCE_INFO, PERFORMANCE_PLACE)),
 				Arguments.of(
-					createPerformanceDto(USER_ID, PERFORMANCE_NAME, PERFORMANCE_START_DATE, PERFORMANCE_END_DATE, PERFORMANCE_TIMES, PERFORMANCE_TYPE, AUDIENCE_COUNT,
+					createPerformanceDto(MEMBER_ID, PERFORMANCE_NAME, PERFORMANCE_START_DATE, PERFORMANCE_END_DATE, PERFORMANCE_TIMES, PERFORMANCE_TYPE, AUDIENCE_COUNT,
 						PRICE, null, CONTACT_PERSON_NAME, PERFORMANCE_INFO, PERFORMANCE_PLACE)),
 				Arguments.of(
-					createPerformanceDto(USER_ID, PERFORMANCE_NAME, PERFORMANCE_START_DATE, PERFORMANCE_END_DATE, PERFORMANCE_TIMES, PERFORMANCE_TYPE, AUDIENCE_COUNT,
+					createPerformanceDto(MEMBER_ID, PERFORMANCE_NAME, PERFORMANCE_START_DATE, PERFORMANCE_END_DATE, PERFORMANCE_TIMES, PERFORMANCE_TYPE, AUDIENCE_COUNT,
 						PRICE, CONTACT_PHONE_NUMBER, null, PERFORMANCE_INFO, PERFORMANCE_PLACE)),
 				Arguments.of(
-					createPerformanceDto(USER_ID, PERFORMANCE_NAME, PERFORMANCE_START_DATE, PERFORMANCE_END_DATE, PERFORMANCE_TIMES, PERFORMANCE_TYPE, AUDIENCE_COUNT,
+					createPerformanceDto(MEMBER_ID, PERFORMANCE_NAME, PERFORMANCE_START_DATE, PERFORMANCE_END_DATE, PERFORMANCE_TIMES, PERFORMANCE_TYPE, AUDIENCE_COUNT,
 						PRICE, CONTACT_PHONE_NUMBER, CONTACT_PERSON_NAME, null, PERFORMANCE_PLACE)),
 				Arguments.of(
-					createPerformanceDto(USER_ID, PERFORMANCE_NAME, PERFORMANCE_START_DATE, PERFORMANCE_END_DATE, PERFORMANCE_TIMES, PERFORMANCE_TYPE, AUDIENCE_COUNT,
+					createPerformanceDto(MEMBER_ID, PERFORMANCE_NAME, PERFORMANCE_START_DATE, PERFORMANCE_END_DATE, PERFORMANCE_TIMES, PERFORMANCE_TYPE, AUDIENCE_COUNT,
 						PRICE, CONTACT_PHONE_NUMBER, CONTACT_PERSON_NAME, PERFORMANCE_INFO, null))
 			);
 		}
@@ -308,7 +308,7 @@ public class PerformanceApiTest {
 			mockMvc.perform(put(PERFORMANCE_BASE_API_URL + "/" + performanceId)
 					.contentType(MediaType.APPLICATION_JSON)
 					.content(gson.toJson(performanceDto)))
-				.andExpect(jsonPath("$.userId").value(performanceDto.getUserId()))
+				.andExpect(jsonPath("$.memberId").value(performanceDto.getMemberId()))
 				.andExpect(jsonPath("$.contactPhoneNum").value(performanceDto.getContactPhoneNum()))
 				.andExpect(jsonPath("$.contactPersonName").value(performanceDto.getContactPersonName()));
 		}
@@ -325,9 +325,9 @@ public class PerformanceApiTest {
 			//given
 			willThrow(NoContentException.class)
 				.given(performanceQueryService)
-				.selectPerformances(USER_ID);
+				.selectPerformances(MEMBER_ID);
 			//when,then
-			mockMvc.perform(get(PERFORMANCE_BASE_API_URL + USER_PARAM_KEY+ USER_ID))
+			mockMvc.perform(get(PERFORMANCE_BASE_API_URL + MEMBER_PARAM_KEY+ MEMBER_ID))
 				.andExpect(status().isBadRequest());
 		}
 
@@ -337,17 +337,17 @@ public class PerformanceApiTest {
 			//given
 			willThrow(NoContentException.class)
 				.given(performanceQueryService)
-				.selectPerformances(USER_ID);
+				.selectPerformances(MEMBER_ID);
 
 			//when, then
-			mockMvc.perform(get(PERFORMANCE_BASE_API_URL + USER_PARAM_KEY + USER_ID))
+			mockMvc.perform(get(PERFORMANCE_BASE_API_URL + MEMBER_PARAM_KEY + MEMBER_ID))
 				.andExpect(jsonPath("$.message").value(ErrorCode.NO_REGISTERED_PERFORMANCE_INFORMATION.getMessage()));
 		}
 
 		@Test
 		@DisplayName("공연 조회 성공, 200 반환")
 		void returnOf200CodeForPerformanceSearchSuccess() throws Exception {
-			mockMvc.perform(get(PERFORMANCE_BASE_API_URL + USER_PARAM_KEY + USER_ID))
+			mockMvc.perform(get(PERFORMANCE_BASE_API_URL + MEMBER_PARAM_KEY + MEMBER_ID))
 				.andExpect(status().isOk());
 		}
 
@@ -356,10 +356,10 @@ public class PerformanceApiTest {
 		void matchPerformanceSearchSuccessReturnData() throws Exception {
 			//given
 			List<PerformanceDto> performanceDtoList = createPerformanceDtoList();
-			when(performanceQueryService.selectPerformances(USER_ID)).thenReturn(performanceDtoList);
+			when(performanceQueryService.selectPerformances(MEMBER_ID)).thenReturn(performanceDtoList);
 
 			//when
-			MvcResult result = mockMvc.perform(get(PERFORMANCE_BASE_API_URL + USER_PARAM_KEY + USER_ID))
+			MvcResult result = mockMvc.perform(get(PERFORMANCE_BASE_API_URL + MEMBER_PARAM_KEY + MEMBER_ID))
 				.andExpect(status().isOk())
 				.andReturn();
 
@@ -402,7 +402,7 @@ public class PerformanceApiTest {
 			when(performanceQueryService.selectPerformanceById(PERFORMANCE_ID)).thenReturn(createPerformanceDto());
 			mockMvc.perform(get(PERFORMANCE_SEARCH_URL + PERFORMANCE_ID))
 				.andExpect(status().isOk())
-				.andExpect(jsonPath("$.userId").value(USER_ID))
+				.andExpect(jsonPath("$.memberId").value(MEMBER_ID))
 				.andExpect(jsonPath("$.performanceName").value(PERFORMANCE_NAME));
 		}
 	}
@@ -415,12 +415,12 @@ public class PerformanceApiTest {
 		return PerformanceDtoFactory.createPerformanceDto();
 	}
 
-	private static PerformanceDto createPerformanceDto(String userId, String performanceName, String performanceStartDt,
+	private static PerformanceDto createPerformanceDto(Long memberId, String performanceName, String performanceStartDt,
 		String performanceEndDt,
 		Set<String> performanceTimes, String performanceType, Integer audienceCount, Integer price,
 		String contactPhoneNum,
 		String contactPersonName, String performanceIntroduction, String performancePlace) {
-		return PerformanceDtoFactory.createPerformanceDto(userId,performanceName, performanceStartDt, performanceEndDt,
+		return PerformanceDtoFactory.createPerformanceDto(memberId,performanceName, performanceStartDt, performanceEndDt,
 			performanceTimes, performanceType,
 			audienceCount, price, contactPhoneNum, contactPersonName, performanceIntroduction, performancePlace);
 	}

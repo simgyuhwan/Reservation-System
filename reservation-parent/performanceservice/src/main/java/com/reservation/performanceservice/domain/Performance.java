@@ -39,7 +39,7 @@ public class Performance extends BaseEntity {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	private String userId;
+	private Long memberId;
 
 	private String performanceName;
 
@@ -61,9 +61,9 @@ public class Performance extends BaseEntity {
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "performance")
 	private List<PerformanceDay> performanceDays = new ArrayList<>();
 
-	private Performance(String userId, String performanceName,PerformanceType performanceType, Integer audienceCount, Integer price,
+	private Performance(Long memberId, String performanceName,PerformanceType performanceType, Integer audienceCount, Integer price,
 		String contactPhoneNum, String contactPersonName, String performanceInfo, String performancePlace, List<PerformanceDay> performanceDays) {
-		this.userId = userId;
+		this.memberId = memberId;
 		this.performanceName = performanceName;
 		this.performanceType = performanceType;
 		this.audienceCount = audienceCount;
@@ -75,9 +75,9 @@ public class Performance extends BaseEntity {
 		this.performanceDays = performanceDays;
 	}
 
-	public static Performance of(String userId, String performanceName, PerformanceType performanceType, Integer audienceCount, Integer price,
+	public static Performance of(Long memberId, String performanceName, PerformanceType performanceType, Integer audienceCount, Integer price,
 		String contactPhoneNum, String contactPersonName, String performanceInfo, String performancePlace, List<PerformanceDay> performanceDays) {
-		return new Performance(userId, performanceName,performanceType, audienceCount, price, contactPhoneNum, contactPersonName,
+		return new Performance(memberId, performanceName,performanceType, audienceCount, price, contactPhoneNum, contactPersonName,
 			performanceInfo, performancePlace, performanceDays);
 	}
 

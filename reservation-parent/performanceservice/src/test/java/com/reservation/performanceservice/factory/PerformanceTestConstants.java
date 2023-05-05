@@ -10,7 +10,7 @@ import java.util.Set;
  * @since 2023.04.12
  */
 public class PerformanceTestConstants {
-	public final static String USER_ID = "test1";
+	public final static Long MEMBER_ID = 1L;
 	public final static String PERFORMANCE_NAME = "오페라의 유령";
 	public final static String PERFORMANCE_START_DATE = "2023-06-01";
 	public final static String PERFORMANCE_END_DATE = "2023-10-01";

@@ -30,7 +30,7 @@ class PerformanceDtoMapperTest {
 		Performance result = mapper.toEntity(registerDto);
 
 		//then
-		assertThat(result.getUserId()).isEqualTo(registerDto.getUserId());
+		assertThat(result.getMemberId()).isEqualTo(registerDto.getMemberId());
 		assertThat(result.getAudienceCount()).isEqualTo(registerDto.getAudienceCount());
 		assertThat(result.getPerformancePlace()).isEqualTo(registerDto.getPerformancePlace());
 	}

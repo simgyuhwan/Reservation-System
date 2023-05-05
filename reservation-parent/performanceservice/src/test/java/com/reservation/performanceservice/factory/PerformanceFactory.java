@@ -18,7 +18,7 @@ import com.reservation.performanceservice.domain.PerformanceDay;
  * @since 2023.05.04
  */
 public class PerformanceFactory {
-	public final static String USER_ID = "test1";
+	public final static Long MEMBER_ID = 1L;
 	public final static String PERFORMANCE_NAME = "오페라의 유령";
 	public final static String PERFORMANCE_START_DATE = "2023-06-01";
 	public final static String PERFORMANCE_END_DATE = "2023-10-01";
@@ -42,7 +42,7 @@ public class PerformanceFactory {
 
 
 	public static Performance createPerformance() {
-		return Performance.of(USER_ID, PERFORMANCE_NAME, PerformanceType.CONCERT, AUDIENCE_COUNT, PRICE, CONTACT_PHONE_NUMBER,
+		return Performance.of(MEMBER_ID, PERFORMANCE_NAME, PerformanceType.CONCERT, AUDIENCE_COUNT, PRICE, CONTACT_PHONE_NUMBER,
 			CONTACT_PERSON_NAME, PERFORMANCE_INFO, PERFORMANCE_PLACE, createDefaultPerformanceDays());
 	}
 
