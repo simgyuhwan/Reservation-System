@@ -25,10 +25,11 @@ public class PerformanceDtoFactory {
 	public final static String CONTACT_PERSON_NAME = "홍길동";
 	public final static String PERFORMANCE_INFO = "공연 소개";
 	public final static String PERFORMANCE_PLACE = "홍대 제 1극장";
+	public final static Long MEMBER_ID = 1L;
 
 	public static PerformanceDto createPerformanceDto() {
 		return PerformanceDto.builder()
-			.userId(USER_ID)
+			.memberId(MEMBER_ID)
 			.performanceName(PERFORMANCE_NAME)
 			.performanceStartDate(PERFORMANCE_START_DATE)
 			.performanceEndDate(PERFORMANCE_END_DATE)

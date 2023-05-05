@@ -19,5 +19,5 @@ import com.reservation.common.dto.PerformanceDto;
 public interface PerformanceApiClient {
 
 	@GetMapping
-	List<PerformanceDto> getPerformanceByUserId(@RequestParam("userId") String userId);
+	List<PerformanceDto> getPerformanceByMemberId(@RequestParam("memberId") Long memberId);
 }

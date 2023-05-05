@@ -33,6 +33,7 @@ import com.reservation.factory.PerformanceDtoFactory;
 import com.reservation.memberservice.api.MemberController;
 import com.reservation.memberservice.application.MemberCommandService;
 import com.reservation.memberservice.application.MemberQueryService;
+import com.reservation.memberservice.domain.Member;
 import com.reservation.memberservice.dto.request.UpdateMemberDto;
 import com.reservation.memberservice.dto.response.MemberInfoDto;
 import com.reservation.memberservice.dto.response.MemberPerformanceDto;
@@ -56,6 +57,7 @@ public class MemberApiTest {
 	private final static String ADDRESS = MemberFactory.ADDRESS;
 	private final static String PASSWORD = MemberFactory.PASSWORD;
 	private final static Long MEMBER_ID = MemberFactory.MEMBER_ID;
+	String PERFORMANCE_NAME = PerformanceDtoFactory.PERFORMANCE_NAME;
 
 	private MockMvc mockMvc;
 	private Gson gson = new Gson();
@@ -163,6 +165,7 @@ public class MemberApiTest {
 		void memberInformationModificationSuccessTest() throws Exception {
 			//given
 			UpdateMemberDto updateMemberDto = createUpdateMemberDto();
+
 			//when
 			when(memberCommandService.updateMemberInfo(any(), any())).thenReturn(createMemberInfoDto());
 
@@ -197,9 +200,8 @@ public class MemberApiTest {
 		@DisplayName("등록된 공연 조회 성공, 필드 값 확인")
 		void registeredPerformanceSearchSuccess() throws Exception{
 			//given
-			String PERFORMANCE_NAME = PerformanceDtoFactory.PERFORMANCE_NAME;
-			String USERNAME = MemberPerformanceFactory.USER_NAME;
-			when(memberQueryService.selectPerformancesById(MEMBER_ID)).thenReturn(createMemberPerformanceDto());
+			Member member = createMember(USER_ID, USERNAME);
+			when(memberQueryService.selectPerformancesById(MEMBER_ID)).thenReturn(createMemberPerformanceDto(member));
 
 			//when
 			ResultActions result = mockMvc.perform(get(VIEW_PERFORMANCES_REGISTERED_BY_MEMBERS_URL))
@@ -227,8 +229,12 @@ public class MemberApiTest {
 				.andExpect(jsonPath("$.message").value(ErrorCode.MEMBER_NOT_FOUND.getMessage()));
 		}
 
-		private MemberPerformanceDto createMemberPerformanceDto() {
-			return MemberPerformanceFactory.createMemberPerformanceDto();
+		private MemberPerformanceDto createMemberPerformanceDto(Member member) {
+			return MemberPerformanceFactory.createMemberPerformanceDto(member);
+		}
+
+		private Member createMember(String userId, String username) {
+			return MemberFactory.createMember(userId, username);
 		}
 	}
 

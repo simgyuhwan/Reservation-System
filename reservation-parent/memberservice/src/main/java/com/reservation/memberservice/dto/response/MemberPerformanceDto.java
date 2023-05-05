@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.reservation.common.dto.PerformanceDto;
+import com.reservation.memberservice.domain.Member;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -31,10 +32,10 @@ public class MemberPerformanceDto {
         this.performances = performances;
     }
 
-    public static MemberPerformanceDto of(String userId, String userName, List<PerformanceDto> performances) {
+    public static MemberPerformanceDto of(Member member, List<PerformanceDto> performances) {
         return MemberPerformanceDto.builder()
-            .userId(userId)
-            .userName(userName)
+            .userId(member.getUserId())
+            .userName(member.getUsername())
             .performances(performances)
             .build();
     }

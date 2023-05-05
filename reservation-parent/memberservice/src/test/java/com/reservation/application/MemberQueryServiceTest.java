@@ -3,6 +3,7 @@ package com.reservation.application;
 import static org.assertj.core.api.Assertions.*;
 import static org.mockito.BDDMockito.*;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
 
@@ -18,12 +19,16 @@ import org.mockito.Mock;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import com.reservation.common.dto.PerformanceDto;
 import com.reservation.factory.MemberFactory;
+import com.reservation.factory.PerformanceDtoFactory;
 import com.reservation.memberservice.application.MemberQueryServiceImpl;
 import com.reservation.memberservice.application.mapper.MemberInfoDtoMapper;
+import com.reservation.memberservice.client.PerformanceApiClient;
 import com.reservation.memberservice.dao.MemberRepository;
 import com.reservation.memberservice.domain.Member;
 import com.reservation.memberservice.dto.response.MemberInfoDto;
+import com.reservation.memberservice.dto.response.MemberPerformanceDto;
 import com.reservation.memberservice.error.InvalidUserIdException;
 import com.reservation.memberservice.error.MemberNotFoundException;
 
@@ -47,6 +52,9 @@ public class MemberQueryServiceTest {
 
 	@Mock
 	private MemberRepository memberRepository;
+
+	@Mock
+	private PerformanceApiClient performanceApiClient;
 
 	@Spy
 	MemberInfoDtoMapper memberInfoDtoMapper = MemberInfoDtoMapper.INSTANCE;
@@ -99,6 +107,23 @@ public class MemberQueryServiceTest {
 	class PerformanceSearchByMemberIdTest {
 
 		@Test
+		@DisplayName("회원 ID로 공연 조회 성공")
+		void SuccessPerformanceSearchByMemberId() {
+			// given
+			Member member = createMember(USER_ID, USERNAME);
+			when(performanceApiClient.getPerformanceByMemberId(MEMBER_ID)).thenReturn(createPerformanceDtoList());
+			when(memberRepository.findById(MEMBER_ID)).thenReturn(Optional.of(member));
+
+			// when
+			MemberPerformanceDto memberPerformanceDto = memberQueryService.selectPerformancesById(MEMBER_ID);
+
+			// then
+			assertThat(memberPerformanceDto.getPerformances()).isNotEmpty();
+			assertThat(memberPerformanceDto.getUserId()).isEqualTo(USER_ID);
+			assertThat(memberPerformanceDto.getUserName()).isEqualTo(USERNAME);
+		}
+
+		@Test
 		@DisplayName("유효하지 않은 ID 조회로 예외 발생")
 		void invalidIDLookupExceptionOccurred() {
 			when(memberRepository.findById(MEMBER_ID)).thenReturn(Optional.empty());
@@ -113,6 +138,13 @@ public class MemberQueryServiceTest {
 				.isInstanceOf(IllegalArgumentException.class);
 		}
 
+		private List<PerformanceDto> createPerformanceDtoList() {
+			return PerformanceDtoFactory.createPerformanceDtoList();
+		}
+
+		private Member createMember(String userId, String username) {
+			return MemberFactory.createMember(userId, username);
+		}
 	}
 
 }

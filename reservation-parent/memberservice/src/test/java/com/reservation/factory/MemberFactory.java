@@ -1,7 +1,6 @@
 package com.reservation.factory;
 
 import com.reservation.memberservice.domain.Member;
-import com.reservation.memberservice.dto.request.SignUpDto;
 import com.reservation.memberservice.dto.request.UpdateMemberDto;
 import com.reservation.memberservice.dto.response.MemberInfoDto;
 
@@ -19,6 +18,10 @@ public class MemberFactory {
 	public final static String USERNAME = "이순신";
 	public final static String ADDRESS = "서울시 마포구 창천동";
 	public final static String PASSWORD = "password";
+
+	public static Member createMember(String userId, String username) {
+		return Member.of(userId, username, PASSWORD, PHONE_NUM, ADDRESS);
+	}
 
 	public static Member createMember() {
 		return Member.of(USER_ID, USERNAME, PASSWORD, PHONE_NUM, ADDRESS);

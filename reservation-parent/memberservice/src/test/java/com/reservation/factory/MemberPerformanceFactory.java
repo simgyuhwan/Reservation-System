@@ -3,6 +3,7 @@ package com.reservation.factory;
 import java.util.List;
 
 import com.reservation.common.dto.PerformanceDto;
+import com.reservation.memberservice.domain.Member;
 import com.reservation.memberservice.dto.response.MemberPerformanceDto;
 
 /**
@@ -16,8 +17,8 @@ public class MemberPerformanceFactory {
     public static final String USER_ID = "test";
     public static final String USER_NAME = "홍길동";
 
-   public static MemberPerformanceDto createMemberPerformanceDto() {
-        return MemberPerformanceDto.of(USER_ID, USER_NAME, createPerformanceDtoList());
+   public static MemberPerformanceDto createMemberPerformanceDto(Member member) {
+        return MemberPerformanceDto.of(member, createPerformanceDtoList());
    }
 
    private static List<PerformanceDto> createPerformanceDtoList() {
