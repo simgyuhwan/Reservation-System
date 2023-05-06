@@ -15,10 +15,10 @@ import jakarta.persistence.Converter;
  * @since 2023.04.03
  */
 @Converter
-public class PerformanceTypeConverter implements AttributeConverter<PerformanceType, String> {
+public class PerformanceTypeConverter implements AttributeConverter<PerformanceTypes, String> {
 
 	@Override
-	public String convertToDatabaseColumn(PerformanceType attribute) {
+	public String convertToDatabaseColumn(PerformanceTypes attribute) {
 		if(Objects.isNull(attribute)) {
 			return null;
 		}
@@ -26,10 +26,10 @@ public class PerformanceTypeConverter implements AttributeConverter<PerformanceT
 	}
 
 	@Override
-	public PerformanceType convertToEntityAttribute(String type) {
+	public PerformanceTypes convertToEntityAttribute(String type) {
 		if(!StringUtils.hasText(type)) {
 			return null;
 		}
-		return PerformanceType.findByType(type);
+		return PerformanceTypes.findByType(type);
 	}
 }

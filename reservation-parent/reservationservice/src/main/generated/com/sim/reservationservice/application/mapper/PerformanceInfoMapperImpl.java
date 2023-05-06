@@ -1,6 +1,6 @@
 package com.sim.reservationservice.application.mapper;
 
-import com.reservation.common.type.PerformanceType;
+import com.reservation.common.type.PerformanceTypes;
 import com.sim.reservationservice.domain.PerformanceInfo;
 import com.sim.reservationservice.domain.PerformanceSchedule;
 import com.sim.reservationservice.dto.request.PerformanceDto;
@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2023-05-05T16:43:36+0900",
+    date = "2023-05-06T22:28:36+0900",
     comments = "version: 1.5.2.Final, compiler: javac, environment: Java 17.0.6 (Amazon.com Inc.)"
 )
 @Component
@@ -93,7 +93,7 @@ public class PerformanceInfoMapperImpl implements PerformanceInfoMapper {
         performanceId = dto.getPerformanceId();
 
         boolean isAvailable = true;
-        PerformanceType type = com.reservation.common.type.PerformanceType.findByType(dto.getPerformanceType());
+        PerformanceTypes type = com.reservation.common.type.PerformanceTypes.findByType(dto.getPerformanceType());
         List<PerformanceSchedule> performanceSchedules = null;
 
         PerformanceInfo performanceInfo = new PerformanceInfo( name, info, place, isAvailable, price, contactPhoneNum, contactPersonName, performanceId, type, performanceSchedules );

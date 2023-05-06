@@ -42,12 +42,12 @@ spring:
         binder:
           brokers: localhost:9092
         bindings:
-          basicProducer-out-0:
+          performanceCreated-out-0:
             producer:
               retries: 3 # 재시도 횟수
       bindings:
-        basicProducer-out-0:
-          destination: performance-info
+        performanceCreated-out-0:
+          destination: performance-service.performance.created
           content-type: application/json
 
 # Logging

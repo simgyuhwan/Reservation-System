@@ -2,12 +2,8 @@ package com.sim.reservationservice.dto.response;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
-import com.querydsl.core.annotations.QueryProjection;
-import com.reservation.common.type.PerformanceType;
 import com.sim.reservationservice.domain.PerformanceInfo;
-import com.sim.reservationservice.domain.PerformanceSchedule;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AccessLevel;

@@ -53,10 +53,18 @@ spring:
       kafka:
         binder:
           brokers: localhost:9092
-#      function:
-#
+      function:
+        definition: performanceCreatedEventConsumer
 #      #bindings
-#      bindings:
+      bindings:
+        performanceCreatedEventConsumer-in-0:
+          destination: performance-service.performance.created
+          consumer:
+            maxAttempts: 3
+            backOffInitialInterval: 100
+        performanceCreatedEvent-out-0:
+          destination: event-service.performance.created
+          content-type: application/json
 
 #loging
 logging:

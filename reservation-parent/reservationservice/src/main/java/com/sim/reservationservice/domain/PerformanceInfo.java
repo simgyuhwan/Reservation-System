@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import com.reservation.common.model.BaseEntity;
-import com.reservation.common.type.PerformanceType;
+import com.reservation.common.type.PerformanceTypes;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -46,7 +46,7 @@ public class PerformanceInfo extends BaseEntity {
 	private Long performanceId;
 
 	@Enumerated(EnumType.STRING)
-	private PerformanceType type;
+	private PerformanceTypes type;
 
 	@OneToMany(orphanRemoval = true, mappedBy = "performanceInfo", cascade = CascadeType.ALL)
 	private List<PerformanceSchedule> performanceSchedules;
@@ -64,21 +64,21 @@ public class PerformanceInfo extends BaseEntity {
 	public static PerformanceInfo of(Long id, String name, String info, String place, boolean isAvailable,
 		Integer price,
 		String contactPhoneNum, String contactPersonName, Long performanceId,
-		PerformanceType type, List<PerformanceSchedule> performanceSchedules) {
+		PerformanceTypes type, List<PerformanceSchedule> performanceSchedules) {
 		return new PerformanceInfo(id, name, info, place, isAvailable, price, contactPhoneNum, contactPersonName,
 			performanceId, type, performanceSchedules);
 	}
 
 	public static PerformanceInfo of(String name, String info, String place, boolean isAvailable, Integer price,
 		String contactPhoneNum, String contactPersonName, Long performanceId,
-		PerformanceType type, List<PerformanceSchedule> performanceSchedules) {
+		PerformanceTypes type, List<PerformanceSchedule> performanceSchedules) {
 		return new PerformanceInfo(null, name, info, place, isAvailable, price, contactPhoneNum, contactPersonName,
 			performanceId, type, performanceSchedules);
 	}
 
 	private PerformanceInfo(Long id, String name, String info, String place, boolean isAvailable, Integer price,
 		String contactPhoneNum, String contactPersonName, Long performanceId,
-		PerformanceType type, List<PerformanceSchedule> performanceSchedules) {
+		PerformanceTypes type, List<PerformanceSchedule> performanceSchedules) {
 		this.id = id;
 		this.name = name;
 		this.info = info;
@@ -94,7 +94,7 @@ public class PerformanceInfo extends BaseEntity {
 
 	public PerformanceInfo(String name, String info, String place, boolean isAvailable, Integer price,
 		String contactPhoneNum, String contactPersonName, Long performanceId,
-		PerformanceType type, List<PerformanceSchedule> performanceSchedules) {
+		PerformanceTypes type, List<PerformanceSchedule> performanceSchedules) {
 		this.name = name;
 		this.info = info;
 		this.place = place;

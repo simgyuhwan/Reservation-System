@@ -18,7 +18,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.context.ApplicationEventPublisher;
 
 import com.reservation.common.error.ErrorCode;
-import com.reservation.performanceservice.application.mapper.CreatedEventMapper;
 import com.reservation.performanceservice.application.mapper.PerformanceDtoMapper;
 import com.reservation.performanceservice.dao.PerformanceRepository;
 import com.reservation.performanceservice.domain.Performance;
@@ -46,8 +45,6 @@ class PerformanceCommandServiceTest {
 	@Spy
 	private PerformanceDtoMapper performanceDtoMapper = PerformanceDtoMapper.INSTANCE;
 
-	@Spy
-	private CreatedEventMapper createdEventMapper = CreatedEventMapper.INSTANCE;
 
 	@InjectMocks
 	private PerformanceCommandServiceImpl performanceQueryService;

@@ -73,7 +73,7 @@ management:
     web:
       exposure:
         include: health, info, metrics, bus, refresh, info, prometheus, httptrace
-  # micrometer Tracing
+  # micrometer tracing
   tracing:
     sampling:
       probability: 1.0
@@ -99,7 +99,6 @@ resilience4j:
       default:
         timeoutDuration: 6s # slowCallDurationThreshold보다는 크게 설정되어야 함
         cancelRunningFuture: true
-
 
 ---
 spring:

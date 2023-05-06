@@ -54,11 +54,11 @@ spring:
         binder:
           brokers: localhost:9092
       function:
-        definition: performanceConsumer
+        definition: performanceCreatedConsumer
       #bindings
       bindings:
-        performanceConsumer-in-0:
-          destination: performance-info
+        performanceCreatedConsumer-in-0:
+          destination: event-service.performance.created
           consumer:
             maxAttempts: 3
             backOffInitialInterval: 100
