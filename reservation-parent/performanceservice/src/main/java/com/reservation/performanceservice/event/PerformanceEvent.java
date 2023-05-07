@@ -22,4 +22,5 @@ public class PerformanceEvent<T extends EventPayload> extends Event {
 	public static <T extends EventPayload> PerformanceEvent from(EventType eventType, T payload) {
 		return new PerformanceEvent(eventType, payload);
 	}
+
 }

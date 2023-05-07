@@ -2,7 +2,6 @@ package com.reservation.eventservice.event.consumer;
 
 import java.util.function.Function;
 
-import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -19,11 +18,10 @@ import lombok.extern.slf4j.Slf4j;
 @Configuration
 @RequiredArgsConstructor
 public class PerformanceConsumer {
-	private final ApplicationEventPublisher publisher;
-
 	@Bean
 	Function<PerformanceCreatedEvent, PerformanceCreatedEvent> performanceCreatedEventConsumer() {
 		return event -> {
+			log.info("Event ID : {}, publish a performance creation event", event.getId());
 			return event;
 		};
 	}

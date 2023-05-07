@@ -57,7 +57,7 @@ spring:
         definition: performanceCreatedEventConsumer;performanceCreatedEvent;performanceCreatedEventResult
 #      #bindings
       bindings:
-        # Performance Created Event
+        # Consuming performance created events from the performance service
         performanceCreatedEventConsumer-in-0:
           destination: performance-service.performance.created
           consumer:
@@ -65,10 +65,13 @@ spring:
             backOffInitialInterval: 100
         performanceCreatedEventConsumer-out-0:
           destination: event-service.performance.created
+
+        # Publish a performance creation event from the event service
         performanceCreatedEvent-out-0:
           destination: event-service.performance.created
           content-type: application/json
 
+        # Performance Created Result
         performanceCreatedEventResult-in-0:
           destination: reservation-service.performance.created.result
         performanceCreatedEventResult-out-0:

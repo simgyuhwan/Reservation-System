@@ -6,14 +6,10 @@ import org.springframework.cloud.stream.function.StreamBridge;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import com.reservation.common.client.PerformanceApiClient;
-import com.reservation.common.dto.PerformanceDto;
 import com.reservation.common.error.ErrorMessage;
 import com.reservation.common.event.EventResult;
 import com.reservation.common.event.PerformanceCreatedEvent;
 import com.sim.reservationservice.application.PerformanceSyncService;
-import com.sim.reservationservice.application.mapper.PerformanceInfoMapper;
-import com.sim.reservationservice.dao.PerformanceInfoRepository;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

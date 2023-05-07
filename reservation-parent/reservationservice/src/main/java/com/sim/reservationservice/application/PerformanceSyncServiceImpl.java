@@ -1,7 +1,5 @@
 package com.sim.reservationservice.application;
 
-import java.util.Collections;
-
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

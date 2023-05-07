@@ -45,10 +45,20 @@ spring:
           performanceCreated-out-0:
             producer:
               retries: 3 # 재시도 횟수
+      function:
+        definition: performanceCreatedResult
       bindings:
+        # Publish performance creation event
         performanceCreated-out-0:
           destination: performance-service.performance.created
           content-type: application/json
+
+        # performance creation event results
+        performanceCreatedResult-in-0:
+          destination: event-service.performance.created.result
+          consumer:
+            maxAttempts: 3
+            backOffInitialInterval: 100
 
 # Logging
 logging:
