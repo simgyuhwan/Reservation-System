@@ -74,7 +74,7 @@ clean.doLast {
 // module
 project(":common") {
     dependencies {
-        implementation(project(":config"))
+//        implementation(project(":config"))
     }
     bootJar { enabled = false }
     jar { enabled = true }
@@ -83,6 +83,7 @@ project(":common") {
 project(":config") {
     dependencies {
         // open-api
+        implementation(project(":common"))
         implementation group: 'org.springdoc', name: 'springdoc-openapi-starter-webmvc-ui', version: '2.0.0'
     }
     bootJar { enabled = false }
@@ -91,7 +92,8 @@ project(":config") {
 
 project(":memberservice") {
     dependencies {
-        implementation(project(':common'))
+        implementation(project(':config'))
+        implementation(project(":common"))
         runtimeOnly 'com.mysql:mysql-connector-j'
     }
 
@@ -102,7 +104,8 @@ project(":memberservice") {
 
 project(':performanceservice') {
     dependencies {
-        implementation(project(':common'))
+        implementation(project(':config'))
+        implementation(project(":common"))
         runtimeOnly 'com.mysql:mysql-connector-j'
     }
 
@@ -125,7 +128,8 @@ project(':gatewayserver') {
 
 project(':reservationservice') {
     dependencies {
-        implementation(project(':common'))
+        implementation(project(':config'))
+        implementation(project(":common"))
         runtimeOnly 'com.mysql:mysql-connector-j'
     }
 
@@ -136,7 +140,8 @@ project(':reservationservice') {
 
 project(':notificationservice') {
     dependencies {
-        implementation(project(':common'))
+        implementation(project(':config'))
+        implementation(project(":common"))
         runtimeOnly 'com.mysql:mysql-connector-j'
     }
 
@@ -147,7 +152,8 @@ project(':notificationservice') {
 
 project(':eventservice') {
     dependencies {
-        implementation(project(':common'))
+        implementation(project(':config'))
+        implementation(project(":common"))
         runtimeOnly 'com.mysql:mysql-connector-j'
     }
 
