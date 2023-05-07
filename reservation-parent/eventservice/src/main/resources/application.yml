@@ -54,16 +54,25 @@ spring:
         binder:
           brokers: localhost:9092
       function:
-        definition: performanceCreatedEventConsumer
+        definition: performanceCreatedEventConsumer;performanceCreatedEvent;performanceCreatedEventResult
 #      #bindings
       bindings:
+        # Performance Created Event
         performanceCreatedEventConsumer-in-0:
           destination: performance-service.performance.created
           consumer:
             maxAttempts: 3
             backOffInitialInterval: 100
+        performanceCreatedEventConsumer-out-0:
+          destination: event-service.performance.created
         performanceCreatedEvent-out-0:
           destination: event-service.performance.created
+          content-type: application/json
+
+        performanceCreatedEventResult-in-0:
+          destination: reservation-service.performance.created.result
+        performanceCreatedEventResult-out-0:
+          destination: event-service.performance.created.result
           content-type: application/json
 
 #loging

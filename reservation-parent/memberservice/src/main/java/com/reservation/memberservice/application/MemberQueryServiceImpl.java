@@ -10,7 +10,7 @@ import org.springframework.util.Assert;
 import com.reservation.common.dto.PerformanceDto;
 import com.reservation.common.error.ErrorMessage;
 import com.reservation.memberservice.application.mapper.MemberInfoDtoMapper;
-import com.reservation.memberservice.client.PerformanceApiClient;
+import com.reservation.common.client.PerformanceApiClient;
 import com.reservation.memberservice.dao.MemberRepository;
 import com.reservation.memberservice.domain.Member;
 import com.reservation.memberservice.dto.response.MemberInfoDto;
@@ -38,7 +38,6 @@ public class MemberQueryServiceImpl implements MemberQueryService {
 	private final MemberRepository memberRepository;
 	private final MemberInfoDtoMapper memberInfoDtoMapper;
 	private final PerformanceApiClient performanceApiClient;
-	private final CircuitBreakerRegistry registry;
 
 	@Override
 	public MemberInfoDto findMemberById(Long memberId) {

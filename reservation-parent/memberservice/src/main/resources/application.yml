@@ -55,7 +55,6 @@ logging:
       springframework:
         web: DEBUG
 
-
   # Display TraceId and SpanId
   pattern:
     level: "%5p [${spring.application.name:},trace-id : %X{traceId:-}, span-id : %X{spanId:-}]"

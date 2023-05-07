@@ -14,7 +14,8 @@ public enum ErrorMessage {
 	SOLD_OUT_PERFORMANCE("매진된 공연입니다. performanceScheduleId : "),
 	PERFORMANCE_NOT_FOUND("Performance 조회 실패, performanceId : "),
 	MEMBER_NOT_FOUND("Member 조회 실패, memberId : "),
-	INVALID_USER_ID("잘못된 회원 ID, userId : ");
+	INVALID_USER_ID("잘못된 회원 ID, userId : "),
+	FAILED_TO_SEARCH_PERFORMANCE_IN_RESERVATION_SERVICE("");
 
 	private final String message;
 

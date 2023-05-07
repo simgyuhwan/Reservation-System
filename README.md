@@ -45,6 +45,7 @@ Kafka 3.3.2
 Redis 3.0.5
 Micrometer Tracing
 Prometheus 2.37.7
+Resilience4j 3.0.0
 Zipkin 2.24
 Grafana 9.5.1
 Docker

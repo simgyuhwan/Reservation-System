@@ -13,14 +13,13 @@ public class PerformanceEvent<T extends EventPayload> extends Event {
 	private final T payload;
 	private final String type;
 
-	private PerformanceEvent(EventType type, EventPayload payload) {
+	private PerformanceEvent(EventType type, T payload) {
 		super(SourceType.PERFORMANCE, EventStatusTypes.PENDING);
 		this.type = type.name();
-		this.payload = (T) payload;
+		this.payload = payload;
 	}
 
-	public static <T extends EventPayload>  PerformanceEvent<T> from(EventType eventType, EventPayload payload) {
+	public static <T extends EventPayload> PerformanceEvent from(EventType eventType, T payload) {
 		return new PerformanceEvent(eventType, payload);
 	}
-
 }

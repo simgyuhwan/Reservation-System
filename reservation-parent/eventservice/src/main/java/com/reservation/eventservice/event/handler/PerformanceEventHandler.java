@@ -3,7 +3,7 @@ package com.reservation.eventservice.event.handler;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
-import com.reservation.eventservice.event.PerformanceCreatedEvent;
+import com.reservation.common.event.PerformanceCreatedEvent;
 import com.reservation.eventservice.event.producer.PerformanceEventProducer;
 
 import lombok.RequiredArgsConstructor;
@@ -17,7 +17,7 @@ public class PerformanceEventHandler {
 
 	@EventListener
 	public void handleCreatedEvent(PerformanceCreatedEvent createdEvent) {
-		log.info("send notification..and....");
+		log.info("Publish of performance registration events");
 		performanceEventProducer.publishCreatedEvent(createdEvent);
 	}
 }

@@ -1,9 +1,10 @@
-package com.reservation.memberservice.client;
+package com.reservation.common.client;
 
 import java.util.List;
 
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.reservation.common.dto.PerformanceDto;
@@ -20,4 +21,7 @@ public interface PerformanceApiClient {
 
 	@GetMapping
 	List<PerformanceDto> getPerformanceByMemberId(@RequestParam("memberId") Long memberId);
+
+	@GetMapping("/{performanceId}")
+	PerformanceDto getPerformanceById(@PathVariable("performanceId") Long performanceId);
 }

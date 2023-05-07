@@ -5,8 +5,8 @@ import static org.assertj.core.api.Assertions.*;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import com.reservation.common.dto.PerformanceDto;
 import com.sim.reservationservice.domain.PerformanceInfo;
-import com.sim.reservationservice.dto.request.PerformanceDto;
 import com.sim.reservationservice.factory.ReservationQueryDataFactory;
 
 /**

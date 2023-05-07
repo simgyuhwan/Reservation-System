@@ -1,4 +1,6 @@
-package com.reservation.eventservice.event.payload;
+package com.reservation.common.event.payload;
+
+import org.springframework.util.Assert;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -14,5 +16,10 @@ public class PerformanceCreatedPayload {
 	public PerformanceCreatedPayload(Long performanceId, Long memberId) {
 		this.performanceId = performanceId;
 		this.memberId = memberId;
+	}
+
+	public Long getPerformanceId() {
+		Assert.notNull(performanceId, "performanceId is must be not null");
+		return performanceId;
 	}
 }

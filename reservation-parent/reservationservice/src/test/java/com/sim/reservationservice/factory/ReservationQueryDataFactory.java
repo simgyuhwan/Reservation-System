@@ -9,10 +9,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 
+import com.reservation.common.dto.PerformanceDto;
 import com.reservation.common.type.PerformanceTypes;
 import com.sim.reservationservice.domain.PerformanceInfo;
 import com.sim.reservationservice.domain.PerformanceSchedule;
-import com.sim.reservationservice.dto.request.PerformanceDto;
 import com.sim.reservationservice.dto.response.PerformanceInfoDto;
 
 /**

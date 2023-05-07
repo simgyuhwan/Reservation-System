@@ -1,7 +1,11 @@
 package com.reservation.common.dto;
 
+import java.time.LocalTime;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
+
+import com.reservation.common.util.DateTimeUtils;
 
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -47,4 +51,9 @@ public class PerformanceDto {
 		this.performanceTimes = performanceTimes;
 	}
 
+	public List<LocalTime> getPerformanceLocalTimes() {
+		return performanceTimes.stream()
+			.map(DateTimeUtils::stringToLocalTime)
+			.toList();
+	}
 }

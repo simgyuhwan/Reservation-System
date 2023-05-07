@@ -53,6 +53,8 @@ spring:
       kafka:
         binder:
           brokers: localhost:9092
+        bidings:
+
       function:
         definition: performanceCreatedConsumer
       #bindings
@@ -62,6 +64,8 @@ spring:
           consumer:
             maxAttempts: 3
             backOffInitialInterval: 100
+        performanceCreatedResult-out-0:
+          destination: reservation-service.performance.created.result
 
 #loging
 logging:

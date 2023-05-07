@@ -3,7 +3,7 @@ package com.reservation.eventservice.event.producer;
 import org.springframework.cloud.stream.function.StreamBridge;
 import org.springframework.stereotype.Service;
 
-import com.reservation.eventservice.event.PerformanceCreatedEvent;
+import com.reservation.common.event.PerformanceCreatedEvent;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

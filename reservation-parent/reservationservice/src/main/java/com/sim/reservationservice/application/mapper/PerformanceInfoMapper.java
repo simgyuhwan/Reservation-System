@@ -1,5 +1,7 @@
 package com.sim.reservationservice.application.mapper;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 
 import org.mapstruct.AfterMapping;
@@ -9,10 +11,11 @@ import org.mapstruct.MappingTarget;
 import org.mapstruct.ReportingPolicy;
 import org.mapstruct.factory.Mappers;
 
+import com.reservation.common.dto.PerformanceDto;
 import com.reservation.common.mapper.GenericMapper;
+import com.reservation.common.util.DateTimeUtils;
 import com.sim.reservationservice.domain.PerformanceInfo;
 import com.sim.reservationservice.domain.PerformanceSchedule;
-import com.sim.reservationservice.dto.request.PerformanceDto;
 
 /**
  * PerformanceInfoMapper.java
@@ -34,8 +37,30 @@ public interface PerformanceInfoMapper extends GenericMapper<PerformanceDto, Per
 
 	@AfterMapping
 	default void afterMapping(PerformanceDto dto, @MappingTarget PerformanceInfo performanceInfo) {
-		List<PerformanceSchedule> performanceSchedules = dto.toPerformanceSchedules(performanceInfo);
+		List<PerformanceSchedule> performanceSchedules = createPerformanceSchedules(dto, performanceInfo);
 		performanceInfo.setPerformanceSchedules(performanceSchedules);
 	}
 
+	private List<PerformanceSchedule> createPerformanceSchedules(PerformanceDto dto, PerformanceInfo performanceInfo) {
+		LocalDate startDate = stringToLocalDate(dto.getPerformanceStartDate());
+		LocalDate endDate = stringToLocalDate(dto.getPerformanceEndDate());
+
+		List<LocalTime> performanceLocalTimes = dto.getPerformanceLocalTimes();
+
+		return performanceLocalTimes.stream()
+			.map(time -> PerformanceSchedule.builder()
+				.startDate(startDate)
+				.endDate(endDate)
+				.performanceInfo(performanceInfo)
+				.startTime(time)
+				.availableSeats(dto.getAudienceCount())
+				.remainingSeats(dto.getAudienceCount())
+				.isAvailable(performanceInfo.isAvailable())
+				.build())
+			.toList();
+	}
+
+	private LocalDate stringToLocalDate(String date) {
+		return DateTimeUtils.stringToLocalDate(date);
+	}
 }

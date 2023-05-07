@@ -1,12 +1,14 @@
-package com.reservation.eventservice.event;
+package com.reservation.common.event;
 
 import java.time.LocalDateTime;
+
+import org.springframework.util.Assert;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
-import com.reservation.eventservice.event.payload.PerformanceCreatedPayload;
+import com.reservation.common.event.payload.PerformanceCreatedPayload;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -33,5 +35,10 @@ public class PerformanceCreatedEvent {
 		this.payload = payload;
 		this.type = type;
 		this.status = status;
+	}
+
+	public Long getPerformanceId() {
+		Assert.notNull(payload, "payload is must be not null");
+		return payload.getPerformanceId();
 	}
 }
