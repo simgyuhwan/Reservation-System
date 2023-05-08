@@ -10,7 +10,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 
 import com.reservation.common.dto.PerformanceDto;
-import com.reservation.common.type.PerformanceTypes;
+import com.reservation.common.types.PerformanceType;
 import com.sim.reservationservice.domain.PerformanceInfo;
 import com.sim.reservationservice.domain.PerformanceSchedule;
 import com.sim.reservationservice.dto.response.PerformanceInfoDto;
@@ -75,33 +75,33 @@ public class ReservationQueryDataFactory {
 
 	public static PerformanceInfo createSoldOutPerformanceInfo() {
 		PerformanceInfo performanceInfo = PerformanceInfo.of(1L, NAME, INFO, PLACE, IS_AVAILABLE, PRICE,
-			CONTACT_PHONE_NUM, CONTACT_PERSON_NAME, 1L, PerformanceTypes.findByType(TYPE), null);
+			CONTACT_PHONE_NUM, CONTACT_PERSON_NAME, 1L, PerformanceType.findByType(TYPE), null);
 		performanceInfo.setPerformanceSchedules(List.of(createSoldOutPerformanceSchedule(performanceInfo)));
 		return performanceInfo;
 	}
 
 	public static PerformanceInfo createPerformanceInfoWithScheduleId() {
 		PerformanceInfo performanceInfo = PerformanceInfo.of(1L, NAME, INFO, PLACE, IS_AVAILABLE, PRICE,
-			CONTACT_PHONE_NUM, CONTACT_PERSON_NAME, 1L, PerformanceTypes.findByType(TYPE), null);
+			CONTACT_PHONE_NUM, CONTACT_PERSON_NAME, 1L, PerformanceType.findByType(TYPE), null);
 		performanceInfo.setPerformanceSchedules(createPerformanceSchedulesWithId(performanceInfo));
 		return performanceInfo;
 	}
 
 	public static PerformanceInfo createPerformanceInfo() {
 		PerformanceInfo performanceInfo = PerformanceInfo.of(1L, NAME, INFO, PLACE, IS_AVAILABLE, PRICE,
-			CONTACT_PHONE_NUM, CONTACT_PERSON_NAME, 1L, PerformanceTypes.findByType(TYPE), null);
+			CONTACT_PHONE_NUM, CONTACT_PERSON_NAME, 1L, PerformanceType.findByType(TYPE), null);
 		performanceInfo.setPerformanceSchedules(createPerformanceSchedules(performanceInfo));
 		return performanceInfo;
 	}
 
 	public static PerformanceInfo createDisablePerformanceInfo() {
 		PerformanceInfo performanceInfo = PerformanceInfo.of(1L, NAME, INFO, PLACE, false, PRICE,
-			CONTACT_PHONE_NUM, CONTACT_PERSON_NAME, 1L, PerformanceTypes.findByType(TYPE), null);
+			CONTACT_PHONE_NUM, CONTACT_PERSON_NAME, 1L, PerformanceType.findByType(TYPE), null);
 		performanceInfo.setPerformanceSchedules(createPerformanceSchedulesWithId(performanceInfo));
 		return performanceInfo;
 	}
 
-	public static PerformanceInfo createPerformanceInfo(String name, String place, PerformanceTypes type) {
+	public static PerformanceInfo createPerformanceInfo(String name, String place, PerformanceType type) {
 		PerformanceInfo performanceInfo = PerformanceInfo.of(name, INFO, place, IS_AVAILABLE, PRICE, CONTACT_PHONE_NUM,
 			CONTACT_PERSON_NAME, 2L, type, null);
 		performanceInfo.setPerformanceSchedules(createPerformanceSchedules(performanceInfo));

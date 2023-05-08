@@ -21,19 +21,19 @@ public class PerformanceCreatedEvent {
 	@JsonSerialize(using = LocalDateTimeSerializer.class)
 	@JsonDeserialize(using = LocalDateTimeDeserializer.class)
 	private LocalDateTime eventDateTime;
-	private String source;
-	private PerformanceCreatedPayload payload;
-	private String type;
 	private String status;
+	private PerformanceCreatedPayload payload;
+	private String eventType;
+	private String source;
 
 	@Builder
-	public PerformanceCreatedEvent(String id, LocalDateTime eventDateTime, String source,
-		PerformanceCreatedPayload payload, String type, String status) {
+	public PerformanceCreatedEvent(String id, LocalDateTime eventDateTime, String status, String source,
+		PerformanceCreatedPayload payload, String eventType) {
 		this.id = id;
 		this.eventDateTime = eventDateTime;
 		this.source = source;
 		this.payload = payload;
-		this.type = type;
+		this.eventType = eventType;
 		this.status = status;
 	}
 
@@ -41,4 +41,5 @@ public class PerformanceCreatedEvent {
 		Assert.notNull(payload, "payload is must be not null");
 		return payload.getPerformanceId();
 	}
+
 }

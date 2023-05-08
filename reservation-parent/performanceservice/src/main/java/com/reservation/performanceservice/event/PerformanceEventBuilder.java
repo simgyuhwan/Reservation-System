@@ -1,9 +1,15 @@
 package com.reservation.performanceservice.event;
 
-import com.reservation.common.event.payload.EventPayload;
-import com.reservation.performanceservice.domain.Performance;
-import com.reservation.performanceservice.event.factory.creator.PayloadCreator;
+import java.time.LocalDateTime;
+import java.util.UUID;
+import java.util.function.Supplier;
+
+import com.reservation.common.event.payload.Payload;
+import com.reservation.common.types.EventStatusType;
+import com.reservation.common.types.SourceType;
 import com.reservation.performanceservice.types.EventType;
+
+import lombok.Getter;
 
 /**
  * PerformanceEventBuilder.java
@@ -12,30 +18,74 @@ import com.reservation.performanceservice.types.EventType;
  * @author sgh
  * @since 2023.05.08
  */
-public class PerformanceEventBuilder<T extends PerformanceEvent<EventPayload>> {
+@Getter
+public class PerformanceEventBuilder {
+	private String id;
+	private EventType eventType;
+	private SourceType sourceType;
+	private EventStatusType statusType;
+	private Payload payload;
+	private LocalDateTime eventDateTime;
 
-    public static<T> Builder<T> withEventType(EventType eventType, Performance performance) {
-        return new Builder<>(eventType, performance);
-    }
+	private PerformanceEventBuilder() {
+	}
 
-    public static class Builder<T> {
-        private EventType eventType;
-        private Performance performance;
-        private PayloadCreator payloadCreator;
+	public static DefaultBuilder pending(EventType eventType) {
+		return new DefaultBuilder()
+			.id(UUID.randomUUID().toString())
+			.eventDateTime(LocalDateTime.now())
+			.eventStatusType(EventStatusType.PENDING)
+			.sourceType(SourceType.PERFORMANCE_SERVICE)
+			.eventType(eventType);
+	}
 
-        public Builder(EventType eventType, Performance performance) {
-            this.eventType = eventType;
-            this.performance = performance;
-        }
+	public static class DefaultBuilder {
+		private final PerformanceEventBuilder builder = new PerformanceEventBuilder();
 
-        public Builder<T> withPayload(PayloadCreator payloadCreator) {
-            this.payloadCreator = payloadCreator;
-            return this;
-        }
+		private DefaultBuilder() {
+		}
 
-        public PerformanceEvent<EventPayload> create() {
-            EventPayload payload = payloadCreator.createPayload(performance);
-            return PerformanceEvent.from(eventType, payload);
-        }
-    }
+		private DefaultBuilder id(String id) {
+			builder.id = id;
+			return this;
+		}
+
+		private DefaultBuilder eventType(EventType eventType) {
+			builder.eventType = eventType;
+			return this;
+		}
+
+		private DefaultBuilder sourceType(SourceType sourceType) {
+			builder.sourceType = sourceType;
+			return this;
+		}
+
+		private DefaultBuilder eventStatusType(EventStatusType statusType) {
+			builder.statusType = statusType;
+			return this;
+		}
+
+		private DefaultBuilder eventDateTime(LocalDateTime eventDateTime) {
+			builder.eventDateTime = eventDateTime;
+			return this;
+		}
+
+		public PayloadBuilder payload(Supplier<Payload> supplier) {
+			builder.payload = supplier.get();
+			return new PayloadBuilder(builder);
+		}
+	}
+
+	public static class PayloadBuilder {
+		private PerformanceEventBuilder builder;
+
+		private PayloadBuilder(PerformanceEventBuilder builder) {
+			this.builder = builder;
+		}
+
+		public PerformanceEvent create() {
+			return PerformanceEvent.of(builder.id, builder.eventDateTime, builder.statusType, builder.sourceType,
+				builder.payload, builder.eventType);
+		}
+	}
 }

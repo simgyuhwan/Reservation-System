@@ -1,4 +1,4 @@
-package com.reservation.common.type;
+package com.reservation.common.types;
 
 import java.util.Arrays;
 
@@ -12,7 +12,7 @@ import lombok.Getter;
  * @since 2023.04.03
  */
 @Getter
-public enum PerformanceTypes {
+public enum PerformanceType {
     THEATER("THEATER", "극장"),
     CONCERT("CONCERT", "콘서트"),
     MUSICAL("MUSICAL", "뮤지컬"),
@@ -21,16 +21,16 @@ public enum PerformanceTypes {
     private final String type;
     private final String name;
 
-    PerformanceTypes(String type, String name) {
+    PerformanceType(String type, String name) {
         this.name = name;
         this.type = type;
     }
 
-    public static PerformanceTypes findByType(String type) {
-        return Arrays.stream(PerformanceTypes.values()).toList()
+    public static PerformanceType findByType(String type) {
+        return Arrays.stream(PerformanceType.values()).toList()
             .stream()
             .filter(p -> p.type.equals(type))
             .findFirst()
-            .orElse(PerformanceTypes.OTHER);
+            .orElse(PerformanceType.OTHER);
     }
 }

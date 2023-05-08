@@ -1,4 +1,4 @@
-package com.reservation.common.type;
+package com.reservation.common.types;
 
 import java.util.Objects;
 
@@ -15,10 +15,10 @@ import jakarta.persistence.Converter;
  * @since 2023.04.03
  */
 @Converter
-public class PerformanceTypeConverter implements AttributeConverter<PerformanceTypes, String> {
+public class PerformanceTypeConverter implements AttributeConverter<PerformanceType, String> {
 
 	@Override
-	public String convertToDatabaseColumn(PerformanceTypes attribute) {
+	public String convertToDatabaseColumn(PerformanceType attribute) {
 		if(Objects.isNull(attribute)) {
 			return null;
 		}
@@ -26,10 +26,10 @@ public class PerformanceTypeConverter implements AttributeConverter<PerformanceT
 	}
 
 	@Override
-	public PerformanceTypes convertToEntityAttribute(String type) {
+	public PerformanceType convertToEntityAttribute(String type) {
 		if(!StringUtils.hasText(type)) {
 			return null;
 		}
-		return PerformanceTypes.findByType(type);
+		return PerformanceType.findByType(type);
 	}
 }

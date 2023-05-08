@@ -3,7 +3,7 @@ package com.reservation.performanceservice.event.producer;
 import org.springframework.cloud.stream.function.StreamBridge;
 import org.springframework.stereotype.Service;
 
-import com.reservation.common.event.payload.EventPayload;
+import com.reservation.common.event.payload.Payload;
 import com.reservation.performanceservice.event.PerformanceEvent;
 
 import lombok.RequiredArgsConstructor;
@@ -23,7 +23,7 @@ public class KafkaPerformanceProducer implements PerformanceProducer{
 	private final StreamBridge streamBridge;
 
 	@Override
-	public void publishCreatedEvent(PerformanceEvent<EventPayload> performanceEvent) {
+	public void publishCreatedEvent(PerformanceEvent performanceEvent) {
 		log.info("Publishing Performance Created Event : {}", performanceEvent);
 		streamBridge.send("performance-service.performance.created", performanceEvent);
 	}

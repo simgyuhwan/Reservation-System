@@ -1,24 +1,19 @@
 package com.reservation.common.event;
 
 import java.time.LocalDateTime;
-import java.util.UUID;
 
-import com.reservation.common.type.EventStatusTypes;
-import com.reservation.common.type.SourceType;
+import com.reservation.common.event.payload.Payload;
+import com.reservation.common.types.EventStatusType;
+import com.reservation.common.types.SourceType;
 
-import lombok.Getter;
+public interface Event {
+	String getId();
 
-@Getter
-public abstract class Event {
-	private String id;
-	private LocalDateTime eventDateTime;
-	private String source;
-	private String status;
+	Payload getPayload();
 
-	public Event(SourceType source, EventStatusTypes status) {
-		this.id = UUID.randomUUID().toString();
-		this.source = source.getName();
-		this.eventDateTime = LocalDateTime.now();
-		this.status = status.name();
-	}
+	SourceType getSource();
+
+	EventStatusType getStatus();
+
+	LocalDateTime getEventDateTime();
 }

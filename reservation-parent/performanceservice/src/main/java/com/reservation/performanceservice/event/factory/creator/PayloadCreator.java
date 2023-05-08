@@ -1,6 +1,6 @@
 package com.reservation.performanceservice.event.factory.creator;
 
-import com.reservation.common.event.payload.EventPayload;
+import com.reservation.common.event.payload.Payload;
 import com.reservation.performanceservice.domain.Performance;
 
 /**
@@ -12,5 +12,5 @@ import com.reservation.performanceservice.domain.Performance;
  */
 @FunctionalInterface
 public interface PayloadCreator {
-    EventPayload createPayload(Performance performance);
+    Payload createPayload(Performance performance);
 }

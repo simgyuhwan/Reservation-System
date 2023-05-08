@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-import com.reservation.common.type.PerformanceTypes;
+import com.reservation.common.types.PerformanceType;
 import com.reservation.performanceservice.domain.Performance;
 import com.reservation.performanceservice.domain.PerformanceDay;
 
@@ -42,7 +42,7 @@ public class PerformanceFactory {
 
 
 	public static Performance createPerformance() {
-		return Performance.of(MEMBER_ID, PERFORMANCE_NAME, PerformanceTypes.CONCERT, AUDIENCE_COUNT, PRICE, CONTACT_PHONE_NUMBER,
+		return Performance.of(MEMBER_ID, PERFORMANCE_NAME, PerformanceType.CONCERT, AUDIENCE_COUNT, PRICE, CONTACT_PHONE_NUMBER,
 			CONTACT_PERSON_NAME, PERFORMANCE_INFO, PERFORMANCE_PLACE, createDefaultPerformanceDays());
 	}
 

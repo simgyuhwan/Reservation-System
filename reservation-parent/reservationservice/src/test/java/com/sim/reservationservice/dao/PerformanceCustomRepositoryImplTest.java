@@ -16,7 +16,7 @@ import org.springframework.context.annotation.Import;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.reservation.common.type.PerformanceTypes;
+import com.reservation.common.types.PerformanceType;
 import com.sim.reservationservice.config.QueryDslTestConfig;
 import com.sim.reservationservice.domain.PerformanceInfo;
 import com.sim.reservationservice.dto.request.PerformanceSearchDto;
@@ -70,7 +70,7 @@ class PerformanceCustomRepositoryImplTest {
 	void nameLookupTest() {
 		//given
 		String searchName = "Hong";
-		performanceInfoRepository.save(createPerformanceInfo(searchName, PLACE, PerformanceTypes.CONCERT));
+		performanceInfoRepository.save(createPerformanceInfo(searchName, PLACE, PerformanceType.CONCERT));
 		PerformanceSearchDto searchDto = PerformanceSearchDto.builder()
 			.name(searchName).build();
 
@@ -81,7 +81,7 @@ class PerformanceCustomRepositoryImplTest {
 		//then
 		assertThat(result).hasSize(1);
 		assertThat(result.get(0).getName()).isEqualTo(searchName);
-		assertThat(result.get(0).getType()).isEqualTo(PerformanceTypes.CONCERT.getName());
+		assertThat(result.get(0).getType()).isEqualTo(PerformanceType.CONCERT.getName());
 	}
 
 	@Test
@@ -89,7 +89,7 @@ class PerformanceCustomRepositoryImplTest {
 	void placeLookupTest() {
 		//given
 		String searchPlace = "홍대 1번 출구";
-		performanceInfoRepository.save(createPerformanceInfo(NAME, searchPlace, PerformanceTypes.CONCERT));
+		performanceInfoRepository.save(createPerformanceInfo(NAME, searchPlace, PerformanceType.CONCERT));
 		PerformanceSearchDto searchDto = PerformanceSearchDto.builder()
 			.place(searchPlace)
 			.build();
@@ -109,7 +109,7 @@ class PerformanceCustomRepositoryImplTest {
 	void typeLookupTest() {
 		//given
 		String searchType = "CONCERT";
-		performanceInfoRepository.save(createPerformanceInfo(NAME, PLACE, PerformanceTypes.CONCERT));
+		performanceInfoRepository.save(createPerformanceInfo(NAME, PLACE, PerformanceType.CONCERT));
 		PerformanceSearchDto searchDto = PerformanceSearchDto.builder()
 			.type(searchType)
 			.build();
@@ -120,7 +120,7 @@ class PerformanceCustomRepositoryImplTest {
 
 		//then
 		assertThat(result).hasSize(1);
-		assertThat(result.get(0).getType()).isEqualTo(PerformanceTypes.CONCERT.getName());
+		assertThat(result.get(0).getType()).isEqualTo(PerformanceType.CONCERT.getName());
 		assertThat(result.get(0).getName()).isEqualTo(NAME);
 	}
 
@@ -187,7 +187,7 @@ class PerformanceCustomRepositoryImplTest {
 		return ReservationQueryDataFactory.createPerformanceInfo();
 	}
 
-	private PerformanceInfo createPerformanceInfo(String name, String place, PerformanceTypes type) {
+	private PerformanceInfo createPerformanceInfo(String name, String place, PerformanceType type) {
 		return ReservationQueryDataFactory.createPerformanceInfo(name, place, type);
 	}
 }

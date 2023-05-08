@@ -6,8 +6,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.event.TransactionalEventListener;
 
-import com.reservation.common.event.payload.EventPayload;
-import com.reservation.common.type.EventStatusTypes;
+import com.reservation.common.types.EventStatusType;
 import com.reservation.performanceservice.application.PerformanceEventService;
 import com.reservation.performanceservice.event.PerformanceEvent;
 import com.reservation.performanceservice.event.producer.PerformanceProducer;
@@ -24,13 +23,13 @@ public class PerformanceCreatedEventHandler {
 
 	@Async("defaultExecutor")
 	@TransactionalEventListener
-	public void handleCreatedEvent(PerformanceEvent<EventPayload> performanceEvent) {
+	public void handleCreatedEvent(PerformanceEvent performanceEvent) {
 		performanceProducer.publishCreatedEvent(performanceEvent);
 	}
 
 	@Transactional
 	@EventListener
-	public void handleEvent(PerformanceEvent<EventPayload> performanceEvent) {
-		performanceEventService.saveEvent(performanceEvent, EventStatusTypes.PENDING);
+	public void handleEvent(PerformanceEvent performanceEvent) {
+		performanceEventService.saveEvent(performanceEvent, EventStatusType.PENDING);
 	}
 }

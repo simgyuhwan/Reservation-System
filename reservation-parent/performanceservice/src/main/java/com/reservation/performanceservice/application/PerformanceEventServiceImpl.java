@@ -7,8 +7,7 @@ import com.google.gson.Gson;
 import com.reservation.common.error.ErrorMessage;
 import com.reservation.common.error.EventNotFound;
 import com.reservation.common.event.EventResult;
-import com.reservation.common.event.payload.EventPayload;
-import com.reservation.common.type.EventStatusTypes;
+import com.reservation.common.types.EventStatusType;
 import com.reservation.performanceservice.dao.PerformanceEventResultRepository;
 import com.reservation.performanceservice.domain.PerformanceEventResult;
 import com.reservation.performanceservice.event.PerformanceEvent;
@@ -25,7 +24,7 @@ public class PerformanceEventServiceImpl implements PerformanceEventService{
 	private final Gson gson;
 
 	@Override
-	public void saveEvent(PerformanceEvent<EventPayload> performanceEvent, EventStatusTypes status) {
+	public void saveEvent(PerformanceEvent performanceEvent, EventStatusType status) {
 		PerformanceEventResult eventResult = toEventResult(performanceEvent, status);
 		saveEvent(eventResult);
 	}
@@ -40,7 +39,7 @@ public class PerformanceEventServiceImpl implements PerformanceEventService{
 		performanceEventResult.update(eventResult);
 	}
 
-	private PerformanceEventResult toEventResult(PerformanceEvent<EventPayload> performanceEvent, EventStatusTypes status) {
+	private PerformanceEventResult toEventResult(PerformanceEvent performanceEvent, EventStatusType status) {
 		return PerformanceEventResult.builder()
 			.id(performanceEvent.getId())
 			.status(status)

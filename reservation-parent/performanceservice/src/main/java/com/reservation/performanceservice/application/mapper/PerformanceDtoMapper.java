@@ -29,7 +29,7 @@ import com.reservation.performanceservice.dto.request.PerformanceDto;
 public interface PerformanceDtoMapper extends GenericMapper<PerformanceDto, Performance> {
 	PerformanceDtoMapper INSTANCE = Mappers.getMapper(PerformanceDtoMapper.class);
 
-	@Mapping(target = "performanceType", expression = "java(com.reservation.common.type.PerformanceTypes.findByType(dto.getPerformanceType()))")
+	@Mapping(target = "performanceType", expression = "java(com.reservation.common.types.PerformanceType.findByType(dto.getPerformanceType()))")
 	@Override
 	Performance toEntity(PerformanceDto dto);
 

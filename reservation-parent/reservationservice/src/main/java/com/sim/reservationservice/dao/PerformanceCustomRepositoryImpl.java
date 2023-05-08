@@ -15,7 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import com.reservation.common.type.PerformanceTypes;
+import com.reservation.common.types.PerformanceType;
 import com.sim.reservationservice.domain.PerformanceInfo;
 import com.sim.reservationservice.dto.request.PerformanceSearchDto;
 import com.sim.reservationservice.dto.response.PerformanceInfoDto;
@@ -59,7 +59,7 @@ public class PerformanceCustomRepositoryImpl implements PerformanceCustomReposit
 
 	private BooleanExpression typeEq(String type) {
 		if (type != null) {
-			return performanceInfo.type.eq(PerformanceTypes.findByType(type));
+			return performanceInfo.type.eq(PerformanceType.findByType(type));
 		}
 		return null;
 	}

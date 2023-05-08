@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.reservation.common.model.BaseEntity;
-import com.reservation.common.type.PerformanceTypes;
-import com.reservation.common.type.PerformanceTypeConverter;
+import com.reservation.common.types.PerformanceType;
+import com.reservation.common.types.PerformanceTypeConverter;
 import com.reservation.performanceservice.dto.request.PerformanceDto;
 
 import jakarta.persistence.CascadeType;
@@ -44,7 +44,7 @@ public class Performance extends BaseEntity {
 	private String performanceName;
 
 	@Convert(converter = PerformanceTypeConverter.class)
-	private PerformanceTypes performanceType;
+	private PerformanceType performanceType;
 
 	private Integer audienceCount;
 
@@ -61,7 +61,7 @@ public class Performance extends BaseEntity {
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "performance")
 	private List<PerformanceDay> performanceDays = new ArrayList<>();
 
-	private Performance(Long memberId, String performanceName, PerformanceTypes performanceType, Integer audienceCount, Integer price,
+	private Performance(Long memberId, String performanceName, PerformanceType performanceType, Integer audienceCount, Integer price,
 		String contactPhoneNum, String contactPersonName, String performanceInfo, String performancePlace, List<PerformanceDay> performanceDays) {
 		this.memberId = memberId;
 		this.performanceName = performanceName;
@@ -75,7 +75,7 @@ public class Performance extends BaseEntity {
 		this.performanceDays = performanceDays;
 	}
 
-	public static Performance of(Long memberId, String performanceName, PerformanceTypes performanceType, Integer audienceCount, Integer price,
+	public static Performance of(Long memberId, String performanceName, PerformanceType performanceType, Integer audienceCount, Integer price,
 		String contactPhoneNum, String contactPersonName, String performanceInfo, String performancePlace, List<PerformanceDay> performanceDays) {
 		return new Performance(memberId, performanceName, performanceType, audienceCount, price, contactPhoneNum, contactPersonName,
 			performanceInfo, performancePlace, performanceDays);
@@ -87,7 +87,7 @@ public class Performance extends BaseEntity {
 
 	public void updateFromDto(PerformanceDto performanceDto) {
 		this.performanceName = performanceDto.getPerformanceName();
-		this.performanceType = PerformanceTypes.findByType(performanceDto.getPerformanceType());
+		this.performanceType = PerformanceType.findByType(performanceDto.getPerformanceType());
 		this.audienceCount = performanceDto.getAudienceCount();
 		this.price = performanceDto.getPrice();
 		this.contactPhoneNum = performanceDto.getContactPhoneNum();

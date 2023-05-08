@@ -2,7 +2,7 @@ package com.reservation.performanceservice.domain;
 
 import com.reservation.common.event.EventResult;
 import com.reservation.common.model.BaseEntity;
-import com.reservation.common.type.EventStatusTypes;
+import com.reservation.common.types.EventStatusType;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -18,14 +18,14 @@ public class PerformanceEventResult extends BaseEntity {
 	private String id;
 
 	@Enumerated(EnumType.STRING)
-	private EventStatusTypes status;
+	private EventStatusType status;
 
 	private String payload;
 
 	private String message;
 
 	@Builder
-	private PerformanceEventResult(String id, EventStatusTypes status, String payload, String message) {
+	private PerformanceEventResult(String id, EventStatusType status, String payload, String message) {
 		this.id = id;
 		this.status = status;
 		this.payload = payload;
@@ -34,9 +34,9 @@ public class PerformanceEventResult extends BaseEntity {
 
 	public void update(EventResult result) {
 		if(result.isSuccess()) {
-			this.status = EventStatusTypes.SUCCESS;
+			this.status = EventStatusType.SUCCESS;
 		}else {
-			this.status = EventStatusTypes.FAIL;
+			this.status = EventStatusType.FAIL;
 			this.message = result.getMessage();
 		}
 	}

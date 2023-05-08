@@ -28,7 +28,7 @@ public interface PerformanceInfoMapper extends GenericMapper<PerformanceDto, Per
 	PerformanceInfoMapper INSTANCE = Mappers.getMapper(PerformanceInfoMapper.class);
 
 	@Mapping(target = "isAvailable", constant = "true")
-	@Mapping(target = "type", expression = "java(com.reservation.common.type.PerformanceTypes.findByType(dto.getPerformanceType()))")
+	@Mapping(target = "type", expression = "java(com.reservation.common.types.PerformanceType.findByType(dto.getPerformanceType()))")
 	@Mapping(target = "name", source = "performanceName")
 	@Mapping(target = "info", source = "performanceInfo")
 	@Mapping(target = "place", source = "performancePlace")

@@ -46,7 +46,7 @@ public class QPerformance extends EntityPathBase<Performance> {
 
     public final StringPath performancePlace = createString("performancePlace");
 
-    public final EnumPath<com.reservation.common.type.PerformanceTypes> performanceType = createEnum("performanceType", com.reservation.common.type.PerformanceTypes.class);
+    public final EnumPath<com.reservation.common.types.PerformanceType> performanceType = createEnum("performanceType", com.reservation.common.types.PerformanceType.class);
 
     public final NumberPath<Integer> price = createNumber("price", Integer.class);
 
