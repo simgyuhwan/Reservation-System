@@ -4,7 +4,7 @@ import lombok.Getter;
 
 @Getter
 public enum EventType {
-	PERFORMANCE_CREATED("Performance Created Event");
+	PERFORMANCE_CREATED("PerformanceCreatedEvent");
 
 	private final String name;
 
