@@ -49,7 +49,7 @@ spring:
         definition: performanceCreatedResult
       bindings:
         # Publish performance creation event
-        performanceCreated-out-0:
+        performanceCreatedEvent-out-0:
           destination: performance-service.performance.created
           content-type: application/json
 

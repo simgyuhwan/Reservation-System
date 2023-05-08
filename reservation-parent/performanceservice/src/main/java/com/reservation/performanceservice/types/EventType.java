@@ -1,4 +1,4 @@
-package com.reservation.performanceservice.type;
+package com.reservation.performanceservice.types;
 
 import lombok.Getter;
 

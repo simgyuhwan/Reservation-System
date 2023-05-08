@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.reservation.common.error.ErrorCode;
 import com.reservation.common.error.ErrorMessage;
+import com.reservation.common.event.payload.EventPayload;
 import com.reservation.common.util.DateTimeUtils;
 import com.reservation.performanceservice.application.mapper.PerformanceDtoMapper;
 import com.reservation.performanceservice.dao.PerformanceRepository;
@@ -17,7 +18,8 @@ import com.reservation.performanceservice.error.InvalidPerformanceDateException;
 import com.reservation.performanceservice.error.PerformanceNotFoundException;
 import com.reservation.performanceservice.event.PerformanceCreatedEventPayload;
 import com.reservation.performanceservice.event.PerformanceEvent;
-import com.reservation.performanceservice.type.EventType;
+import com.reservation.performanceservice.event.PerformanceEventBuilder;
+import com.reservation.performanceservice.types.EventType;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -65,8 +67,9 @@ public class PerformanceCommandServiceImpl implements PerformanceCommandService 
 		}
 	}
 
-	private PerformanceEvent createPerformanceEvent(Performance performance) {
-		PerformanceCreatedEventPayload payload = PerformanceCreatedEventPayload.from(performance);
-		return PerformanceEvent.from(EventType.PERFORMANCE_CREATED, payload);
+	private PerformanceEvent<EventPayload> createPerformanceEvent(Performance performance) {
+		return PerformanceEventBuilder.withEventType(EventType.PERFORMANCE_CREATED, performance)
+			.withPayload(PerformanceCreatedEventPayload::from)
+			.create();
 	}
 }
