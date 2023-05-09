@@ -11,9 +11,9 @@ public interface Event {
 
 	Payload getPayload();
 
-	SourceType getSource();
+	String getSource();
 
-	EventStatusType getStatus();
+	String getStatus();
 
 	LocalDateTime getEventDateTime();
 }

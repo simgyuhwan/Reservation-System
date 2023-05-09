@@ -32,7 +32,7 @@ public class PerformanceConsumer {
 	@Bean
 	public Consumer<DefaultEvent<PerformanceCreatedPayload>> performanceCreatedConsumer() {
 		return event -> {
-			PerformanceCreatedPayload payload = event.getPayload();
+			PerformanceCreatedPayload payload = (PerformanceCreatedPayload)event.getPayload();
 			boolean result = performanceSyncService.requestAndSavePerformanceInfo(payload.getPerformanceId());
 			sendEventResult(event.getId(), result);
 		};

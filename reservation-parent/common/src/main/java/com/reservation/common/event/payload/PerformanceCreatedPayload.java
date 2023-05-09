@@ -22,4 +22,6 @@ public class PerformanceCreatedPayload implements Payload{
 		Assert.notNull(performanceId, "performanceId is must be not null");
 		return performanceId;
 	}
+
+
 }
