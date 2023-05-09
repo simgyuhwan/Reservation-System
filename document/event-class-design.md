@@ -176,20 +176,18 @@ private PerformanceEvent createPerformanceEvent(Performance performance) {
 
 ```java
 public class PerformanceEventBuilder<T extends PerformanceEvent<Payload>> {
- ...
+    ...
 
-    public static<T> Builder<T> withEventType(EventType eventType, Performance performance) {
-        return new Builder<>(eventType, performance);
+    public static<T> Builder<T> withEventType(EventType eventType) {
+        return new Builder<>(eventType);
     }
 
     public static class Builder<T> {
         private EventType eventType;
-        private Performance performance;
         private T payload;
 
-        public Builder(EventType eventType, Performance performance) {
+        public Builder(EventType eventType) {
             this.eventType = eventType;
-            this.performance = performance;
         }
 
         public Builder<T> withPayload(Payload payload) {
@@ -198,67 +196,75 @@ public class PerformanceEventBuilder<T extends PerformanceEvent<Payload>> {
         }
 
         public PerformanceEvent<Payload> create() {
-            return PerformanceEvent.from(eventType, payload);
+            return PerformanceEvent.createdEvent(eventType, payload);
         }
     }
 }
 
+// 사용
 private PerformanceEvent<Payload> createPerformanceEvent(Performance performance) {
-	return PerformanceEventBuilder.withEventType(EventType.PERFORMANCE_CREATED, performance)
+	return PerformanceEventBuilder.withEventType(EventType.PERFORMANCE_CREATED)
 		.withPayload(PerformancePayloadFactory.createdEvent(performance))
 		.create();
 }
 ```
 
-생성에 대한 것을 **빌더 패턴**을 적용해서 만들었다. payload 생성에 대한 건 **PerformancePayloadFactory** 클래스에게 책임을 부여했다.
+생성에 대한 것을 **빌더 패턴**을 적용해서 만들었다. payload 생성에 대한 건 **PerformancePayloadFactory** 클래스에게 책임을 부여했다. 그리고 작성하지는 않았지만 PerformanceEvent 내부에는 switch를 사용해서 객체 생성의 책임은 PerformanceEvent 내부로 옮겨서 eventType별로 객체를 생성하게 만들었다.
 
 만들고 나서 확인해보니 몇 가지 문제가 있었다.
 
 1. **Builder의 payload를 만들 때 생성 인자는 오직 Performance 만 가능**
 2. **payload 없이도 이벤트 생성이 가능**
+3. **이벤트 생성에 따른 switch문 추가 수정**
 
-2번의 경우 코드를 수정해서 payload를 반드시 넣도록 Builder를 수정하면 되지만 Performance만 받을 수 있는 부분은 어떻게 고쳐야 하나 고민을 많이 했다.
+2번의 경우, 빌더 클래스를 수정하면 가능할 것이다. 1번은 팩토리 클래스를 수정함으로써 수정이 가능한데. 각 이벤트에 대한 객체 생성 메서드를 부여해서 매개변수만 바꿔주면 되지만 관리가 어렵고 복잡하고 보기도 어렵다.
 
 <br>
 
 ### **네 번째 시도 (Builder & Strategy 패턴)**
 
 ```java
-public class PerformanceEventBuilder<T extends PerformanceEvent<Payload>> {
+public class PerformanceEventBuilder<T extends Payload> {
+
     public static<T> Builder<T> withEventType(EventType eventType) {
         return new Builder<>(eventType);
     }
 
     public static class Builder<T> {
         private EventType eventType;
-        private PaylaodCreator payloadCreator; // creator
+        private EventCreator eventCreator; // creator
+        private T payload;
 
         public Builder(EventType eventType, Performance performance) {
             this.eventType = eventType;
             this.performance = performance;
         }
 
-        public Builder<T> eventCreator(paylaodCreator paylaodCreator) {
-            this.paylaodCreator = paylaodCreator;
+        public Builder withPayload(T payload) {
+            this.payload = payload;
             return this;
         }
 
-        public PerformanceEvent<Payload> create() {
-                    Payload payload = paylaodCreator.createPayload();
-            return PerformanceEvent.from(eventType, payload);
+        public Builder eventCreator(EventCreator eventCreator) {
+            this.eventCreator = eventCreator;
+            return this;
+        }
+
+        public PerformanceEvent<T> create() {
+            return eventCreator.createEvent(eventType, payload);
         }
     }
 
-public interface PaylaodCreator {
-	Payload createPayload();
+public interface EventCreator {
+	Event createEvent();
 }
 ```
 
-전략 패턴을 적용하여 **PayloadCreator**를 인터페이스를 활용하여 payload를 생성하는 부분의 책임을 Builder에서 분리했다.
+전략 패턴을 적용하여 **EventCreator**를 인터페이스를 활용하여 Event를 생성하는 부분의 책임을 Builder에서 분리했다.
 
-하지만 막상 사용하려 보니 각 이벤트에 맞는 Payload를 구현해야 하고 Creator도 구현해야 했다.
+하지만 막상 사용하려 보니 각 이벤트에 맞는 Payload, Payload 팩토리, EventCreator, EventCreator 구현체... 관리해야 할 클래스들이 너무 많아져버렸다.
 
-쉽게 만들자고 더 복잡해지는 결과로 만들어버렸다. 만약 Payload 값을 만드는 로직이 복잡하다면 이 전략 패턴을 쓰면 되겠지만 지금 정도의 프로젝트에선 너무 과했다.
+쉽게 만들자고 더 복잡해지는 결과로 만들어버렸다. 만약 Event 객체를 만드는 로직이 복잡하다면 이 전략 패턴을 사용하고 전체 구조를 다음어서 사용하면 되겠지만 지금 정도의 프로젝트에선 너무 과했다. 애초에 빌더 패턴을 이용한 의미가 사라져 버렸다.
 
 <br>
 
@@ -276,6 +282,7 @@ public class PerformanceEventBuilder {
 	private PerformanceEventBuilder() {
 	}
 
+    // Event pending 상태
 	public static DefaultBuilder pending(EventType eventType) {
 		return new DefaultBuilder()
 			.id(UUID.randomUUID().toString())
@@ -286,7 +293,7 @@ public class PerformanceEventBuilder {
 	}
 
     // 기본 빌더
-	public static class DefaultBuilder {
+    public static class DefaultBuilder {
 		private final PerformanceEventBuilder builder = new PerformanceEventBuilder();
 
 		private DefaultBuilder() {
@@ -345,7 +352,7 @@ public class PerformanceEventBuilder {
 }
 ```
 
-마지막 시도는 **springframework.http.ResponseEntity** 클래스에서 아이디어를 착안했다. 컨트롤러에서 ResponseEntity를 사용할 때는 각각 사용할 수 있는 메서드가 한정되어 있었다. 예를 들어서, 사용자는 `ResponseEntity.ok()` , `ResponseEntity.status()` 와 같이 먼저 상태 값의 정의를 강제했다. 이렇게함으로써 사용자는 상태 값부터 정의할 수밖에 없고 그 다음으로는 **`body()`** 부분이나 **`header()`** 혹은 **`build()`** 를 통해서 바로 객체를 생성할 수 있다.
+마지막 시도는 **springframework.http.ResponseEntity** 클래스에서 아이디어를 착안했다. 컨트롤러에서 ResponseEntity를 사용할 때를 보면 각각 사용할 수 있는 메서드가 한정되어 있었다. 예를 들어서, 사용자는 `ResponseEntity.ok()` , `ResponseEntity.status()` 와 같이 먼저 상태 값의 정의를 강제했다. 이렇게함으로써 사용자는 상태 값부터 정의할 수밖에 없고 그 다음으로는 **`body()`** 부분이나 **`header()`** 혹은 **`build()`** 를 통해서 바로 객체를 생성할 수 있다.
 
 비록 코드의 내부의 복잡도는 수직 상승했지만 사용했을 때의 편의성이 증가했고 더 직관적이었다. builder에서 처음 사용할 수 있는 메서드는 이벤트 상태를 직관적으로 표현할 수 있도록 **`pending()`** 으로 만들었다. pending() 을 사용하면 자동으로 이벤트는 pending 상태가 되고 나머지 필드값들이 등록된다. 지금은 pending 하나만 넣었지만 **retry, ready, success, fail** 등 원하는 상태를 표현할 수 있다. 또 함수형 인터페이스 **Supplier**를 사용해서 외부에서는 Payload를 만들어서 전달하면 된다.
 
@@ -361,6 +368,6 @@ private PerformanceEvent createPerformanceEvent(Performance performance) {
 
 payload는 생성하려는 Payload 구현 클래스를 만들어서 넣어주기만 하면된다.
 
-나중에는 바뀔지 모르겠지만 총 다섯 번의 시도를 통해서 지금은 만족스러운 결과가 나왔다. 실제로 만들어보고 경험해보니 각 시도에는 각자의 장단점이 느껴졌다.
+나중에는 바뀔지 모르겠지만 총 다섯 번의 시도를 통해서 지금은 만족스러운 결과가 나왔다. 실제로 만들어보고 경험해보니 각 시도에는 각자의 장단점이 느껴졌다. 물론 각 시도마다 마지막보다 더 좋은 결과로 만들 수 있었을거라 생각한다. 하지만 아직 경험이 미숙하다보니 여기서 마무리지었다.
 
-프로젝트 구조나 범용성, 유연성, 복잡도에 따라 맞는 방법을 있을 것이다. 개발은 모든게 트레이드오프라는 말이 조금 와닿았던 경험이었던 것 같다.
+프로젝트 구조나 범용성, 유연성, 복잡도에 따라 각자 맞는 방법을 있을 것이다. 개발은 모든게 트레이드오프라는 말이 조금 와닿았던 경험이었던 것 같다.
