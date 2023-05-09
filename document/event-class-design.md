@@ -260,7 +260,7 @@ public interface EventCreator {
 }
 ```
 
-전략 패턴을 적용하여 **EventCreator**를 인터페이스를 활용하여 Event를 생성하는 부분의 책임을 Builder에서 분리했다.
+전략 패턴을 적용하여 switch에 대한 문제를 **EventCreator** 인터페이스를 사용하여 객체 생성의 책임을 PerformanceEvent에서 EventCreator로 이동시켰다.
 
 하지만 막상 사용하려 보니 각 이벤트에 맞는 Payload, Payload 팩토리, EventCreator, EventCreator 구현체... 관리해야 할 클래스들이 너무 많아져버렸다.
 
