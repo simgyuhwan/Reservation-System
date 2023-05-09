@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
-public class PerformanceCreatedPayload {
+public class PerformanceCreatedPayload implements Payload{
 	private Long performanceId;
 	private Long memberId;
 

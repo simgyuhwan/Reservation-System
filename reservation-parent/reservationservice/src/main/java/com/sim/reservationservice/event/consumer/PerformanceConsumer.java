@@ -8,7 +8,8 @@ import org.springframework.context.annotation.Configuration;
 
 import com.reservation.common.error.ErrorMessage;
 import com.reservation.common.event.EventResult;
-import com.reservation.common.event.PerformanceCreatedEvent;
+import com.reservation.common.event.DefaultEvent;
+import com.reservation.common.event.payload.PerformanceCreatedPayload;
 import com.sim.reservationservice.application.PerformanceSyncService;
 
 import lombok.RequiredArgsConstructor;
@@ -29,10 +30,10 @@ public class PerformanceConsumer {
 	private final StreamBridge streamBridge;
 
 	@Bean
-	public Consumer<PerformanceCreatedEvent> performanceCreatedConsumer() {
+	public Consumer<DefaultEvent<PerformanceCreatedPayload>> performanceCreatedConsumer() {
 		return event -> {
-			Long performanceId = event.getPerformanceId();
-			boolean result = performanceSyncService.requestAndSavePerformanceInfo(performanceId);
+			PerformanceCreatedPayload payload = event.getPayload();
+			boolean result = performanceSyncService.requestAndSavePerformanceInfo(payload.getPerformanceId());
 			sendEventResult(event.getId(), result);
 		};
 	}

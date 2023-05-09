@@ -6,7 +6,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import com.reservation.common.event.EventResult;
-import com.reservation.common.event.PerformanceCreatedEvent;
+import com.reservation.common.event.DefaultEvent;
+import com.reservation.common.event.payload.PerformanceCreatedPayload;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,7 +20,7 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class PerformanceConsumer {
 	@Bean
-	Function<PerformanceCreatedEvent, PerformanceCreatedEvent> performanceCreatedEventConsumer() {
+	Function<DefaultEvent<PerformanceCreatedPayload>, DefaultEvent<PerformanceCreatedPayload>> performanceCreatedEventConsumer() {
 		return event -> {
 			log.info("Publish a performance creation eventEvent ID : {}", event.getId());
 			return event;

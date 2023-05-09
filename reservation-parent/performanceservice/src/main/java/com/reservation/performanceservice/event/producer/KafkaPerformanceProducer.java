@@ -3,7 +3,6 @@ package com.reservation.performanceservice.event.producer;
 import org.springframework.cloud.stream.function.StreamBridge;
 import org.springframework.stereotype.Service;
 
-import com.reservation.common.event.payload.Payload;
 import com.reservation.performanceservice.event.PerformanceEvent;
 
 import lombok.RequiredArgsConstructor;
