@@ -14,8 +14,9 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
-public class DefaultEvent<T extends Payload> {
+public class DefaultEvent<T extends Payload> implements Event{
 	private String id;
+
 	@JsonSerialize(using = LocalDateTimeSerializer.class)
 	@JsonDeserialize(using = LocalDateTimeDeserializer.class)
 	private LocalDateTime eventDateTime;

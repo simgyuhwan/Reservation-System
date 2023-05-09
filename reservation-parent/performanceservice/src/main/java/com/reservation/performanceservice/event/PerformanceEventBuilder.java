@@ -84,8 +84,14 @@ public class PerformanceEventBuilder {
 		}
 
 		public PerformanceEvent create() {
-			return PerformanceEvent.of(builder.id, builder.eventDateTime, builder.statusType, builder.sourceType,
-				builder.payload, builder.eventType);
+			return PerformanceEvent.builder()
+				.id(builder.id)
+				.eventDateTime(builder.eventDateTime)
+				.status(builder.statusType)
+				.source(builder.sourceType)
+				.payload(builder.payload)
+				.eventType(builder.eventType)
+				.build();
 		}
 	}
 }
