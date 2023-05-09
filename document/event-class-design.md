@@ -1,6 +1,6 @@
 ## 목차
 
-#### [1. Event 설계](#1-event-ec84a4eab384-1)
+#### [1. Event 설계](#1-event-설계-1)
 
 ##### [1) 추상 클래스](#1-추상-클래스-1)
 
@@ -10,13 +10,15 @@
 
 #### [2. Event 생성](#2-event-생성-1)
 
+두-번째-시도-factory-method-패턴-1
+
 ##### [첫 번째 시도(Mapper)](#첫-번째-시도-mapper-1)
 
-##### [두 번째 시도(Factory method 패턴)](#두-번째-시도-factory-method-패턴-1)
+##### [두 번째 시도(Factory method 패턴)](#네-번째-시도-builder--strategy-패턴-1)
 
-##### [세 번재 시도(Builder 패턴)](#세-번재-시도builder-패턴-1)
+##### [세 번째 시도(Builder 패턴)](#세-번째-시도-builder-패턴-1)
 
-##### [네 번재 시도(Builder & Strategy 패턴)](#네-번재-시도builder--strategy-패턴-1)
+##### [네 번째 시도(Builder & Strategy 패턴)](#네-번째-시도-builder--strategy-패턴-1)
 
 ##### [마지막 시도(Builder 패턴)](#마지막-시도-builder-패턴-1)
 
