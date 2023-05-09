@@ -57,11 +57,11 @@ public interface Payload{}
 
 처음 생각했던 방식은 Event 클래스를 추상클래스로 만들고 Payload를 인터페이스로 만드는 방식이었다. 목적했던 모든 것들이 다 담겨있었다.
 
-**원했던 필드들이 포함될 뿐더러 Payload가 Event 클래스 안에 있다는 것을 추상 클래스를 확인하면 알 수 있었다.** 그런데 실제 사용해보니 **예상치 못한** **불편함**을 느낄 수 있었다.
+**원했던 필드들이 포함될 뿐더러 Payload가 Event 클래스 안에 있다는 것을 확인할 수 있었다.** 그런데 실제 사용해보니 **예상치 못한** **불편함**을 느낄 수 있었다.
 
 막상 상속 받아서 각 서비스에서 사용할 Event를 생성하려고 하니 ‘**추상 클래스에 있는 필드 값이 뭐였더라?’** 결국 추상 클래스를 들어가서 확인해야 했다. 그리고 객체로 만들고 추상 클래스 내부 필드를 임의대로 수정하고자 하니 추상 클래스에 메서드를 추가했어야 했다.
 
-만약 **common** 모듈에 함께 쓸 이벤트 구현 클래스를 만들었다면 각 서비스의 요청와 필요에 따라 **추상 클래스의 수정은 불가피해보였다**.
+만약 **common** 모듈에 함께 쓸 이벤트 구현 클래스를 만들었다면 각 서비스의 요청과 필요에 따라 **추상 클래스의 수정은 불가피해 보였다**.
 
 결국 다른 방법을 찾아보는데..
 
@@ -123,7 +123,7 @@ public class DefaultEvent<T extends Payload> implements Event{
 
 **Spring Security**에서 아이디어를 얻었다. Spring Security의 **AuthenticationManager**나 **UserDetailService** 등을 보면 이 **인터페이스의 역할과 책임을 이름과 메서드(메시지)로 표현**했다. 이 아이디어를 착안해서 Event 인터페이스가 해야할 책임과 메시지를 메서드로 표현함으로써 이를 구현하는 구현 클래스는 이 메서드를 통해 강제적으로 구현해야 했다.
 
-덕분에 필요한 필드에 대한 강조가 되었다. 구조는 getPayload를 통해 알렸다고 생각한다. 사실 더 좋은 방법이 안떠올랐다. 최종적으로는 **DefaultEvent**를 만들어서 각 서비스에서는 Payload 인터페이스를 원하는 구조로 구현해서 교체하면서 사용할 수 있도록 만들었다.
+덕분에 필요한 필드에 대한 강조가 되었다. 구조는 getPayload를 통해 알렸다고 생각한다. 사실 더 좋은 방법이 안떠올랐다. 최종적으로는 **DefaultEvent**를 만든 뒤, 각 서비스에서는 Payload 인터페이스를 원하는 구조로 구현해서 교체하면서 사용할 수 있도록 만들었다.
 
 ---
 
@@ -131,7 +131,7 @@ public class DefaultEvent<T extends Payload> implements Event{
 
 ## **2. Event 생성**
 
-이벤트 생성은 이벤트를 생성하면서 겪었던 시행착오들을 적었다. 알고 있던 디자인 패턴들을 사용해보고 가장 적절한 방법이라고 생각했던 것을 선택했던 흐름들을 적었다.
+이벤트 생성은 이벤트를 생성하면서 겪었던 시행착오들을 적었다. 알고있던 디자인 패턴들을 적용하면서 겪었던 생각의 흐름들을 적었다
 
 <br>
 
@@ -145,9 +145,9 @@ public void createPerformance(PerformanceDto registrationDto) {
 }
 ```
 
-첫 시작은 **createdEventMapper.toDto(performance)** 이 코드 부터였다.
+첫 시작은 **createdEventMapper.toDto(performance)** 이 코드부터였다.
 
-공연 서비스에서 이벤트를 발행할 때, Mapstruct을 이용해서 이벤트 클래스로 매핑을 시켜주는 간단한 코드이다. 여기서 들었던 생각은 이러면 ‘**모든 이벤트에 대한 mapper를 다 구현해야 할까**?’ 와 ‘**모든 이벤트는 공통된 구조를 가지고 payload만 바뀔텐데 mapper가 필요할까?**’ 였다.
+공연 서비스에서 이벤트를 발행할 때, Mapstruct을 이용해서 이벤트 클래스로 매핑을 시켜주는 간단한 코드이다. 여기서 들었던 생각은 이러면 ‘**모든 이벤트에 대한 mapper를 다 구현해야 하는거 아닌가**?’ 와 ‘**모든 이벤트는 공통된 구조를 가지고 payload만 바뀔텐데 mapper가 필요할까?**’ 였다.
 
 그래서 다음과 같이 바꿨다.
 
@@ -285,7 +285,7 @@ public class PerformanceEventBuilder {
 			.eventType(eventType);
 	}
 
-  // 기본 빌더
+    // 기본 빌더
 	public static class DefaultBuilder {
 		private final PerformanceEventBuilder builder = new PerformanceEventBuilder();
 
@@ -325,23 +325,23 @@ public class PerformanceEventBuilder {
 
 	// payload 생성 빌더
 	public static class PayloadBuilder {
-		private PerformanceEventBuilder builder;
+      private PerformanceEventBuilder builder;
 
-		private PayloadBuilder(PerformanceEventBuilder builder) {
-			this.builder = builder;
-		}
+      private PayloadBuilder(PerformanceEventBuilder builder) {
+        this.builder = builder;
+      }
 
 	public PerformanceEvent create() {
-				return PerformanceEvent.builder()
-					.id(builder.id)
-					.eventDateTime(builder.eventDateTime)
-					.status(builder.statusType)
-					.source(builder.sourceType)
-					.payload(builder.payload)
-					.eventType(builder.eventType)
-					.build();
-			}
-		}
+            return PerformanceEvent.builder()
+                .id(builder.id)
+                .eventDateTime(builder.eventDateTime)
+                .status(builder.statusType)
+                .source(builder.sourceType)
+                .payload(builder.payload)
+                .eventType(builder.eventType)
+                .build();
+        }
+    }
 }
 ```
 
@@ -353,14 +353,14 @@ public class PerformanceEventBuilder {
 
 ```java
 private PerformanceEvent createPerformanceEvent(Performance performance) {
-		return PerformanceEventBuilder.pending(EventType.PERFORMANCE_CREATED)
-			.payload(() -> PerformanceCreatedPayload.from(performance))
-			.create();
-	}
+    return PerformanceEventBuilder.pending(EventType.PERFORMANCE_CREATED)
+        .payload(() -> PerformanceCreatedPayload.from(performance))
+        .create();
+}
 ```
 
 payload는 생성하려는 Payload 구현 클래스를 만들어서 넣어주기만 하면된다.
 
-총 다섯 번의 시도를 통해서 나중에는 바뀔지 모르겠지만 지금은 만족스러운 결과가 나왔다. 실제로 만들어보고 경험해보니 각 시도에는 각자의 장단점이 느껴졌다.
+나중에는 바뀔지 모르겠지만 총 다섯 번의 시도를 통해서 지금은 만족스러운 결과가 나왔다. 실제로 만들어보고 경험해보니 각 시도에는 각자의 장단점이 느껴졌다.
 
 프로젝트 구조나 범용성, 유연성, 복잡도에 따라 맞는 방법을 있을 것이다. 개발은 모든게 트레이드오프라는 말이 조금 와닿았던 경험이었던 것 같다.
