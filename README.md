@@ -109,8 +109,10 @@ PostgreSQL
 
 # **6. 이슈**
 
-### [1. 예약 신청이 동시에 엄청난 양이 온다면?](./document/many-reservation.md)
+#### [1. 예약 신청이 동시에 엄청난 양이 온다면?](./document/many-reservation.md)
 
-### [2. 관심사의 분리](./document/separation-of-concerns.md)
+#### [2. 관심사의 분리](./document/separation-of-concerns.md)
 
-### [3. 모니터링 구성(Local + Docker)](./document/monitoring-docker-local.md)
+#### [3. 모니터링 구성(Local + Docker)](./document/monitoring-docker-local.md)
+
+#### [4. 이벤트 클래스를 설계하면서..](./document/event-class-design.md)
