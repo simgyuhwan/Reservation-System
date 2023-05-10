@@ -151,4 +151,4 @@
 
 #### [3. 모니터링 구성(Local + Docker)](./document/monitoring-docker-local.md)
 
-#### [4. 이벤트 클래스를 설계하면서..](./document/event-class-design.md)
+#### [4. 이벤트 클래스를 설계하면서](./document/event-class-design.md)

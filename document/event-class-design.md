@@ -18,23 +18,25 @@
 
 ##### [네 번째 시도(Builder & Strategy 패턴)](#4-네-번째-시도-builder--strategy-패턴)
 
-##### [마지막 시도(Builder 패턴)](#6-마지막-시도나를-만드는건-나다)
+##### [다섯 번째 시도(Builder 패턴)](#5-다섯-번째-시도-builder-패턴)
+
+##### [마지막 시도(나를 만드는건 나다)](#6-마지막-시도나를-만드는건-나다)
 
 <br>
 
-이번 글은 이벤트 클래스를 설계 및 구현하면서 겪었던 *_경험_* 과 *_개인적인 생각_* 들을 적으려고 한다. 기록을 위해 시간의 흐름대로 떠올랐던 생각들을 적었다.
+이번 글은 이벤트 클래스를 설계 및 구현하면서 겪었던 _*경험*_ 과 _*개인적인 생각*_ 들을 적으려고 한다. 기록을 위해 시간의 흐름대로 떠올랐던 생각들을 적었다.
 
 # **1. Event 설계**
 
-공통 Event를 설계하면서 중요하게 생각했던 것이 두 가지였는데. **필수** **필드**와 **설계의 목적 전달**이었다. 필수 필드는 **이벤트 생성 시간**, **이벤트 ID**,  **이벤트 상태**, **소스(출처)**, **페이로드**이고 설계의 목적 전달로는 **Event 내부에 Payload가 포함된다는 구조**를 전달하고 싶었다
+공통 Event를 설계하면서 중요하게 생각했던 것이 두 가지였는데. **필수** **필드**와 **설계의 목적 전달**이었다. 필수 필드는 **이벤트 생성 시간**, **이벤트 ID**, **이벤트 상태**, **소스(출처)**, **페이로드**이고 설계의 목적 전달로는 **Event 내부에 Payload가 포함된다는 구조**를 전달하고 싶었다
 
-| 필드 | 필드명 |
-| --- | --- |
-| 이벤트 ID | eventId |
+| 필드             | 필드명        |
+| ---------------- | ------------- |
+| 이벤트 ID        | eventId       |
 | 이벤트 생성 시간 | eventDateTime |
-| 이벤트 상태 | status |
-| 소스 | source |
-| 페이로드 | payload |
+| 이벤트 상태      | status        |
+| 소스             | source        |
+| 페이로드         | payload       |
 
 <br>
 
@@ -57,9 +59,9 @@ public interface Payload{}
 
 처음 생각했던 방식은 Event 클래스를 추상클래스로 만들고 Payload를 인터페이스로 만드는 방식이었다. 이로써 목적했던 모든 것들이 다 담겼다고 생각했다.
 
-**원했던 필드들이 포함될 뿐더러 Payload가 Event 클래스 안에 있다는 것을 확인할 수 있었다** 그런데 실제 사용해보니 **예상치 못한** **불편함**을 느낄 수 있었다. 
+**원했던 필드들이 포함될 뿐더러 Payload가 Event 클래스 안에 있다는 것을 확인할 수 있었다** 그런데 실제 사용해보니 **예상치 못한** **불편함**을 느낄 수 있었다.
 
-막상 상속 받아서 각 서비스에서 사용할 Event를 생성하려고 하니 ‘**추상 클래스에 있는 필드 값이 뭐였더라?’** 결국 추상 클래스를 들어가서 확인해야 했다. 그리고 추상 클래스 내부 필드를 임의대로 수정하고자 하니 추상 클래스에 메서드를 추가했어야 했다. 각 서비스의 요청와 필요에 따라 **추상 클래스의 수정은 불가피해 보였다**. 
+막상 상속 받아서 각 서비스에서 사용할 Event를 생성하려고 하니 ‘**추상 클래스에 있는 필드 값이 뭐였더라?’** 결국 추상 클래스를 들어가서 확인해야 했다. 그리고 추상 클래스 내부 필드를 임의대로 수정하고자 하니 추상 클래스에 메서드를 추가했어야 했다. 각 서비스의 요청와 필요에 따라 **추상 클래스의 수정은 불가피해 보였다**.
 
 결국 다른 방법을 찾아보는데..
 
@@ -120,7 +122,7 @@ public class DefaultEvent<T extends Payload> implements Event{
 }
 ```
 
-**Spring Security**에서 아이디어를 얻었다. Spring Security의 **AuthenticationManager**나 **UserDetailService** 등을 보면 이 **인터페이스의 역할과 책임을 이름과 메서드(메시지)로 표현**했다.  이 아이디어를 착안해서 Event 인터페이스가 해야할 책임과 메시지를 메서드로 표현했다. Event를 구현한 클래스는 필수 값들을 뱉어내야 한다. 라는 메시지를 전달했다.
+**Spring Security**에서 아이디어를 얻었다. Spring Security의 **AuthenticationManager**나 **UserDetailService** 등을 보면 이 **인터페이스의 역할과 책임을 이름과 메서드(메시지)로 표현**했다. 이 아이디어를 착안해서 Event 인터페이스가 해야할 책임과 메시지를 메서드로 표현했다. Event를 구현한 클래스는 필수 값들을 뱉어내야 한다. 라는 메시지를 전달했다.
 
 원했던 구조도 getPayload를 통해 나름 전달했다고 생각한다. 사실 더 좋은 방법이 안떠올랐다.. 최종적으로는 **DefaultEvent**를 만들어서 각 서비스에서는 Payload 인터페이스를 원하는 구조로 구현해서 교체하면서 사용할 수 있도록 만들었다.
 
@@ -145,7 +147,7 @@ public void createPerformance(PerformanceDto registrationDto) {
 }
 ```
 
-첫 시작은 **`createdEventMapper.toDto(performance)`** 이 코드부터였다. 
+첫 시작은 **`createdEventMapper.toDto(performance)`** 이 코드부터였다.
 
 공연 서비스에서 이벤트를 발행할 때, **Mapstruct**을 이용해서 이벤트 클래스로 매핑을 시켜주는 간단한 코드이다. 코드를 보며 들었던 생각은
 
@@ -169,9 +171,9 @@ private PerformanceEvent createPerformanceEvent(Performance performance) {
 }
 ```
 
-Event 클래스와 Payload 클래스에게 **팩토리 메서드 패턴**을(from)을 적용했다. 
+Event 클래스와 Payload 클래스에게 **팩토리 메서드 패턴**을(from)을 적용했다.
 
-이 소스를 보며 세 가지 문제점이 떠올랐는데. 
+이 소스를 보며 세 가지 문제점이 떠올랐는데.
 
 - **Event 클래스를 생성할 때, 내부적으로 payload 까지 같이 만드는게 낫지 않을까?**
 - **Event, Payload 구현체를 다 알아야 하니 관리하기 힘들지 않을까?**
@@ -197,7 +199,7 @@ private PerformanceEvent<Payload> createPerformanceEvent(Performance performance
 **빌더, PerformanceEvent 클래스**
 
 ```java
-// 빌더 클래스 
+// 빌더 클래스
 public class PerformanceEventBuilder<T extends Payload> {
 	private EventType eventType;
 	private T payload;
@@ -205,20 +207,20 @@ public class PerformanceEventBuilder<T extends Payload> {
 	public static<T> Builder<T> withEventType(EventType eventType) {
 	    return new Builder<>(eventType);
 	}
-	
+
 	public static class Builder<T> {
 	    private EventType eventType;
 	    private T payload;
-	
+
 	    public Builder(EventType eventType) {
 	        this.eventType = eventType;
 	    }
-	
+
 	    public Builder<T> withPayload(Payload payload) {
 	        this.payload = payload;
 	        return this;
 	    }
-	
+
 	    public PerformanceEvent create() {
 	        return PerformanceEvent.from(eventType, payload);
 	    }
@@ -228,7 +230,7 @@ public class PerformanceEventBuilder<T extends Payload> {
 // PerformanceEvent 클래스
 public class PerformanceEvent implements Event {
  ....
-	
+
 	public static PerformanceEvent from PerformanceEvent(EventType eventType, Payload payload) {
 		switch(eventType) {
 			case PERFORMANCE_CREATED_EVENT : ...;
@@ -245,7 +247,7 @@ public class PerformanceEvent implements Event {
 - **생성자의 매개변수 순서가 바뀌면 안되는 경우**
 - **불변 객체를 만들려는 경우**
 
-쉽게 말해 꼭 필요한 매개변수를 원하는 순서로 넣어 완전한 객체로 만들기 위해서 사용하는데. 위의 코드는 순서도 보장 못하며 매개변수가 많지도 않다. 그리고 각 생성의 책임이 Event의 생성은 PerformanceEvent가 Payload 생성은 PerformancePayloadFactory가 하며, Event, Payload 생성은 PerformanceEventBuilder이 한다. 생성 책임이 세 곳으로 분리됐다. 
+쉽게 말해 꼭 필요한 매개변수를 원하는 순서로 넣어 완전한 객체로 만들기 위해서 사용하는데. 위의 코드는 순서도 보장 못하며 매개변수가 많지도 않다. 그리고 각 생성의 책임이 Event의 생성은 PerformanceEvent가 Payload 생성은 PerformancePayloadFactory가 하며, Event, Payload 생성은 PerformanceEventBuilder이 한다. 생성 책임이 세 곳으로 분리됐다.
 
 1. **객체 생성 순서를 보장 못하기 때문에 payload 없이도 이벤트 생성이 가능**
 2. **이벤트가 증가하면 switch문의 case 증가**
@@ -277,20 +279,20 @@ public class PerformanceEventBuilder {
 	public static Builder withPayload(Payload payload) {
 	    return new Builder(payload);
 	}
-	
+
 	public static class Builder {
 		private Payload payload;
 		private EventCreator eventCreator;
-	
+
 	    public Builder(Payload payload) {
 	        this.eventType = eventType;
 	    }
-	
+
 	    public Builder withEventCreator(EventCreator eventCreator) {
 	        this.eventCreator = eventCreator;
 	        return this;
 	    }
-	
+
 	    public PerformanceEvent create() {
 	        return payloadCreator.createEvent(payload);
 	    }
@@ -303,7 +305,7 @@ public interface EventCreator {
 }
 ```
 
-switch를 어떻게 분리할까? 라는 생각에 빠져 전략 패턴을 사용했었다. 
+switch를 어떻게 분리할까? 라는 생각에 빠져 전략 패턴을 사용했었다.
 
 **PayloadCreator**를 인터페이스를 활용하여 switch 부분을 클래스 단위로 확장시켰다. 이쯤되니 빌더 패턴 왜 필요한가 싶었다
 
@@ -423,17 +425,17 @@ public class PerformanceEventBuilder {
 
 빌더 클래스를 내부에 넣음으로써 코드의 내부의 복잡도는 수직 상승했지만 사용했을 때의 편의성이 증가했고 더 직관적이었다.
 
-이벤트의 상태는 한정적이니 그 중 하나인 **`pending()`** 을 만들었다. 
+이벤트의 상태는 한정적이니 그 중 하나인 **`pending()`** 을 만들었다.
 
 `pending()` 을 사용하면 자동으로 이벤트 상태는 PENDING 값으로 넣어준다. 동시에 필요한 나머지 필드도 넣어준다.
 
- 지금은 pending 하나만 추가했지만 상황에 따라 **retry, ready, success, fail** 등 원하는 상태를 표현할 수 있다. 또 함수형 인터페이스 **Supplier**를 사용해서 외부에서는 Payload를 만들어서 전달하면 된다.
+지금은 pending 하나만 추가했지만 상황에 따라 **retry, ready, success, fail** 등 원하는 상태를 표현할 수 있다. 또 함수형 인터페이스 **Supplier**를 사용해서 외부에서는 Payload를 만들어서 전달하면 된다.
 
-여태까지의 시도 중에는 가장 마음에 들었다. 이게 빌더 패턴이구나 느껴졌으며 `pending() → payload() → create()` 
+여태까지의 시도 중에는 가장 마음에 들었다. 이게 빌더 패턴이구나 느껴졌으며 `pending() → payload() → create()`
 
-사용 순서를 보장해준다. 
+사용 순서를 보장해준다.
 
-물론 이 방법도 완전하지는 않다. **PerformanceEvent 클래스와 Builder 클래스를 모두 관리**하기 때문이다. 
+물론 이 방법도 완전하지는 않다. **PerformanceEvent 클래스와 Builder 클래스를 모두 관리**하기 때문이다.
 
 <br>
 
@@ -522,7 +524,7 @@ public class PerformanceEvent implements Event {
 			this.source = source;
 			return this;
 		}
-		
+
 		public PerformanceEvent payload(Supplier<Payload> supplier) {
 			this.payload = supplier.get();
 			return new PerformanceEvent(this);
@@ -531,9 +533,9 @@ public class PerformanceEvent implements Event {
 }
 ```
 
-객체의 생성에 대한 책임을 **PerformanceEvent** 자체에 넘겨버렸다. 그리고 다섯 번째 방법을 가져와 내부적으로 빌더 클래스를 넣어놨다. 
+객체의 생성에 대한 책임을 **PerformanceEvent** 자체에 넘겨버렸다. 그리고 다섯 번째 방법을 가져와 내부적으로 빌더 클래스를 넣어놨다.
 
-공연 이벤트에 대한 생성과 비즈니스 로직은 모두 이 내부에 넘겨서 객체가 일을 할 수 있도록 바꿔버렸다. 객체의 생성과 비즈니스 로직이 한 곳에 집중된 만큼 객체가 커질 수 있고 복잡해질 수 있다고 생각된다. 
+공연 이벤트에 대한 생성과 비즈니스 로직은 모두 이 내부에 넘겨서 객체가 일을 할 수 있도록 바꿔버렸다. 객체의 생성과 비즈니스 로직이 한 곳에 집중된 만큼 객체가 커질 수 있고 복잡해질 수 있다고 생각된다.
 
 하지만 지금 정도의 프로젝트에선 무리없다고 생각되며 관리 포인트도 한 곳으로 집중되었다. 계속 사용하다보면 더 좋은게 떠오를지 모르겠지만 지금은 이정도선에서 만족했다.
 
