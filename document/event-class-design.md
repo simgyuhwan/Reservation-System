@@ -10,17 +10,17 @@
 
 #### [2. Event 생성](#2-event의-생성)
 
-##### [첫 번째 시도(Mapper)](#1-첫-번째-시도-mapper)
+##### [1) 첫 번째 시도(Mapper)](#1-첫-번째-시도-mapper)
 
-##### [두 번째 시도(Factory method 패턴)](#2-두-번째-시도-factory-method-패턴)
+##### [2) 두 번째 시도(Factory method 패턴)](#2-두-번째-시도-factory-method-패턴)
 
-##### [세 번째 시도(Builder 패턴)](#3-세-번째-시도-builder-패턴)
+##### [3) 세 번째 시도(Builder 패턴)](#3-세-번째-시도-builder-패턴)
 
-##### [네 번째 시도(Builder & Strategy 패턴)](#4-네-번째-시도-builder--strategy-패턴)
+##### [4) 네 번째 시도(Builder & Strategy 패턴)](#4-네-번째-시도-builder--strategy-패턴)
 
-##### [다섯 번째 시도(Builder 패턴)](#5-다섯-번째-시도-builder-패턴)
+##### [5) 다섯 번째 시도(Builder 패턴)](#5-다섯-번째-시도-builder-패턴)
 
-##### [마지막 시도(나를 만드는건 나다)](#6-마지막-시도나를-만드는건-나다)
+##### [6) 마지막 시도(나를 만드는건 나다)](#6-마지막-시도나를-만드는건-나다)
 
 <br>
 
