@@ -13,6 +13,7 @@ import com.reservation.performanceservice.application.mapper.PerformanceDtoMappe
 import com.reservation.performanceservice.dao.PerformanceRepository;
 import com.reservation.performanceservice.domain.Performance;
 import com.reservation.performanceservice.dto.request.PerformanceDto;
+import com.reservation.performanceservice.dto.response.CreatedResponseDto;
 import com.reservation.performanceservice.error.InvalidPerformanceDateException;
 import com.reservation.performanceservice.error.PerformanceNotFoundException;
 import com.reservation.performanceservice.event.PerformanceCreatedPayload;
@@ -32,10 +33,12 @@ public class PerformanceCommandServiceImpl implements PerformanceCommandService 
 	private final ApplicationEventPublisher eventPublisher;
 
 	@Override
-	public void createPerformance(PerformanceDto registrationDto) {
+	public CreatedResponseDto createPerformance(PerformanceDto registrationDto) {
 		validatePerformanceDate(registrationDto);
 		Performance performance = performanceRepository.save(performanceDtoMapper.toEntity(registrationDto));
-		eventPublisher.publishEvent(createPerformanceEvent(performance));
+		PerformanceEvent performanceEvent = createPerformanceEvent(performance);
+		eventPublisher.publishEvent(performanceEvent);
+		return CreatedResponseDto.requestComplete(performanceEvent.getId());
 	}
 
 	@Override

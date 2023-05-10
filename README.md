@@ -39,7 +39,7 @@
 
 - 각 서비스간의 연동은 Rest API와 이벤트를 이용한다.
 - 발생되는 이벤트들은 모두 이벤트 서비스로 전달되며, 이벤트 서비스는 이벤트를 발행 및 관리하는 역할을 한다.
-- 분산 트랜잭션은 사가 패턴의 Orchestration 방식을 적용한다. (다음 프로젝트는 Choreography 예정)
+- 분산 트랜잭션은 사가 패턴의 Orchestration, Choreography 두 방식을 다 사용
 - 보안 구성으로는 Authorization Server, Resource Server를 구성한다.
 - Gateway Server를 Resource Server로 구성하고 모든 요청은 Gateway Server를 통해서만 가능하게 한다.
 - Gateway Server를 거치지 않고는 다른 서비스들에 직접적인 접근이 불가능하도록 설정한다.

@@ -12,12 +12,12 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.reservation.performanceservice.application.PerformanceQueryService;
 import com.reservation.performanceservice.application.PerformanceCommandService;
 import com.reservation.performanceservice.dto.request.PerformanceDto;
+import com.reservation.performanceservice.dto.response.CreatedResponseDto;
 
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
@@ -30,10 +30,9 @@ public class PerformanceController {
 	private final PerformanceQueryService performanceQueryService;
 
 	@PostMapping
-	@ResponseStatus(HttpStatus.CREATED)
-	@Operation(summary = "[공연] 공연 등록", description = "공연 등록 API")
-	public void performanceRegister(@RequestBody @Validated PerformanceDto registerDto) {
-		performanceCommandService.createPerformance(registerDto);
+	@Operation(summary = "[공연] 공연 등록 요청", description = "공연 등록 API")
+	public ResponseEntity<CreatedResponseDto> performanceRegister(@RequestBody @Validated PerformanceDto registerDto) {
+		return ResponseEntity.status(HttpStatus.CREATED).body(performanceCommandService.createPerformance(registerDto));
 	}
 
 	@PutMapping("/{performanceId}")
