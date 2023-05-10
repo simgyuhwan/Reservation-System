@@ -24,7 +24,7 @@ import com.reservation.factory.MemberFactory;
 import com.reservation.factory.PerformanceDtoFactory;
 import com.reservation.memberservice.application.MemberQueryServiceImpl;
 import com.reservation.memberservice.application.mapper.MemberInfoDtoMapper;
-import com.reservation.common.client.PerformanceApiClient;
+import com.reservation.common.client.PerformanceClient;
 import com.reservation.memberservice.dao.MemberRepository;
 import com.reservation.memberservice.domain.Member;
 import com.reservation.memberservice.dto.response.MemberInfoDto;
@@ -54,7 +54,7 @@ public class MemberQueryServiceTest {
 	private MemberRepository memberRepository;
 
 	@Mock
-	private PerformanceApiClient performanceApiClient;
+	private PerformanceClient performanceClient;
 
 	@Spy
 	MemberInfoDtoMapper memberInfoDtoMapper = MemberInfoDtoMapper.INSTANCE;
@@ -111,7 +111,7 @@ public class MemberQueryServiceTest {
 		void SuccessPerformanceSearchByMemberId() {
 			// given
 			Member member = createMember(USER_ID, USERNAME);
-			when(performanceApiClient.getPerformanceByMemberId(MEMBER_ID)).thenReturn(createPerformanceDtoList());
+			when(performanceClient.getPerformanceByMemberId(MEMBER_ID)).thenReturn(createPerformanceDtoList());
 			when(memberRepository.findById(MEMBER_ID)).thenReturn(Optional.of(member));
 
 			// when

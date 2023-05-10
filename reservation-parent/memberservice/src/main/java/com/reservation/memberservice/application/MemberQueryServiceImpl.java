@@ -10,7 +10,7 @@ import org.springframework.util.Assert;
 import com.reservation.common.dto.PerformanceDto;
 import com.reservation.common.error.ErrorMessage;
 import com.reservation.memberservice.application.mapper.MemberInfoDtoMapper;
-import com.reservation.common.client.PerformanceApiClient;
+import com.reservation.common.client.PerformanceClient;
 import com.reservation.memberservice.dao.MemberRepository;
 import com.reservation.memberservice.domain.Member;
 import com.reservation.memberservice.dto.response.MemberInfoDto;
@@ -18,7 +18,6 @@ import com.reservation.memberservice.dto.response.MemberPerformanceDto;
 import com.reservation.memberservice.error.InvalidUserIdException;
 import com.reservation.memberservice.error.MemberNotFoundException;
 
-import io.github.resilience4j.circuitbreaker.CircuitBreakerRegistry;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -37,7 +36,7 @@ import lombok.extern.slf4j.Slf4j;
 public class MemberQueryServiceImpl implements MemberQueryService {
 	private final MemberRepository memberRepository;
 	private final MemberInfoDtoMapper memberInfoDtoMapper;
-	private final PerformanceApiClient performanceApiClient;
+	private final PerformanceClient performanceClient;
 
 	@Override
 	public MemberInfoDto findMemberById(Long memberId) {
@@ -57,7 +56,7 @@ public class MemberQueryServiceImpl implements MemberQueryService {
 	public MemberPerformanceDto selectPerformancesById(Long memberId) {
 		Assert.notNull(memberId, "memberId must not be null");
 		Member member = findById(memberId);
-		List<PerformanceDto> performances = performanceApiClient.getPerformanceByMemberId(memberId);
+		List<PerformanceDto> performances = performanceClient.getPerformanceByMemberId(memberId);
 		return MemberPerformanceDto.of(member, performances);
 	}
 

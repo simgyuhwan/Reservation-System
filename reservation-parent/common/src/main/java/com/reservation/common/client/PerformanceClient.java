@@ -17,7 +17,7 @@ import com.reservation.common.dto.PerformanceDto;
  * @since 2023.05.04
  */
 @FeignClient(name = "performance-service", path = "/api/performances")
-public interface PerformanceApiClient {
+public interface PerformanceClient {
 
 	@GetMapping
 	List<PerformanceDto> getPerformanceByMemberId(@RequestParam("memberId") Long memberId);

@@ -3,7 +3,7 @@ package com.sim.reservationservice.application;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.reservation.common.client.PerformanceApiClient;
+import com.reservation.common.client.PerformanceClient;
 import com.reservation.common.dto.PerformanceDto;
 import com.sim.reservationservice.application.mapper.PerformanceInfoMapper;
 import com.sim.reservationservice.dao.PerformanceInfoRepository;
@@ -22,14 +22,14 @@ import lombok.extern.slf4j.Slf4j;
 @Transactional
 @RequiredArgsConstructor
 public class PerformanceSyncServiceImpl implements PerformanceSyncService{
-	private final PerformanceApiClient performanceApiClient;
+	private final PerformanceClient performanceClient;
 	private final PerformanceInfoMapper performanceInfoMapper;
 	private final PerformanceInfoRepository performanceInfoRepository;
 
 	@CircuitBreaker(name = "getPerformances", fallbackMethod = "fallback")
 	@Override
 	public boolean requestAndSavePerformanceInfo(Long performanceId) {
-		PerformanceDto performanceDto = performanceApiClient.getPerformanceById(performanceId);
+		PerformanceDto performanceDto = performanceClient.getPerformanceById(performanceId);
 		PerformanceInfo performanceInfo = performanceInfoMapper.toEntity(performanceDto);
 		performanceInfoRepository.save(performanceInfo);
 		return true;
