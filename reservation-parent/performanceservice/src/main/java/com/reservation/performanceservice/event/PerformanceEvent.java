@@ -32,13 +32,13 @@ public class PerformanceEvent implements Event {
 	}
 
 	@Override
-	public String getSource() {
-		return source.name();
+	public SourceType getSource() {
+		return source;
 	}
 
 	@Override
-	public String getStatus() {
-		return status.name();
+	public EventStatusType getStatus() {
+		return status;
 	}
 
 	@Override

@@ -19,6 +19,7 @@ import lombok.extern.slf4j.Slf4j;
 @Configuration
 @RequiredArgsConstructor
 public class PerformanceConsumer {
+
 	@Bean
 	Function<DefaultEvent<PerformanceCreatedPayload>, DefaultEvent<PerformanceCreatedPayload>> performanceCreatedEventConsumer() {
 		return event -> {

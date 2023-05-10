@@ -99,9 +99,9 @@ public interface Event {
 
 	Payload getPayload();
 
-	String getSource();
+	SourceType getSource();
 
-	String getStatus();
+	EventStatusType getStatus();
 
 	LocalDateTime getEventDateTime();
 }
@@ -112,14 +112,25 @@ public interface Payload {}
 // 기본 클래스
 public class DefaultEvent<T extends Payload> implements Event{
 	private String id;
+
+	@JsonSerialize(using = LocalDateTimeSerializer.class)
+	@JsonDeserialize(using = LocalDateTimeDeserializer.class)
 	private LocalDateTime eventDateTime;
-	private String status;
+	private EventStatusType status;
 	private T payload;
 	private String eventType;
-	private String source;
-
-	// override..getter..
+	private SourceType source;
 }
+
+// 사용 예시
+// 받고 싶은 Payload 타입으로 지정
+Function<DefaultEvent<PerformanceCreatedPayload>, DefaultEvent<PerformanceCreatedPayload>> performanceCreatedEventConsumer() {
+	return event -> {
+		// 비즈니스 로직
+		return event;
+	};
+}
+
 ```
 
 **Spring Security**에서 아이디어를 얻었다. Spring Security의 **AuthenticationManager**나 **UserDetailService** 등을 보면 이 **인터페이스의 역할과 책임을 이름과 메서드(메시지)로 표현**했다. 이 아이디어를 착안해서 Event 인터페이스가 해야할 책임과 메시지를 메서드로 표현했다. Event를 구현한 클래스는 필수 값들을 뱉어내야 한다. 라는 메시지를 전달했다.

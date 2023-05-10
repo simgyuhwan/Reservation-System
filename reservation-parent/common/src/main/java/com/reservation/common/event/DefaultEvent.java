@@ -7,6 +7,8 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import com.reservation.common.event.payload.Payload;
+import com.reservation.common.types.EventStatusType;
+import com.reservation.common.types.SourceType;
 
 import lombok.Builder;
 import lombok.NoArgsConstructor;
@@ -18,13 +20,13 @@ public class DefaultEvent<T extends Payload> implements Event{
 	@JsonSerialize(using = LocalDateTimeSerializer.class)
 	@JsonDeserialize(using = LocalDateTimeDeserializer.class)
 	private LocalDateTime eventDateTime;
-	private String status;
+	private EventStatusType status;
 	private T payload;
 	private String eventType;
-	private String source;
+	private SourceType source;
 
 	@Builder
-	public DefaultEvent(String id, LocalDateTime eventDateTime, String status, String source,
+	public DefaultEvent(String id, LocalDateTime eventDateTime, EventStatusType status, SourceType source,
 		T payload, String eventType) {
 		this.id = id;
 		this.eventDateTime = eventDateTime;
@@ -49,12 +51,12 @@ public class DefaultEvent<T extends Payload> implements Event{
 	}
 
 	@Override
-	public String getSource() {
+	public SourceType getSource() {
 		return source;
 	}
 
 	@Override
-	public String getStatus() {
+	public EventStatusType getStatus() {
 		return status;
 	}
 
