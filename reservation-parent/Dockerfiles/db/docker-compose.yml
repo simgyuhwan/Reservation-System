@@ -28,7 +28,7 @@ services:
     volumes:
       - ./data/mysql-2:/var/lib/mysql
 
-  postgresql:
+  postgresql_1:
     image: postgres:14.1-alpine
     restart: always
     container_name: postgreSQL_1

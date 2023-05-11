@@ -41,8 +41,7 @@ public class PerformanceCommandServiceImpl implements PerformanceCommandService 
 		validatePerformanceDate(performanceDto);
 		Performance performance = performanceRepository.save(createPendingPerformance(performanceDto));
 
-		PerformanceEvent performanceEvent = createPerformanceEvent(performance);
-		eventPublisher.publishEvent(performanceEvent);
+		eventPublisher.publishEvent(createEvent(performance));
 
 		return CreatedResponseDto.requestComplete(performance.getId());
 	}
@@ -56,9 +55,9 @@ public class PerformanceCommandServiceImpl implements PerformanceCommandService 
 	}
 
 	@Override
-	public void performanceChangeStatus(Long performanceId, RegisterStatusType registerStatusType) {
+	public void performanceChangeStatus(Long performanceId, RegisterStatusType registerStatus) {
 		Performance performance = getPerformanceById(performanceId);
-		performance.changeStatus(registerStatusType);
+		performance.changeStatus(registerStatus);
 	}
 
 	private Performance getPerformanceById(Long performanceId) {
@@ -80,7 +79,7 @@ public class PerformanceCommandServiceImpl implements PerformanceCommandService 
 		}
 	}
 
-	private PerformanceEvent createPerformanceEvent(Performance performance) {
+	private PerformanceEvent createEvent(Performance performance) {
 		return PerformanceEvent.pending(EventType.PERFORMANCE_CREATED)
 			.payload(() -> PerformanceCreatedPayload.from(performance));
 	}

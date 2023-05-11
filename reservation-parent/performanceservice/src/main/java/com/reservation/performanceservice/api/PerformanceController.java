@@ -48,12 +48,13 @@ public class PerformanceController {
 	}
 
 	@GetMapping("/{performanceId}")
-	@Operation(summary = "[공연] 등록된 공연 상세 조회", description = "공연 ID로 등록된 공연 상세 조회" )
+	@Operation(summary = "[공연] 등록된 공연 상세 조회", description = "공연 ID로 등록된 공연 상세 조회 API" )
 	public PerformanceDto performanceSelectById(@PathVariable Long performanceId) {
 		return performanceQueryService.selectPerformanceById(performanceId);
 	}
 
 	@GetMapping("/{performanceId}/pending")
+	@Operation(summary = "[공연] 등록 신청 중인 공연 정보 조회", description = "등록 신청 중인 공연 정보 조회 API")
 	public PerformanceDto unregisteredPerformanceInfo(@PathVariable Long performanceId) {
 		return performanceQueryService.selectPendingPerformanceById(performanceId);
 	}
