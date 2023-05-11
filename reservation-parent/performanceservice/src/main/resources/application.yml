@@ -20,7 +20,7 @@ spring:
   application:
     name: performance-service
   datasource:
-    url: jdbc:mysql://${DB_URL}:${DB_PORT}/${DB_TABLE}?serverTimezone=Asia/Seoul
+    url: jdbc:mysql://${DB_URL}:${DB_PORT}/${DB_TABLE}?useSSL=false&characterEncoding=utf8mb4&serverTimezone=Asia/Seoul
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: ${DB_ID}
     password: ${DB_PW}
@@ -55,7 +55,7 @@ spring:
 
         # performance creation event results
         performanceCreatedResult-in-0:
-          destination: event-service.performance.created.result
+          destination: reservation-service.performance.created.result
           consumer:
             maxAttempts: 3
             backOffInitialInterval: 100

@@ -60,11 +60,12 @@ spring:
       #bindings
       bindings:
         performanceCreatedConsumer-in-0:
-          destination: event-service.performance.created
+          destination: performance-service.performance.created
+          group: performance_created
           consumer:
             maxAttempts: 3
             backOffInitialInterval: 100
-        performanceCreatedResult-out-0:
+        performanceCreatedConsumer-out-0:
           destination: reservation-service.performance.created.result
 
 #loging

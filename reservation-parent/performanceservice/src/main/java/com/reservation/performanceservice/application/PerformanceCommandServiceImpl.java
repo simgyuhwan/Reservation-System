@@ -1,7 +1,9 @@
 package com.reservation.performanceservice.application;
 
 import java.time.LocalDate;
+import java.util.List;
 
+import org.jetbrains.annotations.NotNull;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -12,13 +14,15 @@ import com.reservation.common.util.DateTimeUtils;
 import com.reservation.performanceservice.application.mapper.PerformanceDtoMapper;
 import com.reservation.performanceservice.dao.PerformanceRepository;
 import com.reservation.performanceservice.domain.Performance;
+import com.reservation.performanceservice.domain.PerformanceDay;
 import com.reservation.performanceservice.dto.request.PerformanceDto;
 import com.reservation.performanceservice.dto.response.CreatedResponseDto;
 import com.reservation.performanceservice.error.InvalidPerformanceDateException;
 import com.reservation.performanceservice.error.PerformanceNotFoundException;
-import com.reservation.performanceservice.event.PerformanceCreatedPayload;
+import com.reservation.performanceservice.event.payload.PerformanceCreatedPayload;
 import com.reservation.performanceservice.event.PerformanceEvent;
 import com.reservation.performanceservice.types.EventType;
+import com.reservation.performanceservice.types.RegisterStatusType;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -33,12 +37,14 @@ public class PerformanceCommandServiceImpl implements PerformanceCommandService 
 	private final ApplicationEventPublisher eventPublisher;
 
 	@Override
-	public CreatedResponseDto createPerformance(PerformanceDto registrationDto) {
-		validatePerformanceDate(registrationDto);
-		Performance performance = performanceRepository.save(performanceDtoMapper.toEntity(registrationDto));
+	public CreatedResponseDto createPerformance(PerformanceDto performanceDto) {
+		validatePerformanceDate(performanceDto);
+		Performance performance = performanceRepository.save(createPendingPerformance(performanceDto));
+
 		PerformanceEvent performanceEvent = createPerformanceEvent(performance);
 		eventPublisher.publishEvent(performanceEvent);
-		return CreatedResponseDto.requestComplete(performanceEvent.getId());
+
+		return CreatedResponseDto.requestComplete(performance.getId());
 	}
 
 	@Override
@@ -47,6 +53,12 @@ public class PerformanceCommandServiceImpl implements PerformanceCommandService 
 		Performance performance = getPerformanceById(performanceId);
 		performance.updateFromDto(updateDto);
 		return performanceDtoMapper.toDto(performance);
+	}
+
+	@Override
+	public void performanceChangeStatus(Long performanceId, RegisterStatusType registerStatusType) {
+		Performance performance = getPerformanceById(performanceId);
+		performance.changeStatus(registerStatusType);
 	}
 
 	private Performance getPerformanceById(Long performanceId) {
@@ -71,5 +83,13 @@ public class PerformanceCommandServiceImpl implements PerformanceCommandService 
 	private PerformanceEvent createPerformanceEvent(Performance performance) {
 		return PerformanceEvent.pending(EventType.PERFORMANCE_CREATED)
 			.payload(() -> PerformanceCreatedPayload.from(performance));
+	}
+
+	@NotNull
+	private Performance createPendingPerformance(PerformanceDto performanceDto) {
+		Performance performance = Performance.pending(performanceDto);
+		List<PerformanceDay> performanceDays = performanceDto.toPerformanceDays(performance);
+		performance.setPerformanceDays(performanceDays);
+		return performance;
 	}
 }

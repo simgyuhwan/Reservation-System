@@ -19,7 +19,7 @@ public class PerformanceConsumer {
 
 	@Bean
 	public Consumer<EventResult> performanceCreatedResult() {
-		return performanceEventService::eventUpdate;
+		return performanceEventService::handlePerformanceCreatedEventResult;
 	}
 
 }

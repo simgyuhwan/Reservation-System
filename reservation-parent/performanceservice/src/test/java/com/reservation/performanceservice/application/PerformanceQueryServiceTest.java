@@ -17,6 +17,7 @@ import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.reservation.performanceservice.application.mapper.PerformanceDtoMapper;
+import com.reservation.performanceservice.dao.PerformanceCustomRepository;
 import com.reservation.performanceservice.dao.PerformanceRepository;
 import com.reservation.performanceservice.domain.Performance;
 import com.reservation.performanceservice.dto.request.PerformanceDto;
@@ -37,7 +38,7 @@ class PerformanceQueryServiceTest {
 	private PerformanceQueryServiceImpl performanceQueryService;
 
 	@Mock
-	private PerformanceRepository performanceRepository;
+	private PerformanceCustomRepository performanceCustomRepository;
 
 	@Spy
 	private PerformanceDtoMapper performanceDtoMapper = PerformanceDtoMapper.INSTANCE;
@@ -50,7 +51,7 @@ class PerformanceQueryServiceTest {
 		@Test
 		@DisplayName("공연 전체 조회 실패: 회원이 등록한 공연 정보가 없음, 예외 발생")
 		void NoPerformanceInformationRegisteredByTheMemberException() {
-			when(performanceRepository.findByMemberIdOrderByCreateDtDesc(MEMBER_ID)).thenReturn(Collections.emptyList());
+			when(performanceCustomRepository.findRegisteredPerformancesByMemberId(MEMBER_ID)).thenReturn(Collections.emptyList());
 			assertThatThrownBy(() -> performanceQueryService.selectPerformances(MEMBER_ID))
 				.isInstanceOf(NoContentException.class);
 		}
@@ -60,7 +61,7 @@ class PerformanceQueryServiceTest {
 		void successfulViewingOfAllPerformances() {
 			//given
 			List<Performance> performances = createPerformanceList();
-			when(performanceRepository.findByMemberIdOrderByCreateDtDesc(MEMBER_ID)).thenReturn(performances);
+			when(performanceCustomRepository.findRegisteredPerformancesByMemberId(MEMBER_ID)).thenReturn(performances);
 
 			//when
 			List<PerformanceDto> result = performanceQueryService.selectPerformances(MEMBER_ID);
@@ -83,7 +84,7 @@ class PerformanceQueryServiceTest {
 		@Test
 		@DisplayName("존재하지 않은 공연 ID로 예외 발생")
 		void nonExistentPerformanceIDExceptionOccurred() {
-			when(performanceRepository.findById(PERFORMANCE_ID)).thenReturn(Optional.empty());
+			when(performanceCustomRepository.findPerformanceById(PERFORMANCE_ID)).thenReturn(Optional.empty());
 			assertThatThrownBy(() -> performanceQueryService.selectPerformanceById(PERFORMANCE_ID))
 				.isInstanceOf(PerformanceNotFoundException.class);
 		}
@@ -93,7 +94,7 @@ class PerformanceQueryServiceTest {
 		void performanceDetailsInquirySuccess() {
 			//given
 			Performance performance = createPerformance();
-			when(performanceRepository.findById(PERFORMANCE_ID)).thenReturn(Optional.of(performance));
+			when(performanceCustomRepository.findPerformanceById(PERFORMANCE_ID)).thenReturn(Optional.of(performance));
 
 			//when
 			PerformanceDto performanceDto = performanceQueryService.selectPerformanceById(PERFORMANCE_ID);

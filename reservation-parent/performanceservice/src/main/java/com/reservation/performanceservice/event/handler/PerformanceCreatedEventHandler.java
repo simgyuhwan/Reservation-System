@@ -9,7 +9,7 @@ import org.springframework.transaction.event.TransactionalEventListener;
 import com.reservation.common.types.EventStatusType;
 import com.reservation.performanceservice.application.PerformanceEventService;
 import com.reservation.performanceservice.event.PerformanceEvent;
-import com.reservation.performanceservice.event.producer.PerformanceProducer;
+import com.reservation.performanceservice.event.producer.EventProducer;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -18,13 +18,13 @@ import lombok.extern.slf4j.Slf4j;
 @Component
 @RequiredArgsConstructor
 public class PerformanceCreatedEventHandler {
-	private final PerformanceProducer performanceProducer;
+	private final EventProducer eventProducer;
 	private final PerformanceEventService performanceEventService;
 
 	@Async("defaultExecutor")
 	@TransactionalEventListener
 	public void handleCreatedEvent(PerformanceEvent performanceEvent) {
-		performanceProducer.publishCreatedEvent(performanceEvent);
+		eventProducer.publishPerformanceCreatedEvent(performanceEvent);
 	}
 
 	@Transactional

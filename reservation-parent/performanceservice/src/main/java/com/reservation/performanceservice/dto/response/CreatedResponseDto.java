@@ -15,15 +15,15 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 public class CreatedResponseDto {
-    private String id;
+    private Long performanceId;
     private String message;
 
-    private CreatedResponseDto(String id, String message) {
-        this.id = id;
+    private CreatedResponseDto(Long performanceId, String message) {
+        this.performanceId = performanceId;
         this.message = message;
     }
 
-    public static CreatedResponseDto requestComplete(String id) {
-        return new CreatedResponseDto(id, ResponseMessage.PERFORMANCE_CREATED_REQUEST_COMPLETE.getMessage());
+    public static CreatedResponseDto requestComplete(Long performanceId) {
+        return new CreatedResponseDto(performanceId, ResponseMessage.PERFORMANCE_CREATED_REQUEST_COMPLETE.getMessage());
     }
 }

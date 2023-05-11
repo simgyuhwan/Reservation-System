@@ -2,7 +2,6 @@ package com.sim.reservationservice.api;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,7 +30,6 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class PerformanceInfoController {
 	private final PerformanceQueryService performanceQueryService;
-	private final RedisTemplate redisTemplate;
 
 	@GetMapping("/available")
 	@Operation(summary = "[예약] 공연 예약 현황 조회", description = "공연 예약 현황 조회 API")

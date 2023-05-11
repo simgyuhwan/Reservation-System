@@ -44,4 +44,11 @@ public class PerformanceControllerAdvice {
 		ErrorResponse errorResponse = ErrorResponseFactory.from(ErrorCode.NO_REGISTERED_PERFORMANCE_INFORMATION);
 		return ResponseEntity.badRequest().body(errorResponse);
 	}
+
+	@ExceptionHandler(NotPendingPerformanceException.class)
+	public ResponseEntity<ErrorResponse> notPendingPerformanceException(NotPendingPerformanceException e) {
+		log.error(e.getMessage());
+		ErrorResponse errorResponse = ErrorResponseFactory.from(ErrorCode.NOT_FOUND_PENDING_PERFORMANCE);
+		return ResponseEntity.badRequest().body(errorResponse);
+	}
 }

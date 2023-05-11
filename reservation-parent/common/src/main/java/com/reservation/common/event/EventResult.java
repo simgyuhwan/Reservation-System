@@ -32,4 +32,13 @@ public class EventResult {
 			.message(message)
 			.build();
 	}
+
+	public boolean isSuccess() {
+		return success;
+	}
+
+	public boolean isFailure() {
+		return !success;
+	}
+
 }

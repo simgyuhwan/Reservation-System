@@ -15,4 +15,6 @@ public interface PerformanceQueryService {
 	List<PerformanceDto> selectPerformances(Long memberId);
 
 	PerformanceDto selectPerformanceById(Long performanceId);
+
+	PerformanceDto selectPendingPerformanceById(Long performanceId);
 }

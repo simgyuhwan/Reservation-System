@@ -7,18 +7,21 @@ import com.reservation.common.model.BaseEntity;
 import com.reservation.common.types.PerformanceType;
 import com.reservation.common.types.PerformanceTypeConverter;
 import com.reservation.performanceservice.dto.request.PerformanceDto;
+import com.reservation.performanceservice.types.RegisterStatusType;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -32,7 +35,6 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter @Table(name = "performance")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor
 public class Performance extends BaseEntity {
 
 	@Id @Column(name = "performance_id")
@@ -58,6 +60,9 @@ public class Performance extends BaseEntity {
 
 	private String performancePlace;
 
+	@Enumerated(EnumType.STRING)
+	private RegisterStatusType registrationStatus;
+
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "performance")
 	private List<PerformanceDay> performanceDays = new ArrayList<>();
 
@@ -75,10 +80,47 @@ public class Performance extends BaseEntity {
 		this.performanceDays = performanceDays;
 	}
 
+	@Builder
+	private Performance(Long memberId, String performanceName, PerformanceType performanceType, Integer audienceCount, Integer price,
+		String contactPhoneNum, String contactPersonName, String performanceInfo, String performancePlace, List<PerformanceDay> performanceDays, RegisterStatusType registrationStatus) {
+		this(memberId, performanceName, performanceType,audienceCount,price,contactPhoneNum,contactPersonName,performanceInfo,performancePlace,performanceDays);
+		this.registrationStatus = registrationStatus;
+	}
+
 	public static Performance of(Long memberId, String performanceName, PerformanceType performanceType, Integer audienceCount, Integer price,
 		String contactPhoneNum, String contactPersonName, String performanceInfo, String performancePlace, List<PerformanceDay> performanceDays) {
 		return new Performance(memberId, performanceName, performanceType, audienceCount, price, contactPhoneNum, contactPersonName,
 			performanceInfo, performancePlace, performanceDays);
+	}
+
+	public static Performance pending(PerformanceDto performanceDto) {
+		return Performance.builder()
+			.memberId(performanceDto.getMemberId())
+			.performanceName(performanceDto.getPerformanceName())
+			.performanceType(performanceDto.getType())
+			.audienceCount(performanceDto.getAudienceCount())
+			.price(performanceDto.getPrice())
+			.contactPhoneNum(performanceDto.getContactPhoneNum())
+			.contactPersonName(performanceDto.getContactPersonName())
+			.performanceInfo(performanceDto.getPerformanceInfo())
+			.performancePlace(performanceDto.getPerformancePlace())
+			.registrationStatus(RegisterStatusType.PENDING)
+			.build();
+	}
+
+	public static Performance completed(PerformanceDto performanceDto) {
+		return Performance.builder()
+			.memberId(performanceDto.getMemberId())
+			.performanceName(performanceDto.getPerformanceName())
+			.performanceType(performanceDto.getType())
+			.audienceCount(performanceDto.getAudienceCount())
+			.price(performanceDto.getPrice())
+			.contactPhoneNum(performanceDto.getContactPhoneNum())
+			.contactPersonName(performanceDto.getContactPersonName())
+			.performanceInfo(performanceDto.getPerformanceInfo())
+			.performancePlace(performanceDto.getPerformancePlace())
+			.registrationStatus(RegisterStatusType.COMPLETED)
+			.build();
 	}
 
 	public void setPerformanceDays(List<PerformanceDay> performanceDays) {
@@ -104,6 +146,10 @@ public class Performance extends BaseEntity {
 		updatePerformanceDays.stream()
 			.filter(performanceDay -> !this.performanceDays.contains(performanceDay))
 			.forEach(this.performanceDays::add);
+	}
+
+	public void changeStatus(RegisterStatusType registerStatusType) {
+		this.registrationStatus = registerStatusType;
 	}
 
 }

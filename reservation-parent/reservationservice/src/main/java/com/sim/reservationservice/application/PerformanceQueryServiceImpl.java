@@ -5,7 +5,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.sim.reservationservice.dao.PerformanceCustomRepository;
+import com.sim.reservationservice.dao.PerformanceInfoCustomRepository;
 import com.sim.reservationservice.dto.request.PerformanceSearchDto;
 import com.sim.reservationservice.dto.response.PerformanceInfoDto;
 
@@ -24,10 +24,10 @@ import lombok.extern.slf4j.Slf4j;
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class PerformanceQueryServiceImpl implements PerformanceQueryService {
-	private final PerformanceCustomRepository performanceCustomRepository;
+	private final PerformanceInfoCustomRepository performanceInfoCustomRepository;
 
 	@Override
 	public Page<PerformanceInfoDto> selectPerformances(PerformanceSearchDto performanceSearchDto, Pageable pageable) {
-		return performanceCustomRepository.selectPerformanceReservation(performanceSearchDto, pageable);
+		return performanceInfoCustomRepository.selectPerformanceReservation(performanceSearchDto, pageable);
 	}
 }

@@ -50,6 +50,8 @@ public class QPerformance extends EntityPathBase<Performance> {
 
     public final NumberPath<Integer> price = createNumber("price", Integer.class);
 
+    public final EnumPath<com.reservation.performanceservice.types.RegisterStatusType> registrationStatus = createEnum("registrationStatus", com.reservation.performanceservice.types.RegisterStatusType.class);
+
     //inherited
     public final DateTimePath<java.time.LocalDateTime> updateDt = _super.updateDt;
 

@@ -1,16 +1,14 @@
 package com.sim.reservationservice.event.consumer;
 
-import java.util.function.Consumer;
+import java.util.function.Function;
 
-import org.springframework.cloud.stream.function.StreamBridge;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import com.reservation.common.error.ErrorMessage;
-import com.reservation.common.event.EventResult;
 import com.reservation.common.event.DefaultEvent;
+import com.reservation.common.event.EventResult;
 import com.reservation.common.event.payload.PerformanceCreatedPayload;
-import com.sim.reservationservice.application.PerformanceSyncService;
+import com.sim.reservationservice.application.ReservationEventService;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -26,29 +24,11 @@ import lombok.extern.slf4j.Slf4j;
 @Configuration
 @RequiredArgsConstructor
 public class PerformanceConsumer {
-	private final PerformanceSyncService performanceSyncService;
-	private final StreamBridge streamBridge;
+	private final ReservationEventService reservationEventService;
 
 	@Bean
-	public Consumer<DefaultEvent<PerformanceCreatedPayload>> performanceCreatedConsumer() {
-		return event -> {
-			PerformanceCreatedPayload payload = (PerformanceCreatedPayload)event.getPayload();
-			boolean result = performanceSyncService.requestAndSavePerformanceInfo(payload.getPerformanceId());
-			sendEventResult(event.getId(), result);
-		};
+	public Function<DefaultEvent<PerformanceCreatedPayload>, EventResult> performanceCreatedConsumer() {
+		return reservationEventService::savePerformanceInfo;
 	}
 
-	private void sendEventResult(String eventId, boolean result) {
-		EventResult eventResult = createEventResult(eventId, result);
-		streamBridge.send("reservation-service.performance.created.result", eventResult);
-	}
-
-	private EventResult createEventResult(String eventId, boolean result) {
-		if(result) {
-			return EventResult.success(eventId);
-		}
-		else {
-			return EventResult.fail(eventId, ErrorMessage.FAILED_TO_SEARCH_PERFORMANCE_IN_RESERVATION_SERVICE.name());
-		}
-	}
 }

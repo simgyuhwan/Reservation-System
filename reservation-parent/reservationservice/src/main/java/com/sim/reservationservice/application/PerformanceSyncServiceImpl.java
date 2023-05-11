@@ -29,7 +29,7 @@ public class PerformanceSyncServiceImpl implements PerformanceSyncService{
 	@CircuitBreaker(name = "getPerformances", fallbackMethod = "fallback")
 	@Override
 	public boolean requestAndSavePerformanceInfo(Long performanceId) {
-		PerformanceDto performanceDto = performanceClient.getPerformanceById(performanceId);
+		PerformanceDto performanceDto = performanceClient.getPendingPerformanceById(performanceId);
 		PerformanceInfo performanceInfo = performanceInfoMapper.toEntity(performanceDto);
 		performanceInfoRepository.save(performanceInfo);
 		return true;

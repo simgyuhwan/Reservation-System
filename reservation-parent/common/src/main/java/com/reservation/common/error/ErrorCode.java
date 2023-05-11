@@ -28,6 +28,8 @@ public enum ErrorCode {
 	NO_REGISTERED_PERFORMANCE_INFORMATION("등록된 공연 정보가 없습니다.", 400),
 	PERFORMANCE_NOT_FOUND_MESSAGE("해당 performanceId로 등록된 공연 정보가 없습니다. performanceId :", 400),
 	PERFORMANCE_DAY_NOT_FOUND_MESSAGE("해당 performanceId로 등록된 공연 날짜 정보가 없습니다. performanceId : ", 400),
+	NOT_FOUND_PENDING_PERFORMANCE("해당 performanceId로 등록 대기 중인 공연 정보가 없습니다.", 400)
+	,
 
 	// reservation
 	RESERVATION_SEARCH_VALUE_INVALID("예약 가능한 공연 조회 값이 올바르지 않습니다.", 400),

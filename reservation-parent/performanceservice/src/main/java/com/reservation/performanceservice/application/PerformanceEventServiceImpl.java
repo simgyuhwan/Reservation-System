@@ -3,15 +3,14 @@ package com.reservation.performanceservice.application;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.google.gson.Gson;
-import com.reservation.common.error.ErrorMessage;
-import com.reservation.common.error.EventNotFound;
 import com.reservation.common.event.EventResult;
 import com.reservation.common.types.EventStatusType;
-import com.reservation.performanceservice.dao.PerformanceEventResultRepository;
-import com.reservation.performanceservice.domain.PerformanceEventResult;
+import com.reservation.performanceservice.dao.EventStatusRepository;
+import com.reservation.performanceservice.domain.EventStatus;
 import com.reservation.performanceservice.event.PerformanceEvent;
+import com.reservation.performanceservice.types.RegisterStatusType;
 
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -20,40 +19,41 @@ import lombok.extern.slf4j.Slf4j;
 @Transactional
 @RequiredArgsConstructor
 public class PerformanceEventServiceImpl implements PerformanceEventService{
-	private final PerformanceEventResultRepository performanceEventResultRepository;
-	private final Gson gson;
+	private final EventStatusRepository eventStatusRepository;
+	private final PerformanceCommandService performanceCommandService;
 
 	@Override
 	public void saveEvent(PerformanceEvent performanceEvent, EventStatusType status) {
-		PerformanceEventResult eventResult = toEventResult(performanceEvent, status);
-		saveEvent(eventResult);
+		EventStatus eventStatus = EventStatus.from(performanceEvent, status);
+		eventStatusRepository.save(eventStatus);
 	}
 
 	@Override
-	public void eventUpdate(EventResult eventResult) {
-		PerformanceEventResult performanceEventResult = findById(eventResult.getId());
-		updateEvent(eventResult, performanceEventResult);
+	public void handlePerformanceCreatedEventResult(EventResult eventResult) {
+		EventStatus eventStatus = findEventById(eventResult.getId());
+		if(eventStatus.isCompleted()) return;
+
+		if(eventResult.isFailure()) {
+			rollbackPerformanceRegistration(eventStatus);
+		}
+
+		completePerformanceRegistration(eventStatus);
 	}
 
-	private void updateEvent(EventResult eventResult, PerformanceEventResult performanceEventResult) {
-		performanceEventResult.update(eventResult);
+	private EventStatus findEventById(String eventId) {
+		return eventStatusRepository.findById(eventId)
+			.orElseThrow(EntityNotFoundException::new);
 	}
 
-	private PerformanceEventResult toEventResult(PerformanceEvent performanceEvent, EventStatusType status) {
-		return PerformanceEventResult.builder()
-			.id(performanceEvent.getId())
-			.status(status)
-			.payload(gson.toJson(performanceEvent.getPayload()))
-			.build();
+	private void rollbackPerformanceRegistration(EventStatus eventStatus) {
+		Long performanceId = eventStatus.getPerformanceId();
+		performanceCommandService.performanceChangeStatus(performanceId, RegisterStatusType.FAILED);
+		eventStatus.changeToFailed();
 	}
 
-	private PerformanceEventResult findById(String id) {
-		return performanceEventResultRepository.findById(id)
-			.orElseThrow(() -> new EventNotFound(ErrorMessage.EVENT_NOT_FOUND, id));
+	private void completePerformanceRegistration(EventStatus eventStatus) {
+		Long performanceId = eventStatus.getPerformanceId();
+		performanceCommandService.performanceChangeStatus(performanceId, RegisterStatusType.COMPLETED);
+		eventStatus.changeToCompleted();
 	}
-
-	private void saveEvent(PerformanceEventResult eventResult) {
-		performanceEventResultRepository.save(eventResult);
-	}
-
 }

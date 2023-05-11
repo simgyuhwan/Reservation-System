@@ -14,8 +14,8 @@ public interface PerformanceEventService {
 	void saveEvent(PerformanceEvent performanceEvent, EventStatusType status);
 
 	/**
-	 * 이벤트 상태 업데이트
+	 * 공연 생성 이벤트 처리
 	 *
 	 */
-	void eventUpdate(EventResult eventResult);
+	void handlePerformanceCreatedEventResult(EventResult eventResult);
 }

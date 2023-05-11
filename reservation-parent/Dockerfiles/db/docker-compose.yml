@@ -1,0 +1,40 @@
+version: '3.8'
+services:
+  mysql_1:
+    image: mysql:5.7
+    restart: always
+    container_name: mysql_1
+    ports:
+      - "36666:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: Password!
+      MYSQL_DATABASE: reservation
+      MYSQL_CHARACTER_SET_SERVER: utf8mb4
+      MYSQL_COLLATION_SERVER: utf8mb4_unicode_ci
+    volumes:
+      - ./data/mysql-1:/var/lib/mysql
+
+  mysql_2:
+    image: mysql:5.7
+    restart: always
+    container_name: mysql_2
+    ports:
+      - "36667:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: Password!
+      MYSQL_DATABASE: reservation
+    volumes:
+      - ./data/mysql-2:/var/lib/mysql
+
+  postgresql:
+    image: postgres:14.1-alpine
+    restart: always
+    container_name: postgreSQL_1
+    ports:
+      - "37777:3306"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: Password!
+      POSTGRES_DB: reservation
+    volumes:
+      - ./data/postgresql-1:/var/lib/postgresql/data

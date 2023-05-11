@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import com.reservation.common.types.PerformanceType;
 import com.reservation.common.util.DateTimeUtils;
 import com.reservation.performanceservice.annotation.ValidPerformanceTimes;
 import com.reservation.performanceservice.domain.Performance;
@@ -118,6 +119,10 @@ public class PerformanceDto {
 					.build()
 				)
 				.toList();
+	}
+
+	public PerformanceType getType() {
+		return PerformanceType.findByType(performanceType);
 	}
 
 	private LocalDate stringToLocalDate(String date) {

@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.reservation.performanceservice.application.PerformanceQueryService;
 import com.reservation.performanceservice.application.PerformanceCommandService;
+import com.reservation.performanceservice.application.PerformanceQueryService;
 import com.reservation.performanceservice.dto.request.PerformanceDto;
 import com.reservation.performanceservice.dto.response.CreatedResponseDto;
 
@@ -42,14 +42,19 @@ public class PerformanceController {
 	}
 
 	@GetMapping
-	@Operation(summary = "[공연] 회원 ID 전체 공연 조회", description = "회원 공연 조회 API")
+	@Operation(summary = "[공연] 회원이 등록한 전체 공연 조회", description = "회원 등록 공연 조회 API")
 	public List<PerformanceDto> performanceSelectAll(@RequestParam Long memberId) {
 		return performanceQueryService.selectPerformances(memberId);
 	}
 
 	@GetMapping("/{performanceId}")
-	@Operation(summary = "[공연] 공연 상세 조회", description = "공연 ID로 공연 상세 조회" )
+	@Operation(summary = "[공연] 등록된 공연 상세 조회", description = "공연 ID로 등록된 공연 상세 조회" )
 	public PerformanceDto performanceSelectById(@PathVariable Long performanceId) {
 		return performanceQueryService.selectPerformanceById(performanceId);
+	}
+
+	@GetMapping("/{performanceId}/pending")
+	public PerformanceDto unregisteredPerformanceInfo(@PathVariable Long performanceId) {
+		return performanceQueryService.selectPendingPerformanceById(performanceId);
 	}
 }

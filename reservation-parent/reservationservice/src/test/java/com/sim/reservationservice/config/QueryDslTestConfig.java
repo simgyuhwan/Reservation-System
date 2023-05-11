@@ -4,8 +4,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import com.sim.reservationservice.dao.PerformanceCustomRepository;
-import com.sim.reservationservice.dao.PerformanceCustomRepositoryImpl;
+import com.sim.reservationservice.dao.PerformanceInfoCustomRepository;
+import com.sim.reservationservice.dao.PerformanceInfoCustomRepositoryImpl;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
@@ -29,7 +29,7 @@ public class QueryDslTestConfig {
     }
 
     @Bean
-    public PerformanceCustomRepository performanceCustomRepository(JPAQueryFactory jpaQueryFactory) {
-        return new PerformanceCustomRepositoryImpl(jpaQueryFactory);
+    public PerformanceInfoCustomRepository performanceInfoCustomRepository(JPAQueryFactory jpaQueryFactory) {
+        return new PerformanceInfoCustomRepositoryImpl(jpaQueryFactory);
     }
 }
