@@ -33,16 +33,17 @@ API의 간단한 목록과 각 상세 정보들이 기록된 문서이다.
 
 ### **2. 공연 서비스**
 
-    공연 정보 등록, 수정, 공연 일정 및 가격 설정, 등록된 공연 조회,
+    공연 정보 등록, 수정, 공연 일정 및 가격 설정, 등록된 공연 조회, 등록한 공연 상태 조회, 공연 등록 신청중인 공연 정보 조회
     공연 예약 현황 조회, 공연 취소 또는 변경 알림 발송 기능
 
 ### **API**
 
 - POST /performance-service/api/performances: 공연 정보 등록 요청
-- GET /performance-service/api/performances?userId={userId} 회원이 등록한 공연 전체 조회
-- GET /performance-service/api/performances/{performanceId} performanceId를 통한 공연 조회
+- GET /performance-service/api/performances?userId={userId}: 회원이 등록한 공연 전체 조회
+- GET /performance-service/api/performances/{performanceId}: performanceId를 통한 공연 조회
 - PUT /performance-service/api/performances/{performanceId}: 공연 정보 수정 요청
-
+- GET /performance-service/api/performances/{performanceId}/status/pending: 공연 등록 신청중인 공연 정보 조회
+- GET /performance-service/api/performances/{performanceId}/status: 등록한 공연 상태 조회
 - GET /performances: 등록된 공연 조회 요청
 - GET /performances/{performanceId}/reservations: 등록된 공연의 예약 현황 조회 요청
 - POST /performances/{performanceId}/cancel: 공연 취소 요청
@@ -135,6 +136,9 @@ API의 간단한 목록과 각 상세 정보들이 기록된 문서이다.
 | 2.    | 회원 ID를 사용하여 등록된 공연 조회 | GET    | /performance-service/api/performances                 | memberId=1   |
 | 3.    | 공연 수정                           | PUT    | /performance-service/api/performances/{performanceId} |              | <br>{<br>"performanceId": 0,<br>"userId": "test",<br>"performanceName":<br>"오페라의 유령",<br>"performanceStartDate": "2024-01-01",<br>"performanceEndDate": "2024-01-01",<br>"performanceType": "THEATER",<br>"audienceCount": 100,<br>"price": 10000,<br>"contactPhoneNum": "010-1234-1234",<br>"contactPersonName": "홍길동",<br>"performanceInfo": "끝까지 간다....",<br>"performancePlace": "홍대 시네마",<br>"performanceTimes": "[15:00]"<br>} |
 | 4.    | 공연 상세 조회                      | GET    | /performance-service/api/performances/{performanceId} |              |
+| 5.    | 등록중인 공연 상세 조회                     | GET    | /performance-service/api/performances/{performanceId}/status/pending |              |
+| 6.    | 등록한 공연 상태 조회                   | GET    | /performance-service/api/performances/{performanceId}/status |              |
+
 
 <br>
 
