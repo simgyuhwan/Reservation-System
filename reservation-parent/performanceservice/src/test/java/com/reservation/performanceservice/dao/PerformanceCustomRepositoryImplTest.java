@@ -89,7 +89,7 @@ class PerformanceCustomRepositoryImplTest {
 
 	private Performance createPendingPerformance() {
 		PerformanceDto performanceDto = PerformanceDtoFactory.createPerformanceDto();
-		Performance pendingPerformance = Performance.pending(performanceDto);
+		Performance pendingPerformance = Performance.createPendingPerformance(performanceDto);
 		List<PerformanceDay> performanceDays = performanceDto.toPerformanceDays(pendingPerformance);
 
 		pendingPerformance.setPerformanceDays(performanceDays);
@@ -98,7 +98,7 @@ class PerformanceCustomRepositoryImplTest {
 
 	private Performance createRegisteredPerformance() {
 		PerformanceDto performanceDto = PerformanceDtoFactory.createPerformanceDto();
-		Performance completedPerformance = Performance.completed(performanceDto);
+		Performance completedPerformance = Performance.createCompletedPerformance(performanceDto);
 		List<PerformanceDay> performanceDays = performanceDto.toPerformanceDays(completedPerformance);
 
 		completedPerformance.setPerformanceDays(performanceDays);

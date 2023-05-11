@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.reservation.common.error.ErrorMessage;
 import com.reservation.performanceservice.application.mapper.PerformanceDtoMapper;
 import com.reservation.performanceservice.dao.PerformanceCustomRepository;
+import com.reservation.performanceservice.dao.PerformanceRepository;
 import com.reservation.performanceservice.domain.Performance;
 import com.reservation.performanceservice.dto.request.PerformanceDto;
 import com.reservation.performanceservice.dto.response.PerformanceStatusDto;
@@ -33,6 +34,7 @@ import lombok.extern.slf4j.Slf4j;
 public class PerformanceQueryServiceImpl implements PerformanceQueryService {
     private final PerformanceDtoMapper performanceDtoMapper;
     private final PerformanceCustomRepository performanceCustomRepository;
+    private final PerformanceRepository performanceRepository;
 
     @Override
     public List<PerformanceDto> selectPerformances(Long memberId) {
@@ -44,7 +46,7 @@ public class PerformanceQueryServiceImpl implements PerformanceQueryService {
 
     @Override
     public PerformanceDto selectPerformanceById(Long performanceId) {
-        Performance performance = findPerformanceById(performanceId);
+        Performance performance = findRegisteredPerformanceById(performanceId);
         return performanceDtoMapper.toDto(performance);
     }
 
@@ -57,7 +59,7 @@ public class PerformanceQueryServiceImpl implements PerformanceQueryService {
     @Override
     public PerformanceStatusDto getPerformanceStatusByPerformanceId(Long performanceId) {
         Performance performance = findPerformanceById(performanceId);
-        return null;
+        return PerformanceStatusDto.from(performance);
     }
 
     private List<Performance> findRegisteredPerformanceByMemberId(Long memberId) {
@@ -68,7 +70,7 @@ public class PerformanceQueryServiceImpl implements PerformanceQueryService {
         return performances;
     }
 
-    private Performance findPerformanceById(Long performanceId) {
+    private Performance findRegisteredPerformanceById(Long performanceId) {
         return performanceCustomRepository.findPerformanceById(performanceId)
             .orElseThrow(() -> new PerformanceNotFoundException(ErrorMessage.PERFORMANCE_NOT_FOUND, performanceId));
     }
@@ -76,5 +78,10 @@ public class PerformanceQueryServiceImpl implements PerformanceQueryService {
     private Performance findPendingPerformanceById(Long performanceId) {
         return performanceCustomRepository.findPendingPerformance(performanceId)
             .orElseThrow(() -> new NotPendingPerformanceException(ErrorMessage.NOT_PENDING_PERFORMANCE, performanceId));
+    }
+
+    private Performance findPerformanceById(Long performanceId) {
+        return performanceRepository.findById(performanceId)
+            .orElseThrow(() -> new PerformanceNotFoundException(ErrorMessage.PERFORMANCE_NOT_FOUND, performanceId));
     }
 }

@@ -86,7 +86,7 @@ public class PerformanceCommandServiceImpl implements PerformanceCommandService 
 
 	@NotNull
 	private Performance createPendingPerformance(PerformanceDto performanceDto) {
-		Performance performance = Performance.pending(performanceDto);
+		Performance performance = Performance.createPendingPerformance(performanceDto);
 		List<PerformanceDay> performanceDays = performanceDto.toPerformanceDays(performance);
 		performance.setPerformanceDays(performanceDays);
 		return performance;

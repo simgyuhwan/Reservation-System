@@ -93,7 +93,7 @@ public class Performance extends BaseEntity {
 			performanceInfo, performancePlace, performanceDays);
 	}
 
-	public static Performance pending(PerformanceDto performanceDto) {
+	public static Performance createPendingPerformance(PerformanceDto performanceDto) {
 		return Performance.builder()
 			.memberId(performanceDto.getMemberId())
 			.performanceName(performanceDto.getPerformanceName())
@@ -108,7 +108,7 @@ public class Performance extends BaseEntity {
 			.build();
 	}
 
-	public static Performance completed(PerformanceDto performanceDto) {
+	public static Performance createCompletedPerformance(PerformanceDto performanceDto) {
 		return Performance.builder()
 			.memberId(performanceDto.getMemberId())
 			.performanceName(performanceDto.getPerformanceName())

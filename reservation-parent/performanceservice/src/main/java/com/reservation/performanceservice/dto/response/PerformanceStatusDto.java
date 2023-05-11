@@ -1,6 +1,7 @@
 package com.reservation.performanceservice.dto.response;
 
 import com.reservation.common.types.ResponseMessage;
+import com.reservation.performanceservice.domain.Performance;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -25,5 +26,11 @@ public class PerformanceStatusDto {
 
     public static PerformanceStatusDto requestComplete(Long performanceId) {
         return new PerformanceStatusDto(performanceId, ResponseMessage.PERFORMANCE_CREATED_REQUEST_COMPLETE.getMessage());
+    }
+
+    public static PerformanceStatusDto from(Performance performance) {
+        String message = performance.getRegistrationStatus().getMessage();
+        Long performanceId = performance.getId();
+        return new PerformanceStatusDto(performanceId, message);
     }
 }
