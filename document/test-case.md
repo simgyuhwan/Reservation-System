@@ -24,6 +24,10 @@
 
 #### [4. 공연ID 공연 상세 조회 API](#4-공연id-공연-상세-조회-apiget-apiperformancesperformanceid)
 
+#### [5. 공연 등록 신청중인 공연 정보 조회 API](#5-공연-등록-신청중인-공연-정보-조회-apiget-apiperformancesperformanceidstatuspending)
+
+#### [6. 공연 등록 상태 조회 API](#6-공연-등록-상태-조회-apiget-apiperformancesperformanceidstatus)
+
 ### [▶ 예약](#▶-예약)
 
 #### [1. 공연 예약 현황 조회 API](#1-공연-예약-현황-조회-api-get-reservation-serviceapiperformancesavailable)
