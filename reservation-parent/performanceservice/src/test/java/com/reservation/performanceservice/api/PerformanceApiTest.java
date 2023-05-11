@@ -34,12 +34,15 @@ import com.reservation.common.error.ErrorCode;
 import com.reservation.performanceservice.application.PerformanceQueryService;
 import com.reservation.performanceservice.application.PerformanceCommandService;
 import com.reservation.performanceservice.dto.request.PerformanceDto;
+import com.reservation.performanceservice.dto.response.PerformanceStatusDto;
 import com.reservation.performanceservice.error.InvalidPerformanceDateException;
 import com.reservation.performanceservice.error.NoContentException;
+import com.reservation.performanceservice.error.NotPendingPerformanceException;
 import com.reservation.performanceservice.error.PerformanceControllerAdvice;
 import com.reservation.performanceservice.error.PerformanceNotFoundException;
 import com.reservation.performanceservice.factory.PerformanceDtoFactory;
 import com.reservation.performanceservice.factory.PerformanceFactory;
+import com.reservation.performanceservice.factory.PerformanceStatusDtoFactory;
 
 @ExtendWith(MockitoExtension.class)
 public class PerformanceApiTest {
@@ -56,7 +59,7 @@ public class PerformanceApiTest {
 	private static final String CONTACT_PERSON_NAME = PerformanceFactory.CONTACT_PERSON_NAME;
 	private static final String PERFORMANCE_INFO = PerformanceFactory.PERFORMANCE_INFO;
 	private static final String PERFORMANCE_PLACE = PerformanceFactory.PERFORMANCE_PLACE;
-
+	private static final Long PERFORMANCE_ID = 1L;
 	private static final String MEMBER_PARAM_KEY = "?memberId=" ;
 	private MockMvc mockMvc;
 	private Gson gson;
@@ -79,7 +82,7 @@ public class PerformanceApiTest {
 	}
 
 	@Nested
-	@DisplayName("공연 등록에 관한 API")
+	@DisplayName("공연 등록 API")
 	class PerformanceRegistrationApiTest{
 		@Test
 		@DisplayName("공연 등록 성공 - 201 상태코드 반환")
@@ -264,7 +267,7 @@ public class PerformanceApiTest {
 	}
 
 	@Nested
-	@DisplayName("공연 정보 수정 API")
+	@DisplayName("공연 수정 API")
 	class PerformanceInformationEditingApiTest {
 		@Test
 		@DisplayName("등록된 공연 정보가 없을 때, 예외 발생 및 오류 메시지 반환")
@@ -312,7 +315,6 @@ public class PerformanceApiTest {
 				.andExpect(jsonPath("$.contactPhoneNum").value(performanceDto.getContactPhoneNum()))
 				.andExpect(jsonPath("$.contactPersonName").value(performanceDto.getContactPersonName()));
 		}
-
 	}
 
 	@Nested
@@ -375,9 +377,8 @@ public class PerformanceApiTest {
 	}
 
 	@Nested
-	@DisplayName("공연 id를 통한 공연 상세정보 조회")
+	@DisplayName("공연 ID를 통한 공연 상세정보 조회")
 	class PerformanceSelectByPerformanceIdTest{
-		private static final Long PERFORMANCE_ID = 1L;
 		private static final String PERFORMANCE_SEARCH_URL = "/api/performances/";
 
 		@Test
@@ -404,6 +405,89 @@ public class PerformanceApiTest {
 				.andExpect(status().isOk())
 				.andExpect(jsonPath("$.memberId").value(MEMBER_ID))
 				.andExpect(jsonPath("$.performanceName").value(PERFORMANCE_NAME));
+		}
+	}
+
+	@Nested
+	@DisplayName("공연 등록 신청중인 공연 정보 조회 API")
+	class SearchPerformanceInfoForRegistrationTest {
+		private static final String PERFORMANCE_PENDING_URL = "/api/performances/" + PERFORMANCE_ID + "/status/pending";
+
+		@Test
+		@DisplayName("공연 등록 중인 공연 정보가 없을 시, 400 상태 코드 반환")
+		void noMatchingPerformanceIdReturn400Code() throws Exception {
+			when(performanceQueryService.selectPendingPerformanceById(PERFORMANCE_ID)).thenThrow(
+				NotPendingPerformanceException.class);
+			mockMvc.perform(get(PERFORMANCE_PENDING_URL))
+				.andExpect(status().isBadRequest());
+		}
+
+		@Test
+		@DisplayName("공연 등록 중인 공연 정보가 없을 시, 오류 메시지 반환")
+		void noMatchingPerformanceIdReturnErrorMessage() throws Exception {
+			when(performanceQueryService.selectPendingPerformanceById(PERFORMANCE_ID)).thenThrow(
+				NotPendingPerformanceException.class);
+			mockMvc.perform(get(PERFORMANCE_PENDING_URL))
+				.andExpect(status().isBadRequest())
+				.andExpect(jsonPath("$.message").value(ErrorCode.NOT_FOUND_PENDING_PERFORMANCE.getMessage()));
+		}
+
+		@Test
+		@DisplayName("공연 등록 중인 공연 정보 조회 성공, 200 상태 코드 반환")
+		void searchPerformanceInfoCurrentlyBeingRegistered() throws Exception {
+			when(performanceQueryService.selectPendingPerformanceById(PERFORMANCE_ID)).thenReturn(createPerformanceDto());
+			mockMvc.perform(get(PERFORMANCE_PENDING_URL))
+				.andExpect(status().isOk());
+		}
+	}
+
+	@Nested
+	@DisplayName("공연 등록 상태 조회 API")
+	class PerformanceRegistrationStatusInquiryTest{
+		private static final String PERFORMANCE_STATUS_URL = "/api/performances/" + PERFORMANCE_ID + "/status";
+
+		@Test
+		@DisplayName("공연 등록 중인 공연 정보가 없을 시, 400 상태 코드 반환")
+		void noMatchingPerformanceReturn400Code() throws Exception {
+			when(performanceQueryService.getPerformanceStatusByPerformanceId(PERFORMANCE_ID)).thenThrow(PerformanceNotFoundException.class);
+			mockMvc.perform(get(PERFORMANCE_STATUS_URL))
+				.andExpect(status().isBadRequest());
+		}
+
+		@Test
+		@DisplayName("공연 등록 중인 공연 정보가 없을 시, 오류 메시지 반환")
+		void noMatchingPerformanceReturnErrorMessage() throws Exception {
+			when(performanceQueryService.getPerformanceStatusByPerformanceId(PERFORMANCE_ID)).thenThrow(PerformanceNotFoundException.class);
+			mockMvc.perform(get(PERFORMANCE_STATUS_URL))
+				.andExpect(status().isBadRequest())
+				.andExpect(jsonPath("$.message").value(ErrorCode.NO_REGISTERED_PERFORMANCE_INFORMATION.getMessage()));
+		}
+
+		@Test
+		@DisplayName("공연 등록 중인 공연 정보 조회 성공, 200 상태 코드 반환")
+		void matchingPerformanceReturn200Code() throws Exception {
+			when(performanceQueryService.getPerformanceStatusByPerformanceId(PERFORMANCE_ID)).thenReturn(createPerformanceStatusDto());
+			mockMvc.perform(get(PERFORMANCE_STATUS_URL))
+				.andExpect(status().isOk());
+		}
+
+		@Test
+		@DisplayName("공연 등록 중인 공연 정보 조회 성공, 상태 값 확인")
+		void matchingPerformanceCheckReturnValue() throws Exception {
+			// given
+			PerformanceStatusDto performanceStatusDto = createPerformanceStatusDto();
+			when(performanceQueryService.getPerformanceStatusByPerformanceId(PERFORMANCE_ID)).thenReturn(performanceStatusDto);
+
+			// when
+			ResultActions result = mockMvc.perform(get(PERFORMANCE_STATUS_URL)).andExpect(status().isOk());
+
+			// then
+			result.andExpect(jsonPath("$.message").value(performanceStatusDto.getMessage()))
+				.andExpect(jsonPath("$.performanceId").value(performanceStatusDto.getPerformanceId()));
+		}
+
+		private PerformanceStatusDto createPerformanceStatusDto() {
+			return PerformanceStatusDtoFactory.createPerformanceStatusDto();
 		}
 	}
 

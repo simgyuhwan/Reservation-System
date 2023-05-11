@@ -14,16 +14,16 @@ import lombok.NoArgsConstructor;
  */
 @Getter
 @NoArgsConstructor
-public class CreatedResponseDto {
+public class PerformanceStatusDto {
     private Long performanceId;
     private String message;
 
-    private CreatedResponseDto(Long performanceId, String message) {
+    private PerformanceStatusDto(Long performanceId, String message) {
         this.performanceId = performanceId;
         this.message = message;
     }
 
-    public static CreatedResponseDto requestComplete(Long performanceId) {
-        return new CreatedResponseDto(performanceId, ResponseMessage.PERFORMANCE_CREATED_REQUEST_COMPLETE.getMessage());
+    public static PerformanceStatusDto requestComplete(Long performanceId) {
+        return new PerformanceStatusDto(performanceId, ResponseMessage.PERFORMANCE_CREATED_REQUEST_COMPLETE.getMessage());
     }
 }

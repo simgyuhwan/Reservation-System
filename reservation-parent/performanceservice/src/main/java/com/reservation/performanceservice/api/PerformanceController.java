@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.reservation.performanceservice.application.PerformanceCommandService;
 import com.reservation.performanceservice.application.PerformanceQueryService;
 import com.reservation.performanceservice.dto.request.PerformanceDto;
-import com.reservation.performanceservice.dto.response.CreatedResponseDto;
+import com.reservation.performanceservice.dto.response.PerformanceStatusDto;
 
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
@@ -31,14 +31,14 @@ public class PerformanceController {
 
 	@PostMapping
 	@Operation(summary = "[공연] 공연 등록 요청", description = "공연 등록 API")
-	public ResponseEntity<CreatedResponseDto> performanceRegister(@RequestBody @Validated PerformanceDto registerDto) {
+	public ResponseEntity<PerformanceStatusDto> performanceRegister(@RequestBody @Validated PerformanceDto registerDto) {
 		return ResponseEntity.status(HttpStatus.CREATED).body(performanceCommandService.createPerformance(registerDto));
 	}
 
 	@PutMapping("/{performanceId}")
 	@Operation(summary = "[공연] 공연 수정", description = "공연 수정 API")
-	public ResponseEntity<PerformanceDto> performanceUpdate(@RequestBody @Validated PerformanceDto updateDto, @PathVariable Long performanceId) {
-		return ResponseEntity.ok(performanceCommandService.updatePerformance(performanceId, updateDto));
+	public PerformanceDto performanceUpdate(@RequestBody @Validated PerformanceDto updateDto, @PathVariable Long performanceId) {
+		return performanceCommandService.updatePerformance(performanceId, updateDto);
 	}
 
 	@GetMapping
@@ -53,9 +53,14 @@ public class PerformanceController {
 		return performanceQueryService.selectPerformanceById(performanceId);
 	}
 
-	@GetMapping("/{performanceId}/pending")
+	@GetMapping("/{performanceId}/status/pending")
 	@Operation(summary = "[공연] 등록 신청 중인 공연 정보 조회", description = "등록 신청 중인 공연 정보 조회 API")
 	public PerformanceDto unregisteredPerformanceInfo(@PathVariable Long performanceId) {
 		return performanceQueryService.selectPendingPerformanceById(performanceId);
+	}
+
+	@GetMapping("/{performanceId}/status")
+	public PerformanceStatusDto performanceStatus(@PathVariable Long performanceId) {
+		return performanceQueryService.getPerformanceStatusByPerformanceId(performanceId);
 	}
 }

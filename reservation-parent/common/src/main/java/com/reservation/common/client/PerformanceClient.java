@@ -25,6 +25,6 @@ public interface PerformanceClient {
 	@GetMapping("/{performanceId}")
 	PerformanceDto getPerformanceById(@PathVariable("performanceId") Long performanceId);
 
-	@GetMapping("/{performanceId}/pending")
+	@GetMapping("/{performanceId}/status/pending")
 	PerformanceDto getPendingPerformanceById(@PathVariable("performanceId") Long performanceId);
 }

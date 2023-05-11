@@ -12,6 +12,7 @@ import com.reservation.performanceservice.application.mapper.PerformanceDtoMappe
 import com.reservation.performanceservice.dao.PerformanceCustomRepository;
 import com.reservation.performanceservice.domain.Performance;
 import com.reservation.performanceservice.dto.request.PerformanceDto;
+import com.reservation.performanceservice.dto.response.PerformanceStatusDto;
 import com.reservation.performanceservice.error.NoContentException;
 import com.reservation.performanceservice.error.NotPendingPerformanceException;
 import com.reservation.performanceservice.error.PerformanceNotFoundException;
@@ -53,6 +54,11 @@ public class PerformanceQueryServiceImpl implements PerformanceQueryService {
         return performanceDtoMapper.toDto(performance);
     }
 
+    @Override
+    public PerformanceStatusDto getPerformanceStatusByPerformanceId(Long performanceId) {
+        Performance performance = findPerformanceById(performanceId);
+        return null;
+    }
 
     private List<Performance> findRegisteredPerformanceByMemberId(Long memberId) {
         List<Performance> performances = performanceCustomRepository.findRegisteredPerformancesByMemberId(memberId);

@@ -3,6 +3,7 @@ package com.reservation.performanceservice.application;
 import java.util.List;
 
 import com.reservation.performanceservice.dto.request.PerformanceDto;
+import com.reservation.performanceservice.dto.response.PerformanceStatusDto;
 
 /**
  * PerformanceCommandService.java
@@ -17,4 +18,6 @@ public interface PerformanceQueryService {
 	PerformanceDto selectPerformanceById(Long performanceId);
 
 	PerformanceDto selectPendingPerformanceById(Long performanceId);
+
+	PerformanceStatusDto getPerformanceStatusByPerformanceId(Long performanceId);
 }
