@@ -41,7 +41,7 @@ public class PerformanceCommandServiceImpl implements PerformanceCommandService 
 		validatePerformanceDate(performanceDto);
 		Performance performance = performanceRepository.save(createPendingPerformance(performanceDto));
 
-		eventPublisher.publishEvent(createEvent(performance));
+		eventPublisher.publishEvent(createPerformanceCreatedEvent(performance));
 
 		return PerformanceStatusDto.requestComplete(performance.getId());
 	}
@@ -79,7 +79,7 @@ public class PerformanceCommandServiceImpl implements PerformanceCommandService 
 		}
 	}
 
-	private PerformanceEvent createEvent(Performance performance) {
+	private PerformanceEvent createPerformanceCreatedEvent(Performance performance) {
 		return PerformanceEvent.pending(EventType.PERFORMANCE_CREATED)
 			.payload(() -> PerformanceCreatedPayload.from(performance));
 	}
