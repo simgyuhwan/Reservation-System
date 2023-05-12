@@ -40,3 +40,16 @@ services:
       POSTGRES_DB: reservation
     volumes:
       - ./data/postgresql-1:/var/lib/postgresql/data
+
+  postgresql_2:
+    image: postgres:14.1-alpine
+    restart: always
+    container_name: postgreSQL_2
+    ports:
+      - "37778:3306"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: Password!
+      POSTGRES_DB: reservation
+    volumes:
+      - ./data/postgresql-2:/var/lib/postgresql/data

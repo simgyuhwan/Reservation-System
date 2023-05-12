@@ -94,7 +94,7 @@
 
 # **3. 아키텍처**
 
-![Structure](./document/image/structure.png)
+![Structure](./document/image/structure_v2.png)
 
 <br>
 
