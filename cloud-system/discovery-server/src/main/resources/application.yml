@@ -1,0 +1,27 @@
+spring:
+  profiles:
+    active:
+      - dev
+
+---
+
+spring:
+  config:
+    activate:
+      on-profile: dev
+
+eureka:
+  instance:
+    hostname: localhost
+  client:
+    register-with-eureka: false
+    fetch-registry: false
+
+server:
+  port: 8761
+
+---
+spring:
+  config:
+    activate:
+      on-profile: proc
