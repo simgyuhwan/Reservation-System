@@ -1,0 +1,56 @@
+plugins {
+}
+
+ext {
+    set('springCloudVersion', "2022.0.2")
+}
+
+dependencyManagement {
+    imports {
+        mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+    }
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+    // eureka client
+    implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client:4.0.0'
+
+    // gateway
+    implementation 'org.springframework.cloud:spring-cloud-starter-gateway:4.0.3'
+
+    // lombok
+    compileOnly 'org.projectlombok:lombok'
+    implementation 'org.projectlombok:lombok:1.18.24'
+    annotationProcessor 'org.projectlombok:lombok'
+
+    // gson
+    implementation group: 'com.google.code.gson', name: 'gson', version: '2.9.1'
+
+    // actuator
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+
+    // spring doc
+    implementation 'org.springdoc:springdoc-openapi-starter-webflux-ui:2.1.0'
+
+    // Micrometer Tracing and zipkin integration
+    implementation 'io.micrometer:micrometer-tracing-bridge-brave'
+    implementation 'io.zipkin.reporter2:zipkin-reporter-brave'
+    implementation 'io.micrometer:micrometer-observation'
+
+    // Micrometer to Prometheus
+    implementation 'io.micrometer:micrometer-registry-prometheus'
+
+    // aop
+    implementation 'org.springframework.boot:spring-boot-starter-aop'
+}
+
+tasks.withType(JavaCompile) {
+    options.encoding = "UTF-8"
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}
