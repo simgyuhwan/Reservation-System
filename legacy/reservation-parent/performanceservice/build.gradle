@@ -1,0 +1,48 @@
+plugins {
+    id 'java'
+}
+
+dependencies {
+    annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+
+    // gson
+    implementation group: 'com.google.code.gson', name: 'gson', version: '2.9.1'
+
+    // mapstruct
+    implementation 'org.mapstruct:mapstruct:1.5.2.Final'
+    annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.2.Final'
+    annotationProcessor 'org.projectlombok:lombok-mapstruct-binding:0.2.0'
+
+    // h2
+    testImplementation group: 'com.h2database', name: 'h2', version: '1.4.200'
+
+    // validation
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+
+    // lombok
+    compileOnly 'org.projectlombok:lombok'
+    implementation 'org.projectlombok:lombok:1.18.24'
+    annotationProcessor 'org.projectlombok:lombok'
+
+    implementation group: 'org.springdoc', name: 'springdoc-openapi-starter-webmvc-ui', version: '2.0.0'
+
+    // eureka client
+    implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client:4.0.0'
+
+    // actuator
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+
+    // kafka stream
+    implementation 'org.springframework.cloud:spring-cloud-starter-stream-kafka:4.0.1'
+
+    // Micrometer Tracing and zipkin integration
+    implementation 'io.micrometer:micrometer-tracing-bridge-brave'
+    implementation 'io.zipkin.reporter2:zipkin-reporter-brave'
+    implementation 'io.micrometer:micrometer-observation'
+}
+
+tasks.withType(JavaCompile) {
+    options.encoding = "UTF-8"
+}

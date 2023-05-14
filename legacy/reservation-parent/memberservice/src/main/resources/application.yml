@@ -1,0 +1,108 @@
+spring:
+  profiles:
+    active:
+      - dev
+
+springdoc:
+  api-docs:
+    path: /api-docs
+  swagger-ui:
+    path: /swagger
+
+---
+server:
+  port: 0
+
+spring:
+  config:
+    activate:
+      on-profile: dev
+  application:
+    name: member-service
+
+  datasource:
+    url: jdbc:mysql://${DB_URL}:${DB_PORT}/${DB_TABLE}?serverTimezone=Asia/Seoul
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: ${DB_ID}
+    password: ${DB_PW}
+  jpa:
+    defer-datasource-initialization: true
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        format_sql: true
+    generate-ddl: true
+    database: mysql
+    database-platform: org.hibernate.dialect.MySQL57Dialect
+
+  cloud:
+    # FeignClient url
+    openfeign:
+      client:
+        config:
+          performance:
+            connectTimeout: 5000
+            readTimeout: 5000
+            loggerLevel: full
+
+#logging
+logging:
+  level:
+    org:
+      hibernate:
+        SQL: DEBUG
+      springframework:
+        web: DEBUG
+
+  # Display TraceId and SpanId
+  pattern:
+    level: "%5p [${spring.application.name:},trace-id : %X{traceId:-}, span-id : %X{spanId:-}]"
+
+# eureka
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+  instance:
+    instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
+# actuator
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health, info, metrics, bus, refresh, info, prometheus, httptrace
+  # micrometer tracing
+  tracing:
+    sampling:
+      probability: 1.0
+#    enabled: true
+#  zipkin:
+#    tracing:
+#      endpoint: http://localhost:9411/api/v2/spans
+
+# Circuit Breaker (Resilience4j)
+resilience4j:
+  circuitbreaker:
+    configs:
+      default:
+        waitDurationInOpenState: 30s # OPEN -> HALF_OPEN 로 변경 시간, default 60s
+        slowCallRateThreshold: 80 # slowCall 발생 시 서버 스레드 점유로 인해 장애가 생길 수 있으므로 기본값(100)보다 조금 작게 설정
+        slowCallDurationThreshold: 5s # 위와 같은 이유로 5초를 slowCall로 판단함. 해당 값은 TimeLimiter의 timeoutDuration보다 작아야 함
+        registerHealthIndicator: true
+    instances:
+      default:
+        baseConfig: default
+  timelimiter:
+    configs:
+      default:
+        timeoutDuration: 6s # slowCallDurationThreshold보다는 크게 설정되어야 함
+        cancelRunningFuture: true
+
+---
+spring:
+  config:
+    activate:
+      on-profile: proc
+
+

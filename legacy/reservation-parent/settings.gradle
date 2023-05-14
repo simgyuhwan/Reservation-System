@@ -1,0 +1,11 @@
+rootProject.name = 'reservation-parent'
+include("common")
+include("config")
+include("memberservice")
+include('performanceservice')
+include('discoveryserver')
+include('gatewayserver')
+include('reservationservice')
+include 'notificationservice'
+include('eventservice')
+
