@@ -1,0 +1,55 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '3.0.6'
+    id 'io.spring.dependency-management' version '1.1.0'
+}
+
+bootJar.enabled = false
+
+allprojects {
+    group = 'com.sim'
+    version = '0.0.1-SNAPSHOT'
+    sourceCompatibility = '17'
+
+    repositories {
+        mavenCentral()
+    }
+}
+
+subprojects {
+    apply plugin: 'java'
+    apply plugin: 'io.spring.dependency-management'
+    apply plugin: 'org.springframework.boot'
+
+    configurations {
+        compileOnly {
+            extendsFrom annotationProcessor
+        }
+    }
+
+}
+
+project(":common") {
+    bootJar { enabled = false }
+    jar { enabled = false }
+}
+
+project("domain") {
+    dependencies {
+        implementation(project(":common"))
+        implementation(project(":clients:performance-client"))
+    }
+}
+
+project("app:api") {
+    dependencies {
+        implementation(project(":domain"))
+        implementation(project(":clients:performance-client"))
+    }
+}
+
+project("clients:performance-client") {
+    dependencies {
+        implementation(project(":common"))
+    }
+}

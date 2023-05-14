@@ -33,7 +33,7 @@ services:
     restart: always
     container_name: postgreSQL_1
     ports:
-      - "37777:3306"
+      - "37777:5432"
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: Password!
@@ -46,7 +46,7 @@ services:
     restart: always
     container_name: postgreSQL_2
     ports:
-      - "37778:3306"
+      - "37778:5432"
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: Password!

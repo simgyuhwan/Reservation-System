@@ -1,0 +1,2 @@
+rootProject.name = 'member'
+include("common", "domain", "app:api", "clients:performance-client")

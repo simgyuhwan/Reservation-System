@@ -1,8 +1,6 @@
 package com.reservation.performanceservice.application.mapper;
 
-import com.reservation.common.types.PerformanceType;
 import com.reservation.performanceservice.domain.Performance;
-import com.reservation.performanceservice.domain.PerformanceDay;
 import com.reservation.performanceservice.dto.request.PerformanceDto;
 import java.util.ArrayList;
 import java.util.List;
@@ -11,7 +9,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2023-05-09T22:52:59+0900",
+    date = "2023-05-14T13:11:07+0900",
     comments = "version: 1.5.2.Final, compiler: javac, environment: Java 17.0.6 (Amazon.com Inc.)"
 )
 @Component
@@ -60,33 +58,20 @@ public class PerformanceDtoMapperImpl implements PerformanceDtoMapper {
             return null;
         }
 
-        Long memberId = null;
-        String performanceName = null;
-        Integer audienceCount = null;
-        Integer price = null;
-        String contactPhoneNum = null;
-        String contactPersonName = null;
-        String performanceInfo = null;
-        String performancePlace = null;
+        Performance.PerformanceBuilder performance = Performance.builder();
 
-        memberId = dto.getMemberId();
-        performanceName = dto.getPerformanceName();
-        audienceCount = dto.getAudienceCount();
-        price = dto.getPrice();
-        contactPhoneNum = dto.getContactPhoneNum();
-        contactPersonName = dto.getContactPersonName();
-        performanceInfo = dto.getPerformanceInfo();
-        performancePlace = dto.getPerformancePlace();
+        performance.memberId( dto.getMemberId() );
+        performance.performanceName( dto.getPerformanceName() );
+        performance.audienceCount( dto.getAudienceCount() );
+        performance.price( dto.getPrice() );
+        performance.contactPhoneNum( dto.getContactPhoneNum() );
+        performance.contactPersonName( dto.getContactPersonName() );
+        performance.performanceInfo( dto.getPerformanceInfo() );
+        performance.performancePlace( dto.getPerformancePlace() );
 
-        PerformanceType performanceType = com.reservation.common.types.PerformanceType.findByType(dto.getPerformanceType());
-        Long id = null;
-        List<PerformanceDay> performanceDays = null;
+        performance.performanceType( com.reservation.common.types.PerformanceType.findByType(dto.getPerformanceType()) );
 
-        Performance performance = new Performance( id, memberId, performanceName, performanceType, audienceCount, price, contactPhoneNum, contactPersonName, performanceInfo, performancePlace, performanceDays );
-
-        mapPerformanceDays( dto, performance );
-
-        return performance;
+        return performance.build();
     }
 
     @Override
