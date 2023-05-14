@@ -1,3 +1,17 @@
+buildscript {
+    ext {
+        querydslVersion = '5.0.0'
+        springVersion = '3.0.6'
+    }
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath("com.querydsl:querydsl-apt:${querydslVersion}")
+        classpath("com.querydsl:querydsl-jpa:${querydslVersion}")
+    }
+}
+
 plugins {
     id 'java'
     id 'org.springframework.boot' version '3.0.6'
@@ -32,6 +46,20 @@ subprojects {
     }
 }
 
+def querydslDir = "$buildDir/generated/querydsl"
+
+sourceSets {
+    main.java.srcDirs += [ querydslDir ]
+}
+
+tasks.withType(JavaCompile) {
+    options.generatedSourceOutputDirectory.set(file(querydslDir))
+}
+
+clean.doLast {
+    file(querydslDir).deleteDir()
+}
+
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
@@ -56,5 +84,6 @@ project(":app") {
 project("app:api") {
     dependencies {
         implementation(project(":domain"))
+        implementation(project(":common"))
     }
 }
