@@ -27,11 +27,14 @@ subprojects {
         }
     }
 
+    tasks.withType(JavaCompile) {
+        options.encoding = "UTF-8"
+    }
 }
 
 project(":common") {
     bootJar { enabled = false }
-    jar { enabled = false }
+    jar { enabled = true }
 }
 
 project("domain") {
@@ -41,14 +44,26 @@ project("domain") {
     }
 }
 
+project(":app") {
+    bootJar { enabled = false }
+    jar { enabled = true }
+}
+
 project("app:api") {
     dependencies {
         implementation(project(":domain"))
-        implementation(project(":clients:performance-client"))
     }
 }
 
+project(":clients") {
+    bootJar { enabled = false }
+    jar { enabled = true }
+}
+
 project("clients:performance-client") {
+    bootJar { enabled = false }
+    jar { enabled = true }
+
     dependencies {
         implementation(project(":common"))
     }

@@ -7,7 +7,6 @@ import com.sim.member.memberdomain.domain.Member;
 import com.sim.member.memberdomain.dto.MemberPerformanceDto;
 import com.sim.member.memberdomain.dto.PerformanceDto;
 
-import dto.Performance;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
