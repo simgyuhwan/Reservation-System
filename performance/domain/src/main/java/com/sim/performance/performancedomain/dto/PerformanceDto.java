@@ -9,15 +9,16 @@ import java.util.Set;
 import com.sim.performance.common.util.DateTimeUtils;
 import com.sim.performance.performancedomain.domain.Performance;
 import com.sim.performance.performancedomain.domain.PerformanceDay;
+import com.sim.performance.performancedomain.type.PerformanceType;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor
 public class PerformanceDto {
 	private Long performanceId;
 	private Long memberId;
@@ -32,6 +33,26 @@ public class PerformanceDto {
 	private String performanceInfo;
 	private String performancePlace;
 	private Set<String> performanceTimes = new HashSet<>();
+
+	@Builder
+	public PerformanceDto(Long performanceId, Long memberId, String performanceName, String performanceStartDate,
+		String performanceEndDate, String performanceType, Integer audienceCount, Integer price,
+		String contactPhoneNum, String contactPersonName, String performanceInfo, String performancePlace,
+		Set<String> performanceTimes) {
+		this.performanceId = performanceId;
+		this.memberId = memberId;
+		this.performanceName = performanceName;
+		this.performanceStartDate = performanceStartDate;
+		this.performanceEndDate = performanceEndDate;
+		this.performanceType = performanceType;
+		this.audienceCount = audienceCount;
+		this.price = price;
+		this.contactPhoneNum = contactPhoneNum;
+		this.contactPersonName = contactPersonName;
+		this.performanceInfo = performanceInfo;
+		this.performancePlace = performancePlace;
+		this.performanceTimes = performanceTimes;
+	}
 
 	public List<PerformanceDay> toPerformanceDays(Performance performance) {
 		LocalDate start = stringToLocalDate(this.performanceStartDate);
@@ -56,5 +77,8 @@ public class PerformanceDto {
 		return DateTimeUtils.stringToLocalTime(time);
 	}
 
+	public PerformanceType getType() {
+		return PerformanceType.findByType(performanceType);
+	}
 
 }

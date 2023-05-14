@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.sim.performance.performancedomain.dto.PerformanceCreateDto;
+import com.sim.performance.performancedomain.dto.PerformanceDto;
 import com.sim.performance.performancedomain.dto.PerformanceUpdateDto;
 import com.sim.performance.performancedomain.type.PerformanceType;
 import com.sim.performance.performancedomain.type.PerformanceTypeConverter;
@@ -108,21 +109,21 @@ public class Performance extends BaseEntity {
 			.registrationStatus(RegisterStatusType.PENDING)
 			.build();
 	}
-	//
-	// public static Performance createCompletedPerformance(PerformanceDto performanceDto) {
-	// 	return Performance.builder()
-	// 		.memberId(performanceDto.getMemberId())
-	// 		.performanceName(performanceDto.getPerformanceName())
-	// 		.performanceType(performanceDto.getPerformanceType())
-	// 		.audienceCount(performanceDto.getAudienceCount())
-	// 		.price(performanceDto.getPrice())
-	// 		.contactPhoneNum(performanceDto.getContactPhoneNum())
-	// 		.contactPersonName(performanceDto.getContactPersonName())
-	// 		.performanceInfo(performanceDto.getPerformanceInfo())
-	// 		.performancePlace(performanceDto.getPerformancePlace())
-	// 		.registrationStatus(RegisterStatusType.COMPLETED)
-	// 		.build();
-	// }
+
+	public static Performance createCompletedPerformance(PerformanceDto performanceDto) {
+		return Performance.builder()
+			.memberId(performanceDto.getMemberId())
+			.performanceName(performanceDto.getPerformanceName())
+			.performanceType(performanceDto.getType())
+			.audienceCount(performanceDto.getAudienceCount())
+			.price(performanceDto.getPrice())
+			.contactPhoneNum(performanceDto.getContactPhoneNum())
+			.contactPersonName(performanceDto.getContactPersonName())
+			.performanceInfo(performanceDto.getPerformanceInfo())
+			.performancePlace(performanceDto.getPerformancePlace())
+			.registrationStatus(RegisterStatusType.COMPLETED)
+			.build();
+	}
 
 	public void setPerformanceDays(List<PerformanceDay> performanceDays) {
 		this.performanceDays = performanceDays;
