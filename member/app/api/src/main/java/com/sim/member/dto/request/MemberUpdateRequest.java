@@ -23,7 +23,6 @@ import lombok.NoArgsConstructor;
 @Builder
 @EqualsAndHashCode
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor
 public class MemberUpdateRequest {
 
 	@Schema(description = "아이디", example = "test")
@@ -43,8 +42,21 @@ public class MemberUpdateRequest {
 	@NotBlank(message = "주소는 반드시 입력해야 합니다.")
 	private String address;
 
-	public static MemberUpdateRequest of(String userId, String phoneNum, String username, String address) {
-		return new MemberUpdateRequest(userId, phoneNum, username, address);
+	@Builder
+	private MemberUpdateRequest(String userId, String phoneNum, String username, String address) {
+		this.userId = userId;
+		this.phoneNum = phoneNum;
+		this.username = username;
+		this.address = address;
+	}
+
+	public static MemberUpdateRequest of(String userId, String username, String phoneNum, String address) {
+		return MemberUpdateRequest.builder()
+			.userId(userId)
+			.username(username)
+			.phoneNum(phoneNum)
+			.address(address)
+			.build();
 	}
 
 	public MemberUpdateDto toDto() {

@@ -17,8 +17,8 @@ import lombok.NoArgsConstructor;
 public class MemberDto {
 	private Long id;
 	private String userId;
-	private String phoneNum;
 	private String username;
+	private String phoneNum;
 	private String address;
 
 	public static MemberDto of(Member member) {
@@ -28,6 +28,14 @@ public class MemberDto {
 			.phoneNum(member.getPhoneNum())
 			.username(member.getUsername())
 			.address(member.getAddress())
+			.build();
+	}
+	public static MemberDto of(String userId, String username, String phoneNum, String address) {
+		return MemberDto.builder()
+			.userId(userId)
+			.username(username)
+			.phoneNum(phoneNum)
+			.address(address)
 			.build();
 	}
 }
