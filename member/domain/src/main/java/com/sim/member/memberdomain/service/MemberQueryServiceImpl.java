@@ -15,7 +15,6 @@ import com.sim.member.memberdomain.dto.PerformanceDto;
 import com.sim.member.memberdomain.error.ErrorMessage;
 import com.sim.member.memberdomain.error.InvalidUserIdException;
 import com.sim.member.memberdomain.error.MemberNotFoundException;
-import com.sim.member.memberdomain.mapper.MemberDtoMapper;
 import com.sim.member.memberdomain.repository.MemberRepository;
 
 import dto.Performance;
@@ -36,20 +35,19 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class MemberQueryServiceImpl implements MemberQueryService {
 	private final MemberRepository memberRepository;
-	private final MemberDtoMapper memberDtoMapper;
 	private final PerformanceClient performanceClient;
 
 	@Override
 	public MemberDto findMemberById(Long memberId) {
 		Member member = findById(memberId);
-		return memberDtoMapper.toDto(member);
+		return MemberDto.of(member);
 	}
 
 	@Override
 	public MemberDto findMemberByUserId(String userId) {
 		Assert.hasText(userId, "user id must exist");
 		Member member = findByUserId(userId);
-		return memberDtoMapper.toDto(member);
+		return MemberDto.of(member);
 	}
 
 	@CircuitBreaker(name = "performanceApi", fallbackMethod = "fallback")

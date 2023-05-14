@@ -58,15 +58,14 @@ public class Member extends BaseEntity {
 		this.phoneNum = phoneNum;
 		this.address = address;
 	}
-
-	public void changeName(String username) {
-		this.username = username;
-	}
-
-	public void updateInfo(MemberUpdateDto updateMemberDto) {
-		this.username = updateMemberDto.getUsername();
-		this.address = updateMemberDto.getAddress();
-		this.phoneNum = updateMemberDto.getPhoneNum();
+	public static Member of(String userId, String username, String password, String phoneNum, String address) {
+		return Member.builder()
+			.userId(userId)
+			.username(username)
+			.password(password)
+			.phoneNum(phoneNum)
+			.address(address)
+			.build();
 	}
 
 	public static Member create(MemberCreateDto createDto) {
@@ -78,4 +77,15 @@ public class Member extends BaseEntity {
 			.address(createDto.getAddress())
 			.build();
 	}
+
+	public void changeName(String username) {
+		this.username = username;
+	}
+
+	public void updateInfo(MemberUpdateDto updateMemberDto) {
+		this.username = updateMemberDto.getUsername();
+		this.address = updateMemberDto.getAddress();
+		this.phoneNum = updateMemberDto.getPhoneNum();
+	}
+
 }
