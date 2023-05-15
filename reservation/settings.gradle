@@ -1,0 +1,2 @@
+rootProject.name = 'reservation'
+include("boot:boot-api", "data:data-reservation")
