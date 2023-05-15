@@ -71,6 +71,9 @@ project("boot") {
 }
 
 project("boot:boot-api") {
+    dependencies {
+        implementation(project(":data:data-reservation"))
+    }
 }
 
 project("data") {
