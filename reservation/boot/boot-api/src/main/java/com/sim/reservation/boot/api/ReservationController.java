@@ -35,6 +35,6 @@ public class ReservationController {
 		@PathVariable Long scheduleId,
 		@RequestBody @Validated ReservationApplyRequest reservationApplyRequest) {
 		return ResponseEntity.status(HttpStatus.CREATED).body(
-			reservationService.performanceReservation(performanceId, scheduleId, reservationApplyRequest));
+			reservationService.applyReservation(performanceId, scheduleId, reservationApplyRequest));
 	}
 }

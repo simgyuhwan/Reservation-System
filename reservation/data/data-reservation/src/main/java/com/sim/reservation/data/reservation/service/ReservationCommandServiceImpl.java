@@ -49,7 +49,7 @@ public class ReservationCommandServiceImpl implements ReservationCommandService{
     private final RedissonClient redissonClient;
 
     @Override
-    public void createReservation(Long performanceId, Long scheduleId, ReservationDto reservationDto) {
+    public ReservationDto createReservation(Long performanceId, Long scheduleId, ReservationDto reservationDto) {
         Boolean isReservable = getReserveAvailability(scheduleId);
 
         if (!isReservable) {
@@ -72,6 +72,7 @@ public class ReservationCommandServiceImpl implements ReservationCommandService{
             updateReserveAvailability(scheduleId, schedule.isAvailable());
 
             Reservation reservation = reservationRepository.save(Reservation.of(reservationDto, schedule));
+            return ReservationDto.from(reservation);
         } catch (InterruptedException e) {
             e.printStackTrace();
             throw new InternalException(e);

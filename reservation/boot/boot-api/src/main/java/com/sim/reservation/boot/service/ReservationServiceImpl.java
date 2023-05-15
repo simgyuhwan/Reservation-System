@@ -26,10 +26,12 @@ public class ReservationServiceImpl implements ReservationService{
     private final ReservationCommandService reservationCommandService;
 
     @Override
-    public ReservationResultResponse performanceReservation(Long performanceId, Long scheduleId,
+    public ReservationResultResponse applyReservation(Long performanceId, Long scheduleId,
         ReservationApplyRequest reservationApplyRequest) {
-        ReservationDto reservationDto = reservationApplyRequest.toReservationDto();
-        reservationCommandService.createReservation(performanceId, scheduleId, reservationDto);
-        return null;
+        ReservationDto reservationApplyDto = reservationApplyRequest.toReservationDto();
+        ReservationDto reservationDto = reservationCommandService.createReservation(performanceId, scheduleId,
+            reservationApplyDto);
+
+        return ReservationResultResponse.applyComplete(reservationDto);
     }
 }
