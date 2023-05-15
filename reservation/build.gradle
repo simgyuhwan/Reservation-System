@@ -1,3 +1,17 @@
+buildscript {
+    ext {
+        querydslVersion = '5.0.0'
+        springVersion = '3.0.6'
+    }
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath("com.querydsl:querydsl-apt:${querydslVersion}")
+        classpath("com.querydsl:querydsl-jpa:${querydslVersion}")
+    }
+}
+
 plugins {
     id 'groovy'
     id 'org.springframework.boot' version '3.0.6'
@@ -35,6 +49,21 @@ subprojects {
         useJUnitPlatform()
     }
 }
+
+def querydslDir = "$buildDir/generated/querydsl"
+
+sourceSets {
+    main.java.srcDirs += [ querydslDir ]
+}
+
+tasks.withType(JavaCompile) {
+    options.generatedSourceOutputDirectory.set(file(querydslDir))
+}
+
+clean.doLast {
+    file(querydslDir).deleteDir()
+}
+
 
 project("boot") {
     bootJar { enabled = false }
