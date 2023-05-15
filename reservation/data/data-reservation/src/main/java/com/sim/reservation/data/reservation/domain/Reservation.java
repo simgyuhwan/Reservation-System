@@ -12,7 +12,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -27,9 +26,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor
 public class Reservation extends BaseEntity {
-
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -70,9 +67,10 @@ public class Reservation extends BaseEntity {
 	}
 
 	@Builder
-	private Reservation(String userId, String name, String phoneNum, String email, boolean isEmailReceiveDenied,
+	private Reservation(Long id, String userId, String name, String phoneNum, String email, boolean isEmailReceiveDenied,
 		boolean isSnsReceiveDenied, PerformanceSchedule performanceSchedule,
 		ReservationStatus status) {
+		this.id = id;
 		this.userId = userId;
 		this.name = name;
 		this.phoneNum = phoneNum;

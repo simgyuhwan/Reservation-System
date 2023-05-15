@@ -16,6 +16,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -60,22 +61,8 @@ public class PerformanceInfo extends BaseEntity {
 			.findFirst();
 	}
 
-	public static PerformanceInfo of(Long id, String name, String info, String place, boolean isAvailable,
-		Integer price,
-		String contactPhoneNum, String contactPersonName, Long performanceId,
-		PerformanceType type, List<PerformanceSchedule> performanceSchedules) {
-		return new PerformanceInfo(id, name, info, place, isAvailable, price, contactPhoneNum, contactPersonName,
-			performanceId, type, performanceSchedules);
-	}
-
-	public static PerformanceInfo of(String name, String info, String place, boolean isAvailable, Integer price,
-		String contactPhoneNum, String contactPersonName, Long performanceId,
-		PerformanceType type, List<PerformanceSchedule> performanceSchedules) {
-		return new PerformanceInfo(null, name, info, place, isAvailable, price, contactPhoneNum, contactPersonName,
-			performanceId, type, performanceSchedules);
-	}
-
-	private PerformanceInfo(Long id, String name, String info, String place, boolean isAvailable, Integer price,
+	@Builder
+	public PerformanceInfo(Long id, String name, String info, String place, boolean isAvailable, Integer price,
 		String contactPhoneNum, String contactPersonName, Long performanceId,
 		PerformanceType type, List<PerformanceSchedule> performanceSchedules) {
 		this.id = id;

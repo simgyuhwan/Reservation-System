@@ -22,7 +22,7 @@ public class SoldOutException extends RuntimeException {
 	}
 
 	public SoldOutException(ErrorMessage errorMessage, Long performanceScheduleId) {
-		super(errorMessage.name() + performanceScheduleId);
+		super(errorMessage.getMessage() + performanceScheduleId);
 		this.performanceScheduleId = performanceScheduleId;
 	}
 }

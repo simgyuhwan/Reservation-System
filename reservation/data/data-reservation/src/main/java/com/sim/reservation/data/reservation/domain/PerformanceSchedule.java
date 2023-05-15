@@ -32,7 +32,6 @@ import lombok.NoArgsConstructor;
 @Getter
 @Table(name = "performance_schedule")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor
 public class PerformanceSchedule extends BaseEntity {
 	private static final int NO_SEAT = 0;
 
@@ -53,9 +52,10 @@ public class PerformanceSchedule extends BaseEntity {
 	private boolean isAvailable;
 
 	@Builder
-	public PerformanceSchedule(PerformanceInfo performanceInfo, LocalDate startDate, LocalDate endDate,
+	public PerformanceSchedule(Long id, PerformanceInfo performanceInfo, LocalDate startDate, LocalDate endDate,
 		Integer availableSeats,
 		LocalTime startTime, Integer remainingSeats, boolean isAvailable) {
+		this.id = id;
 		this.performanceInfo = performanceInfo;
 		this.startDate = startDate;
 		this.endDate = endDate;
