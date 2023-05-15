@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 
 /**
  * EventStatus.java
- * Class 설명을 작성하세요.
+ * 이벤트 상태 클래스
  *
  * @author sgh
  * @since 2023.05.11
@@ -49,9 +49,24 @@ public class EventStatus extends BaseEntity {
     public static EventStatus createFailEvent(String id, String message) {
         return EventStatus.builder()
             .id(id)
-            .status(EventStatusType.FAIL)
+            .status(EventStatusType.FAILED)
             .message(message)
             .build();
+    }
+
+    public static EventStatus createStartEvent(String id) {
+        return EventStatus.builder()
+            .id(id)
+            .status(EventStatusType.PENDING)
+            .build();
+    }
+
+    public void changeSuccess() {
+        this.status = EventStatusType.SUCCESS;
+    }
+
+    public void changeFailed() {
+        this.status = EventStatusType.FAILED;
     }
 
     public boolean isSuccess() {

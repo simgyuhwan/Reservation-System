@@ -2,6 +2,9 @@ package com.sim.reservation.data.reservation.type;
 
 import lombok.Getter;
 
+/**
+ * 이벤트 송신 출처
+ */
 @Getter
 public enum SourceType {
 	MEMBER_SERVICE,
