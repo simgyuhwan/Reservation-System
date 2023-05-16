@@ -20,6 +20,7 @@ dependencies {
     implementation 'org.projectlombok:lombok:1.18.24'
     annotationProcessor 'org.projectlombok:lombok'
 
+    // swagger
     implementation group: 'org.springdoc', name: 'springdoc-openapi-starter-webmvc-ui', version: '2.0.0'
 
     // eureka client
@@ -32,12 +33,6 @@ dependencies {
     implementation 'io.micrometer:micrometer-tracing-bridge-brave'
     implementation 'io.zipkin.reporter2:zipkin-reporter-brave'
     implementation 'io.micrometer:micrometer-observation'
-
-    // feignClient
-    implementation 'org.springframework.cloud:spring-cloud-starter-openfeign:4.0.0'
-
-    // circuit Breaker
-    implementation 'org.springframework.cloud:spring-cloud-starter-circuitbreaker-resilience4j:3.0.0'
 
     // mysql
     runtimeOnly 'com.mysql:mysql-connector-j'
