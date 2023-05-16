@@ -70,6 +70,7 @@ public class PerformanceController {
 	}
 
 	@GetMapping("/{performanceId}/status")
+	@Operation(summary = "[공연] 공연 등록 상태 조회", description = "공연 등룩 후 등록 상태 확인")
 	public PerformanceStatusDto performanceStatus(@PathVariable Long performanceId) {
 		return performanceQueryService.getPerformanceStatusByPerformanceId(performanceId);
 	}
