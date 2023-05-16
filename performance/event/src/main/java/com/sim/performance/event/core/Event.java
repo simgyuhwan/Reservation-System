@@ -1,10 +1,10 @@
-package com.sim.performance.performancedomain.event;
+package com.sim.performance.event.core;
 
 import java.time.LocalDateTime;
 
-import com.sim.performance.performancedomain.type.EventStatusType;
-import com.sim.performance.performancedomain.type.SourceType;
-import com.sim.performance.performancedomain.event.payload.Payload;
+import com.sim.performance.event.payload.Payload;
+import com.sim.performance.event.type.EventStatusType;
+import com.sim.performance.event.type.SourceType;
 
 public interface Event {
 	String getId();

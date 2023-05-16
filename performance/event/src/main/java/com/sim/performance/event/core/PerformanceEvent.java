@@ -1,25 +1,19 @@
-package com.sim.performance.performancedomain.event;
+package com.sim.performance.event.core;
 
 import java.time.LocalDateTime;
-import java.util.UUID;
-import java.util.function.Supplier;
 
-import com.sim.performance.performancedomain.type.EventStatusType;
-import com.sim.performance.performancedomain.type.SourceType;
-import com.sim.performance.performancedomain.event.payload.Payload;
-import com.sim.performance.performancedomain.type.EventType;
+import com.sim.performance.event.payload.Payload;
+import com.sim.performance.event.type.EventStatusType;
+import com.sim.performance.event.type.EventType;
+import com.sim.performance.event.type.SourceType;
 
-import lombok.ToString;
+import lombok.Builder;
 
-@ToString
-public class PerformanceEvent implements Event {
-	private final String id;
-	private final LocalDateTime eventDateTime;
-	private final EventStatusType status;
-	private final SourceType source;
-	private final Payload payload;
-	private final EventType eventType;
-
+public record PerformanceEvent(String id, LocalDateTime eventDateTime,
+							   EventStatusType status,
+							   SourceType source,
+							   Payload payload,
+							   EventType eventType) implements Event {
 	@Override
 	public String getId() {
 		return id;
@@ -45,66 +39,23 @@ public class PerformanceEvent implements Event {
 		return eventDateTime;
 	}
 
-	private PerformanceEvent(Builder builder) {
-		this.id = builder.id;
-		this.eventDateTime = builder.eventDateTime;
-		this.status = builder.status;
-		this.payload = builder.payload;
-		this.eventType = builder.eventType;
-		this.source = builder.source;
-	}
-
 	public EventType getEventType() {
 		return eventType;
 	}
 
-	public static Builder pending(EventType eventType) {
-		return new Builder()
-			.id(UUID.randomUUID().toString())
+	@Builder
+	public PerformanceEvent {
+	}
+
+	public static PerformanceEvent pending(EventType eventType, Payload payload) {
+		return PerformanceEvent.builder()
+			.id(payload.getId())
 			.eventDateTime(LocalDateTime.now())
 			.source(SourceType.PERFORMANCE_SERVICE)
 			.eventType(eventType)
-			.status(EventStatusType.PENDING);
+			.status(EventStatusType.PENDING)
+			.payload(payload)
+			.build();
 	}
 
-	public static class Builder {
-		private String id;
-		private LocalDateTime eventDateTime;
-		private EventStatusType status;
-		private SourceType source;
-		private Payload payload;
-		private EventType eventType;
-
-		private Builder(){}
-
-		private Builder id(String id) {
-			this.id = id;
-			return this;
-		}
-
-		private Builder eventDateTime(LocalDateTime eventDateTime) {
-			this.eventDateTime = eventDateTime;
-			return this;
-		}
-
-		private Builder status(EventStatusType status) {
-			this.status = status;
-			return this;
-		}
-
-		private Builder eventType(EventType eventType) {
-			this.eventType = eventType;
-			return this;
-		}
-
-		private Builder source(SourceType source) {
-			this.source = source;
-			return this;
-		}
-		
-		public PerformanceEvent payload(Supplier<Payload> supplier) {
-			this.payload = supplier.get();
-			return new PerformanceEvent(this);
-		}
-	}
 }

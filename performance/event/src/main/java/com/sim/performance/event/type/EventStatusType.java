@@ -1,4 +1,4 @@
-package com.sim.performance.performancedomain.type;
+package com.sim.performance.event.type;
 
 public enum EventStatusType {
 	PENDING,

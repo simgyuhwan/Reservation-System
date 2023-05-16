@@ -1,4 +1,4 @@
-package com.sim.performance.performancedomain.event;
+package com.sim.performance.event.core;
 
 import java.time.LocalDateTime;
 
@@ -6,15 +6,15 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
-import com.sim.performance.performancedomain.type.EventStatusType;
-import com.sim.performance.performancedomain.type.SourceType;
-import com.sim.performance.performancedomain.event.payload.Payload;
+import com.sim.performance.event.payload.Payload;
+import com.sim.performance.event.type.EventStatusType;
+import com.sim.performance.event.type.SourceType;
 
 import lombok.Builder;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
-public class DefaultEvent<T extends Payload> implements Event{
+public class DefaultEvent<T extends Payload> implements Event {
 	private String id;
 
 	@JsonSerialize(using = LocalDateTimeSerializer.class)

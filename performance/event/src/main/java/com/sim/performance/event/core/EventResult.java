@@ -1,11 +1,12 @@
-package com.sim.performance.performancedomain.event;
+package com.sim.performance.event.core;
 
+import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class EventResult {
 	private String id;
 	private boolean success;

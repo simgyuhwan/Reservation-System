@@ -1,8 +1,7 @@
 package com.sim.performance.performancedomain.service;
 
-import com.sim.performance.performancedomain.event.EventResult;
-import com.sim.performance.performancedomain.event.PerformanceEvent;
-import com.sim.performance.performancedomain.type.EventStatusType;
+import com.sim.performance.event.dto.CreatedEventResultDto;
+import com.sim.performance.event.payload.PerformanceCreatedPayload;
 
 /**
  * 공연 이벤트 관리 서비스
@@ -11,11 +10,11 @@ public interface PerformanceEventService {
 	/**
 	 * 이벤트 상태 저장
 	 */
-	void saveEvent(PerformanceEvent performanceEvent, EventStatusType status);
+	void savePerformanceCreatedEvent(PerformanceCreatedPayload performanceCreatedPayload);
 
 	/**
 	 * 공연 생성 이벤트 처리
 	 *
 	 */
-	void handlePerformanceCreatedEventResult(EventResult eventResult);
+	void handlePerformanceCreatedEventResult(CreatedEventResultDto createdEventResultDto);
 }

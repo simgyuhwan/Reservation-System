@@ -3,11 +3,13 @@ package com.sim.performance.performancedomain.service;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.sim.performance.event.core.PerformanceEvent;
+import com.sim.performance.event.dto.CreatedEventDto;
+import com.sim.performance.event.dto.CreatedEventResultDto;
+import com.sim.performance.event.payload.PerformanceCreatedPayload;
+import com.sim.performance.event.type.EventStatusType;
 import com.sim.performance.performancedomain.domain.EventStatus;
-import com.sim.performance.performancedomain.event.EventResult;
-import com.sim.performance.performancedomain.event.PerformanceEvent;
 import com.sim.performance.performancedomain.repository.EventStatusRepository;
-import com.sim.performance.performancedomain.type.EventStatusType;
 import com.sim.performance.performancedomain.type.RegisterStatusType;
 
 import jakarta.persistence.EntityNotFoundException;
@@ -23,17 +25,17 @@ public class PerformanceEventServiceImpl implements PerformanceEventService{
 	private final PerformanceCommandService performanceCommandService;
 
 	@Override
-	public void saveEvent(PerformanceEvent performanceEvent, EventStatusType status) {
-		EventStatus eventStatus = EventStatus.from(performanceEvent, status);
+	public void savePerformanceCreatedEvent(PerformanceCreatedPayload performanceCreatedPayload) {
+		EventStatus eventStatus = EventStatus.from(performanceCreatedPayload);
 		eventStatusRepository.save(eventStatus);
 	}
 
 	@Override
-	public void handlePerformanceCreatedEventResult(EventResult eventResult) {
-		EventStatus eventStatus = findEventById(eventResult.getId());
+	public void handlePerformanceCreatedEventResult(CreatedEventResultDto createdEventResultDto) {
+		EventStatus eventStatus = findEventById(createdEventResultDto.getId());
 		if(eventStatus.isCompleted()) return;
 
-		if(eventResult.isFailure()) {
+		if(createdEventResultDto.isFailure()) {
 			rollbackPerformanceRegistration(eventStatus);
 		}
 

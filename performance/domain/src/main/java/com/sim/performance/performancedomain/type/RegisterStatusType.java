@@ -4,7 +4,7 @@ import lombok.Getter;
 
 /**
  * RegisterStatusType.java
- * Class 설명을 작성하세요.
+ * 공연 등록 신청 상태
  *
  * @author sgh
  * @since 2023.05.11

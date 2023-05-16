@@ -1,13 +1,15 @@
 package com.sim.performance.performancedomain.service;
 
 import java.time.LocalDate;
+import java.util.UUID;
 
 import org.jetbrains.annotations.NotNull;
-import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.sim.performance.common.util.DateTimeUtils;
+import com.sim.performance.event.dto.CreatedEventDto;
+import com.sim.performance.event.publisher.InternalEventPublisher;
 import com.sim.performance.performancedomain.domain.Performance;
 import com.sim.performance.performancedomain.dto.PerformanceCreateDto;
 import com.sim.performance.performancedomain.dto.PerformanceDto;
@@ -16,11 +18,8 @@ import com.sim.performance.performancedomain.dto.PerformanceUpdateDto;
 import com.sim.performance.performancedomain.error.ErrorMessage;
 import com.sim.performance.performancedomain.error.InvalidPerformanceDateException;
 import com.sim.performance.performancedomain.error.PerformanceNotFoundException;
-import com.sim.performance.performancedomain.event.PerformanceEvent;
-import com.sim.performance.performancedomain.event.payload.PerformanceCreatedPayload;
 import com.sim.performance.performancedomain.mapper.PerformanceDtoMapper;
 import com.sim.performance.performancedomain.repository.PerformanceRepository;
-import com.sim.performance.performancedomain.type.EventType;
 import com.sim.performance.performancedomain.type.RegisterStatusType;
 
 import lombok.RequiredArgsConstructor;
@@ -33,7 +32,7 @@ import lombok.extern.slf4j.Slf4j;
 public class PerformanceCommandServiceImpl implements PerformanceCommandService {
 	private final PerformanceRepository performanceRepository;
 	private final PerformanceDtoMapper performanceDtoMapper;
-	private final ApplicationEventPublisher eventPublisher;
+	private final InternalEventPublisher internalEventPublisher;
 
 	@Override
 	public PerformanceStatusDto createPerformance(PerformanceCreateDto performanceCreateDto) {
@@ -41,7 +40,7 @@ public class PerformanceCommandServiceImpl implements PerformanceCommandService 
 		Performance pendingPerformance = createPendingPerformance(performanceCreateDto);
 		Performance performance = performanceRepository.save(pendingPerformance);
 
-		eventPublisher.publishEvent(createPerformanceCreatedEvent(performance));
+		internalEventPublisher.publishPerformanceCreatedEvent(createPerformanceEventDto(performance));
 
 		return PerformanceStatusDto.requestComplete(performance.getId());
 	}
@@ -80,11 +79,6 @@ public class PerformanceCommandServiceImpl implements PerformanceCommandService 
 		}
 	}
 
-	private PerformanceEvent createPerformanceCreatedEvent(Performance performance) {
-		return PerformanceEvent.pending(EventType.PERFORMANCE_CREATED)
-			.payload(() -> PerformanceCreatedPayload.from(performance));
-	}
-
 	@NotNull
 	private Performance createPendingPerformance(PerformanceCreateDto performanceDto) {
 		Performance performance = Performance.createPendingPerformance(performanceDto);
@@ -92,5 +86,13 @@ public class PerformanceCommandServiceImpl implements PerformanceCommandService 
 		performance.getPerformanceDays().forEach(day -> day.setPerformance(performance));
 
 		return performance;
+	}
+
+	private CreatedEventDto createPerformanceEventDto(Performance performance) {
+		return CreatedEventDto.builder()
+			.id(UUID.randomUUID().toString())
+			.performanceId(performance.getId())
+			.memberId(performance.getMemberId())
+			.build();
 	}
 }

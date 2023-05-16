@@ -1,7 +1,10 @@
-package com.sim.performance.performancedomain.event.producer;
+package com.sim.performance.event.publisher;
 
-import com.sim.performance.performancedomain.event.PerformanceEvent;
+import com.sim.performance.event.core.PerformanceEvent;
 
-public interface EventProducer {
+/**
+ * 외부 서비스 이벤트 발행 클래스
+ */
+public interface ExternalEventPublisher {
 	void publishPerformanceCreatedEvent(PerformanceEvent performanceEvent);
 }

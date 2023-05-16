@@ -1,20 +1,31 @@
-package com.sim.performance.performancedomain.event.payload;
+package com.sim.performance.event.payload;
 
-import com.sim.performance.performancedomain.domain.Performance;
+import com.sim.performance.event.dto.CreatedEventDto;
 
+import lombok.Builder;
 import lombok.Getter;
 
+/**
+ * 공연 생성 이벤트 Payload
+ */
 @Getter
 public class PerformanceCreatedPayload implements Payload {
+	private String id;
 	private Long performanceId;
 	private Long memberId;
 
-	private PerformanceCreatedPayload(Long performanceId, Long memberId) {
+	@Builder
+	private PerformanceCreatedPayload(String id, Long performanceId, Long memberId) {
+		this.id = id;
 		this.performanceId = performanceId;
 		this.memberId = memberId;
 	}
 
-	public static PerformanceCreatedPayload from(Performance performance) {
-		return new PerformanceCreatedPayload(performance.getId(), performance.getMemberId());
+	public static PerformanceCreatedPayload from(CreatedEventDto createdEventDto) {
+		return PerformanceCreatedPayload.builder()
+			.id(createdEventDto.getId())
+			.performanceId(createdEventDto.getPerformanceId())
+			.memberId(createdEventDto.getMemberId())
+			.build();
 	}
 }

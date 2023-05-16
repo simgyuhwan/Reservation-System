@@ -20,6 +20,7 @@ import com.sim.performance.domain.factory.PerformanceCreateDtoFactory;
 import com.sim.performance.domain.factory.PerformanceDtoFactory;
 import com.sim.performance.domain.factory.PerformanceFactory;
 import com.sim.performance.domain.factory.PerformanceUpdateDtoFactory;
+import com.sim.performance.event.publisher.InternalEventPublisher;
 import com.sim.performance.performancedomain.domain.Performance;
 import com.sim.performance.performancedomain.dto.PerformanceCreateDto;
 import com.sim.performance.performancedomain.dto.PerformanceDto;
@@ -41,12 +42,11 @@ import com.sim.performance.performancedomain.service.PerformanceCommandServiceIm
 class PerformanceCommandServiceTest {
 	private static final Long MEMBER_ID = PerformanceDtoFactory.MEMBER_ID;
 
-
 	@Mock
 	private PerformanceRepository performanceRepository;
 
 	@Mock
-	private ApplicationEventPublisher applicationEventPublisher;
+	private InternalEventPublisher internalEventPublisher;
 
 	@Spy
 	private PerformanceDtoMapper performanceDtoMapper = PerformanceDtoMapper.INSTANCE;

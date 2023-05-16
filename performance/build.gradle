@@ -79,6 +79,7 @@ project(":common") {
 project("domain") {
     dependencies {
         implementation(project(":common"))
+        implementation(project(":event"))
     }
 }
 
@@ -91,5 +92,10 @@ project("app:api") {
     dependencies {
         implementation(project(":domain"))
         implementation(project(":common"))
+    }
+}
+
+project("event") {
+    dependencies {
     }
 }
