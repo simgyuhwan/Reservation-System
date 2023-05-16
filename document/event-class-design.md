@@ -20,7 +20,9 @@
 
 ##### [5) 다섯 번째 시도(Builder 패턴)](#5-다섯-번째-시도-builder-패턴)
 
-##### [6) 마지막 시도(나를 만드는건 나다)](#6-마지막-시도나를-만드는건-나다-1)
+##### [6) 여섯 번째(나를 만드는건 나다)](#6-여섯-번째-시도나를-만드는건-나다)
+
+##### [7) 일곱 번째 시도(Simple is best)](#7-일곱-번째-시도simple-is-best-1)
 
 <br>
 
@@ -450,7 +452,7 @@ public class PerformanceEventBuilder {
 
 <br>
 
-## 6) 마지막 시도(나를 만드는건 나다)
+## 6) 여섯 번째 시도(나를 만드는건 나다)
 
 <br>
 
@@ -548,7 +550,88 @@ public class PerformanceEvent implements Event {
 
 공연 이벤트에 대한 생성과 비즈니스 로직은 모두 이 내부에 넘겨서 객체가 일을 할 수 있도록 바꿔버렸다. 객체의 생성과 비즈니스 로직이 한 곳에 집중된 만큼 객체가 커질 수 있고 복잡해질 수 있다고 생각된다.
 
-하지만 지금 정도의 프로젝트에선 무리없다고 생각되며 관리 포인트도 한 곳으로 집중되었다. 계속 사용하다보면 더 좋은게 떠오를지 모르겠지만 지금은 이정도선에서 만족했다.
+하지만 지금 정도의 프로젝트에선 무리없다고 생각되며 관리 포인트도 한 곳으로 집중되었다.
+
+<br>
+
+## 7) 일곱 번째 시도(Simple is best)
+
+<br>
+
+**사용 코드**
+
+```java
+PerformanceEvent performanceEvent = PerformanceEvent.pending(EventType.PERFORMANCE_CREATED, performanceCreatedPayload);
+
+```
+
+**PerformanceEvent**
+
+```java
+public class PerformanceEvent implements Event {
+	private final String id;
+	private final LocalDateTime eventDateTime;
+	private final EventStatusType status;
+	private final SourceType source;
+	private final Payload payload;
+	private final EventType eventType;
+
+	@Override
+	public String getId() {
+		return id;
+	}
+
+	@Override
+	public Payload getPayload() {
+		return payload;
+	}
+
+	@Override
+	public SourceType getSource() {
+		return source;
+	}
+
+	@Override
+	public EventStatusType getStatus() {
+		return status;
+	}
+
+	@Override
+	public LocalDateTime getEventDateTime() {
+		return eventDateTime;
+	}
+
+	public EventType getEventType() {
+		return eventType;
+	}
+
+	@Builder
+	private PerformanceEvent(String id, LocalDateTime eventDateTime, EventStatusType status,
+		SourceType source, Payload payload, EventType eventType) {
+		this.id = id;
+		this.eventDateTime = eventDateTime;
+		this.status = status;
+		this.source = source;
+		this.payload = payload;
+		this.eventType = eventType;
+	}
+
+
+	public static PerformanceEvent pending(EventType eventType, Payload payload) {
+		return PerformanceEvent.builder()
+			.id(UUID.randomUUID().toString())
+			.eventDateTime(LocalDateTime.now())
+			.source(SourceType.PERFORMANCE_SERVICE)
+			.eventType(eventType)
+			.status(EventStatusType.PENDING)
+			.payload(payload)
+			.build();
+	}
+
+}
+```
+
+여러가지 패턴을 사용했지만 막상 사용하려고 하니 오히려 햇갈리거나 번거롭다는 생각이 들었다. 역시 간단하게 한눈에 보기 좋은 코드가 가장 깔끔한게 아닌가 싶다.
 
 각각의 시도를 통해서 각자의 장단점이 느껴졌다. 글로 읽을 때와 직접 구현해보고 적용해봤을 때의 차이는 크다는 것을 실감했다.
 
