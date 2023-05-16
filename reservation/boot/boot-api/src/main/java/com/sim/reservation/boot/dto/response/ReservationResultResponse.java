@@ -33,8 +33,15 @@ public class ReservationResultResponse {
 			.build();
 	}
 
+	public static ReservationResultResponse applyComplete(Long reservationId) {
+		return ReservationResultResponse.builder()
+			.reservationId(reservationId)
+			.message(ResultMessage.RESERVATION_APPLY_COMPLETE)
+			.build();
+	}
+
 	@Getter
-	enum ResultMessage {
+	public enum ResultMessage {
 		RESERVATION_APPLY_COMPLETE("예약 신청이 완료되었습니다."),
 		RESERVATION_CANCEL_COMPLETE("예약 신청 취소가 완료되었습니다.");
 

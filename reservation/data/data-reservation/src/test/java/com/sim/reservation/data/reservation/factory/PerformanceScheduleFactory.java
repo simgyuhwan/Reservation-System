@@ -7,10 +7,6 @@ import java.util.List;
 import com.sim.reservation.data.reservation.domain.PerformanceInfo;
 import com.sim.reservation.data.reservation.domain.PerformanceSchedule;
 
-import jakarta.persistence.FetchType;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-
 /**
  * PerformanceScheduleFactory.java
  * Class 설명을 작성하세요.

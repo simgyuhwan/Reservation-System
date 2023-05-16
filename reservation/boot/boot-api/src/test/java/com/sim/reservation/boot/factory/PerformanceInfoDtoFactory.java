@@ -43,4 +43,17 @@ public class PerformanceInfoDtoFactory {
             .contactPersonName(CONTACT_PERSON_NAME)
             .build();
     }
+
+    public static PerformanceInfoDto createPerformanceInfoDto(String name, String info, String type, String place, boolean isAvailable, int price, String contactPhoneNum, String contactPersonName) {
+        return PerformanceInfoDto.builder()
+            .name(name)
+            .info(info)
+            .type(type)
+            .place(place)
+            .isAvailable(isAvailable)
+            .price(price)
+            .contactPhoneNum(contactPhoneNum)
+            .contactPersonName(contactPersonName)
+            .build();
+    }
 }

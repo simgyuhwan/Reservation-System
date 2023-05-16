@@ -4,7 +4,6 @@ import com.sim.reservation.data.reservation.domain.Reservation;
 
 /**
  * ReservationFactory.java
- * Class 설명을 작성하세요.
  *
  * @author sgh
  * @since 2023.05.15
