@@ -155,7 +155,7 @@
 
 #### [4. 이벤트 클래스를 설계하면서](./document/event-class-design.md)
 
-#### [5. 멀티 모듈]()
+#### [5. 멀티 모듈을 구성하면서](./document/configure-multi-module.md)
 
 #### [6. 내 맘대로 Choregraphy]()
 
