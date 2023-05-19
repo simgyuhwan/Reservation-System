@@ -64,7 +64,6 @@ class ReservationSearchApiTest {
 	public static final String NAME = "바람과 함께 사라지다";
 	public static final String INFO = "공연 소개";
 	public static final String TYPE = "MUSICAL";
-
 	private static String VIEW_RESERVATION_STATUS_URL = "/api/performances/available?";
 	private MockMvc mockMvc;
 	private Gson gson;
