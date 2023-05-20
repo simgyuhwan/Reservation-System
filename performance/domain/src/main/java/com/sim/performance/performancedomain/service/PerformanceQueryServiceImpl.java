@@ -35,6 +35,12 @@ public class PerformanceQueryServiceImpl implements PerformanceQueryService {
     private final PerformanceCustomRepository performanceCustomRepository;
     private final PerformanceRepository performanceRepository;
 
+    /**
+     * 회원 ID로 공연 정보 조회
+     *
+     * @param memberId 회원 식별자 ID
+     * @return 회원이 등록한 공연 정보
+     */
     @Override
     public List<PerformanceDto> selectPerformances(Long memberId) {
         List<Performance> performances = findRegisteredPerformanceByMemberId(memberId);
@@ -43,18 +49,36 @@ public class PerformanceQueryServiceImpl implements PerformanceQueryService {
             .collect(toList());
     }
 
+    /**
+     * 공연 정보 조회
+     *
+     * @param performanceId 조회할 공연 ID
+     * @return 공연 정보
+     */
     @Override
     public PerformanceDto selectPerformanceById(Long performanceId) {
         Performance performance = findRegisteredPerformanceById(performanceId);
         return performanceDtoMapper.toDto(performance);
     }
 
+    /**
+     * 공연 등록 신청된 공연 정보 조회
+     *
+     * @param performanceId 조회할 공연 ID
+     * @return 공연 정보
+     */
     @Override
     public PerformanceDto selectPendingPerformanceById(Long performanceId) {
         Performance performance = findPendingPerformanceById(performanceId);
         return performanceDtoMapper.toDto(performance);
     }
 
+    /**
+     * 공연 등록 신청 상태값 조회
+     *
+     * @param performanceId 조회할 공연 ID
+     * @return 공연 등록 상태 정보
+     */
     @Override
     public PerformanceStatusDto getPerformanceStatusByPerformanceId(Long performanceId) {
         Performance performance = findPerformanceById(performanceId);

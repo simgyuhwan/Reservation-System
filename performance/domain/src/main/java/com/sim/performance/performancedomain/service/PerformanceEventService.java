@@ -14,7 +14,6 @@ public interface PerformanceEventService {
 
 	/**
 	 * 공연 생성 이벤트 처리
-	 *
 	 */
 	void handlePerformanceCreatedEventResult(CreatedEventResultDto createdEventResultDto);
 }

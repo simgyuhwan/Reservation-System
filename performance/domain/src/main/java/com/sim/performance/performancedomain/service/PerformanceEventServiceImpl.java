@@ -21,12 +21,18 @@ public class PerformanceEventServiceImpl implements PerformanceEventService{
 	private final EventStatusRepository eventStatusRepository;
 	private final PerformanceCommandService performanceCommandService;
 
+	/**
+	 * 이벤트 상태 저장
+	 */
 	@Override
 	public void savePerformanceCreatedEvent(PerformanceCreatedPayload performanceCreatedPayload) {
 		EventStatus eventStatus = EventStatus.from(performanceCreatedPayload);
 		eventStatusRepository.save(eventStatus);
 	}
-
+	/**
+	 * 공연 생성 이벤트 처리
+	 *
+	 */
 	@Override
 	public void handlePerformanceCreatedEventResult(CreatedEventResultDto createdEventResultDto) {
 		EventStatus eventStatus = findEventById(createdEventResultDto.getId());
