@@ -6,23 +6,23 @@ import lombok.Builder;
 import lombok.Getter;
 
 /**
- * 공연 생성 이벤트 Payload
+ * 공연 수정 이벤트 Payload
  */
 @Getter
-public class PerformanceCreatedPayload implements Payload {
+public class PerformanceUpdatedPayload implements Payload {
 	private String id;
 	private Long performanceId;
 	private Long memberId;
 
 	@Builder
-	private PerformanceCreatedPayload(String id, Long performanceId, Long memberId) {
+	private PerformanceUpdatedPayload(String id, Long performanceId, Long memberId) {
 		this.id = id;
 		this.performanceId = performanceId;
 		this.memberId = memberId;
 	}
 
-	public static PerformanceCreatedPayload from(InternalEventDto internalEventDto) {
-		return PerformanceCreatedPayload.builder()
+	public static PerformanceUpdatedPayload from(InternalEventDto internalEventDto) {
+		return PerformanceUpdatedPayload.builder()
 			.id(internalEventDto.getId())
 			.performanceId(internalEventDto.getPerformanceId())
 			.memberId(internalEventDto.getMemberId())

@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.sim.performance.common.util.DateTimeUtils;
-import com.sim.performance.event.dto.CreatedEventDto;
+import com.sim.performance.event.dto.InternalEventDto;
 import com.sim.performance.event.publisher.InternalEventPublisher;
 import com.sim.performance.performancedomain.domain.Performance;
 import com.sim.performance.performancedomain.dto.PerformanceCreateDto;
@@ -34,26 +34,46 @@ public class PerformanceCommandServiceImpl implements PerformanceCommandService 
 	private final PerformanceDtoMapper performanceDtoMapper;
 	private final InternalEventPublisher internalEventPublisher;
 
+	/**
+	 * 공연 생성
+	 *
+	 * @param performanceCreateDto 공연 생성 DTO
+	 * @return 공연등록 요청에 대한 결과값
+	 */
 	@Override
 	public PerformanceStatusDto createPerformance(PerformanceCreateDto performanceCreateDto) {
 		validatePerformanceDate(performanceCreateDto.getPerformanceStartDate(), performanceCreateDto.getPerformanceEndDate());
 		Performance pendingPerformance = createPendingPerformance(performanceCreateDto);
 		Performance performance = performanceRepository.save(pendingPerformance);
 
-		internalEventPublisher.publishPerformanceCreatedEvent(createPerformanceEventDto(performance));
+		internalEventPublisher.publishPerformanceCreatedEvent(createInternalEventDto(performance));
 
 		return PerformanceStatusDto.requestComplete(performance.getId());
 	}
 
+	/**
+	 * 공연 수정
+	 *
+	 * @param performanceId 수정할 공연 ID
+	 * @param updateDto 수정 정보
+	 * @return 수정된 공연 정보
+	 */
 	@Override
 	public PerformanceDto updatePerformance(Long performanceId, PerformanceUpdateDto updateDto) {
 		validatePerformanceDate(updateDto.getPerformanceStartDate(), updateDto.getPerformanceEndDate());
 		Performance performance = findPerformanceById(performanceId);
-
 		performance.updateFromDto(updateDto);
+
+		internalEventPublisher.publishPerformanceUpdatedEvent(createInternalEventDto(performance));
 		return performanceDtoMapper.toDto(performance);
 	}
 
+	/**
+	 * 공연 상태 수정
+	 *
+	 * @param performanceId 공연 ID
+	 * @param registerStatus 변경할 공연 상태 값
+	 */
 	@Override
 	public void performanceChangeStatus(Long performanceId, RegisterStatusType registerStatus) {
 		Performance performance = findPerformanceById(performanceId);
@@ -88,11 +108,13 @@ public class PerformanceCommandServiceImpl implements PerformanceCommandService 
 		return performance;
 	}
 
-	private CreatedEventDto createPerformanceEventDto(Performance performance) {
-		return CreatedEventDto.builder()
+	private InternalEventDto createInternalEventDto(Performance performance) {
+		return InternalEventDto.builder()
 			.id(UUID.randomUUID().toString())
 			.performanceId(performance.getId())
 			.memberId(performance.getMemberId())
 			.build();
 	}
+
+
 }

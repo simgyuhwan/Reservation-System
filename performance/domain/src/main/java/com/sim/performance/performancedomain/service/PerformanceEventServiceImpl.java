@@ -3,11 +3,8 @@ package com.sim.performance.performancedomain.service;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.sim.performance.event.core.PerformanceEvent;
-import com.sim.performance.event.dto.CreatedEventDto;
 import com.sim.performance.event.dto.CreatedEventResultDto;
 import com.sim.performance.event.payload.PerformanceCreatedPayload;
-import com.sim.performance.event.type.EventStatusType;
 import com.sim.performance.performancedomain.domain.EventStatus;
 import com.sim.performance.performancedomain.repository.EventStatusRepository;
 import com.sim.performance.performancedomain.type.RegisterStatusType;
