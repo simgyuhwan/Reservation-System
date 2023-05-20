@@ -1,0 +1,30 @@
+spring:
+  cloud:
+    # kafka
+    stream:
+      kafka:
+        binder:
+          brokers: localhost:9092
+        bindings:
+          performanceCreated-out-0:
+            producer:
+              retries: 3 # ??? ??
+      function:
+        definition: performanceCreatedResult
+      bindings:
+        # Publish performance creation event
+        performanceCreatedEvent-out-0:
+          destination: performance-service.performance.created
+          content-type: application/json
+
+        # performance creation event results
+        performanceCreatedResult-in-0:
+          destination: reservation-service.performance.created.result
+          consumer:
+            maxAttempts: 3
+            backOffInitialInterval: 100
+
+        # Publish performance modification event
+        performanceUpdatedEvent-out-0:
+          destination: performance-service.performance.updated
+          content-type: application/json
