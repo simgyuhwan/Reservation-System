@@ -60,6 +60,11 @@ spring:
             maxAttempts: 3
             backOffInitialInterval: 100
 
+        # Publish performance modification event
+        performanceUpdatedEvent-out-0:
+          destination: performance-service.performance.updated
+          content-type: application/json
+
 # Logging
 logging:
   level:

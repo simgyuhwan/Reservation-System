@@ -7,4 +7,6 @@ import com.sim.performance.event.core.PerformanceEvent;
  */
 public interface ExternalEventPublisher {
 	void publishPerformanceCreatedEvent(PerformanceEvent performanceEvent);
+
+	void publishPerformanceUpdatedEvent(PerformanceEvent performanceEvent);
 }

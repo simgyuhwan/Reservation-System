@@ -23,6 +23,8 @@ public class KafkaExternalEventPublisher implements ExternalEventPublisher {
 
 	/**
 	 * 외부 서비스에게 공연 생성 이벤트 발행
+	 *
+	 * @param performanceEvent 공연 이벤트
 	 */
 	@Override
 	public void publishPerformanceCreatedEvent(PerformanceEvent performanceEvent) {
@@ -30,4 +32,14 @@ public class KafkaExternalEventPublisher implements ExternalEventPublisher {
 		streamBridge.send("performance-service.performance.created", performanceEvent);
 	}
 
+	/**
+	 * 외부 서비스에게 공연 수정 이벤트 발행
+	 *
+	 * @param performanceEvent 공연 이벤트
+	 */
+	@Override
+	public void publishPerformanceUpdatedEvent(PerformanceEvent performanceEvent) {
+		log.info("Publish events to external services : {}", performanceEvent);
+		streamBridge.send("performance-service.performance.updated", performanceEvent);
+	}
 }
