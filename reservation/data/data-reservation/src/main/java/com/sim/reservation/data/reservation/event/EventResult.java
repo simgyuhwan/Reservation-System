@@ -1,5 +1,7 @@
 package com.sim.reservation.data.reservation.event;
 
+import com.sim.reservation.data.reservation.error.ErrorMessage;
+
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,6 +24,14 @@ public class EventResult {
 		return EventResult.builder()
 			.id(id)
 			.success(true)
+			.build();
+	}
+
+	public static EventResult fail(String id, ErrorMessage errorMessage) {
+		return EventResult.builder()
+			.id(id)
+			.success(false)
+			.message(errorMessage.getMessage())
 			.build();
 	}
 

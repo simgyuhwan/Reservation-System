@@ -2,6 +2,7 @@ package com.sim.performance.performancedomain.domain;
 
 import com.sim.performance.event.payload.Payload;
 import com.sim.performance.event.type.EventStatusType;
+import com.sim.performance.event.type.EventType;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -26,24 +27,30 @@ public class EventStatus extends BaseEntity {
 
 	@Id
 	private String id;
+	private Long performanceId;
 
 	@Enumerated(EnumType.STRING)
 	private EventStatusType status;
 
-	private Long performanceId;
+	@Enumerated(EnumType.STRING)
+	private EventType eventType;
+
+	private String message;
 
 	@Builder
-	private EventStatus(String id, EventStatusType status, Long performanceId) {
+	private EventStatus(String id, Long performanceId, EventStatusType status, EventType eventType) {
 		this.id = id;
-		this.status = status;
 		this.performanceId = performanceId;
+		this.status = status;
+		this.eventType = eventType;
 	}
 
-	public static EventStatus from(Payload payload) {
+	public static EventStatus from(Payload payload, EventType eventType) {
 		return EventStatus.builder()
 			.id(payload.getId())
 			.performanceId(payload.getPerformanceId())
 			.status(EventStatusType.PENDING)
+			.eventType(eventType)
 			.build();
 	}
 
@@ -55,7 +62,8 @@ public class EventStatus extends BaseEntity {
 		status = EventStatusType.SUCCESS;
 	}
 
-	public void changeToFailed() {
+	public void changeToFailed(String message) {
 		status = EventStatusType.FAIL;
+		this.message = message;
 	}
 }

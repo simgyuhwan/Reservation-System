@@ -1,8 +1,11 @@
 package com.sim.reservation.data.reservation.domain;
 
+import java.time.LocalTime;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
+import com.sim.reservation.data.reservation.dto.PerformanceDto;
 import com.sim.reservation.data.reservation.type.PerformanceType;
 
 import jakarta.persistence.CascadeType;
@@ -57,7 +60,7 @@ public class PerformanceInfo extends BaseEntity {
 
 	public Optional<PerformanceSchedule> findScheduleById(Long performanceScheduleId) {
 		return performanceSchedules.stream()
-			.filter(s -> s.getId() == performanceScheduleId)
+			.filter(s -> Objects.equals(s.getId(), performanceScheduleId))
 			.findFirst();
 	}
 
@@ -92,4 +95,29 @@ public class PerformanceInfo extends BaseEntity {
 		this.type = type;
 		this.performanceSchedules = performanceSchedules;
 	}
+
+	public void updateFromDto(PerformanceDto performanceDto) {
+		assert id.equals(performanceDto.getPerformanceId());
+
+		name = performanceDto.getPerformanceName();
+		info = performanceDto.getPerformanceInfo();
+		place = performanceDto.getPerformancePlace();
+		price = performanceDto.getPrice();
+		contactPersonName = performanceDto.getContactPersonName();
+		contactPhoneNum = performanceDto.getContactPhoneNum();
+		type = PerformanceType.findByType(performanceDto.getPerformanceType());
+
+		updatePerformanceSchedules(performanceDto);
+	}
+
+	private void updatePerformanceSchedules(PerformanceDto performanceDto) {
+		performanceSchedules.clear();
+		List<LocalTime> times = performanceDto.getPerformanceLocalTimes();
+		for (LocalTime time : times) {
+			PerformanceSchedule schedule = PerformanceSchedule.from(performanceDto, time);
+			schedule.setPerformanceInfo(this);
+			performanceSchedules.add(schedule);
+		}
+	}
+
 }

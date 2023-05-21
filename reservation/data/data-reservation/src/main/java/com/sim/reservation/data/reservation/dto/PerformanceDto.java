@@ -1,5 +1,6 @@
 package com.sim.reservation.data.reservation.dto;
 
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.HashSet;
 import java.util.List;
@@ -55,5 +56,13 @@ public class PerformanceDto {
 		return performanceTimes.stream()
 			.map(DateTimeUtils::stringToLocalTime)
 			.toList();
+	}
+
+	public LocalDate getStartDate() {
+		return DateTimeUtils.stringToLocalDate(performanceStartDate);
+	}
+
+	public LocalDate getEndDate() {
+		return DateTimeUtils.stringToLocalDate(performanceEndDate);
 	}
 }

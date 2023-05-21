@@ -3,6 +3,7 @@ package com.sim.reservation.data.reservation.domain;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
+import com.sim.reservation.data.reservation.dto.PerformanceDto;
 import com.sim.reservation.data.reservation.error.ErrorMessage;
 import com.sim.reservation.data.reservation.error.SoldOutException;
 
@@ -16,7 +17,6 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -65,12 +65,25 @@ public class PerformanceSchedule extends BaseEntity {
 		this.isAvailable = isAvailable;
 	}
 
+	public static PerformanceSchedule from(PerformanceDto performanceDto, LocalTime time) {
+		return PerformanceSchedule.builder()
+			.startDate(performanceDto.getStartDate())
+			.endDate(performanceDto.getEndDate())
+			.startTime(time)
+			.availableSeats(performanceDto.getAudienceCount())
+			.build();
+	}
+
 	public void reserveSeat() {
 		if (isSoldOut()) {
 			throw new SoldOutException(ErrorMessage.SOLD_OUT_PERFORMANCE, id);
 		}
 		decreaseRemainingSeats();
 		updateAvailability();
+	}
+
+	public void setPerformanceInfo(PerformanceInfo performanceInfo) {
+		this.performanceInfo = performanceInfo;
 	}
 
 	private void updateAvailability() {
@@ -86,6 +99,5 @@ public class PerformanceSchedule extends BaseEntity {
 	private void decreaseRemainingSeats() {
 		--remainingSeats;
 	}
-
 
 }

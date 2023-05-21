@@ -16,7 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Component
 @RequiredArgsConstructor
-public class PerformanceEventHandler {
+public class ExternalEventHandler {
 	private final ExternalEventPublisher externalEventPublisher;
 
 	/**

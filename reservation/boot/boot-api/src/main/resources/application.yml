@@ -18,64 +18,13 @@ spring:
   config:
     activate:
       on-profile: dev
+    import:
+      - application.yml
+      - application-domain.yml
   application:
     name: reservation-service
-  datasource:
-    url: jdbc:mysql://${DB_URL}:${DB_PORT}/${DB_TABLE}?serverTimezone=Asia/Seoul
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    username: ${DB_ID}
-    password: ${DB_PW}
-  jpa:
-    defer-datasource-initialization: true
-    hibernate:
-      ddl-auto: update
-    properties:
-      hibernate:
-        format_sql: true
-    generate-ddl: true
-    database: mysql
-    database-platform: org.hibernate.dialect.MySQL57Dialect
   main:
     allow-bean-definition-overriding: true
-    ## Debug ?
-  #    show-sql: true
-
-  #Redis
-  data:
-    redis:
-      cluster:
-        nodes:
-          - localhost:6379
-          - localhost:6380
-          - localhost:6381
-
-  #kafka
-  cloud:
-    stream:
-      kafka:
-        binder:
-          brokers: localhost:9092
-        bidings:
-
-      function:
-        definition: performanceCreatedConsumer
-      #bindings
-      bindings:
-        performanceCreatedConsumer-in-0:
-          destination: performance-service.performance.created
-          group: performance_created
-          consumer:
-            maxAttempts: 3
-            backOffInitialInterval: 100
-        performanceCreatedConsumer-out-0:
-          destination: reservation-service.performance.created.result
-
-#loging
-logging:
-  level:
-    org:
-      hibernate:
-        SQL: DEBUG
 
 #Eureka
 eureka:

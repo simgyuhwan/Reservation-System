@@ -10,21 +10,28 @@ spring:
             producer:
               retries: 3 # ??? ??
       function:
-        definition: performanceCreatedResult
+        definition: performanceCreatedResult;performanceUpdatedResult
       bindings:
         # Publish performance creation event
         performanceCreatedEvent-out-0:
           destination: performance-service.performance.created
           content-type: application/json
 
-        # performance creation event results
+        # Performance creation event results
         performanceCreatedResult-in-0:
           destination: reservation-service.performance.created.result
           consumer:
             maxAttempts: 3
             backOffInitialInterval: 100
 
-        # Publish performance modification event
+        # Publish performance updated event
         performanceUpdatedEvent-out-0:
           destination: performance-service.performance.updated
           content-type: application/json
+
+        # Publish performance updated event results
+        performanceUpdatedResult-in-0:
+          destination: reservation-service.performance.updated.result
+          consumer:
+            maxAttempts: 3
+            backOffInitialInterval: 100

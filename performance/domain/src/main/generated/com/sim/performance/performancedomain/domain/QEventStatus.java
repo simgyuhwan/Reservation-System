@@ -24,10 +24,14 @@ public class QEventStatus extends EntityPathBase<EventStatus> {
     //inherited
     public final DateTimePath<java.time.LocalDateTime> createDt = _super.createDt;
 
+    public final EnumPath<com.sim.performance.event.type.EventType> eventType = createEnum("eventType", com.sim.performance.event.type.EventType.class);
+
     public final StringPath id = createString("id");
 
     //inherited
     public final BooleanPath isDelete = _super.isDelete;
+
+    public final StringPath message = createString("message");
 
     public final NumberPath<Long> performanceId = createNumber("performanceId", Long.class);
 

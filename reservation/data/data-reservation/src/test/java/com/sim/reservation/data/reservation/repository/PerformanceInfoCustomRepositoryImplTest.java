@@ -26,6 +26,9 @@ import com.sim.reservation.data.reservation.factory.PerformanceInfoSearchDtoFact
 import com.sim.reservation.data.reservation.factory.PerformanceScheduleFactory;
 import com.sim.reservation.data.reservation.type.PerformanceType;
 
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+
 /**
  * PerformanceCustomRepositoryImplTest.java
  * QueryDsl Repository Test

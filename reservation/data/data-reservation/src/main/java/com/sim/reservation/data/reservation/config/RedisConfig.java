@@ -26,6 +26,9 @@ import lombok.RequiredArgsConstructor;
 public class RedisConfig {
 	private final RedisClusterConfigurationProperties clusterProperties;
 
+	/**
+	 * Redis Cluster 구성
+	 */
 	@Bean
 	public RedisConnectionFactory redisConnectionFactory() {
 		RedisClusterConfiguration redisConfig = new RedisClusterConfiguration();
@@ -36,6 +39,9 @@ public class RedisConfig {
 		return new LettuceConnectionFactory(redisConfig);
 	}
 
+	/**
+	 * Redis Template
+	 */
 	@Primary
 	@Bean
 	public RedisTemplate<String, Object> redisTemplate() {

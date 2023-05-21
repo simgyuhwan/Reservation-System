@@ -34,6 +34,4 @@ dependencies {
     implementation 'io.zipkin.reporter2:zipkin-reporter-brave'
     implementation 'io.micrometer:micrometer-observation'
 
-    // mysql
-    runtimeOnly 'com.mysql:mysql-connector-j'
 }

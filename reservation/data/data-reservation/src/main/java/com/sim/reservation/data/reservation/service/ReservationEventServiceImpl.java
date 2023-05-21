@@ -10,7 +10,8 @@ import com.sim.reservation.data.reservation.error.ErrorMessage;
 import com.sim.reservation.data.reservation.event.DefaultEvent;
 import com.sim.reservation.data.reservation.event.EventResult;
 import com.sim.reservation.data.reservation.event.payload.Payload;
-import com.sim.reservation.data.reservation.event.payload.PerformanceCreatedPayload;
+import com.sim.reservation.data.reservation.event.payload.PerformanceEventPayload;
+import com.sim.reservation.data.reservation.repository.EventStatusCustomRepository;
 import com.sim.reservation.data.reservation.repository.EventStatusRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -30,55 +31,138 @@ import lombok.extern.slf4j.Slf4j;
 public class ReservationEventServiceImpl implements ReservationEventService{
 	private final PerformanceInfoSyncService performanceInfoSyncService;
 	private final EventStatusRepository eventStatusRepository;
+	private final EventStatusCustomRepository eventStatusCustomRepository;
 
+	/**
+	 * 공연 예약 정보 저장
+	 * 처리된 이벤트라면 처리 결과 반환
+	 * 처리되지 않은 이벤트라면 이벤트 처리
+	 *
+	 * @param defaultEvent 이벤트
+	 * @return 이벤트 결과
+	 */
 	@Override
-	public EventResult savePerformanceInfo(DefaultEvent<PerformanceCreatedPayload> event) {
+	public EventResult savePerformanceInfo(DefaultEvent<PerformanceEventPayload> event) {
 		String eventId = event.getId();
-		EventStatus eventStatus = findEventStatusById(eventId);
+		Payload payload = event.getPayload();
 
-		if(eventStatus == null) {
-			EventStatus saveEventStatus = saveEvent(EventStatus.createStartEvent(eventId));
-			return savePerformanceInfoFromPayload(eventId, event.getPayload(), saveEventStatus);
+		if(isProcessedEvent(eventId)) {
+			return getProcessedEventResult(eventId);
 		}
 
-		return getEventResultFromStatus(eventStatus);
+		return processCreatedEvent(eventId, payload);
 	}
 
+	/**
+	 * 공연 예약 정보 수정
+	 *
+	 * @param defaultEvent 이벤트
+	 * @return 이벤트 결과
+	 */
+	@Override
+	public EventResult updatePerformanceInfo(DefaultEvent<PerformanceEventPayload> event) {
+		String eventId = event.getId();
+		Payload payload = event.getPayload();
+
+		if(isProcessedEvent(eventId)) {
+			return getProcessedEventResult(eventId);
+		}
+
+		return processUpdatedEvent(eventId, payload);
+	}
+
+	/**
+	 * 이미 처리된 이벤트인지 확인
+	 */
+	private boolean isProcessedEvent(String eventId) {
+		return eventStatusCustomRepository.isEventStatusFinalized(eventId);
+	}
+
+	/**
+	 * 이벤트 상태 조회
+	 */
 	@Nullable
 	@Cacheable(value = "eventStatus", key = "#eventId")
 	public EventStatus findEventStatusById(String eventId) {
-		return eventStatusRepository.findById(eventId).orElse(null);
+		return eventStatusCustomRepository.findById(eventId).orElse(null);
 	}
 
-	private EventResult savePerformanceInfoFromPayload(String eventId, Payload payload, EventStatus eventStatus) {
-		PerformanceCreatedPayload performancePayload = (PerformanceCreatedPayload) payload;
-		boolean success = performanceInfoSyncService.requestAndSavePerformanceInfo(performancePayload.getPerformanceId());
-		if(success) {
-			eventStatus.changeSuccess();
-			return saveSuccessEventAndResult(eventId);
-		}
-		eventStatus.changeFailed();
-		return saveFailEventAndReturnResult(eventId);
-	}
+	/**
+	 * 이미 처리가 완료된 이벤트의 경우, 저장된 결과 값 반환
+	 */
+	private EventResult getProcessedEventResult(String eventId) {
+		EventStatus eventStatus = findEventStatusById(eventId);
+		assert eventStatus != null;
 
-	private EventResult saveSuccessEventAndResult(String eventId) {
-		return EventResult.success(eventId);
-	}
-
-	private EventResult saveFailEventAndReturnResult(String eventId) {
-		return EventResult.fail(eventId, ErrorMessage.FAILURE_TO_REGISTER_PERFORMANCE_INFORMATION.getMessage());
-	}
-
-
-	private EventResult getEventResultFromStatus(EventStatus eventStatus) {
-		String eventId = eventStatus.getId();
 		if(eventStatus.isSuccess()) {
 			return EventResult.success(eventId);
 		}
 		return EventResult.fail(eventId, eventStatus.getMessage());
 	}
 
+	/**
+	 *  공연 생성 이벤트 처리
+	 */
+	private EventResult processCreatedEvent(String eventId, Payload payload) {
+		EventStatus eventStatus = saveEvent(EventStatus.createStartEvent(eventId));
+		return savePerformanceInfoFromPayload(eventId, payload, eventStatus);
+	}
+
+	private EventResult processUpdatedEvent(String eventId, Payload payload) {
+		EventStatus eventStatus = saveEvent(EventStatus.createStartEvent(eventId));
+		return updatePerformanceInfoFromPayload(eventId, payload, eventStatus);
+	}
+
+	/**
+	 * 이벤트 저장
+	 */
 	private EventStatus saveEvent(EventStatus eventStatus) {
 		return eventStatusRepository.save(eventStatus);
 	}
+
+	/**
+	 * payload 정보로 공연 정보를 조회하고 수정한 뒤 결과값 반환
+	 */
+	private EventResult updatePerformanceInfoFromPayload(String eventId, Payload payload, EventStatus eventStatus) {
+		PerformanceEventPayload performancePayload = (PerformanceEventPayload) payload;
+		boolean success = performanceInfoSyncService.requestAndUpdatePerformanceInfo(performancePayload.getPerformanceId());
+
+		if(success) {
+			return handleSuccess(eventStatus, eventId);
+		}
+		return handleFailure(eventStatus, eventId, ErrorMessage.FAILURE_TO_UPDATE_PERFORMANCE_INFORMATION);
+	}
+
+	/**
+	 * payload 의 정보로 공연 정보를 조회하고 저장한 뒤 결과값 반환
+	 */
+	private EventResult savePerformanceInfoFromPayload(String eventId, Payload payload, EventStatus eventStatus) {
+		PerformanceEventPayload performancePayload = (PerformanceEventPayload) payload;
+		boolean success = performanceInfoSyncService.requestAndSavePerformanceInfo(performancePayload.getPerformanceId());
+
+		if(success) {
+			return handleSuccess(eventStatus, eventId);
+		}
+
+		return handleFailure(eventStatus, eventId, ErrorMessage.FAILURE_TO_REGISTER_PERFORMANCE_INFORMATION);
+	}
+
+	/**
+	 * 이벤트 실패 값 반환
+	 */
+	private EventResult handleFailure(EventStatus eventStatus, String eventId,
+		ErrorMessage failureToRegisterPerformanceInformation) {
+		eventStatus.changeFailed();
+		return EventResult.fail(eventId, failureToRegisterPerformanceInformation);
+	}
+
+	/**
+	 * 이벤트 성공 값 반환
+	 */
+	private EventResult handleSuccess(EventStatus eventStatus, String eventId) {
+		eventStatus.changeSuccess();
+		return EventResult.success(eventId);
+	}
+
+
 }

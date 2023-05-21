@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Configuration;
 
 import com.sim.reservation.data.reservation.event.DefaultEvent;
 import com.sim.reservation.data.reservation.event.EventResult;
-import com.sim.reservation.data.reservation.event.payload.PerformanceCreatedPayload;
+import com.sim.reservation.data.reservation.event.payload.PerformanceEventPayload;
 import com.sim.reservation.data.reservation.service.ReservationEventService;
 
 import lombok.RequiredArgsConstructor;
@@ -26,9 +26,20 @@ import lombok.extern.slf4j.Slf4j;
 public class PerformanceConsumer {
 	private final ReservationEventService reservationEventService;
 
+	/**
+	 * 공연 생성 이벤트 Consumer
+	 */
 	@Bean
-	public Function<DefaultEvent<PerformanceCreatedPayload>, EventResult> performanceCreatedConsumer() {
+	public Function<DefaultEvent<PerformanceEventPayload>, EventResult> performanceCreatedConsumer() {
 		return reservationEventService::savePerformanceInfo;
+	}
+
+	/**
+	 * 공연 수정 이벤트 Consumer
+	 */
+	@Bean
+	public Function<DefaultEvent<PerformanceEventPayload>, EventResult> performanceUpdatedConsumer() {
+		return reservationEventService::updatePerformanceInfo;
 	}
 
 }

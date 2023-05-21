@@ -8,12 +8,14 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
-public class PerformanceCreatedPayload implements Payload{
+public class PerformanceEventPayload implements Payload{
+	private String id;
 	private Long performanceId;
 	private Long memberId;
 
 	@Builder
-	public PerformanceCreatedPayload(Long performanceId, Long memberId) {
+	public PerformanceEventPayload(String id, Long performanceId, Long memberId) {
+		this.id = id;
 		this.performanceId = performanceId;
 		this.memberId = memberId;
 	}

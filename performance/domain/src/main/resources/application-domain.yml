@@ -4,20 +4,20 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: ${DB_ID}
     password: ${DB_PW}
-    jpa:
-      defer-datasource-initialization: true
+  jpa:
+    defer-datasource-initialization: true
+    hibernate:
+      ddl-auto: update
+    properties:
       hibernate:
-        ddl-auto: update
-      properties:
-        hibernate:
-          format_sql: true
-      generate-ddl: true
-      database: mysql
-      database-platform: org.hibernate.dialect.MySQL57Dialect
+        format_sql: true
+    generate-ddl: true
+    database: mysql
+    database-platform: org.hibernate.dialect.MySQL57Dialect
 
-  # Logging
-  logging:
-    level:
-      org:
-        hibernate:
-          SQL: DEBUG
+# Logging
+logging:
+  level:
+    org:
+      hibernate:
+        SQL: DEBUG

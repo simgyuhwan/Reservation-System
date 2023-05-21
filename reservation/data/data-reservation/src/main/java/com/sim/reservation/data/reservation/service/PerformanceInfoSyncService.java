@@ -5,5 +5,14 @@ package com.sim.reservation.data.reservation.service;
  *
  */
 public interface PerformanceInfoSyncService {
+
+	/**
+	 * 공연 정보 요청 후 performanceInfo 저장
+	 */
 	boolean requestAndSavePerformanceInfo(Long performanceId);
+
+	/**
+	 * 공연 정보 요청 후 performanceInfo 수정
+	 */
+	boolean requestAndUpdatePerformanceInfo(Long performanceId);
 }

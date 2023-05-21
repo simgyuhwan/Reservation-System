@@ -25,7 +25,6 @@ public class PerformanceScheduleFactory {
 
     public static PerformanceSchedule createPerformanceSchedule(PerformanceInfo performanceInfo) {
         return PerformanceSchedule.builder()
-            .id(PERFORMANCE_SCHEDULE_ID)
             .performanceInfo(performanceInfo)
             .startDate(START_DATE)
             .endDate(END_DATE)

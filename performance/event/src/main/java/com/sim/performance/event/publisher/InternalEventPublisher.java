@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 import com.sim.performance.event.core.EventResult;
 import com.sim.performance.event.dto.InternalEventDto;
 import com.sim.performance.event.dto.CreatedEventResultDto;
+import com.sim.performance.event.dto.UpdatedEventResultDto;
 import com.sim.performance.event.payload.PerformanceCreatedPayload;
 import com.sim.performance.event.payload.PerformanceUpdatedPayload;
 
@@ -48,5 +49,10 @@ public class InternalEventPublisher {
     public void publishPerformanceUpdatedEvent(InternalEventDto internalEventDto) {
         log.info("Modification of performance Publication of internal events. performanceId : {}", internalEventDto.getPerformanceId());
         eventPublisher.publishEvent(PerformanceUpdatedPayload.from(internalEventDto));
+    }
+
+    public void publishPerformanceUpdatedEventResult(EventResult eventResult) {
+        log.info("Modification of performances Publication of internal events result. eventId : {}", eventResult.getId());
+        eventPublisher.publishEvent(UpdatedEventResultDto.from(eventResult));
     }
 }

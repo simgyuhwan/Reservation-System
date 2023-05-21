@@ -9,27 +9,27 @@ import lombok.NoArgsConstructor;
 
 /**
  * CreatedEventResultDto.java
- * 공연 등록 이벤트 결과 DTO
+ * 공연 정보 수정 이벤트 결과 DTO
  *
  * @author sgh
  * @since 2023.05.16
  */
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class CreatedEventResultDto {
+public class UpdatedEventResultDto {
 	private String id;
 	private boolean success;
 	private String message;
 
 	@Builder
-	private CreatedEventResultDto(String id, boolean success, String message) {
+	private UpdatedEventResultDto(String id, boolean success, String message) {
 		this.id = id;
 		this.success = success;
 		this.message = message;
 	}
 
-	public static CreatedEventResultDto from(EventResult eventResult) {
-		return CreatedEventResultDto.builder()
+	public static UpdatedEventResultDto from(EventResult eventResult) {
+		return UpdatedEventResultDto.builder()
 			.id(eventResult.getId())
 			.message(eventResult.getMessage())
 			.success(eventResult.isSuccess())

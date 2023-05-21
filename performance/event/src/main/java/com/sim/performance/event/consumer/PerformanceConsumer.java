@@ -22,4 +22,8 @@ public class PerformanceConsumer {
 		return eventPublisher::publishPerformanceCreatedEventResult;
 	}
 
+	@Bean
+	public Consumer<EventResult> performanceUpdatedResult() {
+		return eventPublisher::publishPerformanceUpdatedEventResult;
+	}
 }
