@@ -5,4 +5,6 @@ package com.sim.performance.event.payload;
  */
 public interface Payload {
 	String getId();
+
+	Long getPerformanceId();
 }

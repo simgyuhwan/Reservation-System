@@ -1,7 +1,6 @@
 package com.sim.performance.performancedomain.domain;
 
-import com.sim.performance.event.core.PerformanceEvent;
-import com.sim.performance.event.payload.PerformanceCreatedPayload;
+import com.sim.performance.event.payload.Payload;
 import com.sim.performance.event.type.EventStatusType;
 
 import jakarta.persistence.Entity;
@@ -40,19 +39,10 @@ public class EventStatus extends BaseEntity {
 		this.performanceId = performanceId;
 	}
 
-	public static EventStatus from(PerformanceEvent performanceEvent, EventStatusType statusType) {
-		PerformanceCreatedPayload payload = (PerformanceCreatedPayload)performanceEvent.getPayload();
+	public static EventStatus from(Payload payload) {
 		return EventStatus.builder()
-			.id(performanceEvent.getId())
-			.status(statusType)
+			.id(payload.getId())
 			.performanceId(payload.getPerformanceId())
-			.build();
-	}
-
-	public static EventStatus from(PerformanceCreatedPayload performanceCreatedPayload) {
-		return EventStatus.builder()
-			.id(performanceCreatedPayload.getId())
-			.performanceId(performanceCreatedPayload.getPerformanceId())
 			.status(EventStatusType.PENDING)
 			.build();
 	}

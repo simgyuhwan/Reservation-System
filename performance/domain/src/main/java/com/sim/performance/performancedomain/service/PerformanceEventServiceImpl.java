@@ -4,7 +4,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.sim.performance.event.dto.CreatedEventResultDto;
-import com.sim.performance.event.payload.PerformanceCreatedPayload;
+import com.sim.performance.event.payload.Payload;
 import com.sim.performance.performancedomain.domain.EventStatus;
 import com.sim.performance.performancedomain.repository.EventStatusRepository;
 import com.sim.performance.performancedomain.type.RegisterStatusType;
@@ -25,8 +25,8 @@ public class PerformanceEventServiceImpl implements PerformanceEventService{
 	 * 이벤트 상태 저장
 	 */
 	@Override
-	public void savePerformanceCreatedEvent(PerformanceCreatedPayload performanceCreatedPayload) {
-		EventStatus eventStatus = EventStatus.from(performanceCreatedPayload);
+	public void saveEvent(Payload payload) {
+		EventStatus eventStatus = EventStatus.from(payload);
 		eventStatusRepository.save(eventStatus);
 	}
 	/**

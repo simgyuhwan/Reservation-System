@@ -18,10 +18,9 @@ spring:
     activate:
       on-profile: dev
     import:
-      - classpath:/application.yml
-      - classpath:/application-event.yml
-      - classpath:/application-domain.yml
-
+      - application.yml
+      - application-event.yml
+      - application-domain.yml
   application:
     name: performance-service
 
