@@ -1,13 +1,19 @@
 package com.sim.performance.performancedomain.service;
 
+import java.util.List;
+import java.util.UUID;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.sim.performance.event.dto.CreatedEventResultDto;
+import com.sim.performance.event.dto.InternalEventDto;
 import com.sim.performance.event.dto.UpdatedEventResultDto;
 import com.sim.performance.event.payload.Payload;
+import com.sim.performance.event.publisher.InternalEventPublisher;
 import com.sim.performance.event.type.EventType;
 import com.sim.performance.performancedomain.domain.EventStatus;
+import com.sim.performance.performancedomain.repository.EventStatusCustomRepository;
 import com.sim.performance.performancedomain.repository.EventStatusRepository;
 import com.sim.performance.performancedomain.type.RegisterStatusType;
 
@@ -22,6 +28,8 @@ import lombok.extern.slf4j.Slf4j;
 public class PerformanceEventServiceImpl implements PerformanceEventService{
 	private final EventStatusRepository eventStatusRepository;
 	private final PerformanceCommandService performanceCommandService;
+	private final EventStatusCustomRepository eventStatusCustomRepository;
+	private final InternalEventPublisher internalEventPublisher;
 
 	/**
 	 * 이벤트 상태 저장
@@ -47,6 +55,9 @@ public class PerformanceEventServiceImpl implements PerformanceEventService{
 		completePerformanceRegistration(eventStatus);
 	}
 
+	/**
+	 * 공연 수정 이벤트 처리
+	 */
 	@Override
 	public void handlePerformanceUpdatedEventResult(UpdatedEventResultDto updatedEventResultDto) {
 		EventStatus eventStatus = findEventById(updatedEventResultDto.getId());
@@ -58,6 +69,22 @@ public class PerformanceEventServiceImpl implements PerformanceEventService{
 		}
 
 		completePerformanceRegistration(eventStatus);
+	}
+
+	/**
+	 * 재시도 이벤트 재발행하기
+	 */
+	@Override
+	public void rePublishPerformanceUpdateEvent() {
+		if(!eventStatusCustomRepository.checkIfRePublishableUpdatedEventExists()) {
+			return;
+		}
+
+		List<EventStatus> rePublishableUpdatedEvents = eventStatusCustomRepository.findRePublishableUpdatedEvents();
+		rePublishableUpdatedEvents.forEach(event -> {
+			internalEventPublisher.publishPerformanceUpdatedEvent(createInternalEventDto(event));
+			event.changeToCompleted();
+		});
 	}
 
 	private EventStatus findEventById(String eventId) {
@@ -75,5 +102,12 @@ public class PerformanceEventServiceImpl implements PerformanceEventService{
 		Long performanceId = eventStatus.getPerformanceId();
 		performanceCommandService.performanceChangeStatus(performanceId, RegisterStatusType.COMPLETED);
 		eventStatus.changeToCompleted();
+	}
+
+	private InternalEventDto createInternalEventDto(EventStatus eventStatus) {
+		return InternalEventDto.builder()
+			.id(UUID.randomUUID().toString())
+			.performanceId(eventStatus.getPerformanceId())
+			.build();
 	}
 }

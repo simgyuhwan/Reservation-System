@@ -23,4 +23,9 @@ public interface PerformanceEventService {
 	 * 공연 수정 이벤트 처리
 	 */
 	void handlePerformanceUpdatedEventResult(UpdatedEventResultDto updatedEventResultDto);
+
+	/**
+	 * 공연 수정 이벤트 재발행
+	 */
+	void rePublishPerformanceUpdateEvent();
 }
