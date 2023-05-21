@@ -66,4 +66,9 @@ public class EventStatus extends BaseEntity {
 		status = EventStatusType.FAIL;
 		this.message = message;
 	}
+
+	public void changeToRetry(String message) {
+		status = EventStatusType.RETRY;
+		this.message = message;
+	}
 }

@@ -108,6 +108,9 @@ public class ReservationEventServiceImpl implements ReservationEventService{
 		return savePerformanceInfoFromPayload(eventId, payload, eventStatus);
 	}
 
+	/**
+	 * 공연 수정 이벤트 처리
+	 */
 	private EventResult processUpdatedEvent(String eventId, Payload payload) {
 		EventStatus eventStatus = saveEvent(EventStatus.createStartEvent(eventId));
 		return updatePerformanceInfoFromPayload(eventId, payload, eventStatus);

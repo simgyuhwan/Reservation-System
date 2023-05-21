@@ -53,7 +53,7 @@ public class PerformanceEventServiceImpl implements PerformanceEventService{
 		if(eventStatus.isCompleted()) return;
 
 		if(updatedEventResultDto.isFailure()) {
-			eventStatus.changeToFailed(updatedEventResultDto.getMessage());
+			eventStatus.changeToRetry(updatedEventResultDto.getMessage());
 			return;
 		}
 
