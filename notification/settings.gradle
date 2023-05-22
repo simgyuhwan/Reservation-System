@@ -1,1 +1,2 @@
 rootProject.name = 'notification'
+include("notification-common", "notification-email", "notification-sns","notification-event")
