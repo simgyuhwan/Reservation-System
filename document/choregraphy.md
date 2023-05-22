@@ -7,7 +7,7 @@
 이 사가 패턴에도 두 가지 방식이 존재한다.
 
 1. **Choregraphy 방식**
-2. \***\*Orchestration 방식\*\***
+2. **Orchestration 방식**
 
 이 두 가지가 있는데. 이 글은 Choregraphy 방식의 개념을 보고 상상하여 구현하고 적용하면서 느낀점을 적어보려고 한다.
 
