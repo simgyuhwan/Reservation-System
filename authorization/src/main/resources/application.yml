@@ -1,1 +1,33 @@
+server:
+  port: 0
 
+spring:
+  profiles:
+    active:
+      - dev
+  application:
+    name: authorization-server
+
+# Eureka
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+  instance:
+    instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
+
+# Actuator
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health, info, metrics, bus, refresh
+  # micrometer Tracing
+  tracing:
+    sampling:
+      probability: 1.0
+
+# Logging
+logging:
+  level:
+    org.springframework.security: trace

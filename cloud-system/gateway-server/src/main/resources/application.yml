@@ -46,6 +46,14 @@ spring:
             - Path=/reservation-service/**
           filters:
             - RewritePath=/reservation-service/(?<segment>.*), /$\{segment}
+            -
+        # Authorization Server
+        - id: authorization-server
+          uri: lb://AUTHORIZATION-SERVER
+          predicates:
+            - Path=/authorization-server/**
+          filters:
+            - RewritePath=/authorization-server/(?<segment>.*), /$\{segment}
       httpclient:
         connect-timeout: 1000
         response-timeout: 10s
