@@ -35,7 +35,7 @@ public class InternalEventPublisher {
     }
 
     /**
-     * 공연 생성 결과 내부 이벤트 발행
+     * 공연 생성 결과, 내부 이벤트 발행
      */
     public void publishPerformanceCreatedEventResult(EventResult eventResult) {
         log.info("Creation of performances Publication of internal events result. eventId : {}", eventResult.getId());
@@ -51,6 +51,10 @@ public class InternalEventPublisher {
         eventPublisher.publishEvent(PerformanceUpdatedPayload.from(internalEventDto));
     }
 
+    /**
+     * 공연 수정 결과, 내부 이벤트 발행
+     * @param eventResult
+     */
     public void publishPerformanceUpdatedEventResult(EventResult eventResult) {
         log.info("Modification of performances Publication of internal events result. eventId : {}", eventResult.getId());
         eventPublisher.publishEvent(UpdatedEventResultDto.from(eventResult));
