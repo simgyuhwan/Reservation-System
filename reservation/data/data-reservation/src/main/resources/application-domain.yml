@@ -57,6 +57,10 @@ spring:
         performanceUpdatedConsumer-out-0:
           destination: reservation-service.performance.updated.result
 
+        # publish reservation apply event
+        reservationApplyEvent-out-0:
+          destination: reservation-service.reservation-apply
+
 #loging
 logging:
   level:

@@ -64,4 +64,15 @@ public class DefaultEvent<T extends Payload> implements Event{
 	public LocalDateTime getEventDateTime() {
 		return eventDateTime;
 	}
+
+	public static DefaultEvent<Payload> reservationApplyEvent(Payload payload) {
+		return DefaultEvent.builder()
+			.id(payload.getId())
+			.payload(payload)
+			.eventDateTime(LocalDateTime.now())
+			.status(EventStatusType.PENDING)
+			.eventType("RESERVATION APPLY EVENT")
+			.source(SourceType.RESERVATION_SERVICE)
+			.build();
+	}
 }
