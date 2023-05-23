@@ -71,6 +71,8 @@ public class PerformanceSchedule extends BaseEntity {
 			.endDate(performanceDto.getEndDate())
 			.startTime(time)
 			.availableSeats(performanceDto.getAudienceCount())
+			.remainingSeats(performanceDto.getAudienceCount())
+			.isAvailable(true)
 			.build();
 	}
 
