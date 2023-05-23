@@ -2,10 +2,10 @@ package com.sim.performance.event.core;
 
 import java.time.LocalDateTime;
 
-import com.sim.performance.event.payload.Payload;
-import com.sim.performance.event.type.EventStatusType;
-import com.sim.performance.event.type.EventType;
-import com.sim.performance.event.type.SourceType;
+import com.sim.performance.event.core.payload.Payload;
+import com.sim.performance.event.core.type.EventStatusType;
+import com.sim.performance.event.core.type.EventType;
+import com.sim.performance.event.core.type.SourceType;
 
 import lombok.Builder;
 

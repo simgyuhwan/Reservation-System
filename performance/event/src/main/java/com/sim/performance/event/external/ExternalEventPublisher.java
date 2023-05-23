@@ -1,4 +1,4 @@
-package com.sim.performance.event.publisher;
+package com.sim.performance.event.external;
 
 import com.sim.performance.event.core.PerformanceEvent;
 

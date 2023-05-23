@@ -6,9 +6,9 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
-import com.sim.performance.event.payload.Payload;
-import com.sim.performance.event.type.EventStatusType;
-import com.sim.performance.event.type.SourceType;
+import com.sim.performance.event.core.payload.Payload;
+import com.sim.performance.event.core.type.EventStatusType;
+import com.sim.performance.event.core.type.SourceType;
 
 import lombok.Builder;
 import lombok.NoArgsConstructor;

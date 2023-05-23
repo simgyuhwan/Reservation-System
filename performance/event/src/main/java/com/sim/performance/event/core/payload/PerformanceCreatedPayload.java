@@ -1,6 +1,6 @@
-package com.sim.performance.event.payload;
+package com.sim.performance.event.core.payload;
 
-import com.sim.performance.event.dto.InternalEventDto;
+import com.sim.performance.event.internal.InternalEventDto;
 
 import lombok.Builder;
 import lombok.Getter;

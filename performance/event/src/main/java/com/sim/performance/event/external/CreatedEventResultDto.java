@@ -1,4 +1,4 @@
-package com.sim.performance.event.dto;
+package com.sim.performance.event.external;
 
 import com.sim.performance.event.core.EventResult;
 

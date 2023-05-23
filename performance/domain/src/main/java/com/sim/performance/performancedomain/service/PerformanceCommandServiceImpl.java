@@ -8,8 +8,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.sim.performance.common.util.DateTimeUtils;
-import com.sim.performance.event.dto.InternalEventDto;
-import com.sim.performance.event.publisher.InternalEventPublisher;
+import com.sim.performance.event.internal.InternalEventDto;
+import com.sim.performance.event.internal.InternalEventPublisher;
 import com.sim.performance.performancedomain.domain.Performance;
 import com.sim.performance.performancedomain.dto.PerformanceCreateDto;
 import com.sim.performance.performancedomain.dto.PerformanceDto;

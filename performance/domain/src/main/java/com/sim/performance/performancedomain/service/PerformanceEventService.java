@@ -1,9 +1,9 @@
 package com.sim.performance.performancedomain.service;
 
-import com.sim.performance.event.dto.CreatedEventResultDto;
-import com.sim.performance.event.dto.UpdatedEventResultDto;
-import com.sim.performance.event.payload.Payload;
-import com.sim.performance.event.type.EventType;
+import com.sim.performance.event.external.CreatedEventResultDto;
+import com.sim.performance.event.external.UpdatedEventResultDto;
+import com.sim.performance.event.core.payload.Payload;
+import com.sim.performance.event.core.type.EventType;
 
 /**
  * 공연 이벤트 관리 서비스

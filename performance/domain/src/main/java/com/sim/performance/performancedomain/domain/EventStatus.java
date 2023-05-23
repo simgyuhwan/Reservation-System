@@ -1,8 +1,8 @@
 package com.sim.performance.performancedomain.domain;
 
-import com.sim.performance.event.payload.Payload;
-import com.sim.performance.event.type.EventStatusType;
-import com.sim.performance.event.type.EventType;
+import com.sim.performance.event.core.payload.Payload;
+import com.sim.performance.event.core.type.EventStatusType;
+import com.sim.performance.event.core.type.EventType;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;

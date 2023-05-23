@@ -1,4 +1,4 @@
-package com.sim.performance.event.payload;
+package com.sim.performance.event.core.payload;
 
 /**
  * 공통 Payload 인터페이스

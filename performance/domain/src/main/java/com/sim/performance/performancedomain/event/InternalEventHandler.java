@@ -3,11 +3,11 @@ package com.sim.performance.performancedomain.event;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
-import com.sim.performance.event.dto.CreatedEventResultDto;
-import com.sim.performance.event.dto.UpdatedEventResultDto;
-import com.sim.performance.event.payload.PerformanceCreatedPayload;
-import com.sim.performance.event.payload.PerformanceUpdatedPayload;
-import com.sim.performance.event.type.EventType;
+import com.sim.performance.event.external.CreatedEventResultDto;
+import com.sim.performance.event.external.UpdatedEventResultDto;
+import com.sim.performance.event.core.payload.PerformanceCreatedPayload;
+import com.sim.performance.event.core.payload.PerformanceUpdatedPayload;
+import com.sim.performance.event.core.type.EventType;
 import com.sim.performance.performancedomain.service.PerformanceEventService;
 
 import lombok.RequiredArgsConstructor;

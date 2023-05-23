@@ -1,4 +1,4 @@
-package com.sim.performance.event.type;
+package com.sim.performance.event.core.type;
 
 import lombok.Getter;
 

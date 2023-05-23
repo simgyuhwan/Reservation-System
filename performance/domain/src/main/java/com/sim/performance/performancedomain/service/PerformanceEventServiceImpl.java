@@ -6,12 +6,12 @@ import java.util.UUID;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.sim.performance.event.dto.CreatedEventResultDto;
-import com.sim.performance.event.dto.InternalEventDto;
-import com.sim.performance.event.dto.UpdatedEventResultDto;
-import com.sim.performance.event.payload.Payload;
-import com.sim.performance.event.publisher.InternalEventPublisher;
-import com.sim.performance.event.type.EventType;
+import com.sim.performance.event.external.CreatedEventResultDto;
+import com.sim.performance.event.internal.InternalEventDto;
+import com.sim.performance.event.external.UpdatedEventResultDto;
+import com.sim.performance.event.core.payload.Payload;
+import com.sim.performance.event.internal.InternalEventPublisher;
+import com.sim.performance.event.core.type.EventType;
 import com.sim.performance.performancedomain.domain.EventStatus;
 import com.sim.performance.performancedomain.repository.EventStatusCustomRepository;
 import com.sim.performance.performancedomain.repository.EventStatusRepository;

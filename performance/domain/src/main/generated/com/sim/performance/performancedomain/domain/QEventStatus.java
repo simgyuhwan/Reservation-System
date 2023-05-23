@@ -7,7 +7,8 @@ import com.querydsl.core.types.dsl.*;
 import com.querydsl.core.types.PathMetadata;
 import javax.annotation.processing.Generated;
 import com.querydsl.core.types.Path;
-
+import com.sim.performance.event.core.type.EventStatusType;
+import com.sim.performance.event.core.type.EventType;
 
 /**
  * QEventStatus is a Querydsl query type for EventStatus
@@ -24,7 +25,7 @@ public class QEventStatus extends EntityPathBase<EventStatus> {
     //inherited
     public final DateTimePath<java.time.LocalDateTime> createDt = _super.createDt;
 
-    public final EnumPath<com.sim.performance.event.type.EventType> eventType = createEnum("eventType", com.sim.performance.event.type.EventType.class);
+    public final EnumPath<EventType> eventType = createEnum("eventType", EventType.class);
 
     public final StringPath id = createString("id");
 
@@ -35,7 +36,7 @@ public class QEventStatus extends EntityPathBase<EventStatus> {
 
     public final NumberPath<Long> performanceId = createNumber("performanceId", Long.class);
 
-    public final EnumPath<com.sim.performance.event.type.EventStatusType> status = createEnum("status", com.sim.performance.event.type.EventStatusType.class);
+    public final EnumPath<EventStatusType> status = createEnum("status", EventStatusType.class);
 
     //inherited
     public final DateTimePath<java.time.LocalDateTime> updateDt = _super.updateDt;

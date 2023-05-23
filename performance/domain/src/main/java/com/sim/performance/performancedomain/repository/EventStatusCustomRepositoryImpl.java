@@ -8,8 +8,8 @@ import org.springframework.stereotype.Repository;
 
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import com.sim.performance.event.type.EventStatusType;
-import com.sim.performance.event.type.EventType;
+import com.sim.performance.event.core.type.EventStatusType;
+import com.sim.performance.event.core.type.EventType;
 import com.sim.performance.performancedomain.domain.EventStatus;
 
 import lombok.RequiredArgsConstructor;

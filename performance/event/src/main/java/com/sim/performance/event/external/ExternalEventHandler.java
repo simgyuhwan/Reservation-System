@@ -1,14 +1,13 @@
-package com.sim.performance.event.handler;
+package com.sim.performance.event.external;
 
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.event.TransactionalEventListener;
 
 import com.sim.performance.event.core.PerformanceEvent;
-import com.sim.performance.event.payload.PerformanceCreatedPayload;
-import com.sim.performance.event.payload.PerformanceUpdatedPayload;
-import com.sim.performance.event.publisher.ExternalEventPublisher;
-import com.sim.performance.event.type.EventType;
+import com.sim.performance.event.core.payload.PerformanceCreatedPayload;
+import com.sim.performance.event.core.payload.PerformanceUpdatedPayload;
+import com.sim.performance.event.core.type.EventType;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

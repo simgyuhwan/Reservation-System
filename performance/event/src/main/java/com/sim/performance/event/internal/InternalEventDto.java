@@ -1,4 +1,4 @@
-package com.sim.performance.event.dto;
+package com.sim.performance.event.internal;
 
 import lombok.AccessLevel;
 import lombok.Builder;

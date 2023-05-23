@@ -14,13 +14,12 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.context.ApplicationEventPublisher;
 
 import com.sim.performance.domain.factory.PerformanceCreateDtoFactory;
 import com.sim.performance.domain.factory.PerformanceDtoFactory;
 import com.sim.performance.domain.factory.PerformanceFactory;
 import com.sim.performance.domain.factory.PerformanceUpdateDtoFactory;
-import com.sim.performance.event.publisher.InternalEventPublisher;
+import com.sim.performance.event.internal.InternalEventPublisher;
 import com.sim.performance.performancedomain.domain.Performance;
 import com.sim.performance.performancedomain.dto.PerformanceCreateDto;
 import com.sim.performance.performancedomain.dto.PerformanceDto;

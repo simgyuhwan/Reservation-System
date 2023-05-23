@@ -1,4 +1,4 @@
-package com.sim.performance.event.consumer;
+package com.sim.performance.event.external;
 
 import java.util.function.Consumer;
 
@@ -6,7 +6,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import com.sim.performance.event.core.EventResult;
-import com.sim.performance.event.publisher.InternalEventPublisher;
+import com.sim.performance.event.internal.InternalEventPublisher;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

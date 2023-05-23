@@ -1,4 +1,4 @@
-package com.sim.performance.event.publisher;
+package com.sim.performance.event.external;
 
 import org.springframework.cloud.stream.function.StreamBridge;
 import org.springframework.stereotype.Service;
