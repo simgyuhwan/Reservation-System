@@ -23,6 +23,6 @@ public class KafkaExternalEventPublisher implements ExternalEventPublisher{
 	 */
 	@Override
 	public void publishReservationApplyEvent(DefaultEvent<Payload> defaultEvent) {
-		streamBridge.send("",defaultEvent);
+		streamBridge.send("reservation-service.reservation-apply",defaultEvent);
 	}
 }

@@ -14,7 +14,8 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Component
 @RequiredArgsConstructor
-public record InternalEventPublisher(ApplicationEventPublisher eventPublisher) {
+public class InternalEventPublisher{
+	private final ApplicationEventPublisher eventPublisher;
 
 	/**
 	 * 예약 신청 내부 이벤트 발행
