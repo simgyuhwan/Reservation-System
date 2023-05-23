@@ -50,7 +50,7 @@
 
 # **2. 기술 스택**
 
-### MSA 아키텍처
+### MSA
 
 - Spring Cloud 2022.0.2
 - Spring Cloud Gateway
