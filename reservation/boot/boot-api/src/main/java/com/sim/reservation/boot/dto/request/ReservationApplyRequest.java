@@ -34,8 +34,8 @@ public class ReservationApplyRequest {
 	@NotBlank(message = "예약자 이메일은 필수입니다.")
 	private String email;
 
-	private boolean isEmailReceiveDenied;
-	private boolean isSnsReceiveDenied;
+	private Boolean isEmailReceiveDenied;
+	private Boolean isSnsReceiveDenied;
 
 	@Builder
 	public ReservationApplyRequest(String userId, String name, String phoneNum, String email,
