@@ -12,7 +12,6 @@ spring:
       hibernate:
         format_sql: true
     generate-ddl: true
-    database: mysql
     database-platform: org.hibernate.dialect.PostgreSQLDialect
 
   cloud:

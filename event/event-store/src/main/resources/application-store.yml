@@ -1,0 +1,15 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://${DB_URL}:${DB_PORT}/${DB_TABLE}?serverTimezone=Asia/Seoul
+    driver-class-name: org.postgresql.Driver
+    username: ${DB_ID}
+    password: ${DB_PW}
+  jpa:
+    defer-datasource-initialization: true
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        format_sql: true
+    generate-ddl: true
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
