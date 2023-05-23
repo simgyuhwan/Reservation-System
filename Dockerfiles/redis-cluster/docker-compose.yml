@@ -8,9 +8,9 @@ services:
       - ./redis.conf:/usr/local/etc/redis/redis.conf
     command: redis-server /usr/local/etc/redis/redis.conf
     ports:
-      - 6380:6380
-      - 6381:6381
-      - 6379:6379
+      - "6380:6380"
+      - "6381:6381"
+      - "6379:6379"
 
   redis-node-1:
     network_mode: "service:redis-cluster"
