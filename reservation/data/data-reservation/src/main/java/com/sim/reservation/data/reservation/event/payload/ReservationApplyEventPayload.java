@@ -14,8 +14,6 @@ import lombok.NoArgsConstructor;
 public class ReservationApplyEventPayload implements Payload {
 	private String id;
 	private Long reservationId;
-	private boolean isSendEmail;
-	private boolean isSendSns;
 
 	@Override
 	public String getId() {
@@ -23,19 +21,15 @@ public class ReservationApplyEventPayload implements Payload {
 	}
 
 	@Builder
-	private ReservationApplyEventPayload(String id, Long reservationId, boolean isSendEmail, boolean isSendSns) {
+	private ReservationApplyEventPayload(String id, Long reservationId) {
 		this.id = id;
 		this.reservationId = reservationId;
-		this.isSendEmail = isSendEmail;
-		this.isSendSns = isSendSns;
 	}
 
 	public static ReservationApplyEventPayload from(Reservation reservation) {
 		return ReservationApplyEventPayload.builder()
 			.id(UUID.randomUUID().toString())
 			.reservationId(reservation.getId())
-			.isSendEmail(reservation.isEmailReceiveDenied())
-			.isSendSns(reservation.isSnsReceiveDenied())
 			.build();
 	}
 }
