@@ -26,6 +26,9 @@ dependencies {
 
     // feignClient
     implementation 'org.springframework.cloud:spring-cloud-starter-openfeign:4.0.0'
+
+    // https://mvnrepository.com/artifact/org.postgresql/postgresql
+    implementation group: 'org.postgresql', name: 'postgresql', version: '42.6.0'
 }
 
 tasks.named('test') {

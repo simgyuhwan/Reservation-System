@@ -1,0 +1,50 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://${DB_URL}:${DB_PORT}/${DB_TABLE}?serverTimezone=Asia/Seoul
+    driver-class-name: org.postgresql.Driver
+    username: ${DB_ID}
+    password: ${DB_PW}
+  jpa:
+    defer-datasource-initialization: true
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        format_sql: true
+    generate-ddl: true
+    database: mysql
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+
+  cloud:
+    # FeignClient url
+    openfeign:
+      client:
+        config:
+          performance:
+            connectTimeout: 5000
+            readTimeout: 5000
+            loggerLevel: full
+
+logging:
+  level:
+    org:
+      hibernate:
+        SQL: DEBUG
+
+# Circuit Breaker (Resilience4j)
+resilience4j:
+  circuitbreaker:
+    configs:
+      default:
+        waitDurationInOpenState: 30s # OPEN -> HALF_OPEN ? ?? ??, default 60s
+        slowCallRateThreshold: 80 # slowCall ?? ? ?? ??? ??? ?? ??? ?? ? ???? ???(100)?? ?? ?? ??
+        slowCallDurationThreshold: 5s # ?? ?? ??? 5?? slowCall? ???. ?? ?? TimeLimiter? timeoutDuration?? ??? ?
+        registerHealthIndicator: true
+    instances:
+      default:
+        baseConfig: default
+  timelimiter:
+    configs:
+      default:
+        timeoutDuration: 6s # slowCallDurationThreshold??? ?? ????? ?
+        cancelRunningFuture: true
