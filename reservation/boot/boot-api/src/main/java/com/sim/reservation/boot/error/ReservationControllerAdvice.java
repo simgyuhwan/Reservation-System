@@ -12,6 +12,7 @@ import com.sim.reservation.boot.api.ReservationController;
 import com.sim.reservation.boot.dto.response.ErrorResponse;
 import com.sim.reservation.data.reservation.error.InternalException;
 import com.sim.reservation.data.reservation.error.PerformanceInfoNotFoundException;
+import com.sim.reservation.data.reservation.error.PerformanceScheduleNotFoundException;
 import com.sim.reservation.data.reservation.error.ReservationNotPossibleException;
 import com.sim.reservation.data.reservation.error.SoldOutException;
 
@@ -27,6 +28,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @RestControllerAdvice(basePackageClasses = {ReservationController.class})
 public class ReservationControllerAdvice {
+
 	@ExceptionHandler(MethodArgumentNotValidException.class)
 	public ResponseEntity<ErrorResponse> methodArgumentNotValidException(MethodArgumentNotValidException e) {
 		log.error(e.getMessage());
@@ -68,6 +70,13 @@ public class ReservationControllerAdvice {
 	public ResponseEntity<ErrorResponse> internalException(InternalException e) {
 		log.error(e.getMessage());
 		ErrorResponse errorResponse = createErrorResponse(ErrorCode.RESERVATION_FAILED_DUE_TO_SERVER_FAILURE);
+		return ResponseEntity.badRequest().body(errorResponse);
+	}
+
+	@ExceptionHandler(PerformanceScheduleNotFoundException.class)
+	public ResponseEntity<ErrorResponse> performanceScheduleNotFoundException(PerformanceScheduleNotFoundException e) {
+		log.error(e.getMessage());
+		ErrorResponse errorResponse = createErrorResponse(ErrorCode.SCHEDULE_NOT_PART_OF_THE_PERFORMANCE_ERROR_MESSAGE);
 		return ResponseEntity.badRequest().body(errorResponse);
 	}
 
