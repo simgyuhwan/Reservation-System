@@ -46,7 +46,7 @@ spring:
             - Path=/reservation-service/**
           filters:
             - RewritePath=/reservation-service/(?<segment>.*), /$\{segment}
-            -
+
         # Authorization Server
         - id: authorization-server
           uri: lb://AUTHORIZATION-SERVER
