@@ -33,34 +33,16 @@ subprojects {
     tasks.named('test') {
         useJUnitPlatform()
     }
-
-}
-
-dependencies {
-    implementation 'org.springframework.boot:spring-boot-starter'
-    testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 
 project("event-store") {
-    dependencies {
-    }
-}
-
-project("notification-service") {
-    dependencies {
-    }
-}
-
-project("payment-service") {
-    dependencies {
-    }
+    bootJar { enabled = false }
+    jar { enabled = true }
 }
 
 project(":event-orchestration") {
     dependencies {
         implementation(project(":event-store"))
-        implementation(project(":notification-service"))
-        implementation(project(":payment-service"))
     }
 }
 

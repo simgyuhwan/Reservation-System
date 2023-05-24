@@ -21,4 +21,12 @@ public class SagaState extends BaseEntity{
 	@Enumerated(EnumType.STRING)
 	private SagaStep sagaStep;
 
+	private SagaState(String id, SagaStep sagaStep) {
+		this.id = id;
+		this.sagaStep = sagaStep;
+	}
+
+	public static SagaState of(String id, SagaStep sagaStep) {
+		return new SagaState(id, sagaStep);
+	}
 }

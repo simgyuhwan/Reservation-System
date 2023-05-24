@@ -1,0 +1,53 @@
+server:
+  port: 0
+
+spring:
+  config:
+    import:
+      - application.yml
+      - application-store.yml
+  #kafka
+  cloud:
+    stream:
+      kafka:
+        binder:
+          brokers: localhost:9092
+      function:
+        definition: paymentComplete;paymentFailed;notificationComplete;reservationCancelled;reservationApplyRequest
+      #bindings
+      bindings:
+        # performance created event consumer
+#        performanceCreatedConsumer-in-0:
+#          destination: performance-service.performance.created
+#          group: performance_created
+#          consumer:
+#            maxAttempts: 3
+#            backOffInitialInterval: 100
+        paymentRequest-out-0:
+          destination: payment.request
+
+        paymentComplete-in-0:
+          destination: payment.complete
+          group: payment.complete
+
+        paymentFailed-in-0:
+          destination: payment.failed
+          group: payment.failed
+
+        notificationRequest-out-0:
+          destination: notification.request
+
+        notificationComplete-in-0:
+          destination: notification.complete
+          group: notification.complete
+
+        reservationApplyRollback-out-0:
+          destination: reservation-apply.rollback
+
+        reservationCancelled-in-0:
+          destination: reservation.cancelled
+          group: reservation.cancelled
+
+        reservationApplyRequest-in-0:
+          destination: reservation-service.reservation-apply
+          group: reservation-apply
