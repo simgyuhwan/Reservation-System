@@ -1,5 +1,9 @@
 package com.sim.event.orchestration.event;
 
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
+
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class PaymentRequestEvent {
 	private String id;
 	private Long reservationId;

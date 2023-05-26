@@ -1,11 +1,17 @@
 package com.sim.event.orchestration.event;
 
-public class ReservationApplyRequest {
-	private String eventId;
+import com.sim.event.core.Payload;
+
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
+
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+public class ReservationApplyRequest implements Payload {
+	private String id;
 	private Long reservationId;
 
 	public String getId() {
-		return eventId;
+		return id;
 	}
 
 	public Long getReservationId() {return reservationId;}

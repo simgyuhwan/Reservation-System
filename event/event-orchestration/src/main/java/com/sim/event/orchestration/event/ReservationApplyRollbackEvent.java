@@ -5,11 +5,11 @@ import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ReservationApplyRollbackEvent {
-	private String eventId;
+	private String id;
 	private Long reservationId;
 
 	public String getId() {
-		return this.eventId;
+		return id;
 	}
 
 	public Long getReservationId() {
@@ -17,7 +17,7 @@ public class ReservationApplyRollbackEvent {
 	}
 
 	private ReservationApplyRollbackEvent(String id, Long reservationId) {
-		this.eventId = id;
+		this.id = id;
 		this.reservationId = reservationId;
 	}
 
