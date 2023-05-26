@@ -2,10 +2,8 @@ package com.sim.event.store.domain;
 
 import com.sim.event.store.type.SagaStep;
 
+import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.Id;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,15 +13,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class SagaState extends BaseEntity{
 
-	@Id
-	private String id;
-
-	@Enumerated(EnumType.STRING)
-	private SagaStep sagaStep;
+	@EmbeddedId
+	private SagaPK sagaPK;
 
 	private SagaState(String id, SagaStep sagaStep) {
-		this.id = id;
-		this.sagaStep = sagaStep;
+		this.sagaPK = new SagaPK(id, sagaStep);
 	}
 
 	public static SagaState of(String id, SagaStep sagaStep) {

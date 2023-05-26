@@ -1,0 +1,15 @@
+spring:
+  cloud:
+    stream:
+      kafka:
+        binder:
+          brokers: localhost:9092
+      function:
+        definition: paymentRequest;
+      bindings:
+        paymentRequest-in-0:
+          destination: payment.request
+          group: payment.request
+
+        paymentRequest-out-0:
+          destination: payment.complete

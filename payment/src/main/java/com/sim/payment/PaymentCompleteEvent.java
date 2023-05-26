@@ -1,4 +1,4 @@
-package com.sim.event.orchestration.event;
+package com.sim.payment;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -18,5 +18,9 @@ public class PaymentCompleteEvent {
 
 	public Long getReservationId() {
 		return reservationId;
+	}
+
+	public static PaymentCompleteEvent from(PaymentRequestEvent paymentRequestEvent) {
+		return new PaymentCompleteEvent(paymentRequestEvent.getId(), paymentRequestEvent.getReservationId());
 	}
 }

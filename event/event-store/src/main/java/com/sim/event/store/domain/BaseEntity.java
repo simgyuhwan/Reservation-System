@@ -22,6 +22,7 @@ import lombok.Getter;
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
 public class BaseEntity {
+
 	@CreatedDate
 	@Column(name = "create_date")
 	private LocalDateTime createDt;

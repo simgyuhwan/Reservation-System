@@ -14,15 +14,7 @@ spring:
           brokers: localhost:9092
       function:
         definition: paymentComplete;paymentFailed;notificationComplete;reservationCancelled;reservationApplyRequest
-      #bindings
       bindings:
-        # performance created event consumer
-#        performanceCreatedConsumer-in-0:
-#          destination: performance-service.performance.created
-#          group: performance_created
-#          consumer:
-#            maxAttempts: 3
-#            backOffInitialInterval: 100
         paymentRequest-out-0:
           destination: payment.request
 

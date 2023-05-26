@@ -1,4 +1,4 @@
-package com.sim.event.orchestration.event;
+package com.sim.payment;
 
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -10,12 +10,8 @@ public class PaymentRequestEvent {
 	private String id;
 	private Long reservationId;
 
-	private PaymentRequestEvent(String id, Long reservationId) {
+	public PaymentRequestEvent(String id, Long reservationId) {
 		this.id = id;
 		this.reservationId = reservationId;
-	}
-
-	public static PaymentRequestEvent from(ReservationApplyRequest request) {
-		return new PaymentRequestEvent(request.getId(), request.getReservationId());
 	}
 }
