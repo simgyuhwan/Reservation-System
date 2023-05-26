@@ -32,6 +32,22 @@ services:
     networks:
       - reservation-networks
 
+  mysql_3:
+    image: mysql:8.0
+    restart: always
+    container_name: mysql_3
+    ports:
+      - "36668:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: Password!
+      MYSQL_DATABASE: reservation
+      MYSQL_CHARACTER_SET_SERVER: utf8mb4
+      MYSQL_COLLATION_SERVER: utf8mb4_unicode_ci
+    volumes:
+      - ./data/mysql-3:/var/lib/mysql
+    networks:
+      - reservation-networks
+
   postgresql_1:
     image: postgres:14.1-alpine
     restart: always
@@ -59,6 +75,21 @@ services:
       POSTGRES_DB: reservation
     volumes:
       - ./data/postgresql-2:/var/lib/postgresql/data
+    networks:
+      - reservation-networks
+
+  postgresql_3:
+    image: postgres:14.1-alpine
+    restart: always
+    container_name: postgreSQL_3
+    ports:
+      - "37779:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: Password!
+      POSTGRES_DB: reservation
+    volumes:
+      - ./data/postgresql-3:/var/lib/postgresql/data
     networks:
       - reservation-networks
 
