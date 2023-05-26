@@ -12,6 +12,9 @@ services:
     volumes:
       - ./data/zookeeper/data:/data
       - ./data/zookeeper/datalog:/datalog
+    networks:
+      - reservation-networks
+
   kafka1:
     image: confluentinc/cp-kafka:7.0.0
     hostname: kafka1
@@ -29,6 +32,9 @@ services:
       - ./data/kafka1/data:/tmp/kafka-logs
     depends_on:
       - zookeeper
+    networks:
+      - reservation-networks
+
   kafka2:
     image: confluentinc/cp-kafka:7.0.0
     hostname: kafka2
@@ -46,6 +52,9 @@ services:
       - ./data/kafka2/data:/tmp/kafka-logs
     depends_on:
       - zookeeper
+    networks:
+      - reservation-networks
+
   kafka3:
     image: confluentinc/cp-kafka:7.0.0
     hostname: kafka3
@@ -63,6 +72,9 @@ services:
       - ./data/kafka3/data:/tmp/kafka-logs
     depends_on:
       - zookeeper
+    networks:
+      - reservation-networks
+
   kafdrop:
     image: obsidiandynamics/kafdrop
     container_name: kafdrop
@@ -75,3 +87,10 @@ services:
       - kafka1
       - kafka2
       - kafka3
+    networks:
+      - reservation-networks
+
+networks:
+  reservation-networks:
+    driver: bridge
+    external: true

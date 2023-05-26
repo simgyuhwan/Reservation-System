@@ -13,7 +13,7 @@ services:
       - '--config.file=/etc/prometheus/prometheus.yml'
     restart: always
     networks:
-      - promnet
+      - reservation-networks
 
   grafana:
     image: grafana/grafana
@@ -24,8 +24,9 @@ services:
       - ./grafana/volume:/var/lib/grafana
     restart: always
     networks:
-      - promnet
+      - reservation-networks
 
 networks:
-  promnet:
+  reservation-networks:
     driver: bridge
+    external: true

@@ -13,6 +13,8 @@ services:
       MYSQL_COLLATION_SERVER: utf8mb4_unicode_ci
     volumes:
       - ./data/mysql-1:/var/lib/mysql
+    networks:
+      - reservation-networks
 
   mysql_2:
     image: mysql:8.0
@@ -27,6 +29,8 @@ services:
       MYSQL_COLLATION_SERVER: utf8mb4_unicode_ci
     volumes:
       - ./data/mysql-2:/var/lib/mysql
+    networks:
+      - reservation-networks
 
   postgresql_1:
     image: postgres:14.1-alpine
@@ -40,6 +44,8 @@ services:
       POSTGRES_DB: reservation
     volumes:
       - ./data/postgresql-1:/var/lib/postgresql/data
+    networks:
+      - reservation-networks
 
   postgresql_2:
     image: postgres:14.1-alpine
@@ -53,3 +59,10 @@ services:
       POSTGRES_DB: reservation
     volumes:
       - ./data/postgresql-2:/var/lib/postgresql/data
+    networks:
+      - reservation-networks
+
+networks:
+  reservation-networks:
+    driver: bridge
+    external: true
