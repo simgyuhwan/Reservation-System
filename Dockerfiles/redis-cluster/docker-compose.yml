@@ -8,9 +8,9 @@ services:
       - ./redis.conf:/usr/local/etc/redis/redis.conf
     command: redis-server /usr/local/etc/redis/redis.conf
     ports:
+      - "6379:6379"
       - "6380:6380"
       - "6381:6381"
-      - "6379:6379"
     networks:
       - reservation-networks
 
@@ -22,8 +22,6 @@ services:
     volumes:
       - ./redis1.conf:/usr/local/etc/redis/redis.conf
     command: redis-server /usr/local/etc/redis/redis.conf
-    networks:
-      - reservation-networks
 
   redis-node-2:
 #    network_mode: "service:redis-cluster"
@@ -33,8 +31,6 @@ services:
     volumes:
       - ./redis2.conf:/usr/local/etc/redis/redis.conf
     command: redis-server /usr/local/etc/redis/redis.conf
-    networks:
-      - reservation-networks
 
   redis-cluster-entry:
 #    network_mode: "service:redis-cluster"
@@ -46,8 +42,6 @@ services:
       - redis-cluster
       - redis-node-1
       - redis-node-2
-    networks:
-      - reservation-networks
 
 networks:
   reservation-networks:
