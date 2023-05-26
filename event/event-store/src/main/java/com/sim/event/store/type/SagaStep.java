@@ -1,7 +1,7 @@
 package com.sim.event.store.type;
 
 public enum SagaStep {
-	INITIATED,
+	START,
 	PAYMENT_REQUEST,
 	PAYMENT_COMPLETE,
 	PAYMENT_FAILED,

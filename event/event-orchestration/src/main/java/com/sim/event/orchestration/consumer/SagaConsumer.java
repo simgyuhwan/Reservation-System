@@ -24,30 +24,27 @@ public class SagaConsumer {
 	public Consumer<DefaultEvent<ReservationApplyRequest>> reservationApplyRequest() {
 		return a -> {
 			ReservationApplyRequest request = (ReservationApplyRequest)a.getPayload();
-			saga.startSaga(request);
+			saga.start(request);
 		};
 	}
 
 	@Bean
 	public Consumer<PaymentCompleteEvent> paymentComplete() {
-		return a -> {
-			System.out.println(a.getId());
-			saga.response(a);
-		};
+		return saga::handle;
 	}
 
 	@Bean
 	public Consumer<PaymentFailedEvent> paymentFailed() {
-		return saga::response;
+		return saga::handle;
 	}
 
 	@Bean
 	public Consumer<NotificationCompleteEvent> notificationComplete() {
-		return saga::response;
+		return saga::handle;
 	}
 
 	@Bean
 	public Consumer<ReservationCancelledEvent> reservationCancelled() {
-		return saga::response;
+		return saga::handle;
 	}
 }
