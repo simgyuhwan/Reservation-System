@@ -6,6 +6,9 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
 
+    //web
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+
     // lombok
     compileOnly 'org.projectlombok:lombok'
     implementation 'org.projectlombok:lombok:1.18.24'
@@ -16,4 +19,7 @@ dependencies {
 
     // kafka stream
     implementation 'org.springframework.cloud:spring-cloud-starter-stream-kafka:4.0.1'
+
+    // feignClient
+    implementation 'org.springframework.cloud:spring-cloud-starter-openfeign:4.0.1'
 }

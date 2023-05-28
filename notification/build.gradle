@@ -67,6 +67,7 @@ project(":notification-event") {
     dependencies {
         implementation(project(":notification-email"))
         implementation(project(":notification-sns"))
+        implementation(project(":clients:reservation-client"))
     }
 }
 

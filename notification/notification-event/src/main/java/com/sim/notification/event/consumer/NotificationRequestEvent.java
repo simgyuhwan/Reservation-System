@@ -1,4 +1,4 @@
-package com.sim.notification.event;
+package com.sim.notification.event.consumer;
 
 public class NotificationRequestEvent {
 	private String id;

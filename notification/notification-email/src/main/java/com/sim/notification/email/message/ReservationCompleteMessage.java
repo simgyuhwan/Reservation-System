@@ -1,4 +1,6 @@
-package com.sim.notification.common;
+package com.sim.notification.email.message;
+
+import lombok.Builder;
 
 public class ReservationCompleteMessage {
 	private String username;
@@ -10,6 +12,7 @@ public class ReservationCompleteMessage {
 	public ReservationCompleteMessage() {
 	}
 
+	@Builder
 	public ReservationCompleteMessage(String username, String performanceName, String startDate, String startTime, String place) {
 		this.username = username;
 		this.performanceName = performanceName;

@@ -1,4 +1,4 @@
-package com.sim.notification.common;
+package com.sim.notification.email.message;
 
 public class ReservationTemplate {
 
@@ -10,8 +10,8 @@ public class ReservationTemplate {
 		StringBuilder sb = new StringBuilder();
 		sb.append("<html><head><style>body {font-family: Arial, sans-serif; font-size: 14px;} h1 {color: #333333; font-size: 24px;} p {margin: 10px 0;} a {color: #0066cc; text-decoration: none;} a:hover {text-decoration: underline;}</style></head><body>")
 			.append("<h1>공연 예약 완료 알림: ").append(reservationCompleteMessage.getPerformanceName()).append("</h1>")
-			.append("<p>안녕하세요, <strong>").append(reservationCompleteMessage.getUsername()).append("</strong>님. ").append(
-				reservationCompleteMessage.getPerformanceName()).append(" 공연에 대한 예약을 완료해주셔서 감사합니다.</p>")
+			.append("<p>안녕하세요, <strong>").append(reservationCompleteMessage.getUsername()).append("</strong>님. <strong>").append(
+				reservationCompleteMessage.getPerformanceName()).append("</strong> 공연에 대한 예약을 완료해주셔서 감사합니다.</p>")
 			.append("<p>예약하신 공연 정보는 다음과 같습니다.</p>")
 			.append("<ul>")
 			.append("<li><strong>공연 날짜: ").append(reservationCompleteMessage.getStartDate()).append("</strong></li>")

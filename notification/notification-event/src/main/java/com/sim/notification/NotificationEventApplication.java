@@ -1,4 +1,4 @@
-package com.sim.notification.event;
+package com.sim.notification;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
