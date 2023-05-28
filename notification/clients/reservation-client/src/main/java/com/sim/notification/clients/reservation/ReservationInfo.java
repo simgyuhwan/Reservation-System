@@ -21,12 +21,12 @@ public class ReservationInfo {
 	private LocalTime startTime;
 	private String place;
 	private boolean isEmailReceiveDenied;
-	private boolean isSnsReceiveDenied;
+	private boolean isSmsReceiveDenied;
 
 	@Builder
 	private ReservationInfo(Long id, String username, String phoneNum, String email,
 		String performanceName, LocalDate startDate, LocalTime startTime, String place, boolean isEmailReceiveDenied,
-		boolean isSnsReceiveDenied) {
+		boolean isSmsReceiveDenied) {
 		this.id = id;
 		this.username = username;
 		this.phoneNum = phoneNum;
@@ -36,15 +36,15 @@ public class ReservationInfo {
 		this.startTime = startTime;
 		this.place = place;
 		this.isEmailReceiveDenied = isEmailReceiveDenied;
-		this.isSnsReceiveDenied = isSnsReceiveDenied;
+		this.isSmsReceiveDenied = isSmsReceiveDenied;
 	}
 
 	public boolean canSendEmail() {
 		return !isEmailReceiveDenied;
 	}
 
-	public boolean canSendSns() {
-		return !isSnsReceiveDenied;
+	public boolean canSendSms() {
+		return !isSmsReceiveDenied;
 	}
 
 	public String getStartDate() {

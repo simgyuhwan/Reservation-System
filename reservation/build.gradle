@@ -82,5 +82,6 @@ project("data") {
 }
 
 project("data:data-reservation") {
-
+//    bootJar { enabled = false }
+//    jar { enabled = true }
 }

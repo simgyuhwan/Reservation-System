@@ -46,7 +46,7 @@ create table reservation
     update_date             datetime(6)  null,
     email                   varchar(255) null,
     is_email_receive_denied bit          not null,
-    is_sns_receive_denied   bit          not null,
+    is_sms_receive_denied   bit          not null,
     name                    varchar(255) null,
     phone_num               varchar(255) null,
     status                  varchar(255) null,
@@ -55,5 +55,6 @@ create table reservation
     constraint FKlta7tg7ys4aavrme64hu4inhw
         foreign key (performance_schedule_id) references performance_schedule (performance_schedule_id)
 );
+
 
 

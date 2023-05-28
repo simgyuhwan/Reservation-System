@@ -29,7 +29,7 @@ public class ReservationCustomRepositoryImpl implements ReservationCustomReposit
 				performanceSchedule.startTime,
 				performanceInfo.place,
 				reservation.isEmailReceiveDenied,
-				reservation.isSnsReceiveDenied))
+				reservation.isSmsReceiveDenied))
 			.from(reservation)
 			.join(reservation.performanceSchedule, performanceSchedule)
 			.join(performanceSchedule.performanceInfo, performanceInfo)

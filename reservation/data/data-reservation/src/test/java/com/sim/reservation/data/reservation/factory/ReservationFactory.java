@@ -14,7 +14,7 @@ public class ReservationFactory {
 	public static final String PHONE_NUM = "010-5555-4444";
 	public static final String EMAIL = "test@naver.com";
 	public static final boolean IS_EMAIL_RECEIVE_DENIED = true;
-	public static final boolean IS_SNS_RECEIVE_DENIED = true;
+	public static final boolean IS_SMS_RECEIVE_DENIED = true;
 
 	public static Reservation createReservation() {
 		return Reservation.builder()
@@ -23,7 +23,7 @@ public class ReservationFactory {
 			.phoneNum(PHONE_NUM)
 			.email(EMAIL)
 			.isEmailReceiveDenied(IS_EMAIL_RECEIVE_DENIED)
-			.isSnsReceiveDenied(IS_SNS_RECEIVE_DENIED)
+			.isSmsReceiveDenied(IS_SMS_RECEIVE_DENIED)
 			.build();
 	}
 
@@ -35,7 +35,7 @@ public class ReservationFactory {
 			.phoneNum(PHONE_NUM)
 			.email(EMAIL)
 			.isEmailReceiveDenied(IS_EMAIL_RECEIVE_DENIED)
-			.isSnsReceiveDenied(IS_SNS_RECEIVE_DENIED)
+			.isSmsReceiveDenied(IS_SMS_RECEIVE_DENIED)
 			.build();
 	}
 }

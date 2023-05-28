@@ -36,7 +36,7 @@ public class QReservation extends EntityPathBase<Reservation> {
 
     public final BooleanPath isEmailReceiveDenied = createBoolean("isEmailReceiveDenied");
 
-    public final BooleanPath isSnsReceiveDenied = createBoolean("isSnsReceiveDenied");
+    public final BooleanPath isSmsReceiveDenied = createBoolean("isSmsReceiveDenied");
 
     public final StringPath name = createString("name");
 

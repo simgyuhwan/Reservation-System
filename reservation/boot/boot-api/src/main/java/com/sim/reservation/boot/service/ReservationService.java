@@ -11,5 +11,9 @@ import com.sim.reservation.boot.dto.response.ReservationResultResponse;
  * @since 2023.05.15
  */
 public interface ReservationService {
+
+    /**
+     * 예약 신청
+     */
     ReservationResultResponse applyReservation(Long performanceId, Long scheduleId, ReservationApplyRequest reservationApplyRequest);
 }

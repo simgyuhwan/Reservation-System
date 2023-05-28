@@ -15,7 +15,7 @@ public class ReservationDtoFactory {
 	public static final String PHONE_NUM = "010-5555-4444";
 	public static final String EMAIL = "test@naver.com";
 	public static final boolean IS_EMAIL_RECEIVE_DENIED = true;
-	public static final boolean IS_SNS_RECEIVE_DENIED = true;
+	public static final boolean IS_SMS_RECEIVE_DENIED = true;
 
 	public static ReservationDto createReservationDto() {
 		return ReservationDto.builder()
@@ -23,7 +23,7 @@ public class ReservationDtoFactory {
 			.name(NAME)
 			.phoneNum(PHONE_NUM)
 			.email(EMAIL)
-			.isSnsReceiveDenied(IS_SNS_RECEIVE_DENIED)
+			.isSmsReceiveDenied(IS_SMS_RECEIVE_DENIED)
 			.isEmailReceiveDenied(IS_EMAIL_RECEIVE_DENIED)
 			.build();
 	}

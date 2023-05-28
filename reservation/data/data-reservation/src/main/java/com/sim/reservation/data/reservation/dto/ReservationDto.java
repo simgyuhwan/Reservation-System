@@ -23,18 +23,18 @@ public class ReservationDto {
 	private String phoneNum;
 	private String email;
 	private boolean isEmailReceiveDenied;
-	private boolean isSnsReceiveDenied;
+	private boolean isSmsReceiveDenied;
 
 	@Builder
 	public ReservationDto(Long reservationId,String userId, String name, String phoneNum, String email, boolean isEmailReceiveDenied,
-		boolean isSnsReceiveDenied) {
+		boolean isSmsReceiveDenied) {
 		this.reservationId = reservationId;
 		this.userId = userId;
 		this.name = name;
 		this.phoneNum = phoneNum;
 		this.email = email;
 		this.isEmailReceiveDenied = isEmailReceiveDenied;
-		this.isSnsReceiveDenied = isSnsReceiveDenied;
+		this.isSmsReceiveDenied = isSmsReceiveDenied;
 	}
 
 	public static ReservationDto from(Reservation reservation) {
@@ -44,7 +44,7 @@ public class ReservationDto {
 			.name(reservation.getName())
 			.phoneNum(reservation.getPhoneNum())
 			.email(reservation.getEmail())
-			.isSnsReceiveDenied(reservation.isSnsReceiveDenied())
+			.isSmsReceiveDenied(reservation.isSmsReceiveDenied())
 			.isEmailReceiveDenied(reservation.isEmailReceiveDenied())
 			.build();
 	}

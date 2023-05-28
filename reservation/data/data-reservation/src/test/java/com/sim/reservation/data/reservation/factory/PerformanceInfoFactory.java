@@ -42,6 +42,22 @@ public class PerformanceInfoFactory {
 			.build();
 	}
 
+	public static PerformanceInfo createPerformanceInfoWithId(PerformanceSchedule performanceSchedule) {
+		return PerformanceInfo.builder()
+			.performanceId(PERFORMANCE_ID)
+			.info(INFO)
+			.name(NAME)
+			.place(PLACE)
+			.type(TYPE)
+			.price(PRICE)
+			.isAvailable(IS_AVAILABLE)
+			.performanceSchedules(List.of(performanceSchedule))
+			.contactPhoneNum(CONTACT_PHONE_NUM)
+			.contactPersonName(CONTACT_PERSON_NAME)
+			.build();
+	}
+
+
 	public static PerformanceInfo createPerformanceInfo(String name, String place, PerformanceType type) {
 		return PerformanceInfo.builder()
 			.performanceId(2L)

@@ -10,14 +10,14 @@ import com.sim.reservation.boot.dto.request.ReservationApplyRequest;
  * @since 2023.05.16
  */
 public class ReservationApplyRequestFactory {
-    public static ReservationApplyRequest createReservationApplyRequest(String userId, String name, String phoneNum, String email, boolean isEmailReceiveDenied, boolean isSnsReceiveDenied) {
+    public static ReservationApplyRequest createReservationApplyRequest(String userId, String name, String phoneNum, String email, boolean isEmailReceiveDenied, boolean isSmsReceiveDenied) {
         return ReservationApplyRequest.builder()
             .userId(userId)
             .name(name)
             .email(email)
             .phoneNum(phoneNum)
             .isEmailReceiveDenied(isEmailReceiveDenied)
-            .isSnsReceiveDenied(isSnsReceiveDenied)
+            .isSmsReceiveDenied(isSmsReceiveDenied)
             .build();
     }
 }

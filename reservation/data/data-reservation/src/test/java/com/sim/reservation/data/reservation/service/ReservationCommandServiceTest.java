@@ -27,6 +27,7 @@ import com.sim.reservation.data.reservation.error.PerformanceInfoNotFoundExcepti
 import com.sim.reservation.data.reservation.error.PerformanceScheduleNotFoundException;
 import com.sim.reservation.data.reservation.error.ReservationNotPossibleException;
 import com.sim.reservation.data.reservation.error.SoldOutException;
+import com.sim.reservation.data.reservation.event.internal.InternalEventPublisher;
 import com.sim.reservation.data.reservation.factory.PerformanceInfoFactory;
 import com.sim.reservation.data.reservation.factory.PerformanceScheduleFactory;
 import com.sim.reservation.data.reservation.factory.ReservationDtoFactory;
@@ -52,6 +53,9 @@ class ReservationCommandServiceTest {
 
 	@InjectMocks
 	private ReservationCommandServiceImpl reservationCommandService;
+
+	@Mock
+	private InternalEventPublisher internalEventPublisher;
 
 	@Mock
 	private PerformanceInfoRepository performanceInfoRepository;
@@ -80,7 +84,7 @@ class ReservationCommandServiceTest {
 	@DisplayName("예약 신청 성공 : 예약 도메인 저장 확인")
 	void reservationWholesalerSaveConfirmation() {
 		//given
-		PerformanceSchedule performanceSchedule = createPerformanceSchedule();
+		PerformanceSchedule performanceSchedule = createPerformanceScheduleWithId();
 		PerformanceInfo performanceInfo = createPerformanceInfoWithSchedule(performanceSchedule);
 		Reservation reservation = createReservationWithId(RESERVATION_ID);
 
@@ -101,7 +105,7 @@ class ReservationCommandServiceTest {
 	void reservationRequestSuccessfulRegistrationValueConfirmation(){
 		//given
 		ReservationDto reservationDto = createReservationDto();
-		PerformanceInfo performanceInfo = createPerformanceInfoWithSchedule(createPerformanceSchedule());
+		PerformanceInfo performanceInfo = createPerformanceInfoWithSchedule(createPerformanceScheduleWithId());
 		Reservation reservation = createReservationWithId(RESERVATION_ID);
 
 		when(performanceScheduleRepository.findById(SCHEDULE_ID)).thenReturn(Optional.of(createPerformanceSchedule()));
@@ -154,7 +158,7 @@ class ReservationCommandServiceTest {
 	@Test
 	@DisplayName("예약 신청 실패 : 예약 불가능한 공연 예외")
 	void unReservablePerformanceException() {
-		PerformanceSchedule performanceSchedule = createPerformanceSchedule();
+		PerformanceSchedule performanceSchedule = createPerformanceScheduleWithId();
 		PerformanceInfo performanceInfo = createDisablePerformanceInfo(List.of(performanceSchedule));
 		when(performanceScheduleRepository.findById(SCHEDULE_ID)).thenReturn(Optional.of(performanceSchedule));
 		when(performanceInfoRepository.findById(PERFORMANCE_ID)).thenReturn(
@@ -198,7 +202,7 @@ class ReservationCommandServiceTest {
 	}
 
 	public PerformanceInfo createPerformanceInfoWithSchedule(PerformanceSchedule performanceSchedule) {
-		return PerformanceInfoFactory.createPerformanceInfo(performanceSchedule);
+		return PerformanceInfoFactory.createPerformanceInfoWithId(performanceSchedule);
 	}
 
 	public PerformanceInfo createPerformanceInfoWithOneSeats() {
@@ -209,8 +213,8 @@ class ReservationCommandServiceTest {
 		return PerformanceScheduleFactory.createPerformanceSchedule(null);
 	}
 
-	public PerformanceSchedule createDisablePerformanceSchedule() {
-		return PerformanceScheduleFactory.createDisablePerformanceSchedule(null);
+	public PerformanceSchedule createPerformanceScheduleWithId() {
+		return PerformanceScheduleFactory.createPerformanceScheduleWithId(null);
 	}
 
 	public PerformanceSchedule createSoldOutPerformanceSchedule() {

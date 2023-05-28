@@ -40,7 +40,7 @@ public class Reservation extends BaseEntity {
 	private String email;
 
 	private boolean isEmailReceiveDenied;
-	private boolean isSnsReceiveDenied;
+	private boolean isSmsReceiveDenied;
 
 	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "performance_schedule_id")
@@ -60,7 +60,7 @@ public class Reservation extends BaseEntity {
 			.email(reservationDto.getEmail())
 			.phoneNum(reservationDto.getPhoneNum())
 			.isEmailReceiveDenied(reservationDto.isEmailReceiveDenied())
-			.isSnsReceiveDenied(reservationDto.isSnsReceiveDenied())
+			.isSmsReceiveDenied(reservationDto.isSmsReceiveDenied())
 			.performanceSchedule(schedule)
 			.status(ReservationStatus.RESERVED)
 			.build();
@@ -68,7 +68,7 @@ public class Reservation extends BaseEntity {
 
 	@Builder
 	private Reservation(Long id, String userId, String name, String phoneNum, String email, boolean isEmailReceiveDenied,
-		boolean isSnsReceiveDenied, PerformanceSchedule performanceSchedule,
+		boolean isSmsReceiveDenied, PerformanceSchedule performanceSchedule,
 		ReservationStatus status) {
 		this.id = id;
 		this.userId = userId;
@@ -76,7 +76,7 @@ public class Reservation extends BaseEntity {
 		this.phoneNum = phoneNum;
 		this.email = email;
 		this.isEmailReceiveDenied = isEmailReceiveDenied;
-		this.isSnsReceiveDenied = isSnsReceiveDenied;
+		this.isSmsReceiveDenied = isSmsReceiveDenied;
 		this.performanceSchedule = performanceSchedule;
 		this.status = status;
 	}

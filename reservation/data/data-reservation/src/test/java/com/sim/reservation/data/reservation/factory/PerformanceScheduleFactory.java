@@ -23,6 +23,19 @@ public class PerformanceScheduleFactory {
     public static final boolean IS_AVAILABLE = true;
     public static final long PERFORMANCE_SCHEDULE_ID = 1L;
 
+    public static PerformanceSchedule createPerformanceScheduleWithId(PerformanceInfo performanceInfo) {
+        return PerformanceSchedule.builder()
+            .id(1L)
+            .performanceInfo(performanceInfo)
+            .startDate(START_DATE)
+            .endDate(END_DATE)
+            .startTime(START_TIME)
+            .availableSeats(AVAILABLE_SEATS)
+            .remainingSeats(REMAINING_SEATS)
+            .isAvailable(IS_AVAILABLE)
+            .build();
+    }
+
     public static PerformanceSchedule createPerformanceSchedule(PerformanceInfo performanceInfo) {
         return PerformanceSchedule.builder()
             .performanceInfo(performanceInfo)

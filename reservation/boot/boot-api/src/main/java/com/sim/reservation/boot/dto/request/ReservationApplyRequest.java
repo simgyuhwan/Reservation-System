@@ -35,18 +35,18 @@ public class ReservationApplyRequest {
 	private String email;
 
 	private Boolean isEmailReceiveDenied;
-	private Boolean isSnsReceiveDenied;
+	private Boolean isSmsReceiveDenied;
 
 	@Builder
 	public ReservationApplyRequest(String userId, String name, String phoneNum, String email,
 		boolean isEmailReceiveDenied,
-		boolean isSnsReceiveDenied) {
+		boolean isSmsReceiveDenied) {
 		this.userId = userId;
 		this.name = name;
 		this.phoneNum = phoneNum;
 		this.email = email;
 		this.isEmailReceiveDenied = isEmailReceiveDenied;
-		this.isSnsReceiveDenied = isSnsReceiveDenied;
+		this.isSmsReceiveDenied = isSmsReceiveDenied;
 	}
 
 	public ReservationDto toReservationDto() {
@@ -56,7 +56,7 @@ public class ReservationApplyRequest {
 			.phoneNum(phoneNum)
 			.email(email)
 			.isEmailReceiveDenied(isEmailReceiveDenied)
-			.isSnsReceiveDenied(isSnsReceiveDenied)
+			.isSmsReceiveDenied(isSmsReceiveDenied)
 			.build();
 	}
 }
