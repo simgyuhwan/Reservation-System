@@ -4,16 +4,12 @@ plugins {
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
-    annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+
+    // feignClient
+    implementation 'org.springframework.cloud:spring-cloud-starter-openfeign:4.0.1'
 
     // lombok
     compileOnly 'org.projectlombok:lombok'
     implementation 'org.projectlombok:lombok:1.18.24'
     annotationProcessor 'org.projectlombok:lombok'
-
-    // eureka client
-    implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client:4.0.0'
-
-    // kafka stream
-    implementation 'org.springframework.cloud:spring-cloud-starter-stream-kafka:4.0.1'
 }

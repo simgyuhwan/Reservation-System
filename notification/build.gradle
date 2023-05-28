@@ -1,6 +1,6 @@
 plugins {
     id 'java'
-    id 'org.springframework.boot' version '3.1.0'
+    id 'org.springframework.boot' version '3.0.6'
     id 'io.spring.dependency-management' version '1.1.0'
 }
 
@@ -48,12 +48,16 @@ project(":notification-common") {
 }
 
 project(":notification-email") {
+    bootJar { enabled = false }
+    jar { enabled = true }
     dependencies {
         implementation(project(":notification-common"))
     }
 }
 
 project(":notification-sns") {
+    bootJar { enabled = false }
+    jar { enabled = true }
     dependencies {
         implementation(project(":notification-common"))
     }
@@ -63,5 +67,26 @@ project(":notification-event") {
     dependencies {
         implementation(project(":notification-email"))
         implementation(project(":notification-sns"))
+    }
+}
+
+project(":clients") {
+    bootJar { enabled = false }
+    jar { enabled = true }
+}
+
+project("clients:performance-client") {
+    bootJar { enabled = false }
+    jar { enabled = true }
+
+    dependencies {
+    }
+}
+
+project("clients:reservation-client") {
+    bootJar { enabled = false }
+    jar { enabled = true }
+
+    dependencies {
     }
 }

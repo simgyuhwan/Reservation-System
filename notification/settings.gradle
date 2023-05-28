@@ -1,2 +1,2 @@
 rootProject.name = 'notification'
-include("notification-common", "notification-email", "notification-sns","notification-event")
+include("notification-common", "notification-email", "notification-sns","notification-event","clients:performance-client","clients:reservation-client")
