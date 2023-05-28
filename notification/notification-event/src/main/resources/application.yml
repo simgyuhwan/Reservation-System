@@ -20,6 +20,9 @@ spring:
         notificationRequest-in-0:
           destination: notification.request
 
+        notificationRequest-out-0:
+          destination: notification.complete
+
 # eureka
 eureka:
   client:

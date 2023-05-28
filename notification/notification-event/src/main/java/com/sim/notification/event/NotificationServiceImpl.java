@@ -11,12 +11,19 @@ import com.sim.notification.event.factory.ReservationMessageFactory;
 
 import lombok.RequiredArgsConstructor;
 
+/**
+ * 알림 서비스
+ */
 @Service
 @RequiredArgsConstructor
 public class NotificationServiceImpl implements NotificationService{
 	private final ReservationClient reservationClient;
 	private final EmailService emailService;
 
+	/**
+	 * 예약 신청 메시지 전송
+	 * @param notificationRequestEvent 예약 신청 이벤트
+	 */
 	@Override
 	public void sendMessage(NotificationRequestEvent notificationRequestEvent) {
 		ReservationInfo reservationInfo = reservationClient.getReservationInfoById(
@@ -26,11 +33,14 @@ public class NotificationServiceImpl implements NotificationService{
 			sendEmail(reservationInfo);
 		}
 
-		if(reservationInfo.canSendSns()) {
-			sendSns(reservationInfo);
+		if(reservationInfo.canSendSms()) {
+			sendSms(reservationInfo);
 		}
 	}
 
+	/**
+	 * 이메일 전송
+	 */
 	private void sendEmail(ReservationInfo reservationInfo) {
 		String subject = reservationInfo.getEmail();
 		ReservationCompleteMessage message = ReservationMessageFactory.createReservationCompleteMessage(
@@ -38,7 +48,10 @@ public class NotificationServiceImpl implements NotificationService{
 		emailService.sendReservationCompletedEmail(subject, message);
 	}
 
-	private void sendSns(ReservationInfo reservationInfo) {
+	/**
+	 * sms 전송(유료라 pass)
+	 */
+	private void sendSms(ReservationInfo reservationInfo) {
 
 	}
 }

@@ -1,6 +1,6 @@
 package com.sim.notification.event.consumer;
 
-import java.util.function.Consumer;
+import java.util.function.Function;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,7 +15,10 @@ public class NotificationConsumer {
 	private final NotificationService notificationService;
 
 	@Bean
-	public Consumer<NotificationRequestEvent> notificationRequest() {
-		return notificationService::sendMessage;
+	public Function<NotificationRequestEvent, NotificationCompleteEvent> notificationRequest() {
+		return event -> {
+			notificationService.sendMessage(event);
+			return NotificationCompleteEvent.from(event);
+		};
 	}
 }
