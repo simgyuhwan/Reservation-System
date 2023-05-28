@@ -22,7 +22,7 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class PerformanceInfoInfoSyncServiceImpl implements PerformanceInfoSyncService {
+public class PerformanceInfoSyncServiceImpl implements PerformanceInfoSyncService {
 	private final PerformanceClient performanceClient;
 	private final PerformanceInfoMapper performanceInfoMapper;
 	private final PerformanceInfoRepository performanceInfoRepository;
