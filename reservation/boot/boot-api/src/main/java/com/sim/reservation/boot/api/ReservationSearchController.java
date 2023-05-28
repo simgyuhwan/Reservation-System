@@ -40,7 +40,7 @@ public class ReservationSearchController {
 		return ResponseEntity.ok(reservationSearchService.getAvailablePerformances(performanceSearchRequest, pageable));
 	}
 
-	@GetMapping("/reservation/{reservationId}")
+	@GetMapping("/reservations/{reservationId}")
 	@Operation(summary = "[예약] 예약 정보 조회", description = "예약된 정보 조회 API" )
 	public ReservationInfoResponse getReservationInfo(@PathVariable Long reservationId) {
 		return reservationSearchService.getReservationInfo(reservationId);
