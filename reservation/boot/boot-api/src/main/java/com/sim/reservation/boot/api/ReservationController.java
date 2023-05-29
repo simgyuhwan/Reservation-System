@@ -24,17 +24,18 @@ import lombok.RequiredArgsConstructor;
  * @since 2023.05.15
  */
 @RestController
-@RequestMapping("/api/performances")
+@RequestMapping("/api")
 @RequiredArgsConstructor
 public class ReservationController {
 	private final ReservationService reservationService;
 
 	@Operation(summary = "[예약] 공연 예약 신청", description = "공연 예약 신청 API")
-	@PostMapping("/{performanceId}/schedules/{scheduleId}/reservations")
+	@PostMapping("/performances/{performanceId}/schedules/{scheduleId}/reservations")
 	public ResponseEntity<ReservationResultResponse> reservation(@PathVariable Long performanceId,
 		@PathVariable Long scheduleId,
 		@RequestBody @Validated ReservationApplyRequest reservationApplyRequest) {
 		return ResponseEntity.status(HttpStatus.CREATED).body(
 			reservationService.applyReservation(performanceId, scheduleId, reservationApplyRequest));
 	}
+
 }
