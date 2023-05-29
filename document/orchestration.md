@@ -146,7 +146,7 @@ public void reservationRequest(ReservationApplyReqeust reservationApplyRequest) 
 ```java
 public void publishPaymentCompleteEvent(ReservationApplyRequest event) {
   // payment 요청 이벤트 발행
-  eventPublisher.publishPaymentRequestEvent(event); // 반환 값 void
+  eventPublisher.publish(event); // 반환 값 void
 
   // 응답을 어떻게? 스레드 대기??
 
@@ -286,7 +286,7 @@ public class ReservationRequestSaga implements Saga {
 		saveSageState(SagaState.of(request.getId(), PAYMENT_REQUEST));
 
 		PaymentRequestEvent event = PaymentRequestEvent.from(request);
-		eventPublisher.publishPaymentRequestEvent(event);
+		eventPublisher.publish(event);
 	}
 
 	// 결제 완료 이벤트 핸들러
@@ -325,13 +325,13 @@ public class ReservationRequestSaga implements Saga {
 	// 예약 신청 롤백 이벤트 발행
 	private void publishReservationApplyRollbackEvent(PaymentFailedEvent event) {
 		ReservationApplyRollbackEvent applyRollbackEvent = ReservationApplyRollbackEvent.of(event);
-		eventPublisher.publishReservationApplyRollbackEvent(applyRollbackEvent);
+		eventPublisher.publish(applyRollbackEvent);
 	}
 
 	// 알림 요청 이벤트 발행
 	private void publishNotificationRequestEvent(PaymentCompleteEvent event) {
 		NotificationRequestEvent notificationRequestEvent = NotificationRequestEvent.from(event);
-		eventPublisher.publishNotificationRequestEvent(notificationRequestEvent);
+		eventPublisher.publish(notificationRequestEvent);
 	}
 ...
 }
