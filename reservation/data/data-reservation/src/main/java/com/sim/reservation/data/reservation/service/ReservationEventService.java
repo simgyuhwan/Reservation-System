@@ -2,6 +2,7 @@ package com.sim.reservation.data.reservation.service;
 
 import com.sim.reservation.data.reservation.event.DefaultEvent;
 import com.sim.reservation.data.reservation.event.EventResult;
+import com.sim.reservation.data.reservation.event.consumer.ReservationApplyCompleteEvent;
 import com.sim.reservation.data.reservation.event.payload.PerformanceEventPayload;
 
 /**
@@ -27,4 +28,9 @@ public interface ReservationEventService {
      * @return 이벤트 결과
      */
     EventResult updatePerformanceInfo(DefaultEvent<PerformanceEventPayload> event);
+
+    /**
+     * 예약 신청 완료 이벤트 저장
+     */
+    void saveEvent(ReservationApplyCompleteEvent reservationApplyCompleteEvent);
 }

@@ -1,5 +1,6 @@
 package com.sim.reservation.data.reservation.event.consumer;
 
+import java.util.function.Consumer;
 import java.util.function.Function;
 
 import org.springframework.context.annotation.Bean;
@@ -23,7 +24,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Configuration
 @RequiredArgsConstructor
-public class PerformanceConsumer {
+public class ReservationConsumer {
 	private final ReservationEventService reservationEventService;
 
 	/**
@@ -40,6 +41,14 @@ public class PerformanceConsumer {
 	@Bean
 	public Function<DefaultEvent<PerformanceEventPayload>, EventResult> performanceUpdatedConsumer() {
 		return reservationEventService::updatePerformanceInfo;
+	}
+
+	/**
+	 * 예약 신청 완료 이벤트 Consumer
+	 */
+	@Bean
+	public Consumer<ReservationApplyCompleteEvent> reservationApplyComplete() {
+		return reservationEventService::saveEvent;
 	}
 
 }

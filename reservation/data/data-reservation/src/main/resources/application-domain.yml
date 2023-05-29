@@ -31,7 +31,7 @@ spring:
         binder:
           brokers: localhost:9092
       function:
-        definition: performanceCreatedConsumer;performanceUpdatedConsumer
+        definition: performanceCreatedConsumer;performanceUpdatedConsumer;reservationApplyComplete;
       #bindings
       bindings:
         # performance created event consumer
@@ -60,6 +60,10 @@ spring:
         # publish reservation apply event
         reservationApplyEvent-out-0:
           destination: reservation-service.reservation-apply
+
+        reservationApplyComplete-in-0:
+          destination: reservation-apply.complete
+          group: reservation-apply
 
 #loging
 logging:

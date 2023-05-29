@@ -1,5 +1,7 @@
 package com.sim.reservation.data.reservation.service;
 
+import java.util.Optional;
+
 import org.jetbrains.annotations.Nullable;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
@@ -9,6 +11,7 @@ import com.sim.reservation.data.reservation.domain.EventStatus;
 import com.sim.reservation.data.reservation.error.ErrorMessage;
 import com.sim.reservation.data.reservation.event.DefaultEvent;
 import com.sim.reservation.data.reservation.event.EventResult;
+import com.sim.reservation.data.reservation.event.consumer.ReservationApplyCompleteEvent;
 import com.sim.reservation.data.reservation.event.payload.Payload;
 import com.sim.reservation.data.reservation.event.payload.PerformanceEventPayload;
 import com.sim.reservation.data.reservation.repository.EventStatusCustomRepository;
@@ -167,5 +170,12 @@ public class ReservationEventServiceImpl implements ReservationEventService{
 		return EventResult.success(eventId);
 	}
 
-
+	/**
+	 * 예약 신청 이벤트 저장
+	 */
+	@Override
+	public void saveEvent(ReservationApplyCompleteEvent reservationApplyCompleteEvent) {
+		EventStatus eventStatus = findEventStatusById(reservationApplyCompleteEvent.getId());
+		eventStatus.changeSuccess();
+	}
 }

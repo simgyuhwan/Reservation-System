@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 
 import com.sim.event.orchestration.event.NotificationRequestEvent;
 import com.sim.event.orchestration.event.PaymentRequestEvent;
+import com.sim.event.orchestration.event.ReservationApplyCompleteEvent;
 import com.sim.event.orchestration.event.ReservationApplyRollbackEvent;
 
 import lombok.RequiredArgsConstructor;
@@ -15,17 +16,22 @@ public class KafkaExternalEventPublisher implements ExternalEventPublisher{
 	private final StreamBridge streamBridge;
 
 	@Override
-	public void publishPaymentRequestEvent(PaymentRequestEvent paymentRequestEvent) {
+	public void publish(PaymentRequestEvent paymentRequestEvent) {
 		streamBridge.send("payment.request", paymentRequestEvent);
 	}
 
 	@Override
-	public void publishNotificationRequestEvent(NotificationRequestEvent notificationRequestEvent) {
+	public void publish(NotificationRequestEvent notificationRequestEvent) {
 		streamBridge.send("notification.request", notificationRequestEvent);
 	}
 
 	@Override
-	public void publishReservationApplyRollbackEvent(ReservationApplyRollbackEvent reservationApplyRollbackEvent) {
+	public void publish(ReservationApplyRollbackEvent reservationApplyRollbackEvent) {
 		streamBridge.send("reservation-apply.rollback", reservationApplyRollbackEvent);
+	}
+
+	@Override
+	public void publish(ReservationApplyCompleteEvent reservationApplyCompleteEvent) {
+		streamBridge.send("reservation-apply.complete", reservationApplyCompleteEvent);
 	}
 }

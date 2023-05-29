@@ -43,3 +43,6 @@ spring:
         reservationApplyRequest-in-0:
           destination: reservation-service.reservation-apply
           group: reservation-apply
+
+        reservationApplyComplete-out-0:
+          destination: reservation-apply.complete

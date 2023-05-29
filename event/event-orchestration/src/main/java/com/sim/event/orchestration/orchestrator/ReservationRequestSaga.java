@@ -7,6 +7,7 @@ import com.sim.event.orchestration.event.NotificationRequestEvent;
 import com.sim.event.orchestration.event.PaymentCompleteEvent;
 import com.sim.event.orchestration.event.PaymentFailedEvent;
 import com.sim.event.orchestration.event.PaymentRequestEvent;
+import com.sim.event.orchestration.event.ReservationApplyCompleteEvent;
 import com.sim.event.orchestration.event.ReservationApplyRequest;
 import com.sim.event.orchestration.event.ReservationApplyRollbackEvent;
 import com.sim.event.orchestration.event.ReservationCancelEvent;
@@ -69,7 +70,7 @@ public class ReservationRequestSaga implements Saga {
 		saveSageState(SagaState.of(request.getId(), PAYMENT_REQUEST));
 
 		PaymentRequestEvent event = PaymentRequestEvent.from(request);
-		eventPublisher.publishPaymentRequestEvent(event);
+		eventPublisher.publish(event);
 	}
 
 	private void handlePaymentCompleteEvent(PaymentCompleteEvent event) {
@@ -89,6 +90,8 @@ public class ReservationRequestSaga implements Saga {
 	private void handleNotificationCompleteEvent(NotificationCompleteEvent event) {
 		saveSageState(SagaState.of(event.getId(), NOTIFICATION_COMPLETE));
 		end(event.getId());
+
+		publishReservationApplyCompleteEvent(event);
 	}
 
 	private void handleReservationCancelEvent(ReservationCancelEvent event) {
@@ -102,12 +105,17 @@ public class ReservationRequestSaga implements Saga {
 
 	private void publishReservationApplyRollbackEvent(PaymentFailedEvent event) {
 		ReservationApplyRollbackEvent applyRollbackEvent = ReservationApplyRollbackEvent.of(event);
-		eventPublisher.publishReservationApplyRollbackEvent(applyRollbackEvent);
+		eventPublisher.publish(applyRollbackEvent);
 	}
 
 	private void publishNotificationRequestEvent(PaymentCompleteEvent event) {
 		NotificationRequestEvent notificationRequestEvent = NotificationRequestEvent.from(event);
-		eventPublisher.publishNotificationRequestEvent(notificationRequestEvent);
+		eventPublisher.publish(notificationRequestEvent);
+	}
+
+	private void publishReservationApplyCompleteEvent(NotificationCompleteEvent event) {
+		ReservationApplyCompleteEvent reservationApplyCompleteEvent = ReservationApplyCompleteEvent.from(event);
+		eventPublisher.publish(reservationApplyCompleteEvent);
 	}
 
 }

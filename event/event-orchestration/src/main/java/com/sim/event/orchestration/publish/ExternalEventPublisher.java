@@ -2,13 +2,31 @@ package com.sim.event.orchestration.publish;
 
 import com.sim.event.orchestration.event.NotificationRequestEvent;
 import com.sim.event.orchestration.event.PaymentRequestEvent;
+import com.sim.event.orchestration.event.ReservationApplyCompleteEvent;
 import com.sim.event.orchestration.event.ReservationApplyRollbackEvent;
 
+/**
+ * 외부 이벤트 발행 인터페이스
+ */
 public interface ExternalEventPublisher {
 
-	void publishPaymentRequestEvent(PaymentRequestEvent paymentRequestEvent);
+	/**
+	 * 예약 요청 이벤트 발행
+	 */
+	void publish(PaymentRequestEvent paymentRequestEvent);
 
-	void publishNotificationRequestEvent(NotificationRequestEvent notificationRequestEvent);
+	/**
+	 * 알림 요청 이벤트 발행
+	 */
+	void publish(NotificationRequestEvent notificationRequestEvent);
 
-	void publishReservationApplyRollbackEvent(ReservationApplyRollbackEvent reservationApplyRollbackEvent);
+	/**
+	 * 예약 신청 롤백 이벤트 발행
+	 */
+	void publish(ReservationApplyRollbackEvent reservationApplyRollbackEvent);
+
+	/**
+	 * 예약 신청 완료 이벤트 발행
+	 */
+	void publish(ReservationApplyCompleteEvent reservationApplyCompleteEvent);
 }
