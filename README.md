@@ -157,6 +157,6 @@
 
 #### [5. 멀티 모듈을 구성하면서](./document/configure-multi-module.md)
 
-#### [6. 사가패턴 적용해보기(Choregraphy)](./document/choregraphy.md)
+#### [6. 사가패턴 적용해보기(Choreography)](./document/choreography.md)
 
 #### [7. 사가패턴 적용해보기(Orchestration)](./document/orchestration.md)
