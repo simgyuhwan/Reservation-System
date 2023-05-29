@@ -18,7 +18,7 @@
 
 # 1. 개요
 
-이번 글은 **MSA**에서 **분산 트랜잭션**을 제어하는 방법인 **사가 패턴**의 **orchestration 방식**에 대한 적용 글이다. orchestration 방식은 오케스트라의 지휘자를 연상하면 될 듯 싶다. 여러 복잡한 작업이나 워크플로우를 관리 및 조정, 구성을 의미하는데. 하나의 요청에 대해서 각 서비스의 요청과 응답을 한 곳에서 단계 별로 관리한다. 
+이번 글은 **MSA**에서 **분산 트랜잭션**을 제어하는 방법인 **사가 패턴**의 **orchestration 방식**에 대한 적용 글이다. orchestration 방식은 오케스트라의 지휘자를 연상하면 될 듯 싶다. 여러 복잡한 작업이나 워크플로우를 관리 및 조정, 구성을 의미하는데. 하나의 요청에 대해서 각 서비스의 요청과 응답을 한 곳에서 단계별로 관리한다. 
 
 하지만 실제 적용된 소스를 찾을 수 없어서 관련 개념들을 읽고 직접 시행착오를 거치며 만들어 볼 수 밖에 없었다. (현업과 많이 다를 수 있다는 점)
 
@@ -145,12 +145,12 @@ public void reservationRequest(ReservationApplyReqeust reservationApplyRequest) 
 
 ```java
 public void publishPaymentCompleteEvent(ReservationApplyRequest event) {
-		// payment 요청 이벤트 발행
-		eventPublisher.publishPaymentRequestEvent(event); // 반환 값 void
+  // payment 요청 이벤트 발행
+  eventPublisher.publishPaymentRequestEvent(event); // 반환 값 void
 
-		// 응답을 어떻게? 스레드 대기??
-	
-	}
+  // 응답을 어떻게? 스레드 대기??
+
+}
 ```
 
 대안으로 떠오른 방법 중 하나는 각 단계에 요청이 올 때마다 조회하고 저장하는 것이었다. 새로운 이벤트 요청이 올 때마다 DB를 조회해서 완료된 단계의 다음 단계를 진행하는 것이었는데. 결국 다음 단계에 맞는 메서드를 핸들링해줘야 하는데.. 
