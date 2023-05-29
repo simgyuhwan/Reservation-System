@@ -4,7 +4,7 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class ReservationCancelledEvent {
+public class ReservationCancelEvent {
 	private String eventId;
 	private Long reservationId;
 

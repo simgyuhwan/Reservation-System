@@ -10,41 +10,41 @@ import com.sim.event.orchestration.event.NotificationCompleteEvent;
 import com.sim.event.orchestration.event.PaymentCompleteEvent;
 import com.sim.event.orchestration.event.PaymentFailedEvent;
 import com.sim.event.orchestration.event.ReservationApplyRequest;
-import com.sim.event.orchestration.event.ReservationCancelledEvent;
-import com.sim.event.orchestration.orchestrator.Saga;
+import com.sim.event.orchestration.event.ReservationCancelEvent;
+import com.sim.event.orchestration.orchestrator.ReservationRequestSaga;
 
 import lombok.RequiredArgsConstructor;
 
 @Configuration
 @RequiredArgsConstructor
 public class SagaConsumer {
-	private final Saga saga;
+	private final ReservationRequestSaga reservationRequestSaga;
 
 	@Bean
 	public Consumer<DefaultEvent<ReservationApplyRequest>> reservationApplyRequest() {
 		return a -> {
 			ReservationApplyRequest request = (ReservationApplyRequest)a.getPayload();
-			saga.start(request);
+			reservationRequestSaga.start(request);
 		};
 	}
 
 	@Bean
 	public Consumer<PaymentCompleteEvent> paymentComplete() {
-		return saga::handle;
+		return reservationRequestSaga::handle;
 	}
 
 	@Bean
 	public Consumer<PaymentFailedEvent> paymentFailed() {
-		return saga::handle;
+		return reservationRequestSaga::handle;
 	}
 
 	@Bean
 	public Consumer<NotificationCompleteEvent> notificationComplete() {
-		return saga::handle;
+		return reservationRequestSaga::handle;
 	}
 
 	@Bean
-	public Consumer<ReservationCancelledEvent> reservationCancelled() {
-		return saga::handle;
+	public Consumer<ReservationCancelEvent> reservationCancelled() {
+		return reservationRequestSaga::handle;
 	}
 }

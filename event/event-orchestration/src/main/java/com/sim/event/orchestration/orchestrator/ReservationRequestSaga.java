@@ -9,7 +9,7 @@ import com.sim.event.orchestration.event.PaymentFailedEvent;
 import com.sim.event.orchestration.event.PaymentRequestEvent;
 import com.sim.event.orchestration.event.ReservationApplyRequest;
 import com.sim.event.orchestration.event.ReservationApplyRollbackEvent;
-import com.sim.event.orchestration.event.ReservationCancelledEvent;
+import com.sim.event.orchestration.event.ReservationCancelEvent;
 import com.sim.event.orchestration.publish.ExternalEventPublisher;
 import com.sim.event.store.domain.SagaState;
 import com.sim.event.store.service.SagaStateService;
@@ -20,7 +20,7 @@ import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-public class ReservationSaga implements Saga {
+public class ReservationRequestSaga implements Saga {
 	private final SagaStateService sagaStateService;
 	private final ExternalEventPublisher eventPublisher;
 	private EventBus eventBus;
@@ -45,7 +45,7 @@ public class ReservationSaga implements Saga {
 		eventBus.register(ReservationApplyRequest.class, this::handleReservationApplyRequest);
 		eventBus.register(PaymentCompleteEvent.class, this::handlePaymentCompleteEvent);
 		eventBus.register(PaymentFailedEvent.class, this::handlePaymentFailedEvent);
-		eventBus.register(ReservationCancelledEvent.class, this::handleReservationCancelledEvent);
+		eventBus.register(ReservationCancelEvent.class, this::handleReservationCancelEvent);
 		eventBus.register(NotificationCompleteEvent.class, this::handleNotificationCompleteEvent);
 	}
 
@@ -86,13 +86,12 @@ public class ReservationSaga implements Saga {
 		publishReservationApplyRollbackEvent(event);
 	}
 
-
 	private void handleNotificationCompleteEvent(NotificationCompleteEvent event) {
 		saveSageState(SagaState.of(event.getId(), NOTIFICATION_COMPLETE));
 		end(event.getId());
 	}
 
-	private void handleReservationCancelledEvent(ReservationCancelledEvent event) {
+	private void handleReservationCancelEvent(ReservationCancelEvent event) {
 		saveSageState(SagaState.of(event.getId(), RESERVATION_APPLY_CANCELLED));
 		end(event.getId());
 	}
