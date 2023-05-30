@@ -53,8 +53,8 @@ public class PerformanceCreatedEvent {
 public class PerformanceCreatedEventHandler {
 	private final PerformanceProducer performanceProducer;
 
-  // 예약 서비스로 전송
-  @EventListener(PerformanceCreatedEvent.class)
+	// 예약 서비스로 전송
+	@EventListener(PerformanceCreatedEvent.class)
 	public void sendToReservationService(PerformanceCreatedEvent performanceCreatedEvent) {
 		log.info("Publishing a performance creation event to reservation service");
 		performanceProducer.sendPerformance(performanceCreatedEvent);
