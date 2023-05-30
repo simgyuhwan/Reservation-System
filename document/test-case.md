@@ -327,7 +327,7 @@ reservation-service/api/performances/available
 | -------------------- | ---------------- |
 | userId\*             | 회원 ID          |
 | isEmailReceiveDenied | 이메일 수신 거부 |
-| isSnsReceiveDenied   | SNS 수신 거부    |
+| isSmsReceiveDenied   | SMS 수신 거부    |
 | name\*               | 예약자 이름      |
 | phoneNum\*           | 예약자 번호      |
 | email\*              | 예약자 이메일    |
@@ -342,4 +342,22 @@ reservation-service/api/performances/available
 6. 예약 불가능한 공연일 시, 오류 메시지 반환
 7. 공연 예약 성공, 201 반환
 8. 공연에 속하지 않은 공연 신청 시, 오류 메시지 반환
-9. 하나 남은 좌석 예약 신청 후 매진 확
+9. 하나 남은 좌석 예약 신청 후 매진 확인
+
+<br>
+
+## 3. 공연 예약 정보 조회 API(GET /reservation-service/api/reservations/{reservationId}
+| 매개변수 | 설명 |
+| --- | --- |
+| reservationId | 예약 ID |
+
+### 검증
+
+<br>
+
+## 4. 공연 예약 취소 API(DELETE /reservation-service/api/reservations/{reservationId}
+| 매개변수 | 설명 |
+| --- | --- |
+| reservationId | 예약 ID |
+
+### 검증
