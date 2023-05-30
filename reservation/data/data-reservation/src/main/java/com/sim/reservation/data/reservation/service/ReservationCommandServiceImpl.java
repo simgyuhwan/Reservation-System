@@ -18,6 +18,7 @@ import com.sim.reservation.data.reservation.error.ErrorMessage;
 import com.sim.reservation.data.reservation.error.PerformanceInfoNotFoundException;
 import com.sim.reservation.data.reservation.error.PerformanceScheduleNotFoundException;
 import com.sim.reservation.data.reservation.error.InternalException;
+import com.sim.reservation.data.reservation.error.ReservationNotFoundException;
 import com.sim.reservation.data.reservation.error.ReservationNotPossibleException;
 import com.sim.reservation.data.reservation.error.SoldOutException;
 import com.sim.reservation.data.reservation.event.internal.InternalEventPublisher;
@@ -95,6 +96,18 @@ public class ReservationCommandServiceImpl implements ReservationCommandService{
     }
 
     /**
+     * 예약 신청 삭제
+     *
+     * @param reservationId 예약 ID
+     */
+    @Override
+    public void deleteReservation(Long reservationId) {
+        Reservation reservation = findReservationById(reservationId);
+        reservation.deleteReservation();
+    }
+
+
+    /**
      * 공연 예약 가능 여부 확인
      *
      * @param performanceInfo 공연 예약 정보
@@ -148,5 +161,17 @@ public class ReservationCommandServiceImpl implements ReservationCommandService{
      */
     private ReservationApplyEventPayload createReservationApplyEvent(Reservation reservation) {
         return ReservationApplyEventPayload.from(reservation);
+    }
+
+    /**
+     * 예약 도메인 조회
+     *
+     * @param reservationId 예약 ID
+     *
+     * @return 예약 도메인 객체
+     */
+    private Reservation findReservationById(Long reservationId) {
+        return reservationRepository.findById(reservationId)
+            .orElseThrow(() -> new ReservationNotFoundException(ErrorMessage.RESERVATION_NOT_FOUND, reservationId));
     }
 }

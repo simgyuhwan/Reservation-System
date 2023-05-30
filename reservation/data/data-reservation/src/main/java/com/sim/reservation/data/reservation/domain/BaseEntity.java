@@ -10,6 +10,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.MappedSuperclass;
 import lombok.Getter;
+import lombok.Setter;
 
 /**
  * BaseEntity.java
@@ -19,6 +20,7 @@ import lombok.Getter;
  * @since 2023.03.16
  */
 @Getter
+@Setter
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
 public class BaseEntity {

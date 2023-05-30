@@ -35,7 +35,8 @@ public class ReservationCustomRepositoryImpl implements ReservationCustomReposit
 			.from(reservation)
 			.join(reservation.performanceSchedule, performanceSchedule)
 			.join(performanceSchedule.performanceInfo, performanceInfo)
-			.where(reservation.id.eq(reservationId))
+			.where(reservation.id.eq(reservationId)
+				.and(reservation.isDelete.eq(false)))
 			.fetchOne();
 		return Optional.ofNullable(reservationInfo);
 	}

@@ -57,6 +57,8 @@ public class ReservationServiceImpl implements ReservationService{
     @Override
     public ReservationCancelResponse cancelReservation(Long reservationId) {
         ReservationInfo reservationInfo = reservationQueryService.findReservationInfoById(reservationId);
-        return null;
+        reservationInfo.validateCancellationDate();
+        reservationCommandService.deleteReservation(reservationId);
+        return ReservationCancelResponse.ofSuccess();
     }
 }

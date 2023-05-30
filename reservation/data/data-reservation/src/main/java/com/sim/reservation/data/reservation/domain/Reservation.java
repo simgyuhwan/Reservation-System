@@ -80,4 +80,8 @@ public class Reservation extends BaseEntity {
 		this.performanceSchedule = performanceSchedule;
 		this.status = status;
 	}
+
+	public void deleteReservation(){
+		setDelete(true);
+	}
 }

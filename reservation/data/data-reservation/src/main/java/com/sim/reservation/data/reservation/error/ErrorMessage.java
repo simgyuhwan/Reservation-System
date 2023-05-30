@@ -19,7 +19,8 @@ public enum ErrorMessage {
 	FAILURE_TO_REGISTER_PERFORMANCE_INFORMATION("예약 서비스, 공연 정보 등록 실패"),
 	NO_MATCHING_PERFORMANCE_TIMES("일치하는 공연 시간이 없습니다. performanceScheduleId : "),
 	FAILURE_TO_UPDATE_PERFORMANCE_INFORMATION("예약 서비스, 공연 정보 수정 실패"),
-	RESERVATION_NOT_FOUND("Reservation 조회 실패, reservation : ")
+	RESERVATION_NOT_FOUND("Reservation 조회 실패, reservation : "),
+	RESERVATION_CANCEL_NOT_POSSIBLE_DATE("예약 취소가 불가능한 날짜입니다. reservationId : ")
 	;
 
 	private final String message;
