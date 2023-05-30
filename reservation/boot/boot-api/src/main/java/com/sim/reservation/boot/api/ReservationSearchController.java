@@ -41,7 +41,7 @@ public class ReservationSearchController {
 	}
 
 	@GetMapping("/reservations/{reservationId}")
-	@Operation(summary = "[예약] 예약 정보 조회", description = "예약된 정보 조회 API" )
+	@Operation(summary = "[예약] 공연 예약 정보 조회", description = "예약된 정보 조회 API" )
 	public ReservationInfoResponse getReservationInfo(@PathVariable Long reservationId) {
 		return reservationSearchService.getReservationInfo(reservationId);
 	}

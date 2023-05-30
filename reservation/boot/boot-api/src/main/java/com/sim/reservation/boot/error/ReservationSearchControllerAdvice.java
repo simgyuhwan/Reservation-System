@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import com.sim.reservation.boot.api.ReservationSearchController;
 import com.sim.reservation.boot.dto.response.ErrorResponse;
+import com.sim.reservation.data.reservation.error.ReservationNotFoundException;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -29,4 +30,10 @@ public class ReservationSearchControllerAdvice {
 		return ResponseEntity.badRequest().body(errorResponse);
 	}
 
+	@ExceptionHandler(ReservationNotFoundException.class)
+	public ResponseEntity<ErrorResponse> reservationNotFoundException(ReservationNotFoundException e) {
+		log.error(e.getMessage());
+		ErrorResponse errorResponse = ErrorResponseFactory.from(ErrorCode.RESERVATION_NOT_FOUND_MESSAGE);
+		return ResponseEntity.badRequest().body(errorResponse);
+	}
 }

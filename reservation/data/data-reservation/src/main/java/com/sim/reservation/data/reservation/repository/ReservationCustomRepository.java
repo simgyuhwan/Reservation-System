@@ -1,5 +1,7 @@
 package com.sim.reservation.data.reservation.repository;
 
+import java.util.Optional;
+
 import com.sim.reservation.data.reservation.dto.ReservationInfo;
 
 /**
@@ -9,5 +11,5 @@ public interface ReservationCustomRepository {
 	/**
 	 * 예약 정보 조회
 	 */
-	ReservationInfo findReservationInfoById(Long reservationId);
+	Optional<ReservationInfo> findReservationInfoById(Long reservationId);
 }

@@ -17,7 +17,9 @@ public enum ErrorCode {
 	NO_PERFORMANCE_INFORMATION_ERROR_MESSAGE("죄송합니다. 해당 공연은 등록되어 있지 않습니다.", 404),
 	RESERVATION_NOT_POSSIBLE_ERROR_MESSAGE("죄송합니다. 해당 공연은 예약이 불가능합니다.", 400),
 	SCHEDULE_NOT_PART_OF_THE_PERFORMANCE_ERROR_MESSAGE("공연 일정을 다시 확인해주세요.", 400),
-	RESERVATION_FAILED_DUE_TO_SERVER_FAILURE("서버 상의 장애로 예약이 실패했습니다.", 500);
+	RESERVATION_FAILED_DUE_TO_SERVER_FAILURE("서버 상의 장애로 예약이 실패했습니다.", 500),
+	RESERVATION_NOT_FOUND_MESSAGE("잘못된 예약 정보입니다.", 400)
+	;
 
 	private final String message;
 	private final int status;

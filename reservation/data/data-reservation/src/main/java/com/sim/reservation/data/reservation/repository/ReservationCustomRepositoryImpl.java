@@ -5,6 +5,8 @@ import static com.sim.reservation.data.reservation.domain.QPerformanceInfo.*;
 import static com.sim.reservation.data.reservation.domain.QPerformanceSchedule.*;
 import static com.sim.reservation.data.reservation.domain.QReservation.*;
 
+import java.util.Optional;
+
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.sim.reservation.data.reservation.dto.ReservationInfo;
@@ -17,8 +19,8 @@ public class ReservationCustomRepositoryImpl implements ReservationCustomReposit
 	private final JPAQueryFactory queryFactory;
 
 	@Override
-	public ReservationInfo findReservationInfoById(Long reservationId) {
-		return queryFactory
+	public Optional<ReservationInfo> findReservationInfoById(Long reservationId) {
+		ReservationInfo reservationInfo = queryFactory
 			.select(Projections.constructor(ReservationInfo.class,
 				reservation.id,
 				reservation.name,
@@ -35,5 +37,6 @@ public class ReservationCustomRepositoryImpl implements ReservationCustomReposit
 			.join(performanceSchedule.performanceInfo, performanceInfo)
 			.where(reservation.id.eq(reservationId))
 			.fetchOne();
+		return Optional.ofNullable(reservationInfo);
 	}
 }

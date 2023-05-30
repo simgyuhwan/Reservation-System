@@ -14,7 +14,7 @@ public class PerformanceInfoNotFoundException extends RuntimeException {
 	private final Long id;
 
 	public PerformanceInfoNotFoundException(ErrorMessage message, Long id) {
-		super(message.name() + id);
+		super(message.getMessage() + id);
 		this.id= id;
 	}
 }

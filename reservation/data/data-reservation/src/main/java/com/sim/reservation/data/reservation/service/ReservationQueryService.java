@@ -9,6 +9,9 @@ public interface ReservationQueryService {
 
 	/**
 	 * 예약 정보 조회
+	 *
+	 * @param reservationId 예약 ID
+	 * @return 예약 정보
 	 */
 	ReservationInfo findReservationInfoById(Long reservationId);
 }
