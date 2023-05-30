@@ -352,6 +352,9 @@ reservation-service/api/performances/available
 | reservationId | 예약 ID |
 
 ### 검증
+1. 존재하지 않는 예약 ID일 시, 오류 메시지 반환
+2. 취소된 예약 정보일 시, 취소 완료 메시지 반환
+3. 공연 정보, 200 반환
 
 <br>
 
@@ -361,3 +364,7 @@ reservation-service/api/performances/available
 | reservationId | 예약 ID |
 
 ### 검증
+1. 존재하지 않는 예약 ID일 시, 오류 메시지 반환
+2. 이미 지난 날짜의 공연일 경우, 예약 취소 불가 메시지 반환
+3. 공연 당일일 경우, 예약 취소 불가 메시지 반환
+4. 취소 신청 완료 시, 성공 메시지 반환
