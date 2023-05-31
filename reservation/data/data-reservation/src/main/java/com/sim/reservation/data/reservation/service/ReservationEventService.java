@@ -30,7 +30,9 @@ public interface ReservationEventService {
     EventResult updatePerformanceInfo(DefaultEvent<PerformanceEventPayload> event);
 
     /**
-     * 예약 신청 완료 이벤트 저장
+     * 예약 신청 완료 이벤트 handler
+     *
+     * @param reservationApplyCompleteEvent 예약 신청 완료 이벤트
      */
-    void saveEvent(ReservationApplyCompleteEvent reservationApplyCompleteEvent);
+    void handleReservationApplyCompleteEvent(ReservationApplyCompleteEvent reservationApplyCompleteEvent);
 }

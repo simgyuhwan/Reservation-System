@@ -1,14 +1,14 @@
 package com.sim.reservation.data.reservation.service;
 
-import java.util.Optional;
-
 import org.jetbrains.annotations.Nullable;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.sim.reservation.data.reservation.domain.EventStatus;
+import com.sim.reservation.data.reservation.domain.Reservation;
 import com.sim.reservation.data.reservation.error.ErrorMessage;
+import com.sim.reservation.data.reservation.error.ReservationNotFoundException;
 import com.sim.reservation.data.reservation.event.DefaultEvent;
 import com.sim.reservation.data.reservation.event.EventResult;
 import com.sim.reservation.data.reservation.event.consumer.ReservationApplyCompleteEvent;
@@ -16,6 +16,7 @@ import com.sim.reservation.data.reservation.event.payload.Payload;
 import com.sim.reservation.data.reservation.event.payload.PerformanceEventPayload;
 import com.sim.reservation.data.reservation.repository.EventStatusCustomRepository;
 import com.sim.reservation.data.reservation.repository.EventStatusRepository;
+import com.sim.reservation.data.reservation.repository.ReservationRepository;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -32,6 +33,7 @@ import lombok.extern.slf4j.Slf4j;
 @Transactional
 @RequiredArgsConstructor
 public class ReservationEventServiceImpl implements ReservationEventService{
+	private final ReservationRepository reservationRepository;
 	private final PerformanceInfoSyncService performanceInfoSyncService;
 	private final EventStatusRepository eventStatusRepository;
 	private final EventStatusCustomRepository eventStatusCustomRepository;
@@ -72,6 +74,43 @@ public class ReservationEventServiceImpl implements ReservationEventService{
 		}
 
 		return processUpdatedEvent(eventId, payload);
+	}
+
+	/**
+	 * 예약 신청 완료 이벤트 handler
+	 *
+	 * @param reservationApplyCompleteEvent 예약 신청 완료 이벤트
+	 */
+	@Override
+	public void handleReservationApplyCompleteEvent(ReservationApplyCompleteEvent reservationApplyCompleteEvent) {
+		String eventId = reservationApplyCompleteEvent.getId();
+		changeEventToSuccessStatus(eventId);
+
+		Long reservationId = reservationApplyCompleteEvent.getReservationId();
+		changeReservationToCompletePaymentStatus(reservationId);
+	}
+
+	/**
+	 * 예약 도메인 결제 완료 상태로 변환
+	 *
+	 * @param reservationId 예약 ID
+	 */
+	private void changeReservationToCompletePaymentStatus(Long reservationId) {
+		Reservation reservation = reservationRepository.findById(reservationId)
+			.orElseThrow(() -> new ReservationNotFoundException(ErrorMessage.RESERVATION_NOT_FOUND, reservationId));
+		reservation.completePayment();
+	}
+
+	/**
+	 * 이벤트 성공 상태로 변경
+	 *
+	 * @param eventId 이벤트 ID
+	 */
+	private void changeEventToSuccessStatus(String eventId) {
+		EventStatus eventStatus = findEventStatusById(eventId);
+
+		assert eventStatus != null;
+		eventStatus.changeSuccess();
 	}
 
 	/**
@@ -170,12 +209,4 @@ public class ReservationEventServiceImpl implements ReservationEventService{
 		return EventResult.success(eventId);
 	}
 
-	/**
-	 * 예약 신청 이벤트 저장
-	 */
-	@Override
-	public void saveEvent(ReservationApplyCompleteEvent reservationApplyCompleteEvent) {
-		EventStatus eventStatus = findEventStatusById(reservationApplyCompleteEvent.getId());
-		eventStatus.changeSuccess();
-	}
 }

@@ -85,4 +85,8 @@ public class Reservation extends BaseEntity {
 	public void deleteReservation(){
 		setDelete(true);
 	}
+
+	public void completePayment() {
+		this.status = ReservationStatusType.PAYMENT_COMPLETED;
+	}
 }

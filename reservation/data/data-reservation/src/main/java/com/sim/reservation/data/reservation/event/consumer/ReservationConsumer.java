@@ -48,7 +48,7 @@ public class ReservationConsumer {
 	 */
 	@Bean
 	public Consumer<ReservationApplyCompleteEvent> reservationApplyComplete() {
-		return reservationEventService::saveEvent;
+		return reservationEventService::handleReservationApplyCompleteEvent;
 	}
 
 }

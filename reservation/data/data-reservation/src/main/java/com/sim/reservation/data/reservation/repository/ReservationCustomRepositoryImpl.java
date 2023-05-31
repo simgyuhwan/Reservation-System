@@ -37,7 +37,7 @@ public class ReservationCustomRepositoryImpl implements ReservationCustomReposit
 			.join(reservation.performanceSchedule, performanceSchedule)
 			.join(performanceSchedule.performanceInfo, performanceInfo)
 			.where(reservation.id.eq(reservationId)
-				.and(reservation.status.eq(ReservationStatusType.PAYMENT_COMPLETED)))
+				.and(reservation.status.ne(ReservationStatusType.CANCELLATION_COMPLETED)))
 			.fetchOne();
 		return Optional.ofNullable(reservationInfo);
 	}
