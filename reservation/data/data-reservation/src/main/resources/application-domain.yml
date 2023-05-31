@@ -65,6 +65,9 @@ spring:
           destination: reservation-apply.complete
           group: reservation-apply
 
+        reservationCancelRequest-out-0:
+          destination: reservation-cancel-request
+
 #loging
 logging:
   level:

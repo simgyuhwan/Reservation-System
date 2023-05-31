@@ -23,6 +23,7 @@ import com.sim.reservation.data.reservation.error.ReservationNotPossibleExceptio
 import com.sim.reservation.data.reservation.error.SoldOutException;
 import com.sim.reservation.data.reservation.event.internal.InternalEventPublisher;
 import com.sim.reservation.data.reservation.event.payload.ReservationApplyEventPayload;
+import com.sim.reservation.data.reservation.event.payload.ReservationCancelEventPayload;
 import com.sim.reservation.data.reservation.repository.PerformanceInfoRepository;
 import com.sim.reservation.data.reservation.repository.PerformanceScheduleRepository;
 import com.sim.reservation.data.reservation.repository.ReservationRepository;
@@ -104,6 +105,7 @@ public class ReservationCommandServiceImpl implements ReservationCommandService{
     public void deleteReservation(Long reservationId) {
         Reservation reservation = findReservationById(reservationId);
         reservation.deleteReservation();
+        internalEventPublisher.publishReservationCancelEvent(ReservationCancelEventPayload.from(reservation));
     }
 
 

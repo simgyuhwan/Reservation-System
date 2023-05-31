@@ -4,6 +4,7 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Component;
 
 import com.sim.reservation.data.reservation.event.payload.ReservationApplyEventPayload;
+import com.sim.reservation.data.reservation.event.payload.ReservationCancelEventPayload;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,5 +25,10 @@ public class InternalEventPublisher{
 	public void publishReservationApplyEvent(ReservationApplyEventPayload reservationApplyEventPayload) {
 		log.info("Publish reservation apply event, event id : {}", reservationApplyEventPayload.getId());
 		eventPublisher.publishEvent(reservationApplyEventPayload);
+	}
+
+	public void publishReservationCancelEvent(ReservationCancelEventPayload reservationCancelEventPayload) {
+		log.info("Publish reservation cancel event, event id : {}", reservationCancelEventPayload.getId());
+		eventPublisher.publishEvent(reservationCancelEventPayload);
 	}
 }
