@@ -19,9 +19,12 @@ import com.sim.event.store.type.SagaStep;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 
+/**
+ * 예약 신청 오케스트레이터
+ */
 @Service
 @RequiredArgsConstructor
-public class ReservationRequestSaga implements Saga {
+public class ReservationApplySaga implements Saga {
 	private final SagaStateService sagaStateService;
 	private final ExternalEventPublisher eventPublisher;
 	private EventBus eventBus;
@@ -51,9 +54,11 @@ public class ReservationRequestSaga implements Saga {
 	}
 
 	@Override
-	public void start(ReservationApplyRequest request) {
-		saveSageState(SagaState.of(request.getId(), START));
-		eventBus.publish(request);
+	public void start(Object request) {
+		ReservationApplyRequest reservationApplyRequest = (ReservationApplyRequest)request;
+
+		saveSageState(SagaState.of(reservationApplyRequest.getId(), START));
+		eventBus.publish(reservationApplyRequest);
 	}
 
 	@Override

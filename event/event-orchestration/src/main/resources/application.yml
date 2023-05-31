@@ -13,7 +13,7 @@ spring:
         binder:
           brokers: localhost:9092
       function:
-        definition: paymentComplete;paymentFailed;notificationComplete;reservationCancelled;reservationApplyRequest
+        definition: paymentComplete;paymentFailed;notificationComplete;reservationCancelled;reservationApplyRequest;reservationCancelRequest;
       bindings:
         paymentRequest-out-0:
           destination: payment.request
@@ -42,7 +42,12 @@ spring:
 
         reservationApplyRequest-in-0:
           destination: reservation-service.reservation-apply
-          group: reservation-apply
+          group: reservation-apply-event-consumer
 
         reservationApplyComplete-out-0:
           destination: reservation-apply.complete
+
+        reservationCancelRequest-in-0:
+          destination: reservation-cancel-request
+          group: reservation-cancel-event-consumer
+
