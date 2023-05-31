@@ -83,7 +83,7 @@ public class Reservation extends BaseEntity {
 	}
 
 	public void deleteReservation(){
-		setDelete(true);
+		this.status = ReservationStatusType.CANCELLATION_REQUESTED;
 	}
 
 	public void completePayment() {

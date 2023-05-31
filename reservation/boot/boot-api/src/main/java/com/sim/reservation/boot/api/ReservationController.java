@@ -31,6 +31,14 @@ import lombok.RequiredArgsConstructor;
 public class ReservationController {
 	private final ReservationService reservationService;
 
+	/**
+	 * 공연 예약 신청
+	 *
+	 * @param performanceId 공연 ID
+	 * @param scheduleId 공연 시간 ID
+	 * @param reservationApplyRequest 공연 예약 신청 정보
+	 * @return
+	 */
 	@PostMapping("/performances/{performanceId}/schedules/{scheduleId}/reservations")
 	@Operation(summary = "[예약] 공연 예약 신청", description = "공연 예약 신청 API")
 	public ResponseEntity<ReservationResultResponse> reservation(@PathVariable Long performanceId,
@@ -40,6 +48,12 @@ public class ReservationController {
 			reservationService.applyReservation(performanceId, scheduleId, reservationApplyRequest));
 	}
 
+	/**
+	 * 공연 예약 취소 신청
+	 *
+	 * @param reservationId 예약 ID
+	 * @return 예약 취소 신청 응답 메시지
+	 */
 	@DeleteMapping("/reservations/{reservationId}")
 	public ReservationCancelResponse reservationCancel(@PathVariable Long reservationId) {
 		return reservationService.cancelReservation(reservationId);

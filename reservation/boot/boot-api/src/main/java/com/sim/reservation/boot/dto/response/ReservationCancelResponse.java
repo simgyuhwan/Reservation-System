@@ -17,6 +17,6 @@ public class ReservationCancelResponse {
 	}
 
 	public static ReservationCancelResponse ofSuccess() {
-		return new ReservationCancelResponse("예약 취소가 완료되었습니다.");
+		return new ReservationCancelResponse("예약 취소 신청이 완료되었습니다.");
 	}
 }
