@@ -1,6 +1,7 @@
 package com.sim.reservation.data.reservation.domain;
 
 import com.sim.reservation.data.reservation.dto.ReservationDto;
+import com.sim.reservation.data.reservation.type.ReservationStatusType;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -47,7 +48,7 @@ public class Reservation extends BaseEntity {
 	private PerformanceSchedule performanceSchedule;
 
 	@Enumerated(EnumType.STRING)
-	private ReservationStatus status;
+	private ReservationStatusType status;
 
 	public String getStatusToString() {
 		return status.getStatus();
@@ -62,14 +63,14 @@ public class Reservation extends BaseEntity {
 			.isEmailReceiveDenied(reservationDto.isEmailReceiveDenied())
 			.isSmsReceiveDenied(reservationDto.isSmsReceiveDenied())
 			.performanceSchedule(schedule)
-			.status(ReservationStatus.RESERVED)
+			.status(ReservationStatusType.PAYMENT_PENDING)
 			.build();
 	}
 
 	@Builder
 	private Reservation(Long id, String userId, String name, String phoneNum, String email, boolean isEmailReceiveDenied,
 		boolean isSmsReceiveDenied, PerformanceSchedule performanceSchedule,
-		ReservationStatus status) {
+		ReservationStatusType status) {
 		this.id = id;
 		this.userId = userId;
 		this.name = name;

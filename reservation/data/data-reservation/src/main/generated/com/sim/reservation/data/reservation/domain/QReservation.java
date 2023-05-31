@@ -44,7 +44,7 @@ public class QReservation extends EntityPathBase<Reservation> {
 
     public final StringPath phoneNum = createString("phoneNum");
 
-    public final EnumPath<ReservationStatus> status = createEnum("status", ReservationStatus.class);
+    public final EnumPath<com.sim.reservation.data.reservation.type.ReservationStatusType> status = createEnum("status", com.sim.reservation.data.reservation.type.ReservationStatusType.class);
 
     //inherited
     public final DateTimePath<java.time.LocalDateTime> updateDt = _super.updateDt;

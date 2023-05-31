@@ -10,6 +10,7 @@ import java.util.Optional;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.sim.reservation.data.reservation.dto.ReservationInfo;
+import com.sim.reservation.data.reservation.type.ReservationStatusType;
 
 import lombok.RequiredArgsConstructor;
 
@@ -36,7 +37,7 @@ public class ReservationCustomRepositoryImpl implements ReservationCustomReposit
 			.join(reservation.performanceSchedule, performanceSchedule)
 			.join(performanceSchedule.performanceInfo, performanceInfo)
 			.where(reservation.id.eq(reservationId)
-				.and(reservation.isDelete.eq(false)))
+				.and(reservation.status.eq(ReservationStatusType.PAYMENT_COMPLETED)))
 			.fetchOne();
 		return Optional.ofNullable(reservationInfo);
 	}
