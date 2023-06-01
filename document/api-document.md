@@ -59,11 +59,11 @@ API의 간단한 목록과 각 상세 정보들이 기록된 문서이다.
 ### **API**
 
 - GET /reservation-service/api/performances/available : 공연 예약 현황 조회
-- GET /reservations: 예약 가능한 공연 조회 요청
-- POST /reservations: 공연 예약 요청
-- GET /reservations/{reservationId}: 예약 정보 조회 요청
-- PUT /reservations/{reservationId}: 예약 정보 수정 요청
-- DELETE /reservations/{reservationId}: 예약 취소 요청
+- GET /reservation-sersvice/api/reservations: 예약 가능한 공연 조회 요청
+- POST /reservation-service/api/reservations: 공연 예약 요청
+- GET reservation-service/api/reservations/{reservationId}: 예약 정보 조회 요청
+- PUT reservation-service/api/reservations/{reservationId}: 예약 정보 수정 요청
+- DELETE reservation-service/api/reservations/{reservationId}: 예약 취소 요청
 
 ---
 
@@ -74,11 +74,8 @@ API의 간단한 목록과 각 상세 정보들이 기록된 문서이다.
     예약, 결제, 취소에 대한 이벤트 발행 기능 제공, 이벤트를 수신하여 내부 데이터를 업데이트하는 기능
 
 ### **API**
-
-- POST /events/reservations: 예약 이벤트 발행 요청
-- POST /events/payments: 결제 이벤트 발행 요청
-- POST /events/cancellations: 취소 이벤트 발행 요청
-- POST /events/{serviceId}: 이벤트 수신 요청
+ 
+ - kafka 통신
 
 ---
 
@@ -102,8 +99,7 @@ API의 간단한 목록과 각 상세 정보들이 기록된 문서이다.
 
 ### **API**
 
-- POST /notifications/reservations: 예약 알림 전송 요청
-- POST /notifications/cancellations: 취소 알림 전송 요청
+- kafka 통신
 
 ---
 
