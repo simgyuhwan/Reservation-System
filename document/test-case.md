@@ -34,6 +34,10 @@
 
 #### [2. 공연 예약 신청 API](#2-공연-예약-신청-api-post-reservation-serviceapiperformancesperformanceidschedulesscheduleidreservations)
 
+#### [3. 공연 예약 정보 조회 API](#3-공연-예약-정보-조회-apiget-reservation-serviceapireservationsreservationid)
+
+#### [4. 공연 예약 취소 API](#4-공연-예약-취소-apidelete-reservation-serviceapireservationsreservationid)
+
 ---
 
 <br>
