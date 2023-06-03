@@ -17,3 +17,6 @@ spring:
         paymentRefundRequest-in-0:
           destination: payment-refund-request
           group: payment-refund-event-consumer
+
+        paymentRefundRequest-out-0:
+          destination: payment-refund-complete
