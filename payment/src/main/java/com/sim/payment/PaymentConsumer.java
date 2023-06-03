@@ -12,4 +12,8 @@ public class PaymentConsumer {
 	public Function<PaymentRequestEvent, PaymentCompleteEvent> paymentRequest() {
 		return PaymentCompleteEvent::from;
 	}
+
+	@Bean Function<PaymentRefundEvent, PaymentRefundCompleteEvent> paymentRefundRequest() {
+		return PaymentRefundCompleteEvent::from;
+	}
 }

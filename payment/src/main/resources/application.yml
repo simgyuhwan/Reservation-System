@@ -5,7 +5,7 @@ spring:
         binder:
           brokers: localhost:9092
       function:
-        definition: paymentRequest;
+        definition: paymentRequest;paymentRefund;
       bindings:
         paymentRequest-in-0:
           destination: payment.request
@@ -13,3 +13,7 @@ spring:
 
         paymentRequest-out-0:
           destination: payment.complete
+
+        paymentRefundRequest-in-0:
+          destination: payment-refund-request
+          group: payment-refund-event-consumer
