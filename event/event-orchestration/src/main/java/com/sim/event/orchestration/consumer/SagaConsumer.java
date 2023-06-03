@@ -9,6 +9,7 @@ import com.sim.event.core.DefaultEvent;
 import com.sim.event.orchestration.event.NotificationCompleteEvent;
 import com.sim.event.orchestration.event.PaymentCompleteEvent;
 import com.sim.event.orchestration.event.PaymentFailedEvent;
+import com.sim.event.orchestration.event.PaymentRefundCompleteEvent;
 import com.sim.event.orchestration.event.ReservationApplyRequest;
 import com.sim.event.orchestration.event.ReservationCancelEvent;
 import com.sim.event.orchestration.event.ReservationCancelRequest;
@@ -57,5 +58,10 @@ public class SagaConsumer {
 			ReservationCancelRequest payload = (ReservationCancelRequest)event.getPayload();
 			reservationCancelSaga.start(payload);
 		};
+	}
+
+	@Bean
+	public Consumer<PaymentRefundCompleteEvent> paymentRefundComplete(){
+		return reservationApplySaga::handle;
 	}
 }

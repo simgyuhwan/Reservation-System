@@ -6,6 +6,7 @@ import com.sim.event.orchestration.event.NotificationCompleteEvent;
 import com.sim.event.orchestration.event.PaymentRefundCompleteEvent;
 import com.sim.event.orchestration.event.PaymentRefundEvent;
 import com.sim.event.orchestration.event.PaymentRefundFailedEvent;
+import com.sim.event.orchestration.event.RefundNotificationEvent;
 import com.sim.event.orchestration.event.ReservationCancelRequest;
 import com.sim.event.orchestration.publish.ExternalEventPublisher;
 import com.sim.event.store.domain.SagaState;
@@ -27,8 +28,8 @@ public class ReservationCancelSaga implements Saga{
 
 	private static final SagaStep START = SagaStep.START;
 	private static final SagaStep PAYMENT_REFUND_REQUEST = SagaStep.PAYMENT_REFUND_REQUEST;
-	private static final SagaStep PAYMENT_COMPLETE = SagaStep.PAYMENT_COMPLETE;
-	private static final SagaStep PAYMENT_FAILED = SagaStep.PAYMENT_FAILED;
+	private static final SagaStep PAYMENT_REFUND_COMPLETE = SagaStep.PAYMENT_REFUND_COMPLETE;
+	private static final SagaStep PAYMENT_REFUND_FAILED = SagaStep.PAYMENT_REFUND_FAILED;
 	private static final SagaStep NOTIFICATION_REQUEST = SagaStep.NOTIFICATION_REQUEST;
 	private static final SagaStep NOTIFICATION_COMPLETE = SagaStep.NOTIFICATION_COMPLETE;
 	private static final SagaStep RESERVATION_CANCEL_ROLLBACK = SagaStep.RESERVATION_CANCEL_ROLLBACK;
@@ -44,8 +45,8 @@ public class ReservationCancelSaga implements Saga{
 	private void registerEvents() {
 		eventBus.register(ReservationCancelRequest.class, this::handleReservationCancelRequest);
 		eventBus.register(PaymentRefundEvent.class, this::handlePaymentRefundEvent);
-		eventBus.register(PaymentRefundCompleteEvent.class, this::handlePaymentCancelCompleteEvent);
-		eventBus.register(PaymentRefundFailedEvent.class, this::handlePaymentCancelFailedEvent);
+		eventBus.register(PaymentRefundCompleteEvent.class, this::handlePaymentRefundCompleteEvent);
+		eventBus.register(PaymentRefundFailedEvent.class, this::handlePaymentRefundFailedEvent);
 		eventBus.register(NotificationCompleteEvent.class, this::handleNotificationCompleteEvent);
 	}
 
@@ -80,11 +81,14 @@ public class ReservationCancelSaga implements Saga{
 		publishPaymentRefundEvent(paymentRefundEvent);
 	}
 
-	private void handlePaymentCancelCompleteEvent(PaymentRefundCompleteEvent paymentRefundCompleteEvent) {
+	private void handlePaymentRefundCompleteEvent(PaymentRefundCompleteEvent paymentRefundCompleteEvent) {
+		saveSageState(SagaState.of(paymentRefundCompleteEvent.getId(), PAYMENT_REFUND_COMPLETE));
 
+		RefundNotificationEvent refundNotificationEvent = RefundNotificationEvent.from(paymentRefundCompleteEvent);
+		publishRefundNotificationEvent(refundNotificationEvent);
 	}
 
-	private void handlePaymentCancelFailedEvent(PaymentRefundFailedEvent paymentRefundFailedEvent) {
+	private void handlePaymentRefundFailedEvent(PaymentRefundFailedEvent paymentRefundFailedEvent) {
 
 	}
 
@@ -94,5 +98,9 @@ public class ReservationCancelSaga implements Saga{
 
 	private void publishPaymentRefundEvent(PaymentRefundEvent paymentRefundEvent) {
 		eventPublisher.publish(paymentRefundEvent);
+	}
+
+	private void publishRefundNotificationEvent(RefundNotificationEvent refundNotificationEvent) {
+		eventPublisher.publish(refundNotificationEvent);
 	}
 }

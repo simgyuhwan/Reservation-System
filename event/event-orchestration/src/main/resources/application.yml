@@ -51,3 +51,8 @@ spring:
           destination: reservation-cancel-request
           group: reservation-cancel-event-consumer
 
+        paymentRefundComplete-in-0:
+          destination: payment-refund-complete
+
+        refundNotificationRequest-out-0:
+          destination: reservation-cancel-notification-request

@@ -4,7 +4,7 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class PaymentRefundCompleteEvent {
+public class RefundNotificationEvent {
 	private String id;
 	private Long reservationId;
 
@@ -14,8 +14,13 @@ public class PaymentRefundCompleteEvent {
 
 	public Long getReservationId() {return reservationId;}
 
-	public PaymentRefundCompleteEvent(String id, Long reservationId) {
+	public RefundNotificationEvent(String id, Long reservationId) {
 		this.id = id;
 		this.reservationId = reservationId;
+	}
+
+	public static RefundNotificationEvent from(PaymentRefundCompleteEvent paymentRefundCompleteEvent){
+		return new RefundNotificationEvent(paymentRefundCompleteEvent.getId(),
+			paymentRefundCompleteEvent.getReservationId());
 	}
 }
