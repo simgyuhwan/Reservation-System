@@ -4,6 +4,7 @@ import org.springframework.cloud.stream.function.StreamBridge;
 import org.springframework.stereotype.Service;
 
 import com.sim.event.orchestration.event.NotificationRequestEvent;
+import com.sim.event.orchestration.event.PaymentRefundEvent;
 import com.sim.event.orchestration.event.PaymentRequestEvent;
 import com.sim.event.orchestration.event.ReservationApplyCompleteEvent;
 import com.sim.event.orchestration.event.ReservationApplyRollbackEvent;
@@ -33,5 +34,10 @@ public class KafkaExternalEventPublisher implements ExternalEventPublisher{
 	@Override
 	public void publish(ReservationApplyCompleteEvent reservationApplyCompleteEvent) {
 		streamBridge.send("reservation-apply.complete", reservationApplyCompleteEvent);
+	}
+
+	@Override
+	public void publish(PaymentRefundEvent paymentRefundEvent) {
+		streamBridge.send("payment-refund-request", paymentRefundEvent);
 	}
 }

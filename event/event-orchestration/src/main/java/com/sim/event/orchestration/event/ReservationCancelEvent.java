@@ -7,11 +7,11 @@ import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ReservationCancelEvent implements Payload {
-	private String eventId;
+	private String id;
 	private Long reservationId;
 
 	public String getId() {
-		return this.eventId;
+		return this.id;
 	}
 
 	public Long getReservationId() {
