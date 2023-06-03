@@ -51,11 +51,11 @@ public class SagaConsumer {
 		return reservationApplySaga::handle;
 	}
 
-	@Bean
-	public Consumer<DefaultEvent<ReservationCancelEvent>> reservationCancelRequest() {
-		return event -> {
-			ReservationCancelRequest payload = (ReservationCancelRequest)event.getPayload();
-			reservationCancelSaga.start(payload);
-		};
-	}
+	// @Bean
+	// public Consumer<DefaultEvent<ReservationCancelEvent>> reservationCancelRequest() {
+	// 	return event -> {
+	// 		ReservationCancelRequest payload = (ReservationCancelRequest)event.getPayload();
+	// 		reservationCancelSaga.start(payload);
+	// 	};
+	// }
 }
