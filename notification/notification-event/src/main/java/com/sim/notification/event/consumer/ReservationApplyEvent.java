@@ -1,6 +1,9 @@
 package com.sim.notification.event.consumer;
 
-public class NotificationRequestEvent {
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
+
+public class ReservationApplyEvent {
 	private String id;
 	private Long reservationId;
 
@@ -12,10 +15,10 @@ public class NotificationRequestEvent {
 		return reservationId;
 	}
 
-	public NotificationRequestEvent() {
+	public ReservationApplyEvent() {
 	}
 
-	private NotificationRequestEvent(String id, Long reservationId) {
+	private ReservationApplyEvent(String id, Long reservationId) {
 		this.id = id;
 		this.reservationId = reservationId;
 	}

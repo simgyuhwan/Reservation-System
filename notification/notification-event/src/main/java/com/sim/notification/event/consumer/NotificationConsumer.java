@@ -15,7 +15,15 @@ public class NotificationConsumer {
 	private final NotificationService notificationService;
 
 	@Bean
-	public Function<NotificationRequestEvent, NotificationCompleteEvent> notificationRequest() {
+	public Function<ReservationApplyEvent, NotificationCompleteEvent> notificationRequest() {
+		return event -> {
+			notificationService.sendMessage(event);
+			return NotificationCompleteEvent.from(event);
+		};
+	}
+
+	@Bean
+	public Function<ReservationCancelEvent, NotificationCompleteEvent> reservationCancelNotification() {
 		return event -> {
 			notificationService.sendMessage(event);
 			return NotificationCompleteEvent.from(event);

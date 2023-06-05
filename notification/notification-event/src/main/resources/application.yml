@@ -15,13 +15,19 @@ spring:
         binder:
           brokers: localhost:9092
       function:
-        definition: notificationRequest;
+        definition: notificationRequest;sendReservationCancellationNotice;
       bindings:
         notificationRequest-in-0:
           destination: notification.request
 
         notificationRequest-out-0:
           destination: notification.complete
+
+        reservationCancelNotification-in-0:
+          destination: reservation-cancel-notification-request
+
+        reservationCancelNotification-out-0:
+          destination: reservation-cancel-notification-complete
 
 # eureka
 eureka:

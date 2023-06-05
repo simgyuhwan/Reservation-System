@@ -21,7 +21,11 @@ public class NotificationCompleteEvent {
 		this.reservationId = reservationId;
 	}
 
-	public static NotificationCompleteEvent from(NotificationRequestEvent notificationRequestEvent) {
-		return new NotificationCompleteEvent(notificationRequestEvent.getId(), notificationRequestEvent.getReservationId());
+	public static NotificationCompleteEvent from(ReservationApplyEvent reservationApplyEvent) {
+		return new NotificationCompleteEvent(reservationApplyEvent.getId(), reservationApplyEvent.getReservationId());
+	}
+
+	public static NotificationCompleteEvent from(ReservationCancelEvent reservationCancelEvent) {
+		return new NotificationCompleteEvent(reservationCancelEvent.getId(), reservationCancelEvent.getReservationId());
 	}
 }
