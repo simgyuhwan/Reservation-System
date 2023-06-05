@@ -1,9 +1,9 @@
 version: '3.8'
 services:
-  mysql_1:
+  performance_db:
     image: mysql:8.0
     restart: always
-    container_name: mysql_1
+    container_name: performance_db
     ports:
       - "36666:3306"
     environment:
@@ -16,10 +16,10 @@ services:
     networks:
       - reservation-networks
 
-  mysql_2:
+  reservation_db:
     image: mysql:8.0
     restart: always
-    container_name: mysql_2
+    container_name: reservation_db
     ports:
       - "36667:3306"
     environment:
@@ -32,10 +32,10 @@ services:
     networks:
       - reservation-networks
 
-  mysql_3:
+  payment_db:
     image: mysql:8.0
     restart: always
-    container_name: mysql_3
+    container_name: payment_db
     ports:
       - "36668:3306"
     environment:
@@ -48,10 +48,10 @@ services:
     networks:
       - reservation-networks
 
-  postgresql_1:
+  member_db:
     image: postgres:14.1-alpine
     restart: always
-    container_name: postgreSQL_1
+    container_name: member_db
     ports:
       - "37777:5432"
     environment:
@@ -63,10 +63,10 @@ services:
     networks:
       - reservation-networks
 
-  postgresql_2:
+  event_db:
     image: postgres:14.1-alpine
     restart: always
-    container_name: postgreSQL_2
+    container_name: event_db
     ports:
       - "37778:5432"
     environment:
@@ -78,10 +78,10 @@ services:
     networks:
       - reservation-networks
 
-  postgresql_3:
+  notification_db:
     image: postgres:14.1-alpine
     restart: always
-    container_name: postgreSQL_3
+    container_name: notification_db
     ports:
       - "37779:5432"
     environment:
