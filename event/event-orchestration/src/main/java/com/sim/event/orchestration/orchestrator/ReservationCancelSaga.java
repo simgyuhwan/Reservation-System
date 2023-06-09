@@ -7,6 +7,7 @@ import com.sim.event.orchestration.event.PaymentRefundCompleteEvent;
 import com.sim.event.orchestration.event.PaymentRefundEvent;
 import com.sim.event.orchestration.event.PaymentRefundFailedEvent;
 import com.sim.event.orchestration.event.RefundNotificationEvent;
+import com.sim.event.orchestration.event.ReservationCancelCompleteEvent;
 import com.sim.event.orchestration.event.ReservationCancelRequest;
 import com.sim.event.orchestration.publish.ExternalEventPublisher;
 import com.sim.event.store.domain.SagaState;
@@ -59,12 +60,12 @@ public class ReservationCancelSaga implements Saga{
 
 	@Override
 	public void handle(Object response) {
-
+		eventBus.publish(response);
 	}
 
 	@Override
 	public void end(String id) {
-
+		saveSageState(SagaState.of(id, COMPLETE));
 	}
 
 	private void saveSageState(SagaState sagaState) {
@@ -83,6 +84,7 @@ public class ReservationCancelSaga implements Saga{
 
 	private void handlePaymentRefundCompleteEvent(PaymentRefundCompleteEvent paymentRefundCompleteEvent) {
 		saveSageState(SagaState.of(paymentRefundCompleteEvent.getId(), PAYMENT_REFUND_COMPLETE));
+		saveSageState(SagaState.of(paymentRefundCompleteEvent.getId(), NOTIFICATION_REQUEST));
 
 		RefundNotificationEvent refundNotificationEvent = RefundNotificationEvent.from(paymentRefundCompleteEvent);
 		publishRefundNotificationEvent(refundNotificationEvent);
@@ -93,7 +95,10 @@ public class ReservationCancelSaga implements Saga{
 	}
 
 	private void handleNotificationCompleteEvent(NotificationCompleteEvent notificationCompleteEvent) {
+		saveSageState(SagaState.of(notificationCompleteEvent.getId(), NOTIFICATION_COMPLETE));
+		end(notificationCompleteEvent.getId());
 
+		publishReservationCancelCompleteEvent(ReservationCancelCompleteEvent.from(notificationCompleteEvent));
 	}
 
 	private void publishPaymentRefundEvent(PaymentRefundEvent paymentRefundEvent) {
@@ -102,5 +107,9 @@ public class ReservationCancelSaga implements Saga{
 
 	private void publishRefundNotificationEvent(RefundNotificationEvent refundNotificationEvent) {
 		eventPublisher.publish(refundNotificationEvent);
+	}
+
+	private void publishReservationCancelCompleteEvent(ReservationCancelCompleteEvent reservationCancelCompleteEvent) {
+		eventPublisher.publish(reservationCancelCompleteEvent);
 	}
 }

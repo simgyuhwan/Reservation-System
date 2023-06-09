@@ -15,7 +15,7 @@ spring:
         binder:
           brokers: localhost:9092
       function:
-        definition: notificationRequest;sendReservationCancellationNotice;
+        definition: notificationRequest;reservationCancelNotification;
       bindings:
         notificationRequest-in-0:
           destination: notification.request

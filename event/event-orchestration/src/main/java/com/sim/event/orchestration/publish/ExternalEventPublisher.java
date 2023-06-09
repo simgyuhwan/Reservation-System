@@ -6,6 +6,7 @@ import com.sim.event.orchestration.event.PaymentRequestEvent;
 import com.sim.event.orchestration.event.RefundNotificationEvent;
 import com.sim.event.orchestration.event.ReservationApplyCompleteEvent;
 import com.sim.event.orchestration.event.ReservationApplyRollbackEvent;
+import com.sim.event.orchestration.event.ReservationCancelCompleteEvent;
 
 /**
  * 외부 이벤트 발행 인터페이스
@@ -41,4 +42,9 @@ public interface ExternalEventPublisher {
 	 * 결제 취소 알림 이벤트 발행
 	 */
 	void publish(RefundNotificationEvent refundNotificationEvent);
+
+	/**
+	 * 결제 취소 완료 이벤트 발행
+	 */
+	void publish(ReservationCancelCompleteEvent reservationCancelCompleteEvent);
 }

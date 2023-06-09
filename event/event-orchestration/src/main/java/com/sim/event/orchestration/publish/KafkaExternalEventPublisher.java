@@ -9,6 +9,7 @@ import com.sim.event.orchestration.event.PaymentRequestEvent;
 import com.sim.event.orchestration.event.RefundNotificationEvent;
 import com.sim.event.orchestration.event.ReservationApplyCompleteEvent;
 import com.sim.event.orchestration.event.ReservationApplyRollbackEvent;
+import com.sim.event.orchestration.event.ReservationCancelCompleteEvent;
 
 import lombok.RequiredArgsConstructor;
 
@@ -45,5 +46,10 @@ public class KafkaExternalEventPublisher implements ExternalEventPublisher{
 	@Override
 	public void publish(RefundNotificationEvent refundNotificationEvent) {
 		streamBridge.send("reservation-cancel-notification-request", refundNotificationEvent);
+	}
+
+	@Override
+	public void publish(ReservationCancelCompleteEvent reservationCancelCompleteEvent) {
+		streamBridge.send("reservation-cancel-complete", reservationCancelCompleteEvent);
 	}
 }

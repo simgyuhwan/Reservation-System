@@ -13,7 +13,11 @@ public class PaymentConsumer {
 		return PaymentCompleteEvent::from;
 	}
 
-	@Bean Function<PaymentRefundEvent, PaymentRefundCompleteEvent> paymentRefundRequest() {
-		return PaymentRefundCompleteEvent::from;
+	@Bean
+	Function<PaymentRefundEvent, PaymentRefundCompleteEvent> paymentRefundRequest() {
+		return e -> {
+			System.out.println(e.getId());
+			return PaymentRefundCompleteEvent.from(e);
+		};
 	}
 }

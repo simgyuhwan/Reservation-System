@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import com.sim.event.core.DefaultEvent;
+import com.sim.event.core.Payload;
 import com.sim.event.orchestration.event.NotificationCompleteEvent;
 import com.sim.event.orchestration.event.PaymentCompleteEvent;
 import com.sim.event.orchestration.event.PaymentFailedEvent;
@@ -53,15 +54,20 @@ public class SagaConsumer {
 	}
 
 	@Bean
-	public Consumer<DefaultEvent<ReservationCancelEvent>> reservationCancelRequest() {
+	public Consumer<DefaultEvent<ReservationCancelRequest>> reservationCancelRequest() {
 		return event -> {
-			ReservationCancelRequest payload = (ReservationCancelRequest)event.getPayload();
+			Payload payload = event.getPayload();
 			reservationCancelSaga.start(payload);
 		};
 	}
 
 	@Bean
 	public Consumer<PaymentRefundCompleteEvent> paymentRefundComplete(){
-		return reservationApplySaga::handle;
+		return reservationCancelSaga::handle;
+	}
+
+	@Bean
+	public Consumer<NotificationCompleteEvent> notificationCancelComplete() {
+		return reservationCancelSaga::handle;
 	}
 }
