@@ -17,6 +17,9 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+/**
+ * 공연 DTO
+ */
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class PerformanceDto {
