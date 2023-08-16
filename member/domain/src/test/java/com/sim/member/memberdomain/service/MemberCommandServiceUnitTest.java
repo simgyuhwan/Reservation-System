@@ -84,7 +84,7 @@ public class MemberCommandServiceUnitTest {
 		MemberUpdateDto memberUpdateDto = createMemberUpdateDto(USER_ID, USERNAME, PHONE_NUM, ADDRESS);
 
 		given(memberRepository.findByUserId(USER_ID))
-				.willReturn(Optional.ofNullable(null));
+				.willReturn(Optional.empty());
 
 		//then
 		assertThatThrownBy(() -> memberService.updateMemberInfo(USER_ID,
