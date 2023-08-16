@@ -5,7 +5,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
 import com.sim.member.memberdomain.domain.Member;
-import com.sim.member.memberdomain.dto.MemberCreateDto;
+import com.sim.member.memberdomain.dto.MemberCreateRequestDto;
 import com.sim.member.memberdomain.dto.MemberDto;
 import com.sim.member.memberdomain.dto.MemberUpdateDto;
 import com.sim.member.memberdomain.error.DuplicateMemberException;
@@ -24,15 +24,14 @@ public class MemberCommandServiceImpl implements MemberCommandService {
 	private final MemberRepository memberRepository;
 
 	@Override
-	public MemberDto signUp(MemberCreateDto memberCreateDto) {
-		Member member = Member.create(memberCreateDto);
+	public MemberDto signUp(MemberCreateRequestDto memberCreateRequestDto) {
+		Member member = Member.create(memberCreateRequestDto);
 		validateMember(member);
 		saveMember(member);
 		return MemberDto.of(member);
 	}
 
 	@Override
-	@Transactional
 	public MemberDto updateMemberInfo(final String userId, MemberUpdateDto updateMemberDto) {
 		validateUserId(userId);
 		Member member = findMemberByUserId(userId);

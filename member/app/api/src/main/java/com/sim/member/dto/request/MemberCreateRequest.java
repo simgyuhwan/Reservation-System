@@ -1,6 +1,6 @@
 package com.sim.member.dto.request;
 
-import com.sim.member.memberdomain.dto.MemberCreateDto;
+import com.sim.member.memberdomain.dto.MemberCreateRequestDto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
@@ -54,8 +54,8 @@ public class MemberCreateRequest {
 		return new MemberCreateRequest(userId, username, password, phoneNum, address);
 	}
 
-	public MemberCreateDto toDto() {
-		return MemberCreateDto.builder()
+	public MemberCreateRequestDto toDto() {
+		return MemberCreateRequestDto.builder()
 			.userId(userId)
 			.username(username)
 			.password(password)

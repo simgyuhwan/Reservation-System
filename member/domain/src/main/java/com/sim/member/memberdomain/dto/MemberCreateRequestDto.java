@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class MemberCreateDto {
+public class MemberCreateRequestDto {
 	private String userId;
 	private String username;
 	private String password;

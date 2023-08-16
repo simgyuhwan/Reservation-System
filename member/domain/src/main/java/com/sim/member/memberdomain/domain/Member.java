@@ -1,8 +1,6 @@
 package com.sim.member.memberdomain.domain;
 
-import org.springframework.util.Assert;
-
-import com.sim.member.memberdomain.dto.MemberCreateDto;
+import com.sim.member.memberdomain.dto.MemberCreateRequestDto;
 import com.sim.member.memberdomain.dto.MemberUpdateDto;
 
 import jakarta.persistence.Column;
@@ -11,11 +9,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 /**
  * Member.java
@@ -28,6 +22,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @Table(name = "member")
 @Entity
+@EqualsAndHashCode
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 public class Member extends BaseEntity {
@@ -68,7 +63,7 @@ public class Member extends BaseEntity {
 			.build();
 	}
 
-	public static Member create(MemberCreateDto createDto) {
+	public static Member create(MemberCreateRequestDto createDto) {
 		return Member.builder()
 			.userId(createDto.getUserId())
 			.username(createDto.getUsername())
