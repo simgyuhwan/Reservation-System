@@ -4,16 +4,15 @@ import static org.assertj.core.api.Assertions.*;
 
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.sim.member.memberdomain.domain.Member;
-import com.sim.member.memberdomain.factory.MemberFactory;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
@@ -25,14 +24,13 @@ import jakarta.persistence.PersistenceContext;
  * @author sgh
  * @since 2023.03.16
  */
-@Transactional
 @DataJpaTest
 public class MemberRepositoryTest {
-	public final static String USER_ID = MemberFactory.USER_ID;
-	public final static String PHONE_NUM = MemberFactory.PHONE_NUM;
-	public final static String USERNAME = MemberFactory.USERNAME;
-	public final static String ADDRESS = MemberFactory.ADDRESS;
-	public final static String PASSWORD = MemberFactory.PASSWORD;
+	public final static String USER_ID = "test";
+	public final static String PHONE_NUM = "010-1111-9999";
+	public final static String USERNAME = "이순신";
+	public final static String ADDRESS = "서울시 마포구 창천동";
+	public final static String PASSWORD = "password";
 
 	@Autowired
 	private MemberRepository memberRepository;
@@ -44,13 +42,14 @@ public class MemberRepositoryTest {
 	@DisplayName("회원 등록 테스트")
 	void memberRegistration() {
 		// given
-		Member member = createMember();
+		Member member = createMember(USER_ID, USERNAME, PASSWORD, PHONE_NUM, ADDRESS);
 
 		// when
 		final Member saveMember = memberRepository.save(member);
 
 		// then
 		assertThat(saveMember.getId()).isNotNull();
+		assertThat(saveMember.getUserId()).isEqualTo(USER_ID);
 		assertThat(saveMember.getUsername()).isEqualTo(USERNAME);
 		assertThat(saveMember.getPassword()).isEqualTo(PASSWORD);
 		assertThat(saveMember.getPhoneNum()).isEqualTo(PHONE_NUM);
@@ -61,42 +60,43 @@ public class MemberRepositoryTest {
 	@DisplayName("회원 수정 테스트")
 	void editMember() {
 		//given
-		Member member = createMember();
+		String userNameToChange = "changed_user";
+		Member member = createMember(USER_ID, USERNAME, PASSWORD, PHONE_NUM, ADDRESS);
 		memberRepository.save(member);
 
 		//when
-		String newUsername = "second_user";
-		member.changeName(newUsername);
-		memberRepository.save(member);
+		member.changeName(userNameToChange);
+		Member result = memberRepository.findById(member.getId()).orElseThrow();
 
 		//then
-		Member result = memberRepository.findById(member.getId()).orElseThrow();
-		assertThat(result.getUsername()).isEqualTo(newUsername);
+		assertThat(result.getUsername()).isEqualTo(userNameToChange);
 	}
 
 	@Test
 	@DisplayName("회원 삭제 테스트")
 	void deleteMember() {
 		//given
-		Member member = createMember();
+		Member member = createMember(USER_ID, USERNAME, PASSWORD, PHONE_NUM, ADDRESS);
 		memberRepository.save(member);
 
 		//when
 		memberRepository.delete(member);
+		boolean result = memberRepository.existsById(member.getId());
 
 		//then
-		assertThatThrownBy(() -> memberRepository.findById(member.getId()).get())
-			.isInstanceOf(NoSuchElementException.class);
+		assertThat(result).isFalse();
 	}
 
 	@Test
 	@DisplayName("회원 중복 등록시 예외 발생 테스트")
 	void memberDuplicateException() {
 		//given
-		memberRepository.save(createMember());
+		Member member = createMember(USER_ID, USERNAME, PASSWORD, PHONE_NUM, ADDRESS);
+		Member duplicateMember = createMember(USER_ID, USERNAME, PASSWORD, PHONE_NUM, ADDRESS);
+		memberRepository.save(member);
 
 		//when,then
-		assertThatThrownBy(() -> memberRepository.save(createMember()))
+		assertThatThrownBy(() -> memberRepository.save(duplicateMember))
 			.isInstanceOf(DataIntegrityViolationException.class);
 	}
 
@@ -104,7 +104,7 @@ public class MemberRepositoryTest {
 	@DisplayName("회원 이름를 이용한 조회 시, 저장된 회원 정보 일치 테스트")
 	void nameLookup() {
 		//given
-		memberRepository.save(createMember());
+		memberRepository.save(createMember(USER_ID, USERNAME, PASSWORD, PHONE_NUM, ADDRESS));
 
 		//when
 		Member findMember = memberRepository.findByUsername(USERNAME)
@@ -120,7 +120,12 @@ public class MemberRepositoryTest {
 	@Test
 	@DisplayName("존재 하지 않는 이름으로 회원 조회시 예외 발생 테스트")
 	void missingNameLookupException() {
-		assertThatThrownBy(() -> memberRepository.findByUsername(USERNAME).get())
+		// when
+		String unsavedName = "unsaved_Name";
+		Optional<Member> member = memberRepository.findByUserId(unsavedName);
+
+		// given, then
+		assertThatThrownBy(member::get)
 			.isInstanceOf(NoSuchElementException.class);
 	}
 
@@ -128,11 +133,11 @@ public class MemberRepositoryTest {
 	@DisplayName("폰 번호를 이용한 조회 시, 저장된 회원 정보 일치 테스트")
 	void inquiryThroughPhoneNumber() {
 		//given
-		Member member = createMember();
+		Member member = createMember(USER_ID, USERNAME, PASSWORD, PHONE_NUM, ADDRESS);
 		memberRepository.save(member);
 
 		//when
-		Member findMember = memberRepository.findByPhoneNum(PHONE_NUM).get();
+		Member findMember = memberRepository.findByPhoneNum(PHONE_NUM).orElseThrow();
 
 		//then
 		assertThat(findMember.getPhoneNum()).isEqualTo(PHONE_NUM);
@@ -144,7 +149,12 @@ public class MemberRepositoryTest {
 	@Test
 	@DisplayName("존재하지 않는 폰 번호 조회 시, 예외 발생 테스트")
 	void nonExistentPhoneNumberLookupFailureException() {
-		assertThatThrownBy(() -> memberRepository.findByPhoneNum(PHONE_NUM).get())
+		// when
+		String unsavedPhoneNum = "000-0000-0000";
+		Optional<Member> member = memberRepository.findByPhoneNum(unsavedPhoneNum);
+
+		// given, then
+		assertThatThrownBy(member::get)
 			.isInstanceOf(NoSuchElementException.class);
 	}
 
@@ -152,34 +162,34 @@ public class MemberRepositoryTest {
 	@DisplayName("모든 회원 수 조회 시, 저장된 회원 수와 일치 테스트")
 	void checkAllMemberCountsMatch() {
 		//given
-		회원리스트생성_및_저장();
+		createAndSaveMemberList();
 
 		//when
 		List<Member> fetchedMembers = memberRepository.findAll();
 
 		//then
-		assertThat(fetchedMembers.size()).isEqualTo(3);
+		assertThat(fetchedMembers).hasSize(3);
 	}
 
 	@Test
 	@DisplayName("모든 맴버 삭제 시, 맴버 수 0 확인 테스트")
 	void checkZeroViewsWhenDeletingAllMembers() {
 		//given
-		회원리스트생성_및_저장();
+		createAndSaveMemberList();
 
 		//when
 		memberRepository.deleteAll();
 		List<Member> fetchedMembers = memberRepository.findAll();
 
 		//then
-		assertThat(fetchedMembers.isEmpty()).isTrue();
+		assertThat(fetchedMembers).isEmpty();
 	}
 
 	@Test
 	@DisplayName("등록된 회원 확인 테스트")
 	void registeredMemberVerificationTest() {
 		//given
-		Member member = createMember();
+		Member member = createMember(USER_ID, USERNAME, PASSWORD, PHONE_NUM, ADDRESS);
 		memberRepository.save(member);
 
 		//when
@@ -189,15 +199,11 @@ public class MemberRepositoryTest {
 		assertThat(result).isTrue();
 	}
 
-	private Member createMember() {
-		return MemberFactory.createMember();
-	}
-
 	private Member createMember(String userId, String username, String password, String phoneNum, String address) {
 		return Member.of(userId, username, password, phoneNum, address);
 	}
 
-	private void 회원리스트생성_및_저장() {
+	private void createAndSaveMemberList() {
 		Member member1 = createMember(USER_ID + "1", USERNAME, PASSWORD, PHONE_NUM, ADDRESS);
 		Member member2 = createMember(USER_ID + "2", USERNAME, PASSWORD, PHONE_NUM, ADDRESS);
 		Member member3 = createMember(USER_ID + "3", USERNAME, PASSWORD, PHONE_NUM, ADDRESS);
