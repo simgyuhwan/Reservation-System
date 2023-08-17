@@ -39,7 +39,7 @@ public class MemberRepositoryTest {
 	private EntityManager em;
 
 	@Test
-	@DisplayName("회원 등록 테스트")
+	@DisplayName("회원 정보가 등록된다.")
 	void memberRegistration() {
 		// given
 		Member member = createMember(USER_ID, USERNAME, PASSWORD, PHONE_NUM, ADDRESS);
@@ -57,7 +57,7 @@ public class MemberRepositoryTest {
 	}
 
 	@Test
-	@DisplayName("회원 수정 테스트")
+	@DisplayName("회원 정보가 수정된다.")
 	void editMember() {
 		//given
 		String userNameToChange = "changed_user";
@@ -73,7 +73,7 @@ public class MemberRepositoryTest {
 	}
 
 	@Test
-	@DisplayName("회원 삭제 테스트")
+	@DisplayName("회원 정보가 삭제된다.")
 	void deleteMember() {
 		//given
 		Member member = createMember(USER_ID, USERNAME, PASSWORD, PHONE_NUM, ADDRESS);
@@ -88,7 +88,7 @@ public class MemberRepositoryTest {
 	}
 
 	@Test
-	@DisplayName("회원 중복 등록시 예외 발생 테스트")
+	@DisplayName("회원을 중복 등록하면 예외가 발생한다.")
 	void memberDuplicateException() {
 		//given
 		Member member = createMember(USER_ID, USERNAME, PASSWORD, PHONE_NUM, ADDRESS);
@@ -101,7 +101,7 @@ public class MemberRepositoryTest {
 	}
 
 	@Test
-	@DisplayName("회원 이름를 이용한 조회 시, 저장된 회원 정보 일치 테스트")
+	@DisplayName("회원 이름으로 조회가 가능하다.")
 	void nameLookup() {
 		//given
 		memberRepository.save(createMember(USER_ID, USERNAME, PASSWORD, PHONE_NUM, ADDRESS));
@@ -118,7 +118,7 @@ public class MemberRepositoryTest {
 	}
 
 	@Test
-	@DisplayName("존재 하지 않는 이름으로 회원 조회시 예외 발생 테스트")
+	@DisplayName("등록되지 않는 회원 이름으로 조회시 예외가 발생한다.")
 	void missingNameLookupException() {
 		// when
 		String unsavedName = "unsaved_Name";
@@ -130,7 +130,7 @@ public class MemberRepositoryTest {
 	}
 
 	@Test
-	@DisplayName("폰 번호를 이용한 조회 시, 저장된 회원 정보 일치 테스트")
+	@DisplayName("핸드폰 번호로 조회가 가능하다.")
 	void inquiryThroughPhoneNumber() {
 		//given
 		Member member = createMember(USER_ID, USERNAME, PASSWORD, PHONE_NUM, ADDRESS);
@@ -147,7 +147,7 @@ public class MemberRepositoryTest {
 	}
 
 	@Test
-	@DisplayName("존재하지 않는 폰 번호 조회 시, 예외 발생 테스트")
+	@DisplayName("등록되지 않은 핸드폰 번호로 조회시 예외가 발생한다.")
 	void nonExistentPhoneNumberLookupFailureException() {
 		// when
 		String unsavedPhoneNum = "000-0000-0000";
@@ -159,7 +159,7 @@ public class MemberRepositoryTest {
 	}
 
 	@Test
-	@DisplayName("모든 회원 수 조회 시, 저장된 회원 수와 일치 테스트")
+	@DisplayName("회원 전체 조회가 가능하다.")
 	void checkAllMemberCountsMatch() {
 		//given
 		createAndSaveMemberList();
@@ -172,7 +172,7 @@ public class MemberRepositoryTest {
 	}
 
 	@Test
-	@DisplayName("모든 맴버 삭제 시, 맴버 수 0 확인 테스트")
+	@DisplayName("모든 회원 삭제가 가능하다.")
 	void checkZeroViewsWhenDeletingAllMembers() {
 		//given
 		createAndSaveMemberList();
@@ -186,7 +186,7 @@ public class MemberRepositoryTest {
 	}
 
 	@Test
-	@DisplayName("등록된 회원 확인 테스트")
+	@DisplayName("등록된 회원 존재유무 확인이 가능하다.")
 	void registeredMemberVerificationTest() {
 		//given
 		Member member = createMember(USER_ID, USERNAME, PASSWORD, PHONE_NUM, ADDRESS);

@@ -2,7 +2,6 @@ package com.sim.member.memberdomain.service;
 
 import static org.assertj.core.api.Assertions.*;
 import static org.mockito.BDDMockito.*;
-import static org.mockito.Mockito.*;
 
 import java.util.Optional;
 
@@ -12,7 +11,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.sim.member.memberdomain.domain.Member;
@@ -20,12 +18,10 @@ import com.sim.member.memberdomain.dto.MemberDto;
 import com.sim.member.memberdomain.dto.MemberUpdateDto;
 import com.sim.member.memberdomain.error.DuplicateMemberException;
 import com.sim.member.memberdomain.error.InvalidUserIdException;
-import com.sim.member.memberdomain.factory.MemberFactory;
-import com.sim.member.memberdomain.factory.MemberUpdateDtoFactory;
 import com.sim.member.memberdomain.repository.MemberRepository;
 
 /**
- * MemberService.java
+ * MemberCommandServiceUnitTest.java
  * 회원 서비스 테스트 (단위 테스트)
  *
  * @author sgh
@@ -46,7 +42,7 @@ public class MemberCommandServiceUnitTest {
 	private MemberRepository memberRepository;
 
 	@Test
-	@DisplayName("회원 추가 테스트 : 회원 가입 성공 테스트")
+	@DisplayName("회원 가입이 가능하다.")
 	void signUp() {
 		//given
 		MemberCreateRequestDto memberCreateRequest = createMemberCreateDto(USER_ID, USERNAME, PASSWORD, PHONE_NUM, ADDRESS);
@@ -64,7 +60,7 @@ public class MemberCommandServiceUnitTest {
 	}
 
 	@Test
-	@DisplayName("회원 추가 테스트 : 중복된 회원 예외 발생 테스트")
+	@DisplayName("중복된 회원 등록 요청은 불가능하다.")
 	void duplicateMemberRegistrationExceptionOccurs() {
 		//given, when
 		MemberCreateRequestDto memberCreateRequestDto = createMemberCreateDto(USER_ID, USERNAME, PASSWORD, PHONE_NUM, ADDRESS);
@@ -78,7 +74,7 @@ public class MemberCommandServiceUnitTest {
 	}
 
 	@Test
-	@DisplayName("회원 수정 테스트 : 존재하지 않는 회원 예외 발생 테스트")
+	@DisplayName("등록되지 않은 회원의 수정은 불가능하다.")
 	void nonexistentMemberException() {
 		//given
 		MemberUpdateDto memberUpdateDto = createMemberUpdateDto(USER_ID, USERNAME, PHONE_NUM, ADDRESS);
@@ -93,7 +89,7 @@ public class MemberCommandServiceUnitTest {
 	}
 
 	@Test
-	@DisplayName("회원 수정 테스트 : 회원 수정 성공 테스트")
+	@DisplayName("회원 수정이 가능하다.")
 	void memberModificationSuccessTest() {
 		//given
 		String newUserId = "newUserId";
