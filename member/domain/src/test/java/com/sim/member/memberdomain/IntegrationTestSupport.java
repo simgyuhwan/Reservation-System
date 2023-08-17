@@ -8,5 +8,5 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 public abstract class IntegrationTestSupport {
 
     @MockBean
-    private PerformanceClient performanceClient;
+    protected PerformanceClient performanceClient;
 }

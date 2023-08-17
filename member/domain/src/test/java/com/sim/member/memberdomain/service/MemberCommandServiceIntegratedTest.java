@@ -7,7 +7,6 @@ import com.sim.member.memberdomain.dto.MemberDto;
 import com.sim.member.memberdomain.dto.MemberUpdateDto;
 import com.sim.member.memberdomain.error.DuplicateMemberException;
 import com.sim.member.memberdomain.error.InvalidUserIdException;
-import com.sim.member.memberdomain.factory.MemberFactory;
 import com.sim.member.memberdomain.repository.MemberRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
@@ -26,11 +25,11 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
  * @since 2023.03.17
  */
 public class MemberCommandServiceIntegratedTest extends IntegrationTestSupport {
-	public final static String USER_ID = MemberFactory.USER_ID;
-	public final static String USERNAME = MemberFactory.USERNAME;
-	public final static String PHONE_NUM = MemberFactory.PHONE_NUM;
-	public final static String ADDRESS = MemberFactory.ADDRESS;
-	public final static String PASSWORD = MemberFactory.PASSWORD;
+	public final static String USER_ID = "test";
+	public final static String USERNAME = "이순신";
+	public final static String PHONE_NUM = "010-1111-9999";
+	public final static String ADDRESS = "서울시 마포구 창천동";
+	public final static String PASSWORD = "password";
 
     @Autowired
 	private MemberCommandServiceImpl memberService;

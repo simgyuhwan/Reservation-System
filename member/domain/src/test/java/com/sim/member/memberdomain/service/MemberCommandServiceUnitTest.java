@@ -96,9 +96,9 @@ public class MemberCommandServiceUnitTest {
 		String newUserName = "newUserName";
 		MemberUpdateDto memberUpdateDto = createMemberUpdateDto(newUserId, newUserName, "newPhoneNum", "newAddress");
 		Member member = Member.of(USER_ID,"oldUserName", "oldPassword", "oldPhoneNum", "oldAddress");
+		given(memberRepository.findByUserId(USER_ID)).willReturn(Optional.of(member));
 
 		//when
-		when(memberRepository.findByUserId(USER_ID)).thenReturn(Optional.of(member));
 		MemberDto actualMemberDto = memberService.updateMemberInfo(USER_ID, memberUpdateDto);
 
 		//then
