@@ -34,10 +34,6 @@ public class MemberRepositoryTest {
 
 	@Autowired
 	private MemberRepository memberRepository;
-
-	@PersistenceContext
-	private EntityManager em;
-
 	@Test
 	@DisplayName("회원 정보가 등록된다.")
 	void memberRegistration() {
