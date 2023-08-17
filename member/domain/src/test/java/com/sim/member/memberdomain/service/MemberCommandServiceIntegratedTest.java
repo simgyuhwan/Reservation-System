@@ -11,6 +11,7 @@ import com.sim.member.memberdomain.factory.MemberFactory;
 import com.sim.member.memberdomain.repository.MemberRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -42,61 +43,69 @@ public class MemberCommandServiceIntegratedTest extends IntegrationTestSupport {
         memberRepository.deleteAllInBatch();
     }
 
-    @Test
-	@DisplayName("회원 정보를 받아 회원을 생성한다.")
-	void signUp() {
-		//given
-		MemberCreateRequestDto memberCreateRequestDto = createMemberCreateDto(USER_ID, USERNAME, PASSWORD, PHONE_NUM, ADDRESS);
+	@Nested
+	@DisplayName("회원 생성")
+	class whenCreate {
+		@Test
+		@DisplayName("회원 정보를 받아 회원을 생성한다.")
+		void signUp() {
+			//given
+			MemberCreateRequestDto memberCreateRequestDto = createMemberCreateDto(USER_ID, USERNAME, PASSWORD, PHONE_NUM, ADDRESS);
 
-		//when
-        MemberDto memberDto = memberService.signUp(memberCreateRequestDto);
+			//when
+			MemberDto memberDto = memberService.signUp(memberCreateRequestDto);
 
-        //then
-        assertThat(memberDto.getId()).isNotNull();
-		assertThat(memberDto.getUsername()).isEqualTo(USERNAME);
-		assertThat(memberDto.getAddress()).isEqualTo(ADDRESS);
+			//then
+			assertThat(memberDto.getId()).isNotNull();
+			assertThat(memberDto.getUsername()).isEqualTo(USERNAME);
+			assertThat(memberDto.getAddress()).isEqualTo(ADDRESS);
+		}
+
+		@Test
+		@DisplayName("이미 등록된 회원 정보로는 회원 생성시 예외가 발생한다.")
+		void duplicateMemberRegistrationExceptionOccurs() {
+			//given, when
+			Member member = createMember(USER_ID, USERNAME, PASSWORD, PHONE_NUM, ADDRESS);
+			memberRepository.save(member);
+			MemberCreateRequestDto memberCreateRequestDto = createMemberCreateDto(USER_ID, USERNAME, PASSWORD, PHONE_NUM, ADDRESS);
+
+			//then
+			assertThatThrownBy(() -> memberService.signUp(memberCreateRequestDto))
+					.isInstanceOf(DuplicateMemberException.class);
+		}
 	}
 
-	@Test
-	@DisplayName("이미 등록된 회원 정보로는 회원 생성시 예외가 발생한다.")
-	void duplicateMemberRegistrationExceptionOccurs() {
-		//given, when
-		Member member = createMember(USER_ID, USERNAME, PASSWORD, PHONE_NUM, ADDRESS);
-		memberRepository.save(member);
-		MemberCreateRequestDto memberCreateRequestDto = createMemberCreateDto(USER_ID, USERNAME, PASSWORD, PHONE_NUM, ADDRESS);
+	@Nested
+	@DisplayName("회원 수정")
+	class whenUpdate {
+		@Test
+		@DisplayName("등록되지 않은 회원 정보 수정시 예외가 발생한다.")
+		void nonexistentMemberException() {
+			//given
+			MemberUpdateDto memberUpdateDto = createMemberUpdateDto(USER_ID, USERNAME, PHONE_NUM, ADDRESS);
 
-		//then
-		assertThatThrownBy(() -> memberService.signUp(memberCreateRequestDto))
-			.isInstanceOf(DuplicateMemberException.class);
-	}
+			//then
+			assertThatThrownBy(() -> memberService.updateMemberInfo(USER_ID,
+					memberUpdateDto))
+					.isInstanceOf(InvalidUserIdException.class);
+		}
 
-	@Test
-	@DisplayName("등록되지 않은 회원 정보 수정시 예외가 발생한다.")
-	void nonexistentMemberException() {
-		//given
-		MemberUpdateDto memberUpdateDto = createMemberUpdateDto(USER_ID, USERNAME, PHONE_NUM, ADDRESS);
+		@Test
+		@DisplayName("회원 수정 요청을 통해 회원 정보 수정이 가능하다.")
+		void memberModificationSuccessTest() {
+			//given
+			MemberUpdateDto memberUpdateDto = createMemberUpdateDto(USER_ID, USERNAME, PHONE_NUM, ADDRESS);
+			Member member = createMember(USER_ID, USERNAME, PASSWORD, PHONE_NUM, ADDRESS);
+			memberRepository.save(member);
 
-		//then
-		assertThatThrownBy(() -> memberService.updateMemberInfo(USER_ID,
-			memberUpdateDto))
-			.isInstanceOf(InvalidUserIdException.class);
-	}
+			//when
+			MemberDto result = memberService.updateMemberInfo(USER_ID, memberUpdateDto);
 
-	@Test
-	@DisplayName("회원 수정 요청을 통해 회원 정보 수정이 가능하다.")
-	void memberModificationSuccessTest() {
-		//given
-		MemberUpdateDto memberUpdateDto = createMemberUpdateDto(USER_ID, USERNAME, PHONE_NUM, ADDRESS);
-		Member member = createMember(USER_ID, USERNAME, PASSWORD, PHONE_NUM, ADDRESS);
-		memberRepository.save(member);
-
-		//when
-		MemberDto result = memberService.updateMemberInfo(USER_ID, memberUpdateDto);
-
-		//then
-		assertThat(result.getUserId()).isEqualTo(member.getUserId());
-		assertThat(result.getAddress()).isEqualTo(member.getAddress());
-		assertThat(result.getPhoneNum()).isEqualTo(member.getPhoneNum());
+			//then
+			assertThat(result.getUserId()).isEqualTo(member.getUserId());
+			assertThat(result.getAddress()).isEqualTo(member.getAddress());
+			assertThat(result.getPhoneNum()).isEqualTo(member.getPhoneNum());
+		}
 	}
 
 	private MemberCreateRequestDto createMemberCreateDto(String userId, String username, String password, String phoneNum, String address) {
