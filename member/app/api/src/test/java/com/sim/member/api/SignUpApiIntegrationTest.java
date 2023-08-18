@@ -30,10 +30,10 @@ class SignUpApiIntegrationTest extends ControllerTestSupport {
   private final static String PASSWORD = "password";
   private final static String SIGNUP_URL = "/api/signup";
 
-  private Gson gson = new Gson();
+  private final Gson gson = new Gson();
 
-  private int USER_ID_MIN_SIZE = 3;
-  private int USER_ID_MAX_SIZE = 15;
+  private final int USER_ID_MIN_SIZE = 3;
+  private final int USER_ID_MAX_SIZE = 15;
 
   @Test
   @DisplayName("회원가입 성공")
