@@ -8,19 +8,20 @@ import com.sim.reservation.data.reservation.domain.PerformanceInfo;
 import com.sim.reservation.data.reservation.domain.PerformanceSchedule;
 import com.sim.reservation.data.reservation.dto.PerformanceInfoDto;
 import com.sim.reservation.data.reservation.dto.PerformanceInfoSearchDto;
-import com.sim.reservation.data.reservation.dto.PerformanceScheduleDto;
-import com.sim.reservation.data.reservation.factory.PerformanceInfoSearchDtoFactory;
 import com.sim.reservation.data.reservation.type.PerformanceType;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Stream;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
@@ -38,8 +39,6 @@ class PerformanceInfoCustomRepositoryImplTest {
 
   public static final LocalDate START_DATE = LocalDate.of(2023, 01, 01);
   public static final LocalDate END_DATE = LocalDate.of(2023, 01, 01).plusYears(1);
-  private static final Long PERFORMANCE_ID = 1L;
-  private static final Long PERFORMANCE_INFO_ID = 1L;
   private static final String NAME = "바람과 함께 사라지다";
   private static final String INFO = "공연 소개";
   private static final PerformanceType TYPE = PerformanceType.MUSICAL;
@@ -59,15 +58,6 @@ class PerformanceInfoCustomRepositoryImplTest {
   @Autowired
   private PerformanceInfoCustomRepository performanceInfoCustomRepository;
 
-  private PerformanceInfo savePerformanceInfo;
-
-//  @BeforeEach
-//  void beforeEach() {
-//    savePerformanceInfo = performanceInfoRepository.save(
-//        createPerformanceInfo(NAME, PLACE, PerformanceType.OTHER));
-//  }
-
-
   @AfterEach
   void tearDown() {
     performanceScheduleRepository.deleteAllInBatch();
@@ -76,7 +66,7 @@ class PerformanceInfoCustomRepositoryImplTest {
 
   @Nested
   @DisplayName("조회 조건이 비어있을 때")
-  class whenNoCondition {
+  class WhenNoCondition {
 
     @Test
     @DisplayName("공연 정보에 공연 스케줄이 없으면 조회가 되지 않는다.")
@@ -115,7 +105,7 @@ class PerformanceInfoCustomRepositoryImplTest {
 
   @Nested
   @DisplayName("조회 조건이 있을 때")
-  class whenCondition {
+  class WhenCondition {
 
     @Test
     @DisplayName("이름을 조건으로 공연정보를 조회할 수 있다.")
@@ -184,16 +174,69 @@ class PerformanceInfoCustomRepositoryImplTest {
           .contains(PerformanceType.MUSICAL.getName());
     }
 
-    @Test
-    @DisplayName("공연날짜가 조회하려는 날짜 사이에 없으면 조회가 불가능하다.")
-    void ifItIsNotInTheSearchRangeTheSearchFails() {
+    static Stream<Arguments> rangeThatCanBeSearched() {
+      return Stream.of(
+          Arguments.of(LocalDate.of(2022, 1, 1), LocalDate.of(2023, 1, 1)),
+          Arguments.of(LocalDate.of(2024, 1, 1), LocalDate.of(2025, 1, 1)),
+          Arguments.of(LocalDate.of(2023, 1, 1), LocalDate.of(2024, 1, 1)),
+          Arguments.of(LocalDate.of(2022, 12, 31), LocalDate.of(2024, 1, 1)),
+          Arguments.of(LocalDate.of(2023, 1, 1), LocalDate.of(2024, 1, 2)),
+          Arguments.of(LocalDate.of(2023, 1, 1), null),
+          Arguments.of(null, LocalDate.of(2024, 1, 1))
+      );
+    }
+
+    @ParameterizedTest
+    @MethodSource("rangeThatCanBeSearched")
+    @DisplayName("조회하려는 날짜 범위 안에 공연 일정이 포함되어 있으면 조회가 가능하다.")
+    void thePerformanceScheduleIsIncludedInTheSearchRange(LocalDate searchStartDate,
+        LocalDate searchEndDate) {
       //given
       LocalDate performanceStartDate = LocalDate.of(2023, 1, 1);
-      LocalDate performanceEndDate = performanceStartDate.plusYears(1);
+      LocalDate performanceEndDate = LocalDate.of(2024, 1, 1);
       LocalTime performanceStartTime = LocalTime.of(12, 0);
 
-      LocalDate searchStartDate = LocalDate.of(2022, 1, 1);
-      LocalDate searchEndDate = LocalDate.of(2022, 12, 31);
+      PerformanceSchedule performanceSchedule = createPerformanceSchedule(performanceStartDate,
+          performanceEndDate, performanceStartTime);
+      createPerformanceInfo(NAME, TYPE, performanceSchedule);
+
+      PerformanceInfoSearchDto searchDto = PerformanceInfoSearchDto.builder()
+          .startDate(searchStartDate)
+          .endDate(searchEndDate)
+          .build();
+
+      //when
+      List<PerformanceInfoDto> result = performanceInfoCustomRepository.selectPerformanceReservation(
+          searchDto,
+          createDefaultPageable()).getContent();
+
+      //then
+      assertThat(result).hasSize(1)
+          .extracting("name", "type")
+          .containsExactlyInAnyOrder(
+              tuple(NAME, TYPE.getName())
+          );
+    }
+
+
+    static Stream<Arguments> rangeThatCannotBeSearched() {
+      return Stream.of(
+          Arguments.of(LocalDate.of(2022, 1, 1), LocalDate.of(2022, 12, 31)),
+          Arguments.of(LocalDate.of(2024, 1, 2), LocalDate.of(2024, 1, 3)),
+          Arguments.of(LocalDate.of(2024, 1, 2), null),
+          Arguments.of(null, LocalDate.of(2022, 12, 31))
+      );
+    }
+
+    @ParameterizedTest
+    @MethodSource("rangeThatCannotBeSearched")
+    @DisplayName("조회하려는 날짜 범위 안에 공연 일정이 포함되어 있지 않으면 조회가 불가능하다.")
+    void ifItIsNotInTheSearchRangeTheSearchFails(LocalDate searchStartDate,
+        LocalDate searchEndDate) {
+      //given
+      LocalDate performanceStartDate = LocalDate.of(2023, 1, 1);
+      LocalDate performanceEndDate = LocalDate.of(2024, 1, 1);
+      LocalTime performanceStartTime = LocalTime.of(12, 0);
 
       PerformanceSchedule performanceSchedule = createPerformanceSchedule(performanceStartDate,
           performanceEndDate, performanceStartTime);
@@ -213,29 +256,21 @@ class PerformanceInfoCustomRepositoryImplTest {
       assertThat(result).isEmpty();
     }
 
-
-    /**
-     * 수정해야할 곳
-     */
-    @Disabled
     @Test
-    @DisplayName("공연 시작날짜가 조회하려는 조회 날짜 범위 안에 있으면 조회가 가능하다.")
-    void ifTheSearchDateIsBeforeItCanBeSearched() {
+    @DisplayName("공연 시간으로 일치하는 공연 조회가 가능하다.")
+    void viewableByPerformanceTime() {
       //given
       LocalDate performanceStartDate = LocalDate.of(2023, 1, 1);
-      LocalDate performanceEndDate = performanceStartDate.plusYears(1);
+      LocalDate performanceEndDate = LocalDate.of(2024, 1, 1);
       LocalTime performanceStartTime = LocalTime.of(12, 0);
-
-      LocalDate searchStartDate = performanceStartDate.plusDays(1);
-      LocalDate searchEndDate = LocalDate.of(2023, 12, 31);
+      LocalTime searchStartTime = LocalTime.of(12, 0);
 
       PerformanceSchedule performanceSchedule = createPerformanceSchedule(performanceStartDate,
           performanceEndDate, performanceStartTime);
       createPerformanceInfo(NAME, TYPE, performanceSchedule);
 
       PerformanceInfoSearchDto searchDto = PerformanceInfoSearchDto.builder()
-          .startDate(searchStartDate)
-          .endDate(searchEndDate)
+          .startTime(searchStartTime)
           .build();
 
       //when
@@ -249,87 +284,13 @@ class PerformanceInfoCustomRepositoryImplTest {
           .containsExactlyInAnyOrder(
               tuple(NAME, TYPE.getName())
           );
-    }
-
-    @Test
-    @DisplayName("endDate 를 지난 날짜로 지정하여 조회 테스트")
-    void lastDateLookupTest() {
-      //given
-      LocalDate startDate = LocalDate.of(2023, 1, 1);
-      LocalDate endDate = startDate.plusYears(1);
-      LocalTime startTime = LocalTime.of(12, 0);
-
-      LocalDate beforeThePerformanceDate = startDate.minusDays(1);
-
-      PerformanceSchedule performanceSchedule = createPerformanceSchedule(startDate,
-          endDate, startTime);
-      createPerformanceInfo(NAME, TYPE, performanceSchedule);
-
-      PerformanceInfoSearchDto searchDto = PerformanceInfoSearchDto.builder()
-          .startDate(beforeThePerformanceDate)
-          .build();
-
-      //when
-      List<PerformanceInfoDto> result = performanceInfoCustomRepository.selectPerformanceReservation(
-          searchDto,
-          createDefaultPageable()).getContent();
-
-      //then
-      assertThat(result).hasSize(1)
-          .extracting("name", "type")
-          .containsExactlyInAnyOrder(
-              tuple(NAME, TYPE.getName())
-          );
-    }
-
-    @Test
-    @DisplayName("endDate를 등록된 날짜와 일치할 때 조회 테스트")
-    void testLookupWhenEndDateMatches() {
-      //given
-      PerformanceInfoSearchDto searchDto = createPerformanceInfoSearchDtoByEndDate(END_DATE);
-
-      //when
-      List<PerformanceInfoDto> result = performanceInfoCustomRepository.selectPerformanceReservation(
-          searchDto,
-          createDefaultPageable()).getContent();
-
-      //then
-      assertThat(result).hasSize(1);
-      PerformanceScheduleDto schedule = result.get(0).getSchedules().get(0);
-      assertThat(schedule.getEndDate()).isEqualTo(END_DATE);
     }
   }
-
 
   @NotNull
   private PageRequest createDefaultPageable() {
     return PageRequest.of(0, 15);
   }
-
-  private PerformanceInfoSearchDto createNullPerformanceInfoSearchDto() {
-    return PerformanceInfoSearchDto.builder().build();
-  }
-
-  private PerformanceInfoSearchDto createPerformanceInfoSearchDtoByName(String name) {
-    return PerformanceInfoSearchDtoFactory.createPerformanceSearchDtoByName(name);
-  }
-
-  private PerformanceInfoSearchDto createPerformanceInfoSearchDtoByPlace(String place) {
-    return PerformanceInfoSearchDtoFactory.createPerformanceSearchDtoByPlace(place);
-  }
-
-  private PerformanceInfoSearchDto createPerformanceInfoSearchDtoByType(String type) {
-    return PerformanceInfoSearchDtoFactory.createPerformanceSearchDtoByType(type);
-  }
-
-  private PerformanceInfoSearchDto createPerformanceInfoSearchDtoByStartDate(LocalDate startDate) {
-    return PerformanceInfoSearchDtoFactory.createPerformanceSearchDtoByStartDate(startDate);
-  }
-
-  private PerformanceInfoSearchDto createPerformanceInfoSearchDtoByEndDate(LocalDate endDate) {
-    return PerformanceInfoSearchDtoFactory.createPerformanceSearchDtoByEndDate(endDate);
-  }
-
 
   private void createPerformanceInfo(String name, String place, PerformanceType type) {
     PerformanceInfo performanceInfo = PerformanceInfo.builder()

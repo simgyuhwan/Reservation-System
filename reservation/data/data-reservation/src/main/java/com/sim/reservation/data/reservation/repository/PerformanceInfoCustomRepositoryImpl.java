@@ -90,21 +90,16 @@ public class PerformanceInfoCustomRepositoryImpl implements PerformanceInfoCusto
 
   private BooleanExpression includeSearchRange(LocalDate searchStartDate, LocalDate searchEndDate) {
     if (searchEndDate != null && searchStartDate == null) {
-      return performanceSchedule.startDate.goe(searchEndDate)
-          .and(performanceSchedule.endDate.loe(searchEndDate));
+      return performanceSchedule.startDate.loe(searchEndDate);
     }
 
     if (searchEndDate == null && searchStartDate != null) {
-      return performanceSchedule.startDate.goe(searchStartDate)
-          .and(performanceSchedule.endDate.loe(searchStartDate));
+      return performanceSchedule.endDate.goe(searchStartDate);
     }
 
     if (searchEndDate != null && searchStartDate != null) {
-      return (performanceSchedule.startDate.goe(searchEndDate)
-          .and(performanceSchedule.endDate.loe(searchEndDate))).or(
-          performanceSchedule.startDate.goe(searchStartDate)
-              .and(performanceSchedule.endDate.loe(searchStartDate))
-      );
+      return (performanceSchedule.startDate.loe(searchEndDate)).and(
+          performanceSchedule.endDate.goe(searchStartDate));
     }
     return null;
   }
