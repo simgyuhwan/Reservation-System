@@ -1,5 +1,7 @@
 package com.sim.reservation.data.reservation.provider;
 
+import com.sim.reservation.data.reservation.error.ErrorMessage;
+import java.util.concurrent.Callable;
 import org.redisson.api.RLock;
 
 /**
@@ -38,5 +40,8 @@ public interface LockProvider {
    * @param key
    */
   void unlock(String key);
+
+  <T> T tryLockAndExecute(String key, ErrorMessage errorMessage, Callable<T> task)
+      throws InterruptedException;
 
 }

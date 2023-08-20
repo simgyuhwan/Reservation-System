@@ -34,8 +34,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.redisson.api.RLock;
-import org.redisson.api.RedissonClient;
 
 /**
  * ReservationCommandServiceTest.java 예약 Command Service 테스트
@@ -48,8 +46,6 @@ class ReservationCommandServiceTest {
 
   private static final long PERFORMANCE_ID = 1L;
   private static final long SCHEDULE_ID = 1L;
-  private static final int WAIT_TIME = 1;
-  private static final int LEASE_TIME = 2;
 
   @InjectMocks
   private ReservationCommandServiceImpl reservationCommandService;
@@ -67,13 +63,7 @@ class ReservationCommandServiceTest {
   private PerformanceScheduleRepository performanceScheduleRepository;
 
   @Mock
-  private RedissonClient redissonClient;
-
-  @Mock
   private LockProvider lockProvider;
-
-  @Mock
-  private RLock rLock;
 
   @Nested
   @DisplayName("Lock을 얻었을 때")
@@ -242,8 +232,8 @@ class ReservationCommandServiceTest {
   private ReservationDto createReservationDto() {
     return ReservationDto.builder()
         .userId("test")
-        .name("바람과 함께 사라지다")
-        .phoneNum("010-5555-4444")
+        .name("홍길동")
+        .phoneNum("010-1234-4569")
         .email("test@naver.com")
         .isSmsReceiveDenied(true)
         .isEmailReceiveDenied(true)

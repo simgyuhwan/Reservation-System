@@ -1,5 +1,9 @@
 package com.sim.reservation.data.reservation.provider;
 
+import com.sim.reservation.data.reservation.error.ErrorMessage;
+import com.sim.reservation.data.reservation.error.InternalException;
+import com.sim.reservation.data.reservation.error.SeatLockException;
+import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
 import lombok.RequiredArgsConstructor;
 import org.redisson.api.RLock;
@@ -38,5 +42,22 @@ public class RedisLockProvider implements LockProvider {
   public void unlock(String key) {
     RLock lock = getLock(PREFIX + key);
     lock.unlock();
+  }
+
+  @Override
+  public <T> T tryLockAndExecute(String key, ErrorMessage errorMessage, Callable<T> task)
+      throws InterruptedException {
+    RLock lock = getLock(key);
+    try {
+      if (lock.tryLock(WAIT_TIME, LEASE_TIME, TIME_UNIT)) {
+        return task.call();
+      } else {
+        throw new SeatLockException(errorMessage);
+      }
+    } catch (Exception e) {
+      throw new InternalException(e);
+    } finally {
+      lock.unlock();
+    }
   }
 }

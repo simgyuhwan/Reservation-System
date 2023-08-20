@@ -41,7 +41,6 @@ import org.springframework.transaction.annotation.Transactional;
 public class ReservationCommandServiceImpl implements ReservationCommandService {
 
   private final LockProvider lockProvider;
-
   private final PerformanceInfoRepository performanceInfoRepository;
   private final PerformanceScheduleRepository scheduleRepository;
   private final ReservationRepository reservationRepository;
@@ -57,7 +56,7 @@ public class ReservationCommandServiceImpl implements ReservationCommandService 
    */
   @Override
   public ReservationDto createReservation(Long performanceId, Long scheduleId,
-      ReservationDto reservationDto) {
+      ReservationDto reservationDto) throws InterruptedException {
     Boolean isReservable = getReserveAvailability(scheduleId);
 
     if (!isReservable) {
@@ -90,6 +89,22 @@ public class ReservationCommandServiceImpl implements ReservationCommandService 
     } finally {
       lockProvider.unlock(key);
     }
+
+//    return lockProvider.tryLockAndExecute(key, ErrorMessage.CANNOT_GET_SEAT_LOCK, () -> {
+//      PerformanceInfo performanceInfo = findPerformanceById(performanceId);
+//      PerformanceSchedule schedule = findPerformanceSchedule(performanceInfo, scheduleId);
+//
+//      validationReservation(performanceInfo);
+//      schedule.reserveSeat();
+//
+//      updateReserveAvailability(scheduleId, schedule.isAvailable());
+//
+//      Reservation reservation = reservationRepository.save(
+//          Reservation.of(reservationDto, schedule));
+//
+//      internalEventPublisher.publishReservationApplyEvent(createReservationApplyEvent(reservation));
+//      return ReservationDto.from(reservation);
+//    });
   }
 
   @NotNull
