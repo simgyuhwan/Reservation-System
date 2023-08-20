@@ -19,8 +19,7 @@ public interface ReservationCommandService {
    * @return 저장된 공연 정보
    */
   ReservationDto createReservation(Long performanceId, Long scheduleId,
-      ReservationDto reservationDto)
-      throws InterruptedException;
+      ReservationDto reservationDto);
 
   /**
    * 예약 신청 삭제

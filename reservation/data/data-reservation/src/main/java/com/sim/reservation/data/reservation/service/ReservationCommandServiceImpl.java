@@ -56,7 +56,7 @@ public class ReservationCommandServiceImpl implements ReservationCommandService 
    */
   @Override
   public ReservationDto createReservation(Long performanceId, Long scheduleId,
-      ReservationDto reservationDto) throws InterruptedException {
+      ReservationDto reservationDto) {
     Boolean isReservable = getReserveAvailability(scheduleId);
 
     if (!isReservable) {
