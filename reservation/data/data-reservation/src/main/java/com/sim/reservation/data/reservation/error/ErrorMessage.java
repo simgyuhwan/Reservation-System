@@ -3,29 +3,28 @@ package com.sim.reservation.data.reservation.error;
 import lombok.Getter;
 
 /**
- * ErrorMessage.java
- * 에러 메시지
+ * ErrorMessage.java 에러 메시지
  *
  * @author sgh
  * @since 2023.04.27
  */
 @Getter
 public enum ErrorMessage {
-	PERFORMANCE_INFO_NOT_FOUND("PerformanceInfo 조회 실패, performanceInfoId : "),
-	PERFORMANCE_SCHEDULE_NOT_FOUND("PerformanceSchedule 조회 실패, performanceScheduleId : "),
-	RESERVATION_NOT_AVAILABLE("예약이 불가능한 공연입니다. performanceId : "),
-	SOLD_OUT_PERFORMANCE("매진된 공연입니다. performanceScheduleId : "),
-	EVENT_NOT_FOUND("Event 조회 실패, event id : "),
-	FAILURE_TO_REGISTER_PERFORMANCE_INFORMATION("예약 서비스, 공연 정보 등록 실패"),
-	NO_MATCHING_PERFORMANCE_TIMES("일치하는 공연 시간이 없습니다. performanceScheduleId : "),
-	FAILURE_TO_UPDATE_PERFORMANCE_INFORMATION("예약 서비스, 공연 정보 수정 실패"),
-	RESERVATION_NOT_FOUND("Reservation 조회 실패, reservation : "),
-	RESERVATION_CANCEL_NOT_POSSIBLE_DATE("예약 취소가 불가능한 날짜입니다. reservationId : ")
-	;
+  PERFORMANCE_INFO_NOT_FOUND("PerformanceInfo 조회 실패, performanceInfoId : "),
+  PERFORMANCE_SCHEDULE_NOT_FOUND("PerformanceSchedule 조회 실패, performanceScheduleId : "),
+  RESERVATION_NOT_AVAILABLE("예약이 불가능한 공연입니다. performanceId : "),
+  SOLD_OUT_PERFORMANCE("매진된 공연입니다. performanceScheduleId : "),
+  EVENT_NOT_FOUND("Event 조회 실패, event id : "),
+  FAILURE_TO_REGISTER_PERFORMANCE_INFORMATION("예약 서비스, 공연 정보 등록 실패"),
+  NO_MATCHING_PERFORMANCE_TIMES("일치하는 공연 시간이 없습니다. performanceScheduleId : "),
+  FAILURE_TO_UPDATE_PERFORMANCE_INFORMATION("예약 서비스, 공연 정보 수정 실패"),
+  RESERVATION_NOT_FOUND("Reservation 조회 실패, reservation : "),
+  RESERVATION_CANCEL_NOT_POSSIBLE_DATE("예약 취소가 불가능한 날짜입니다. reservationId : "),
+  CANNOT_GET_SEAT_LOCK("좌석 예약 중 동시성 문제가 발생했습니다. 좌석 잠금 기능을 사용할 수 없습니다. 다시 시도해 주세요.");
 
-	private final String message;
+  private final String message;
 
-	ErrorMessage(String message) {
-		this.message = message;
-	}
+  ErrorMessage(String message) {
+    this.message = message;
+  }
 }
