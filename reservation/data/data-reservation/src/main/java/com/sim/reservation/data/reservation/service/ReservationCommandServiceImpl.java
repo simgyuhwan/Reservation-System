@@ -15,15 +15,14 @@ import com.sim.reservation.data.reservation.error.SoldOutException;
 import com.sim.reservation.data.reservation.event.internal.InternalEventPublisher;
 import com.sim.reservation.data.reservation.event.payload.ReservationApplyEventPayload;
 import com.sim.reservation.data.reservation.event.payload.ReservationCancelEventPayload;
+import com.sim.reservation.data.reservation.provider.LockProvider;
 import com.sim.reservation.data.reservation.repository.PerformanceInfoRepository;
 import com.sim.reservation.data.reservation.repository.PerformanceScheduleRepository;
 import com.sim.reservation.data.reservation.repository.ReservationRepository;
 import java.util.NoSuchElementException;
-import java.util.concurrent.TimeUnit;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.redisson.api.RLock;
-import org.redisson.api.RedissonClient;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
@@ -41,14 +40,11 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class ReservationCommandServiceImpl implements ReservationCommandService {
 
-  private static final String SEAT_LOCK = "seat_lock";
-  private static final int WAIT_TIME = 1;
-  private static final int LEASE_TIME = 2;
+  private final LockProvider lockProvider;
 
   private final PerformanceInfoRepository performanceInfoRepository;
   private final PerformanceScheduleRepository scheduleRepository;
   private final ReservationRepository reservationRepository;
-  private final RedissonClient redissonClient;
   private final InternalEventPublisher internalEventPublisher;
 
   /**
@@ -68,10 +64,10 @@ public class ReservationCommandServiceImpl implements ReservationCommandService 
       throw new SoldOutException(ErrorMessage.SOLD_OUT_PERFORMANCE, scheduleId);
     }
 
-    RLock lock = redissonClient.getLock(SEAT_LOCK);
+    String key = createKey(performanceId, scheduleId);
 
     try {
-      if (!(lock.tryLock(WAIT_TIME, LEASE_TIME, TimeUnit.SECONDS))) {
+      if (!(lockProvider.tryLock(key))) {
         throw new SeatLockException(ErrorMessage.CANNOT_GET_SEAT_LOCK);
       }
 
@@ -92,8 +88,13 @@ public class ReservationCommandServiceImpl implements ReservationCommandService 
       e.printStackTrace();
       throw new InternalException(e);
     } finally {
-      lock.unlock();
+      lockProvider.unlock(key);
     }
+  }
+
+  @NotNull
+  private static String createKey(Long performanceId, Long scheduleId) {
+    return performanceId + ":" + scheduleId;
   }
 
   /**

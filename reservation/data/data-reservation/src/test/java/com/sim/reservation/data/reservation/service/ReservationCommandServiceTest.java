@@ -2,6 +2,7 @@ package com.sim.reservation.data.reservation.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.verify;
@@ -17,6 +18,7 @@ import com.sim.reservation.data.reservation.error.ReservationNotPossibleExceptio
 import com.sim.reservation.data.reservation.error.SeatLockException;
 import com.sim.reservation.data.reservation.error.SoldOutException;
 import com.sim.reservation.data.reservation.event.internal.InternalEventPublisher;
+import com.sim.reservation.data.reservation.provider.LockProvider;
 import com.sim.reservation.data.reservation.repository.PerformanceInfoRepository;
 import com.sim.reservation.data.reservation.repository.PerformanceScheduleRepository;
 import com.sim.reservation.data.reservation.repository.ReservationRepository;
@@ -25,7 +27,6 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
 import java.util.Optional;
-import java.util.concurrent.TimeUnit;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -67,6 +68,9 @@ class ReservationCommandServiceTest {
 
   @Mock
   private RedissonClient redissonClient;
+
+  @Mock
+  private LockProvider lockProvider;
 
   @Mock
   private RLock rLock;
@@ -202,8 +206,7 @@ class ReservationCommandServiceTest {
     }
 
     private void getLock() throws InterruptedException {
-      given(redissonClient.getLock(any())).willReturn(rLock);
-      given(rLock.tryLock(WAIT_TIME, LEASE_TIME, TimeUnit.SECONDS)).willReturn(true);
+      given(lockProvider.tryLock(anyString())).willReturn(true);
     }
 
   }
@@ -231,8 +234,7 @@ class ReservationCommandServiceTest {
     }
 
     private void canTGetLock() throws InterruptedException {
-      given(redissonClient.getLock(any())).willReturn(rLock);
-      given(rLock.tryLock(WAIT_TIME, LEASE_TIME, TimeUnit.SECONDS)).willReturn(false);
+      given(lockProvider.tryLock(anyString())).willReturn(false);
     }
 
   }
