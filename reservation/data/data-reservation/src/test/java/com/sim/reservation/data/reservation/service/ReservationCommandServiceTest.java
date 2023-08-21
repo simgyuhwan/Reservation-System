@@ -99,10 +99,8 @@ class ReservationCommandServiceTest {
 
     @Test
     @DisplayName("등록되지 않은 공연 ID를 예약하려면 예외가 발생한다.")
-    void noRegisteredPerformanceInformationException() throws InterruptedException {
+    void noRegisteredPerformanceInformationException() {
       // given
-      getLock();
-
       given(performanceScheduleRepository.findById(SCHEDULE_ID)).willReturn(
           Optional.of(createPerformanceSchedule()));
       given(performanceInfoRepository.findById(PERFORMANCE_ID)).willReturn(Optional.empty());
@@ -132,10 +130,8 @@ class ReservationCommandServiceTest {
 
     @Test
     @DisplayName("예약 불가능한 공연을 예약하려고 하면 예외가 발생한다.")
-    void unReservablePerformanceException() throws InterruptedException {
+    void unReservablePerformanceException() {
       // given
-      getLock();
-
       PerformanceSchedule performanceSchedule = createPerformanceSchedule();
       PerformanceInfo performanceInfo = createPerformanceInfo(performanceSchedule, false);
       ReservationDto reservationDto = createReservationDto();
@@ -210,8 +206,11 @@ class ReservationCommandServiceTest {
     void excludingPerformanceDatesNotInTheSchedule() throws InterruptedException {
       // given
       canTGetLock();
-
       PerformanceSchedule performanceSchedule = createPerformanceSchedule(1, true);
+      PerformanceInfo performanceInfo = createPerformanceInfo(performanceSchedule, true);
+
+      given(performanceInfoRepository.findById(PERFORMANCE_ID)).willReturn(
+          Optional.of(performanceInfo));
       given(performanceScheduleRepository.findById(SCHEDULE_ID)).willReturn(
           Optional.of(performanceSchedule));
       ReservationDto reservationRequestDto = createReservationDto();

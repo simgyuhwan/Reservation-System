@@ -5,7 +5,6 @@ import com.sim.reservation.data.reservation.domain.PerformanceSchedule;
 import com.sim.reservation.data.reservation.domain.Reservation;
 import com.sim.reservation.data.reservation.dto.ReservationDto;
 import com.sim.reservation.data.reservation.error.ErrorMessage;
-import com.sim.reservation.data.reservation.error.InternalException;
 import com.sim.reservation.data.reservation.error.PerformanceInfoNotFoundException;
 import com.sim.reservation.data.reservation.error.PerformanceScheduleNotFoundException;
 import com.sim.reservation.data.reservation.error.ReservationNotFoundException;
@@ -57,59 +56,86 @@ public class ReservationCommandServiceImpl implements ReservationCommandService 
   @Override
   public ReservationDto createReservation(Long performanceId, Long scheduleId,
       ReservationDto reservationDto) {
+    checkReservable(scheduleId);
+
+    PerformanceInfo performanceInfo = findPerformanceById(performanceId);
+    PerformanceSchedule schedule = findPerformanceSchedule(performanceInfo, scheduleId);
+    validationReservation(performanceInfo);
+
+    try {
+      lockSeat(performanceId, scheduleId);
+      reservationSeat(schedule);
+      updateReserveAvailability(scheduleId, schedule.isAvailable());
+    } catch (InterruptedException e) {
+      Thread.currentThread().interrupt();
+    } finally {
+      unlockSeat(performanceId, scheduleId);
+    }
+
+    Reservation reservation = saveReservation(reservationDto,
+        schedule);
+
+    publishReservationApplyEvent(reservation);
+    return ReservationDto.from(reservation);
+  }
+
+  /**
+   * 예약 신청 이벤트 발행
+   */
+  private void publishReservationApplyEvent(Reservation reservation) {
+    internalEventPublisher.publishReservationApplyEvent(createReservationApplyEvent(reservation));
+  }
+
+
+  /**
+   * 예약 정보 저장
+   */
+  @NotNull
+  private Reservation saveReservation(ReservationDto reservationDto, PerformanceSchedule schedule) {
+    return reservationRepository.save(
+        Reservation.of(reservationDto, schedule));
+  }
+
+  /**
+   * 좌석 예약
+   */
+  private static void reservationSeat(PerformanceSchedule schedule) {
+    schedule.reserveSeat();
+  }
+
+  /**
+   * 락 해제
+   */
+  private void unlockSeat(Long performanceId, Long scheduleId) {
+    lockProvider.unlock(createKey(performanceId, scheduleId));
+  }
+
+  /**
+   * 락
+   */
+  private void lockSeat(Long performanceId, Long scheduleId) throws InterruptedException {
+    if (!(lockProvider.tryLock(createKey(performanceId, scheduleId)))) {
+      throw new SeatLockException(ErrorMessage.CANNOT_GET_SEAT_LOCK);
+    }
+  }
+
+  /**
+   * 예약 가능 여부 확인
+   */
+  private void checkReservable(Long scheduleId) {
     Boolean isReservable = getReserveAvailability(scheduleId);
 
     if (!isReservable) {
       throw new SoldOutException(ErrorMessage.SOLD_OUT_PERFORMANCE, scheduleId);
     }
-
-    String key = createKey(performanceId, scheduleId);
-
-    try {
-      if (!(lockProvider.tryLock(key))) {
-        throw new SeatLockException(ErrorMessage.CANNOT_GET_SEAT_LOCK);
-      }
-
-      PerformanceInfo performanceInfo = findPerformanceById(performanceId);
-      PerformanceSchedule schedule = findPerformanceSchedule(performanceInfo, scheduleId);
-
-      validationReservation(performanceInfo);
-      schedule.reserveSeat();
-
-      updateReserveAvailability(scheduleId, schedule.isAvailable());
-
-      Reservation reservation = reservationRepository.save(
-          Reservation.of(reservationDto, schedule));
-
-      internalEventPublisher.publishReservationApplyEvent(createReservationApplyEvent(reservation));
-      return ReservationDto.from(reservation);
-    } catch (InterruptedException e) {
-      e.printStackTrace();
-      throw new InternalException(e);
-    } finally {
-      lockProvider.unlock(key);
-    }
-
-//    return lockProvider.tryLockAndExecute(key, ErrorMessage.CANNOT_GET_SEAT_LOCK, () -> {
-//      PerformanceInfo performanceInfo = findPerformanceById(performanceId);
-//      PerformanceSchedule schedule = findPerformanceSchedule(performanceInfo, scheduleId);
-//
-//      validationReservation(performanceInfo);
-//      schedule.reserveSeat();
-//
-//      updateReserveAvailability(scheduleId, schedule.isAvailable());
-//
-//      Reservation reservation = reservationRepository.save(
-//          Reservation.of(reservationDto, schedule));
-//
-//      internalEventPublisher.publishReservationApplyEvent(createReservationApplyEvent(reservation));
-//      return ReservationDto.from(reservation);
-//    });
   }
 
+  /**
+   * 락 키 생성
+   */
   @NotNull
   private static String createKey(Long performanceId, Long scheduleId) {
-    return performanceId + ":" + scheduleId;
+    return "SEAT_LOCK:" + performanceId + ":" + scheduleId;
   }
 
   /**
