@@ -1,14 +1,12 @@
 package com.sim.reservation.boot.dto.request;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.sim.reservation.data.reservation.dto.PerformanceInfoSearchDto;
+import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.Pattern;
 import java.time.LocalDate;
 import java.time.LocalTime;
-
-import org.springframework.format.annotation.DateTimeFormat;
-
-import com.sim.reservation.data.reservation.dto.PerformanceInfoSearchDto;
-
-import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.validation.constraints.FutureOrPresent;
+import java.time.format.DateTimeFormatter;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -25,22 +23,20 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class PerformanceSearchRequest {
 	@Schema(description = "조회 시작 날자", example = "yyyy-MM-dd")
-	@DateTimeFormat(pattern = "yyyy-MM-dd")
-	@FutureOrPresent(message = "공연 시작 날짜는 현재 이후여야 합니다.")
-	private LocalDate startDate;
+	@Pattern(regexp = "\\d{4}-\\d{2}-\\d{2}", message = "날짜 형식이 잘못되었습니다.")
+	private String startDate;
 
 	@Schema(description = "조회 종료 날자", example = "yyyy-MM-dd")
-	@DateTimeFormat(pattern = "yyyy-MM-dd")
-	@FutureOrPresent(message = "공연 종료 날짜는 현재 이후여야 합니다.")
-	private LocalDate endDate;
+	@JsonFormat(pattern = "yyyy-MM-dd")
+	private String endDate;
 
 	@Schema(description = "조회 시작 시간", example = "HH:mm")
-	@DateTimeFormat(pattern = "HH:mm")
-	private LocalTime startTime;
+	@JsonFormat(pattern = "HH:mm")
+	private String startTime;
 
 	@Schema(description = "조회 종료 시간", example = "HH:mm(보류)")
-	@DateTimeFormat(pattern = "HH:mm")
-	private LocalTime endTime;
+	@JsonFormat(pattern = "HH:mm")
+	private String endTime;
 
 	@Schema(description = "조회 이름", example = "오페라의 유령")
 	private String name;
@@ -52,7 +48,8 @@ public class PerformanceSearchRequest {
 	private String place;
 
 	@Builder
-	public PerformanceSearchRequest(LocalDate startDate, LocalDate endDate, LocalTime startTime, LocalTime endTime,
+	public PerformanceSearchRequest(String startDate, String endDate, String startTime,
+		String endTime,
 		String name, String type, String place) {
 		this.startDate = startDate;
 		this.endDate = endDate;
@@ -65,14 +62,22 @@ public class PerformanceSearchRequest {
 
 	public PerformanceInfoSearchDto toSearchDto() {
 		return PerformanceInfoSearchDto.builder()
-			.startDate(startDate)
-			.endDate(endDate)
-			.startTime(startTime)
-			.endTime(endTime)
+			.startDate(parseLocalDate(startDate))
+			.endDate(parseLocalDate(endDate))
+			.startTime(parseLocalTime(startTime))
+			.endTime(parseLocalTime(endTime))
 			.name(name)
 			.type(type)
 			.place(place)
 			.build();
 	}
+	public LocalDate parseLocalDate(String date) {
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+		return LocalDate.parse(date, formatter);
+	}
 
+	public LocalTime parseLocalTime(String time) {
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
+		return LocalTime.parse(time, formatter);
+	}
 }
