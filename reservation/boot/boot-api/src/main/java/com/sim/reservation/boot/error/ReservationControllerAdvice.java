@@ -1,5 +1,6 @@
 package com.sim.reservation.boot.error;
 
+import java.time.format.DateTimeParseException;
 import java.util.NoSuchElementException;
 
 import org.springframework.http.HttpStatus;
@@ -77,6 +78,13 @@ public class ReservationControllerAdvice {
 	public ResponseEntity<ErrorResponse> performanceScheduleNotFoundException(PerformanceScheduleNotFoundException e) {
 		log.error(e.getMessage());
 		ErrorResponse errorResponse = createErrorResponse(ErrorCode.SCHEDULE_NOT_PART_OF_THE_PERFORMANCE_ERROR_MESSAGE);
+		return ResponseEntity.badRequest().body(errorResponse);
+	}
+
+	@ExceptionHandler(DateTimeParseException.class)
+	public ResponseEntity<ErrorResponse> wrongDateFormatException(DateTimeParseException e) {
+		log.error(e.getMessage());
+		ErrorResponse errorResponse = createErrorResponse(ErrorCode.INVALID_DATE_FORMAT);
 		return ResponseEntity.badRequest().body(errorResponse);
 	}
 

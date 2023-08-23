@@ -9,7 +9,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.sim.reservation.boot.dto.request.PerformanceSearchRequest;
+import com.sim.reservation.boot.error.ErrorCode;
 import com.sim.reservation.data.reservation.dto.PerformanceInfoDto;
+import java.time.format.DateTimeParseException;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -49,6 +51,26 @@ class ReservationSearchIntegrationTest extends ControllerTestSupport{
 			.andExpect(jsonPath("$.content[0].name").value(expectedPerformanceInfo.getName()))
 			.andExpect(jsonPath("$.content[0].info").value(expectedPerformanceInfo.getInfo()));
 	}
+
+	@Test
+	@DisplayName("잘못된 날짜 형식으로 공연을 조회하면 조회에 실패하고 예외 메시지를 반환한다.")
+	void invalidDateFormatQuery() throws Exception{
+		// given
+		PerformanceSearchRequest request = PerformanceSearchRequest.builder()
+			.build();
+		given(reservationSearchService.getAvailablePerformances(any(), any())).willThrow(
+			DateTimeParseException.class);
+
+		// when, then
+		mockMvc.perform(get(VIEW_RESERVATION_AVAILABLE_URL)
+			.contentType(MediaType.APPLICATION_JSON)
+			.content(gson.toJson(request)))
+			.andDo(print())
+			.andExpect(status().isBadRequest())
+			.andExpect(jsonPath("$.message")
+				.value(ErrorCode.INVALID_DATE_FORMAT.getMessage()));
+	}
+
 
 	private static PerformanceInfoDto createPerformanceInfo(String name, String info) {
 		return PerformanceInfoDto.builder()
