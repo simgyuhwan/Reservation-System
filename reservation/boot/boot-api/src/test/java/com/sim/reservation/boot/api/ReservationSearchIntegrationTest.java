@@ -9,8 +9,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.sim.reservation.boot.dto.request.PerformanceSearchRequest;
+import com.sim.reservation.boot.dto.response.ReservationInfoResponse;
 import com.sim.reservation.boot.error.ErrorCode;
 import com.sim.reservation.data.reservation.dto.PerformanceInfoDto;
+import com.sim.reservation.data.reservation.error.ReservationInfoNotFoundException;
 import java.time.format.DateTimeParseException;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
@@ -26,7 +28,8 @@ import org.springframework.http.MediaType;
  * @since 2023.04.12
  */
 class ReservationSearchIntegrationTest extends ControllerTestSupport{
-	private static String VIEW_RESERVATION_AVAILABLE_URL = "/api/performances/available";
+	private static final String VIEW_RESERVATION_AVAILABLE_URL = "/api/performances/available";
+	private static final String RESERVED_PERFORMANCE_INFO_URL = "/api/reservations";
 
 	@Test
 	@DisplayName("예약 가능한 공연을 조회할 수 있다.")
@@ -34,7 +37,7 @@ class ReservationSearchIntegrationTest extends ControllerTestSupport{
 		// given
 		PerformanceSearchRequest request = PerformanceSearchRequest.builder()
 			.build();
-		PerformanceInfoDto expectedPerformanceInfo = createPerformanceInfo("홍길동", "홍길동 영화입니다.");
+		PerformanceInfoDto expectedPerformanceInfo = createPerformanceInfo();
 
 		PageImpl<PerformanceInfoDto> page = new PageImpl<>(List.of(expectedPerformanceInfo));
 		given(reservationSearchService.getAvailablePerformances(any(), any()))
@@ -71,11 +74,49 @@ class ReservationSearchIntegrationTest extends ControllerTestSupport{
 				.value(ErrorCode.INVALID_DATE_FORMAT.getMessage()));
 	}
 
+	@DisplayName("예약한 공연 정보를 조회할 수 있다.")
+	@Test
+	void viewReservedPerformanceInformation() throws Exception {
+	    // given
+		Long reservationId = 1L;
+		ReservationInfoResponse response = createReservationInfo(reservationId);
+		given(reservationSearchService.getReservationInfo(reservationId)).willReturn(response);
 
-	private static PerformanceInfoDto createPerformanceInfo(String name, String info) {
+	    // when, then
+		mockMvc.perform(get(RESERVED_PERFORMANCE_INFO_URL + "/" + reservationId))
+			.andExpect(status().isOk())
+			.andExpect(jsonPath("$.id").value(response.getId()))
+			.andExpect(jsonPath("$.email").value(response.getEmail()))
+			.andExpect(jsonPath("$.place").value(response.getPlace()));
+	}
+
+	@DisplayName("예약되지 않은 ID로 조회시 실패하고 예외 메시지를 반환한다.")
+	@Test
+	void invalidReservationIDFailed() throws Exception {
+	    // given
+		long reservationId = 1L;
+		given(reservationSearchService.getReservationInfo(any())).willThrow(
+			ReservationInfoNotFoundException.class);
+
+	    // when, then
+		mockMvc.perform(get(RESERVED_PERFORMANCE_INFO_URL + "/" + reservationId))
+			.andExpect(status().isBadRequest())
+			.andExpect(jsonPath("$.message").value(
+				ErrorCode.RESERVATION_INFORMATION_NOT_FOUND.getMessage()));
+	}
+
+	private static ReservationInfoResponse createReservationInfo(Long reservationId) {
+		return ReservationInfoResponse.builder()
+			.id(reservationId)
+			.email("test@naver.com")
+			.place("망월사")
+			.build();
+	}
+
+	private static PerformanceInfoDto createPerformanceInfo() {
 		return PerformanceInfoDto.builder()
-			.name(name)
-			.info(info)
+			.name("홍길동")
+			.info("홍길동 영화입니다.")
 			.build();
 	}
 

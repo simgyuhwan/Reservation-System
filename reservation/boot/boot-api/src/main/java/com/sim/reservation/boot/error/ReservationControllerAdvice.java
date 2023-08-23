@@ -1,5 +1,6 @@
 package com.sim.reservation.boot.error;
 
+import com.sim.reservation.data.reservation.error.ReservationInfoNotFoundException;
 import java.time.format.DateTimeParseException;
 import java.util.NoSuchElementException;
 
@@ -36,14 +37,14 @@ public class ReservationControllerAdvice {
 		ErrorResponse errorResponse = ErrorResponseFactory.bindError(
 			ErrorCode.INVALID_PERFORMANCE_RESERVATION_INFORMATION,
 			e.getFieldErrors());
-		return ResponseEntity.badRequest().body(errorResponse);
+		return badRequest(errorResponse);
 	}
 
 	@ExceptionHandler(SoldOutException.class)
 	public ResponseEntity<ErrorResponse> soldOutException(SoldOutException e) {
 		log.error(e.getMessage());
 		ErrorResponse errorResponse = createErrorResponse(ErrorCode.PERFORMANCE_SOLD_OUT_ERROR_MESSAGE);
-		return ResponseEntity.badRequest().body(errorResponse);
+		return badRequest(errorResponse);
 	}
 
 	@ExceptionHandler(PerformanceInfoNotFoundException.class)
@@ -57,34 +58,45 @@ public class ReservationControllerAdvice {
 	public ResponseEntity<ErrorResponse> reservationNotPossibleException(ReservationNotPossibleException e) {
 		log.error(e.getMessage());
 		ErrorResponse errorResponse = createErrorResponse(ErrorCode.RESERVATION_NOT_POSSIBLE_ERROR_MESSAGE);
-		return ResponseEntity.badRequest().body(errorResponse);
+		return badRequest(errorResponse);
 	}
 
 	@ExceptionHandler(NoSuchElementException.class)
 	public ResponseEntity<ErrorResponse> noSuchElementException(NoSuchElementException e) {
 		log.error(e.getMessage());
 		ErrorResponse errorResponse = createErrorResponse(ErrorCode.SCHEDULE_NOT_PART_OF_THE_PERFORMANCE_ERROR_MESSAGE);
-		return ResponseEntity.badRequest().body(errorResponse);
+		return badRequest(errorResponse);
 	}
 
 	@ExceptionHandler(InternalException.class)
 	public ResponseEntity<ErrorResponse> internalException(InternalException e) {
 		log.error(e.getMessage());
 		ErrorResponse errorResponse = createErrorResponse(ErrorCode.RESERVATION_FAILED_DUE_TO_SERVER_FAILURE);
-		return ResponseEntity.badRequest().body(errorResponse);
+		return badRequest(errorResponse);
 	}
 
 	@ExceptionHandler(PerformanceScheduleNotFoundException.class)
 	public ResponseEntity<ErrorResponse> performanceScheduleNotFoundException(PerformanceScheduleNotFoundException e) {
 		log.error(e.getMessage());
 		ErrorResponse errorResponse = createErrorResponse(ErrorCode.SCHEDULE_NOT_PART_OF_THE_PERFORMANCE_ERROR_MESSAGE);
-		return ResponseEntity.badRequest().body(errorResponse);
+		return badRequest(errorResponse);
 	}
 
 	@ExceptionHandler(DateTimeParseException.class)
 	public ResponseEntity<ErrorResponse> wrongDateFormatException(DateTimeParseException e) {
 		log.error(e.getMessage());
 		ErrorResponse errorResponse = createErrorResponse(ErrorCode.INVALID_DATE_FORMAT);
+		return badRequest(errorResponse);
+	}
+
+	@ExceptionHandler(ReservationInfoNotFoundException.class)
+	public ResponseEntity<ErrorResponse> reservationNotFoundException(ReservationInfoNotFoundException e) {
+		log.error(e.getMessage());
+		ErrorResponse errorResponse = createErrorResponse(ErrorCode.RESERVATION_INFORMATION_NOT_FOUND);
+		return badRequest(errorResponse);
+	}
+
+	private static ResponseEntity<ErrorResponse> badRequest(ErrorResponse errorResponse) {
 		return ResponseEntity.badRequest().body(errorResponse);
 	}
 

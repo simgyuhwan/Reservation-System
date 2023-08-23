@@ -59,9 +59,8 @@ class ReservationSearchUnitTest {
 	private static final Integer PAGE_VALUE = 0;
 	private static final Integer SIZE_VALUE = 10;
 
-	private static String VIEW_RESERVATION_STATUS_URL = "/api/performances/available?";
+	private static final String VIEW_RESERVATION_STATUS_URL = "/api/performances/available?";
 	private MockMvc mockMvc;
-	private Gson gson;
 
 	@InjectMocks
 	private ReservationSearchController reservationSearchController;
@@ -75,7 +74,6 @@ class ReservationSearchUnitTest {
 			.setControllerAdvice(ReservationSearchControllerAdvice.class)
 			.setCustomArgumentResolvers(new PageableHandlerMethodArgumentResolver())
 			.build();
-		gson = new Gson();
 	}
 
 	@Test

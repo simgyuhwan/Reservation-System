@@ -33,7 +33,7 @@ public class ReservationSearchControllerAdvice {
 	@ExceptionHandler(ReservationNotFoundException.class)
 	public ResponseEntity<ErrorResponse> reservationNotFoundException(ReservationNotFoundException e) {
 		log.error(e.getMessage());
-		ErrorResponse errorResponse = ErrorResponseFactory.from(ErrorCode.RESERVATION_NOT_FOUND_MESSAGE);
+		ErrorResponse errorResponse = ErrorResponseFactory.from(ErrorCode.RESERVATION_INFO_NOT_FOUND_MESSAGE);
 		return ResponseEntity.badRequest().body(errorResponse);
 	}
 }

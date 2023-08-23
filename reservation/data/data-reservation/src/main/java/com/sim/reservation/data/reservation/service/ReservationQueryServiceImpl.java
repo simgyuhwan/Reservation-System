@@ -1,13 +1,11 @@
 package com.sim.reservation.data.reservation.service;
 
-import org.springframework.stereotype.Service;
-
 import com.sim.reservation.data.reservation.dto.ReservationInfo;
 import com.sim.reservation.data.reservation.error.ErrorMessage;
-import com.sim.reservation.data.reservation.error.ReservationNotFoundException;
+import com.sim.reservation.data.reservation.error.ReservationInfoNotFoundException;
 import com.sim.reservation.data.reservation.repository.ReservationCustomRepository;
-
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
 /**
  * 예약 Query 서비스
@@ -26,6 +24,6 @@ public class ReservationQueryServiceImpl implements ReservationQueryService{
 	@Override
 	public ReservationInfo findReservationInfoById(Long reservationId) {
 		return reservationCustomRepository.findReservationInfoById(reservationId)
-			.orElseThrow(() -> new ReservationNotFoundException(ErrorMessage.RESERVATION_NOT_FOUND, reservationId));
+			.orElseThrow(() -> new ReservationInfoNotFoundException(ErrorMessage.RESERVATION_NOT_FOUND, reservationId));
 	}
 }
