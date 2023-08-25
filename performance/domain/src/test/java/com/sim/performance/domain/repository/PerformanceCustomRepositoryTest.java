@@ -1,15 +1,6 @@
 package com.sim.performance.domain.repository;
 
-import static org.assertj.core.api.Assertions.*;
-
-import java.util.List;
-
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.context.annotation.Import;
-import org.springframework.transaction.annotation.Transactional;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import com.sim.performance.domain.config.QueryDslTestConfig;
 import com.sim.performance.domain.factory.PerformanceCreateDtoFactory;
@@ -20,10 +11,16 @@ import com.sim.performance.performancedomain.dto.PerformanceCreateDto;
 import com.sim.performance.performancedomain.dto.PerformanceDto;
 import com.sim.performance.performancedomain.repository.PerformanceCustomRepository;
 import com.sim.performance.performancedomain.repository.PerformanceRepository;
+import java.util.List;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.context.annotation.Import;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
- * PerformanceCustomRepositoryImplTest.java
- * 공연 QueryDsl test
+ * PerformanceCustomRepositoryImplTest.java 공연 QueryDsl test
  *
  * @author sgh
  * @since 2023.05.11
@@ -32,80 +29,84 @@ import com.sim.performance.performancedomain.repository.PerformanceRepository;
 @Transactional(readOnly = true)
 @Import(QueryDslTestConfig.class)
 class PerformanceCustomRepositoryTest {
-	private static final Long MEMBER_ID = PerformanceDtoFactory.MEMBER_ID;
 
-	@Autowired
-	private PerformanceCustomRepository performanceCustomRepository;
+    private static final Long MEMBER_ID = PerformanceDtoFactory.MEMBER_ID;
 
-	@Autowired
-	private PerformanceRepository performanceRepository;
+    @Autowired
+    private PerformanceCustomRepository performanceCustomRepository;
 
-	@Test
-	@DisplayName("등록된 공연 정보 조회 확인")
-	void registeredPerformancesInquiryTest() {
-		//given
-		Performance pendingPerformance = createPendingPerformance();
-		Performance registeredPerformance = createRegisteredPerformance();
-		List<Performance> performances = List.of(pendingPerformance, registeredPerformance);
-		performanceRepository.saveAll(performances);
+    @Autowired
+    private PerformanceRepository performanceRepository;
 
-		//when
-		List<Performance> registeredPerformances = performanceCustomRepository.findRegisteredPerformancesByMemberId(
-			MEMBER_ID);
+    @Test
+    @DisplayName("등록된 공연 정보 조회 확인")
+    void registeredPerformancesInquiryTest() {
+        //given
+        Performance pendingPerformance = createPendingPerformance();
+        Performance registeredPerformance = createRegisteredPerformance();
+        List<Performance> performances = List.of(pendingPerformance, registeredPerformance);
+        performanceRepository.saveAll(performances);
 
-		//then
-		assertThat(registeredPerformances.size()).isOne();
+        //when
+        List<Performance> registeredPerformances = performanceCustomRepository.findRegisteredPerformancesByMemberId(
+            MEMBER_ID);
 
-		Performance findPerformance = registeredPerformances.get(0);
-		assertThat(findPerformance.getPerformanceName()).isEqualTo(registeredPerformance.getPerformanceName());
-		assertThat(findPerformance.getPerformanceInfo()).isEqualTo(registeredPerformance.getPerformanceInfo());
-	}
+        //then
+        assertThat(registeredPerformances.size()).isOne();
 
-	@Test
-	@DisplayName("공연 ID를 이용하여 미등록 확인")
-	void confirmUnregisteredPerformanceTest() {
-		//given
-		Performance pendingPerformance = createPendingPerformance();
-		Performance performance = performanceRepository.save(pendingPerformance);
+        Performance findPerformance = registeredPerformances.get(0);
+        assertThat(findPerformance.getPerformanceName()).isEqualTo(
+            registeredPerformance.getPerformanceName());
+        assertThat(findPerformance.getPerformanceInfo()).isEqualTo(
+            registeredPerformance.getPerformanceInfo());
+    }
 
-		//when
-		boolean result = performanceCustomRepository.isRegistrationCompleted(performance.getId());
+    @Test
+    @DisplayName("공연 ID를 이용하여 미등록 확인")
+    void confirmUnregisteredPerformanceTest() {
+        //given
+        Performance pendingPerformance = createPendingPerformance();
+        Performance performance = performanceRepository.save(pendingPerformance);
 
-		//then
-		assertThat(result).isFalse();
-	}
+        //when
+        boolean result = performanceCustomRepository.isRegistrationCompleted(performance.getId());
 
-	@Test
-	@DisplayName("공연 ID를 이용하여 등록 확인")
-	void performanceRegistrationConfirmationTest() {
-		//given
-		Performance registeredPerformance = createRegisteredPerformance();
-		Performance performance = performanceRepository.save(registeredPerformance);
+        //then
+        assertThat(result).isFalse();
+    }
 
-		//when
-		boolean result = performanceCustomRepository.isRegistrationCompleted(performance.getId());
+    @Test
+    @DisplayName("공연 ID를 이용하여 등록 확인")
+    void performanceRegistrationConfirmationTest() {
+        //given
+        Performance registeredPerformance = createRegisteredPerformance();
+        Performance performance = performanceRepository.save(registeredPerformance);
 
-		//then
-		assertThat(result).isTrue();
-	}
+        //when
+        boolean result = performanceCustomRepository.isRegistrationCompleted(performance.getId());
 
-	private Performance createPendingPerformance() {
-		PerformanceCreateDto performanceCreateDto = createPerformanceCreateDto();
-		Performance pendingPerformance = Performance.createPendingPerformance(performanceCreateDto);
+        //then
+        assertThat(result).isTrue();
+    }
 
-		return pendingPerformance;
-	}
+    private Performance createPendingPerformance() {
+        PerformanceCreateDto performanceCreateDto = createPerformanceCreateDto();
+        Performance pendingPerformance = Performance.createPendingPerformance(performanceCreateDto);
 
-	private Performance createRegisteredPerformance() {
-		PerformanceDto performanceDto = PerformanceDtoFactory.createPerformanceDto();
-		Performance completedPerformance = Performance.createCompletedPerformance(performanceDto);
-		List<PerformanceDay> performanceDays = performanceDto.toPerformanceDays(completedPerformance);
+        return pendingPerformance;
+    }
 
-		completedPerformance.setPerformanceDays(performanceDays);
-		return completedPerformance;
-	}
+    private Performance createRegisteredPerformance() {
+        PerformanceDto performanceDto = PerformanceDtoFactory.createPerformanceDto();
+        Performance completedPerformance = Performance.createCompletedPerformance(performanceDto);
+        List<PerformanceDay> performanceDays = performanceDto.toPerformanceDays(
+            completedPerformance);
 
-	private PerformanceCreateDto createPerformanceCreateDto() {
-		return PerformanceCreateDtoFactory.createPerformanceCreateDto();
-	}
+        completedPerformance.setPerformanceDays(performanceDays);
+        return completedPerformance;
+    }
+
+    private PerformanceCreateDto createPerformanceCreateDto() {
+        return PerformanceCreateDtoFactory.createPerformanceCreateDto();
+    }
 }
