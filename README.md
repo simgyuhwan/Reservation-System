@@ -106,8 +106,6 @@
 
 #### \* [기능별 테스트 케이스](./document/test-case.md)
 
-#### \* [설치 및 실행 방법](./document/install-document.md)
-
 <br>
 
 # **5. 요구사항**
