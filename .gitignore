@@ -172,3 +172,9 @@ gradle-app.setting
 
 *.sock
 Dockerfiles/db/data
+Dockerfiles/kafka/data/**
+Dockerfiles/zookeeper/data/**
+Dockerfiles/zookeeper/datalog/**
+Dockerfiles/prometheus-grafana/grafana/**
+Dockerfiles/prometheus-grafana/prometheus/volume/**
+
