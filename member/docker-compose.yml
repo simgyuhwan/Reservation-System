@@ -1,0 +1,23 @@
+version: '3'
+services:
+  member-service:
+    image: member-service
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    container_name: member-service
+    networks:
+      - reservation-networks
+    environment:
+      DB_URL: member_db
+      DB_PORT: 5432
+      DB_ID: postgres
+      DB_PW: Password!
+      DB_TABLE: reservation
+      DISCOVERY_SERVER: discovery-server
+    restart: "no"
+
+networks:
+  reservation-networks:
+    driver: bridge
+    external: true
