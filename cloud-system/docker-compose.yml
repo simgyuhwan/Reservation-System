@@ -1,0 +1,25 @@
+version: '3'
+services:
+  discovery-server:
+    image: discovery-server
+    build:
+      context: ./discovery-server
+      dockerfile: Dockerfile
+    container_name: discovery-server
+    ports: 
+      - 8761:8761
+    restart: "no"
+
+  gateway-server:
+    image: gateway-server
+    build: 
+      context: ./gateway-server
+      dockerfile: Dockerfile
+    container_name: gateway-server
+    depends_on:
+      - discovery-server
+    ports:
+      - 8000:8000
+    environment:
+      - DISCOVERY_SERVER=discovery-server
+    
