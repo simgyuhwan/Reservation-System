@@ -8,6 +8,8 @@ services:
     container_name: discovery-server
     ports: 
       - 8761:8761
+    networks:
+      - reservation-networks
     restart: "no"
 
   gateway-server:
@@ -22,4 +24,11 @@ services:
       - 8000:8000
     environment:
       - DISCOVERY_SERVER=discovery-server
-    
+    restart: "no"
+    networks:
+      - reservation-networks
+
+networks:
+  reservation-networks:
+    driver: bridge
+    external: true

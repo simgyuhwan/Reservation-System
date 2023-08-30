@@ -24,6 +24,8 @@ services:
       - "9411:9411"
     depends_on:
       - storage
+    networks:
+      - reservation-networks
     restart: always
 
   dependencies:
@@ -38,4 +40,11 @@ services:
       - MYSQL_TCP_PORT=3306
     depends_on:
       - storage
+    networks:
+      - reservation-networks
     restart: always
+
+networks:
+  reservation-networks:
+    driver: bridge
+    external: true
