@@ -16,9 +16,7 @@ services:
       DB_TABLE: reservation
       DISCOVERY_SERVER: discovery-server
       KAFKA: kafdrop
-      REDIS-1: redis-1
-      REDIS-2: redis-2
-      REDIS-3: redis-cluster
+      REDIS: redis-cluster
     restart: "no"
 
 networks:

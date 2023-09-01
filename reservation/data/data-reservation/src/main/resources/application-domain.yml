@@ -20,9 +20,9 @@ spring:
     redis:
       cluster:
         nodes:
-          - ${REDIS-1:localhost}:6379
-          - ${REDIS-2:localhost}:6380
-          - ${REDIS-3:localhost}:6381
+          - ${REDIS:localhost}:6379
+#          - ${REDIS-2:localhost}:6380
+#          - ${REDIS-3:localhost}:6381
 
   #kafka
   cloud:
