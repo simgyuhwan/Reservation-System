@@ -1,0 +1,24 @@
+version: '3'
+services:
+  performance-service:
+    image: performance-service
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    container_name: performance-service
+    networks:
+      - reservation-networks
+    environment:
+      DB_URL: performance_db
+      DB_PORT: 3306
+      DB_ID: root
+      DB_PW: Password!
+      DB_TABLE: reservation
+      DISCOVERY_SERVER: discovery-server
+      KAFKA: kafdrop
+    restart: "no"
+
+networks:
+  reservation-networks:
+    driver: bridge
+    external: true

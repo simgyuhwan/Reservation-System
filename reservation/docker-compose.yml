@@ -1,0 +1,27 @@
+version: '3'
+services:
+  reservation-service:
+    image: reservation-service
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    container_name: reservation-service
+    networks:
+      - reservation-networks
+    environment:
+      DB_URL: performance_db
+      DB_PORT: 3306
+      DB_ID: root
+      DB_PW: Password!
+      DB_TABLE: reservation
+      DISCOVERY_SERVER: discovery-server
+      KAFKA: kafdrop
+      REDIS-1: redis-1
+      REDIS-2: redis-2
+      REDIS-3: redis-cluster
+    restart: "no"
+
+networks:
+  reservation-networks:
+    driver: bridge
+    external: true
