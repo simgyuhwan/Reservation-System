@@ -14,7 +14,7 @@ services:
     networks:
       - reservation-networks
 
-  redis-node-1:
+  redis-1:
     network_mode: "service:redis-cluster"
     platform: linux/x86_64
     image: redis:6.2
@@ -23,7 +23,7 @@ services:
       - ./redis1.conf:/usr/local/etc/redis/redis.conf
     command: redis-server /usr/local/etc/redis/redis.conf
 
-  redis-node-2:
+  redis-2:
     network_mode: "service:redis-cluster"
     platform: linux/x86_64
     image: redis:6.2
@@ -40,8 +40,8 @@ services:
     command: redis-cli --cluster create 127.0.0.1:6379 127.0.0.1:6380 127.0.0.1:6381 --cluster-yes
     depends_on:
       - redis-cluster
-      - redis-node-1
-      - redis-node-2
+      - redis-1
+      - redis-2
 
 networks:
   reservation-networks:

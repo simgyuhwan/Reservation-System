@@ -9,14 +9,14 @@ services:
     networks:
       - reservation-networks
     environment:
-      DB_URL: performance_db
+      REDIS: redis-cluster
+      DB_URL: reservation_db
       DB_PORT: 3306
       DB_ID: root
       DB_PW: Password!
       DB_TABLE: reservation
       DISCOVERY_SERVER: discovery-server
       KAFKA: kafdrop
-      REDIS: redis-cluster
     restart: "no"
 
 networks:

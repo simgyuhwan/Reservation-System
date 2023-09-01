@@ -56,7 +56,7 @@ sourceSets {
     main.java.srcDirs += [ querydslDir ]
 }
 
-tasks.withType(JavaCompile) {
+tasks.withType(JavaCompile).configureEach {
     options.generatedSourceOutputDirectory.set(file(querydslDir))
 }
 
@@ -82,6 +82,6 @@ project("data") {
 }
 
 project("data:data-reservation") {
-//    bootJar { enabled = false }
-//    jar { enabled = true }
+    bootJar { enabled = false }
+    jar { enabled = true }
 }
