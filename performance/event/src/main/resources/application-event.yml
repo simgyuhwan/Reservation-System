@@ -4,7 +4,7 @@ spring:
     stream:
       kafka:
         binder:
-          brokers: localhost:9092
+          brokers: ${KAFKA:localhost}:9000
         bindings:
           performanceCreated-out-0:
             producer:

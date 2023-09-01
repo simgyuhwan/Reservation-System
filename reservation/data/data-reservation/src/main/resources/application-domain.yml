@@ -20,16 +20,16 @@ spring:
     redis:
       cluster:
         nodes:
-          - localhost:6379
-          - localhost:6380
-          - localhost:6381
+          - ${REDIS-1:localhost}:6379
+          - ${REDIS-2:localhost}:6380
+          - ${REDIS-3:localhost}:6381
 
   #kafka
   cloud:
     stream:
       kafka:
         binder:
-          brokers: localhost:9092
+          brokers: ${KAFKA:localhost}:9092
       function:
         definition: performanceCreatedConsumer;performanceUpdatedConsumer;reservationApplyComplete;
       #bindings
