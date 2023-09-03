@@ -246,7 +246,7 @@ public class MemberApiUnitTest {
       mockMvc.perform(put(MEMBER_API_URL + "/" + USER_ID)
               .contentType(MediaType.APPLICATION_JSON)
               .content(gson.toJson(memberUpdateRequest)))
-          .andExpect(status().isOk());
+          .andExpect(status().isNoContent());
     }
 
     private MemberUpdateRequest createUpdateMemberRequest(String userId, String userName) {

@@ -32,9 +32,6 @@ class SignUpApiIntegrationTest extends ControllerTestSupport {
 
   private final Gson gson = new Gson();
 
-  private final int USER_ID_MIN_SIZE = 3;
-  private final int USER_ID_MAX_SIZE = 15;
-
   @Test
   @DisplayName("회원가입 성공")
   void memberRegistrationSuccessTest() throws Exception {
@@ -102,6 +99,7 @@ class SignUpApiIntegrationTest extends ControllerTestSupport {
   @DisplayName("userId 값의 길이는 허용 범위 내여야 합니다.")
   void idValueSizeMinimumFailureTest() throws Exception {
     //given
+    int USER_ID_MIN_SIZE = 3;
     MemberCreateRequest memberCreateRequest = createMemberCreateRequest(
         "a".repeat(USER_ID_MIN_SIZE - 1), USERNAME, PASSWORD, PHONE_NUM, ADDRESS);
 
@@ -120,6 +118,7 @@ class SignUpApiIntegrationTest extends ControllerTestSupport {
   @DisplayName("userId 값의 길이는 허용 범위내여야 합니다.")
   void idValueSizeLessFailureTest() throws Exception {
     //given
+    int USER_ID_MAX_SIZE = 15;
     MemberCreateRequest memberCreateRequest = createMemberCreateRequest(
         "a".repeat(USER_ID_MAX_SIZE + 1), USERNAME, PASSWORD, PHONE_NUM, ADDRESS);
 
