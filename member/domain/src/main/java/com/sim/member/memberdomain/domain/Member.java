@@ -1,15 +1,18 @@
 package com.sim.member.memberdomain.domain;
 
-import com.sim.member.memberdomain.dto.MemberCreateRequestDto;
-import com.sim.member.memberdomain.dto.MemberUpdateDto;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import org.springframework.util.Assert;
 
 /**
  * Member.java
@@ -22,7 +25,7 @@ import lombok.*;
 @Getter
 @Table(name = "member")
 @Entity
-@EqualsAndHashCode
+@EqualsAndHashCode(callSuper = false)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 public class Member extends BaseEntity {
@@ -63,24 +66,15 @@ public class Member extends BaseEntity {
 			.build();
 	}
 
-	public static Member create(MemberCreateRequestDto createDto) {
-		return Member.builder()
-			.userId(createDto.getUserId())
-			.username(createDto.getUsername())
-			.password(createDto.getPassword())
-			.phoneNum(createDto.getPhoneNum())
-			.address(createDto.getAddress())
-			.build();
-	}
-
 	public void changeName(String username) {
+		Assert.hasText(username, "username must be included");
 		this.username = username;
 	}
 
-	public void updateInfo(MemberUpdateDto updateMemberDto) {
-		this.username = updateMemberDto.getUsername();
-		this.address = updateMemberDto.getAddress();
-		this.phoneNum = updateMemberDto.getPhoneNum();
+	public void updateInfo(String username, String address, String phoneNum) {
+		this.username = username;
+		this.address = address;
+		this.phoneNum = phoneNum;
 	}
 
 }

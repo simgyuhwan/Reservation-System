@@ -28,12 +28,12 @@ import com.sim.member.memberdomain.repository.MemberRepository;
  * @since 2023.03.17
  */
 @ExtendWith(MockitoExtension.class)
-public class MemberCommandServiceUnitTest {
-	public final static String USER_ID = "test";
-	public final static String USERNAME = "이순신";
-	public final static String PHONE_NUM = "010-1111-9999";
-	public final static String ADDRESS = "서울시 마포구 창천동";
-	public final static String PASSWORD = "password";
+class MemberCommandServiceUnitTest {
+	private final static String USER_ID = "test";
+	private final static String USERNAME = "이순신";
+	private final static String PHONE_NUM = "010-1111-9999";
+	private final static String ADDRESS = "서울시 마포구 창천동";
+	private final static String PASSWORD = "password";
 
 	@InjectMocks
 	private MemberCommandServiceImpl memberService;
@@ -46,7 +46,7 @@ public class MemberCommandServiceUnitTest {
 	void signUp() {
 		//given
 		MemberCreateRequestDto memberCreateRequest = createMemberCreateDto(USER_ID, USERNAME, PASSWORD, PHONE_NUM, ADDRESS);
-		Member member = Member.create(memberCreateRequest);
+		Member member = memberCreateRequest.toEntity();
 
 		given(memberRepository.save(any(Member.class)))
 				.willReturn(member);

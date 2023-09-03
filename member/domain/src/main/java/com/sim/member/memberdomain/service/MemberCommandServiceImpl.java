@@ -25,7 +25,7 @@ public class MemberCommandServiceImpl implements MemberCommandService {
 
 	@Override
 	public MemberDto signUp(MemberCreateRequestDto memberCreateRequestDto) {
-		Member member = Member.create(memberCreateRequestDto);
+		Member member = memberCreateRequestDto.toEntity();
 		validateMember(member);
 		saveMember(member);
 		return MemberDto.of(member);
@@ -33,19 +33,12 @@ public class MemberCommandServiceImpl implements MemberCommandService {
 
 	@Override
 	public MemberDto updateMemberInfo(final String userId, MemberUpdateDto updateMemberDto) {
-		validateUserId(userId);
-		Member member = findMemberByUserId(userId);
-		member.updateInfo(updateMemberDto);
-		return MemberDto.of(member);
-	}
-
-	private void validateUserId(String userId) {
 		Assert.hasText(userId, "user id must exist");
-	}
 
-	private Member findMemberByUserId(String userId) {
-		return memberRepository.findByUserId(userId)
+		Member member = memberRepository.findByUserId(userId)
 			.orElseThrow(() -> new InvalidUserIdException(ErrorMessage.INVALID_USER_ID, userId));
+		member.updateInfo(updateMemberDto.getUsername(), updateMemberDto.getAddress(), updateMemberDto.getPhoneNum());
+		return MemberDto.of(member);
 	}
 
 	private void validateMember(Member member) {
