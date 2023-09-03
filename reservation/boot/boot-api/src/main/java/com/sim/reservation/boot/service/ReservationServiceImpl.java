@@ -59,7 +59,7 @@ public class ReservationServiceImpl implements ReservationService{
         ReservationInfo reservationInfo = reservationQueryService.findReservationInfoById(reservationId);
 
         reservationInfo.validateCancellationDate();
-        reservationCommandService.deleteReservation(reservationId);
+        reservationCommandService.cancelReservation(reservationId);
         return ReservationCancelResponse.ofSuccess();
     }
 }

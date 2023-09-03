@@ -1,7 +1,9 @@
 package com.sim.reservation.data.reservation.dto;
 
+import com.sim.reservation.data.reservation.domain.PerformanceSchedule;
 import com.sim.reservation.data.reservation.domain.Reservation;
 
+import com.sim.reservation.data.reservation.type.ReservationStatusType;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -46,6 +48,19 @@ public class ReservationDto {
 			.email(reservation.getEmail())
 			.isSmsReceiveDenied(reservation.isSmsReceiveDenied())
 			.isEmailReceiveDenied(reservation.isEmailReceiveDenied())
+			.build();
+	}
+
+	public Reservation toEntity(PerformanceSchedule performanceSchedule) {
+		return Reservation.builder()
+			.userId(userId)
+			.name(name)
+			.email(email)
+			.phoneNum(phoneNum)
+			.isEmailReceiveDenied(isEmailReceiveDenied())
+			.isSmsReceiveDenied(isSmsReceiveDenied)
+			.performanceSchedule(performanceSchedule)
+			.status(ReservationStatusType.PAYMENT_PENDING)
 			.build();
 	}
 }

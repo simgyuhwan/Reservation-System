@@ -58,7 +58,11 @@ public class ReservationCommandServiceImpl implements ReservationCommandService 
       ReservationDto reservationDto) {
     checkReservable(scheduleId);
 
-    PerformanceInfo performanceInfo = findPerformanceById(performanceId);
+    PerformanceInfo performanceInfo = performanceInfoRepository.findById(performanceId)
+        .orElseThrow(
+            () -> new PerformanceInfoNotFoundException(ErrorMessage.PERFORMANCE_INFO_NOT_FOUND,performanceId)
+        );
+
     PerformanceSchedule schedule = findPerformanceSchedule(performanceInfo, scheduleId);
     validationReservation(performanceInfo);
 
@@ -92,8 +96,8 @@ public class ReservationCommandServiceImpl implements ReservationCommandService 
    */
   @NotNull
   private Reservation saveReservation(ReservationDto reservationDto, PerformanceSchedule schedule) {
-    return reservationRepository.save(
-        Reservation.of(reservationDto, schedule));
+    Reservation reservation = reservationDto.toEntity(schedule);
+    return reservationRepository.save(reservation);
   }
 
   /**
@@ -123,7 +127,7 @@ public class ReservationCommandServiceImpl implements ReservationCommandService 
    * 예약 가능 여부 확인
    */
   private void checkReservable(Long scheduleId) {
-    Boolean isReservable = getReserveAvailability(scheduleId);
+    boolean isReservable = getReserveAvailability(scheduleId);
 
     if (!isReservable) {
       throw new SoldOutException(ErrorMessage.SOLD_OUT_PERFORMANCE, scheduleId);
@@ -144,9 +148,9 @@ public class ReservationCommandServiceImpl implements ReservationCommandService 
    * @param reservationId 예약 ID
    */
   @Override
-  public void deleteReservation(Long reservationId) {
+  public void cancelReservation(Long reservationId) {
     Reservation reservation = findReservationById(reservationId);
-    reservation.deleteReservation();
+    reservation.cancelReservation();
     internalEventPublisher.publishReservationCancelEvent(
         ReservationCancelEventPayload.from(reservation));
   }
@@ -175,20 +179,10 @@ public class ReservationCommandServiceImpl implements ReservationCommandService 
   }
 
   /**
-   * 공연 정보 조회
-   */
-  private PerformanceInfo findPerformanceById(Long performanceId) {
-    return performanceInfoRepository.findById(performanceId)
-        .orElseThrow(
-            () -> new PerformanceInfoNotFoundException(ErrorMessage.PERFORMANCE_INFO_NOT_FOUND,
-                performanceId));
-  }
-
-  /**
    * 예약 가능 여부 조회
    */
   @Cacheable(value = "performance-reserve-availability", key = "#scheduleId")
-  public Boolean getReserveAvailability(Long scheduleId) {
+  public boolean getReserveAvailability(Long scheduleId) {
     return scheduleRepository.findById(scheduleId)
         .orElseThrow(() -> new PerformanceScheduleNotFoundException(
             ErrorMessage.PERFORMANCE_SCHEDULE_NOT_FOUND, scheduleId))

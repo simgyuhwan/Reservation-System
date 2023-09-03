@@ -26,5 +26,5 @@ public interface ReservationCommandService {
    *
    * @param reservationId 예약 ID
    */
-  void deleteReservation(Long reservationId);
+  void cancelReservation(Long reservationId);
 }
