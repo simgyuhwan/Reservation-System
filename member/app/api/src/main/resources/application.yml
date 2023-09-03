@@ -38,7 +38,7 @@ logging:
 eureka:
   client:
     service-url:
-      defaultZone: http://${DISCOVERY_SERVER}:8761/eureka
+      defaultZone: http://${DISCOVERY_SERVER:localhost}:8761/eureka
   instance:
     instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
 # actuator
