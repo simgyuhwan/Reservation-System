@@ -1,8 +1,7 @@
 package com.sim.reservation.data.reservation.repository;
 
-import org.springframework.data.jpa.repository.JpaRepository;
-
 import com.sim.reservation.data.reservation.domain.PerformanceSchedule;
+import org.springframework.data.jpa.repository.JpaRepository;
 
 /**
  * PerformanceScheduleRepository.java

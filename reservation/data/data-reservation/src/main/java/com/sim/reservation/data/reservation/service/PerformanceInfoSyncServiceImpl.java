@@ -1,18 +1,17 @@
 package com.sim.reservation.data.reservation.service;
 
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.sim.reservation.data.reservation.client.PerformanceClient;
 import com.sim.reservation.data.reservation.domain.PerformanceInfo;
 import com.sim.reservation.data.reservation.dto.PerformanceDto;
 import com.sim.reservation.data.reservation.mapper.PerformanceInfoMapper;
 import com.sim.reservation.data.reservation.repository.PerformanceInfoRepository;
-
+import com.sim.reservation.data.reservation.repository.PerformanceScheduleRepository;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * 공연 정보를 예약 서비스에 동기화하는 서비스
@@ -46,9 +45,10 @@ public class PerformanceInfoSyncServiceImpl implements PerformanceInfoSyncServic
 	@Override
 	public boolean requestAndUpdatePerformanceInfo(Long performanceId) {
 		PerformanceDto performanceDto = performanceClient.getPerformanceById(performanceId);
-		PerformanceInfo beforePerformanceInfo = findByPerformanceId(performanceId);
+		PerformanceInfo performanceInfo = performanceInfoRepository.findByPerformanceId(performanceId)
+			.orElseThrow(EntityNotFoundException::new);
 
-		beforePerformanceInfo.updateFromDto(performanceDto);
+		updatePerformanceInfo(performanceDto, performanceInfo);
 		return true;
 	}
 
@@ -57,8 +57,13 @@ public class PerformanceInfoSyncServiceImpl implements PerformanceInfoSyncServic
 		return false;
 	}
 
-	private PerformanceInfo findByPerformanceId(Long performanceId) {
-		return performanceInfoRepository.findByPerformanceId(performanceId)
-			.orElseThrow(EntityNotFoundException::new);
+	private void updatePerformanceInfo(PerformanceDto performanceDto, PerformanceInfo performanceInfo) {
+		performanceInfo.setName(performanceDto.getPerformanceName());
+		performanceInfo.setInfo(performanceDto.getPerformanceInfo());
+		performanceInfo.setPlace(performanceDto.getPerformancePlace());
+		performanceInfo.setPrice(performanceDto.getPrice());
+		performanceInfo.setContactPersonName(performanceDto.getContactPersonName());
+		performanceInfo.setContactPhoneNum(performanceDto.getContactPhoneNum());
 	}
+
 }

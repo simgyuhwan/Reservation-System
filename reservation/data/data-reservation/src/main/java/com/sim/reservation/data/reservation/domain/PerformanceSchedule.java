@@ -20,6 +20,7 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 /**
  * PerformanceDate.java
@@ -30,6 +31,7 @@ import lombok.NoArgsConstructor;
  */
 @Entity
 @Getter
+@Setter
 @Table(name = "performance_schedule")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class PerformanceSchedule extends BaseEntity {

@@ -1,6 +1,5 @@
 package com.sim.reservation.data.reservation.domain;
 
-import com.sim.reservation.data.reservation.dto.PerformanceDto;
 import com.sim.reservation.data.reservation.type.PerformanceType;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -12,7 +11,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -21,6 +19,7 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 /**
  * PerformanceInfo.java 공연 정보 Entity
@@ -30,6 +29,7 @@ import lombok.NoArgsConstructor;
  */
 @Getter
 @Entity
+@Setter
 @Table(name = "performance_info")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class PerformanceInfo extends BaseEntity {
@@ -94,30 +94,6 @@ public class PerformanceInfo extends BaseEntity {
     this.performanceId = performanceId;
     this.type = type;
     this.performanceSchedules = performanceSchedules;
-  }
-
-  public void updateFromDto(PerformanceDto performanceDto) {
-    assert id.equals(performanceDto.getPerformanceId());
-
-    name = performanceDto.getPerformanceName();
-    info = performanceDto.getPerformanceInfo();
-    place = performanceDto.getPerformancePlace();
-    price = performanceDto.getPrice();
-    contactPersonName = performanceDto.getContactPersonName();
-    contactPhoneNum = performanceDto.getContactPhoneNum();
-    type = PerformanceType.findByType(performanceDto.getPerformanceType());
-
-    updatePerformanceSchedules(performanceDto);
-  }
-
-  private void updatePerformanceSchedules(PerformanceDto performanceDto) {
-    performanceSchedules.clear();
-    List<LocalTime> times = performanceDto.getPerformanceLocalTimes();
-    for (LocalTime time : times) {
-      PerformanceSchedule schedule = PerformanceSchedule.from(performanceDto, time);
-      schedule.setPerformanceInfo(this);
-      performanceSchedules.add(schedule);
-    }
   }
 
   public void addPerformanceSchedule(PerformanceSchedule performanceSchedule) {
