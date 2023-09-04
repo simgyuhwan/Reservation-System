@@ -69,7 +69,7 @@ class PerformanceScheduleTest {
     }
     private static PerformanceSchedule createPerformanceSchedule(int remainingSeats,
         boolean isAvailable) {
-        PerformanceSchedule schedule = PerformanceSchedule.builder()
+        return PerformanceSchedule.builder()
             .startTime(LocalTime.of(11, 0))
             .startDate(LocalDate.of(2023, 1, 1))
             .endDate(LocalDate.of(2023, 12, 31))
@@ -78,7 +78,6 @@ class PerformanceScheduleTest {
             .performanceInfo(null)
             .isAvailable(isAvailable)
             .build();
-        return schedule;
     }
 
 }
