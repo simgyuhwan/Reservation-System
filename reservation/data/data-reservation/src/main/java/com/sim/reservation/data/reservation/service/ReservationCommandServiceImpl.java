@@ -70,6 +70,7 @@ public class ReservationCommandServiceImpl implements ReservationCommandService 
       lockSeat(performanceId, scheduleId);
       reservationSeat(schedule);
       updateReserveAvailability(scheduleId, schedule.isAvailable());
+
     } catch (InterruptedException e) {
       Thread.currentThread().interrupt();
     } finally {

@@ -17,11 +17,6 @@ class ReservationTest {
 
     private final static String PHONE_NUM = "010-1234-1234";
 
-    private final static String EMAIL = "test@google.com";
-
-    private final static boolean EMAIL_RECEIVE_DENIED = true;
-    private final static boolean SMS_RECEIVE_DENIED = true;
-
     @DisplayName("예약 정보를 생성할 수 있다.")
     @Test
     void reservationInformationCanBeCreated() {
@@ -73,15 +68,14 @@ class ReservationTest {
     }
 
     private static Reservation createReservation() {
-        Reservation reservation = Reservation.builder()
+        return Reservation.builder()
             .userId(ReservationTest.USER_ID)
             .name(ReservationTest.NAME)
             .phoneNum(PHONE_NUM)
-            .email(EMAIL)
-            .isEmailReceiveDenied(EMAIL_RECEIVE_DENIED)
-            .isSmsReceiveDenied(SMS_RECEIVE_DENIED)
+            .email("test@google.com")
+            .isEmailReceiveDenied(true)
+            .isSmsReceiveDenied(true)
             .status(ReservationStatusType.PAYMENT_PENDING)
             .build();
-        return reservation;
     }
 }
