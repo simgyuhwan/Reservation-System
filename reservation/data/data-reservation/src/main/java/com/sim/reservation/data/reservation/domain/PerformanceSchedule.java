@@ -1,12 +1,7 @@
 package com.sim.reservation.data.reservation.domain;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
-
-import com.sim.reservation.data.reservation.dto.PerformanceDto;
 import com.sim.reservation.data.reservation.error.ErrorMessage;
 import com.sim.reservation.data.reservation.error.SoldOutException;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -16,6 +11,8 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -65,17 +62,6 @@ public class PerformanceSchedule extends BaseEntity {
 		this.availableSeats = availableSeats;
 		this.remainingSeats = remainingSeats;
 		this.isAvailable = isAvailable;
-	}
-
-	public static PerformanceSchedule from(PerformanceDto performanceDto, LocalTime time) {
-		return PerformanceSchedule.builder()
-			.startDate(performanceDto.getStartDate())
-			.endDate(performanceDto.getEndDate())
-			.startTime(time)
-			.availableSeats(performanceDto.getAudienceCount())
-			.remainingSeats(performanceDto.getAudienceCount())
-			.isAvailable(true)
-			.build();
 	}
 
 	public void reserveSeat() {
