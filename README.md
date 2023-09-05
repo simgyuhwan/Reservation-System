@@ -144,7 +144,7 @@
 - 사용자에게 예약, 취소 알림 전송
 
 <br>
-
+<!-- 
 # **6. 이슈**
 
 #### [1. 예약 신청이 동시에 엄청난 양이 온다면?](./document/many-reservation.md)
@@ -159,4 +159,4 @@
 
 #### [6. 사가패턴 적용해보기(Choreography)](./document/choreography.md)
 
-#### [7. 사가패턴 적용해보기(Orchestration)](./document/orchestration.md)
+#### [7. 사가패턴 적용해보기(Orchestration)](./document/orchestration.md) -->
