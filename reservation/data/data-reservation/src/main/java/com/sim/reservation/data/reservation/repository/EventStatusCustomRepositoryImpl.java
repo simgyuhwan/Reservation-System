@@ -40,7 +40,7 @@ public class EventStatusCustomRepositoryImpl implements EventStatusCustomReposit
 		if(eventId != null) {
 			return eventStatus.id.eq(eventId);
 		}
-		return null;
+		return eventStatus.id.isNull();
 	}
 
 	private BooleanExpression isSuccessfulOrFailedEvent() {
