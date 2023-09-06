@@ -3,11 +3,11 @@ package com.sim.reservation.data.reservation.repository;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.tuple;
 
-import com.sim.reservation.data.reservation.config.QueryDslTestConfig;
 import com.sim.reservation.data.reservation.domain.PerformanceInfo;
 import com.sim.reservation.data.reservation.domain.PerformanceSchedule;
 import com.sim.reservation.data.reservation.dto.PerformanceInfoDto;
 import com.sim.reservation.data.reservation.dto.PerformanceInfoSearchDto;
+import com.sim.reservation.data.reservation.support.RepositoryTestSupport;
 import com.sim.reservation.data.reservation.type.PerformanceType;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -23,8 +23,6 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.context.annotation.Import;
 import org.springframework.data.domain.PageRequest;
 
 /**
@@ -33,9 +31,7 @@ import org.springframework.data.domain.PageRequest;
  * @author sgh
  * @since 2023.04.24
  */
-@DataJpaTest
-@Import(QueryDslTestConfig.class)
-class PerformanceInfoCustomRepositoryImplTest {
+class PerformanceInfoCustomRepositoryImplTest extends RepositoryTestSupport {
 
   public static final LocalDate START_DATE = LocalDate.of(2023, 01, 01);
   public static final LocalDate END_DATE = LocalDate.of(2023, 01, 01).plusYears(1);

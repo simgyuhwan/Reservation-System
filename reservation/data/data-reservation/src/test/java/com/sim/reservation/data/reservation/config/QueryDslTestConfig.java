@@ -1,5 +1,7 @@
 package com.sim.reservation.data.reservation.config;
 
+import com.sim.reservation.data.reservation.repository.EventStatusCustomRepository;
+import com.sim.reservation.data.reservation.repository.EventStatusCustomRepositoryImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -31,5 +33,10 @@ public class QueryDslTestConfig {
     @Bean
     public PerformanceInfoCustomRepository performanceInfoCustomRepository(JPAQueryFactory jpaQueryFactory) {
         return new PerformanceInfoCustomRepositoryImpl(jpaQueryFactory);
+    }
+
+    @Bean
+    public EventStatusCustomRepository eventStatusCustomRepository(JPAQueryFactory jpaQueryFactory){
+        return new EventStatusCustomRepositoryImpl(jpaQueryFactory);
     }
 }
