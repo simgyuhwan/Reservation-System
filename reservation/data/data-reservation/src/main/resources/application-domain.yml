@@ -18,13 +18,13 @@ spring:
   # Redis
   data:
     redis:
-      host: ${REDIS:localhost}
-      port: 6379
-  #      cluster:
-#        nodes:
-#          - ${REDIS:localhost}:6379
-#          - ${REDIS:localhost}:6380
-#          - ${REDIS:localhost}:6381
+      cluster:
+        nodes:
+          - ${REDIS:localhost}:6379
+          - ${REDIS:localhost}:6380
+          - ${REDIS:localhost}:6381
+  #      host: ${REDIS:localhost}
+#      port: 6379
 
   #kafka
   cloud:

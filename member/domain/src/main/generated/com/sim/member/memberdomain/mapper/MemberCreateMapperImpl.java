@@ -9,54 +9,54 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2023-08-16T17:49:55+0900",
-    comments = "version: 1.5.2.Final, compiler: javac, environment: Java 17.0.7 (Oracle Corporation)"
+    date = "2023-09-03T16:27:05+0900",
+    comments = "version: 1.5.2.Final, compiler: javac, environment: Java 17.0.6 (Amazon.com Inc.)"
 )
 @Component
 public class MemberCreateMapperImpl implements MemberCreateMapper {
 
     @Override
-    public MemberCreateRequestDto toDto(Member arg0) {
-        if ( arg0 == null ) {
+    public MemberCreateRequestDto toDto(Member entity) {
+        if ( entity == null ) {
             return null;
         }
 
         MemberCreateRequestDto.MemberCreateRequestDtoBuilder memberCreateRequestDto = MemberCreateRequestDto.builder();
 
-        memberCreateRequestDto.userId( arg0.getUserId() );
-        memberCreateRequestDto.username( arg0.getUsername() );
-        memberCreateRequestDto.password( arg0.getPassword() );
-        memberCreateRequestDto.phoneNum( arg0.getPhoneNum() );
-        memberCreateRequestDto.address( arg0.getAddress() );
+        memberCreateRequestDto.userId( entity.getUserId() );
+        memberCreateRequestDto.username( entity.getUsername() );
+        memberCreateRequestDto.password( entity.getPassword() );
+        memberCreateRequestDto.phoneNum( entity.getPhoneNum() );
+        memberCreateRequestDto.address( entity.getAddress() );
 
         return memberCreateRequestDto.build();
     }
 
     @Override
-    public Member toEntity(MemberCreateRequestDto arg0) {
-        if ( arg0 == null ) {
+    public Member toEntity(MemberCreateRequestDto dto) {
+        if ( dto == null ) {
             return null;
         }
 
         Member.MemberBuilder member = Member.builder();
 
-        member.userId( arg0.getUserId() );
-        member.username( arg0.getUsername() );
-        member.password( arg0.getPassword() );
-        member.phoneNum( arg0.getPhoneNum() );
-        member.address( arg0.getAddress() );
+        member.userId( dto.getUserId() );
+        member.username( dto.getUsername() );
+        member.password( dto.getPassword() );
+        member.phoneNum( dto.getPhoneNum() );
+        member.address( dto.getAddress() );
 
         return member.build();
     }
 
     @Override
-    public List<MemberCreateRequestDto> toDto(List<Member> arg0) {
-        if ( arg0 == null ) {
+    public List<MemberCreateRequestDto> toDto(List<Member> e) {
+        if ( e == null ) {
             return null;
         }
 
-        List<MemberCreateRequestDto> list = new ArrayList<MemberCreateRequestDto>( arg0.size() );
-        for ( Member member : arg0 ) {
+        List<MemberCreateRequestDto> list = new ArrayList<MemberCreateRequestDto>( e.size() );
+        for ( Member member : e ) {
             list.add( toDto( member ) );
         }
 
@@ -64,13 +64,13 @@ public class MemberCreateMapperImpl implements MemberCreateMapper {
     }
 
     @Override
-    public List<Member> toEntity(List<MemberCreateRequestDto> arg0) {
-        if ( arg0 == null ) {
+    public List<Member> toEntity(List<MemberCreateRequestDto> d) {
+        if ( d == null ) {
             return null;
         }
 
-        List<Member> list = new ArrayList<Member>( arg0.size() );
-        for ( MemberCreateRequestDto memberCreateRequestDto : arg0 ) {
+        List<Member> list = new ArrayList<Member>( d.size() );
+        for ( MemberCreateRequestDto memberCreateRequestDto : d ) {
             list.add( toEntity( memberCreateRequestDto ) );
         }
 
@@ -78,8 +78,8 @@ public class MemberCreateMapperImpl implements MemberCreateMapper {
     }
 
     @Override
-    public void updateFromDto(MemberCreateRequestDto arg0, Member arg1) {
-        if ( arg0 == null ) {
+    public void updateFromDto(MemberCreateRequestDto dto, Member entity) {
+        if ( dto == null ) {
             return;
         }
     }
