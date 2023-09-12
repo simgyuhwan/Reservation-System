@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2023-09-01T10:19:55+0900",
+    date = "2023-09-12T14:10:19+0900",
     comments = "version: 1.5.2.Final, compiler: javac, environment: Java 17.0.6 (Amazon.com Inc.)"
 )
 @Component
@@ -63,6 +63,19 @@ public class PerformanceInfoMapperImpl implements PerformanceInfoMapper {
     public void updateFromDto(PerformanceDto dto, PerformanceInfo entity) {
         if ( dto == null ) {
             return;
+        }
+
+        if ( dto.getPrice() != null ) {
+            entity.setPrice( dto.getPrice() );
+        }
+        if ( dto.getContactPhoneNum() != null ) {
+            entity.setContactPhoneNum( dto.getContactPhoneNum() );
+        }
+        if ( dto.getContactPersonName() != null ) {
+            entity.setContactPersonName( dto.getContactPersonName() );
+        }
+        if ( dto.getPerformanceId() != null ) {
+            entity.setPerformanceId( dto.getPerformanceId() );
         }
 
         afterMapping( dto, entity );

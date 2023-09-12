@@ -13,7 +13,7 @@ buildscript {
 }
 
 plugins {
-    id 'groovy'
+    id 'java'
     id 'org.springframework.boot' version '3.0.6'
     id 'io.spring.dependency-management' version '1.1.0'
 }
@@ -63,7 +63,6 @@ tasks.withType(JavaCompile).configureEach {
 clean.doLast {
     file(querydslDir).deleteDir()
 }
-
 
 project("boot") {
     bootJar { enabled = false }

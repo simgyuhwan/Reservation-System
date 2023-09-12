@@ -13,16 +13,21 @@ spring:
         format_sql: true
     generate-ddl: true
     database: mysql
-    database-platform: org.hibernate.dialect.MySQL57Dialect
+    database-platform: org.hibernate.dialect.MySQLDialect
 
-  # Redis
   data:
     redis:
-      cluster:
-        nodes:
-          - ${REDIS:localhost}:6379
-          - ${REDIS:localhost}:6380
-          - ${REDIS:localhost}:6381
+      host: ${REDIS:localhost}
+      port: 6379
+
+  # Redis
+#  data:
+#    redis:
+#      cluster:
+#        nodes:
+#          - ${REDIS:localhost}:6379
+#          - ${REDIS:localhost}:6380
+#          - ${REDIS:localhost}:6381
   #      host: ${REDIS:localhost}
 #      port: 6379
 

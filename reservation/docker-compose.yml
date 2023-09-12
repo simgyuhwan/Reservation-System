@@ -9,7 +9,7 @@ services:
     networks:
       - reservation-networks
     environment:
-      REDIS: redis-cluster
+      REDIS: redis_server
       DB_URL: reservation_db
       DB_PORT: 3306
       DB_ID: root

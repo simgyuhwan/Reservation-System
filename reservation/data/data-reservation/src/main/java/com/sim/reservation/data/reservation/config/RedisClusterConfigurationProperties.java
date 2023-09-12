@@ -12,16 +12,16 @@ import org.springframework.stereotype.Component;
  * @author sgh
  * @since 2023.04.24
  */
-@Component
-@ConfigurationProperties(prefix = "spring.data.redis.cluster")
-public class RedisClusterConfigurationProperties {
-    List<String> nodes;
-
-    public List<String> getNodes() {
-        return nodes;
-    }
-
-    public void setNodes(List<String> nodes) {
-        this.nodes = nodes;
-    }
-}
+//@Component
+//@ConfigurationProperties(prefix = "spring.data.redis.cluster")
+//public class RedisClusterConfigurationProperties {
+//    List<String> nodes;
+//
+//    public List<String> getNodes() {
+//        return nodes;
+//    }
+//
+//    public void setNodes(List<String> nodes) {
+//        this.nodes = nodes;
+//    }
+//}
