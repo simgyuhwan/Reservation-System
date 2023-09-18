@@ -2,7 +2,6 @@
 
 <aside>
 💡 모든 docker 파일은 reservation-parent/Dockerfiles 에 있다.
-	
 </aside>  
 
 <br>
@@ -21,7 +20,7 @@
 ## Spec
 
 ```java
-springframework boot 3.0.5
+spring boot 3.0.5
 prometheus 2.37.7(latest)
 zipkin 2.24(latest)
 grafana 9.5.1(latest)
